@@ -329,7 +329,7 @@ public class findResultDao {  // DB 정보 수정 필요
 			int i = 1;
 			while(rs.next()) {
 				findResultDo rdo = new findResultDo();
-				rdo.setPurchase_cart_id(rs.getString(1));
+				//rdo.setPurchase_cart_id(rs.getString(1));
 				rdo.setUser_pw(rs.getString(2));
 				rdo.setUser_email(rs.getString(6));
 				rdo.setUser_phone(rs.getString(7));
