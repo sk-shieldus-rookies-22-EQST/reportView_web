@@ -8,8 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 
-//import finProj_counrty.countryDo;
-
 public class findResultDao {  // DB 정보 수정 필요
 	String id = "root";
 	String password = "111111";
@@ -314,24 +312,24 @@ public class findResultDao {  // DB 정보 수정 필요
 				
 			
 	
-	//내 예약 검색
-	public ArrayList<findResultDo> findMyReserves(String a) {
+	//구매내역 검색
+	public ArrayList<findResultDo> findMyPUrchase(String user_id) {
 		connect();
 		//sql 처리
 		ArrayList<findResultDo> aList = new ArrayList<>();
 		//3. SQL문 완성
-		String sql = "select * from reservation where userid = ? order by reserveno";
+		String sql = "select * from purchase where purchase_user_id = ? order by purchase_date";
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,a);
+			pstmt.setString(1, user_id);
 
 			//4. SQL문 실행(전송)
 			rs = pstmt.executeQuery();
 			int i = 1;
 			while(rs.next()) {
 				findResultDo rdo = new findResultDo();
-				rdo.setUser_id(rs.getString(1));
+				rdo.setPurchase_cart_id(rs.getString(1));
 				rdo.setUser_pw(rs.getString(2));
 				rdo.setUser_email(rs.getString(6));
 				rdo.setUser_phone(rs.getString(7));
