@@ -44,6 +44,14 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    /* Tomcat version 낮추기 **/
+    dependencies {
+        implementation('org.springframework.boot:spring-boot-starter-web') {
+            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+        }
+        implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.32' // 적절한 버전으로 대체
+    }
 }
 
 dependencyManagement {
