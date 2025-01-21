@@ -29,7 +29,7 @@
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 비밀번호 </td>
-			<td width="100%" id="flightno"> <%=ado.getUserpw()%> </td>
+			<td width="100%" id="user_pw"> <%=ado.getUserpw()%> </td>
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 이메일 </td>

@@ -32,20 +32,6 @@
 			<td width="100%" id="flightno"> <input type="text" name="userpw" value="<%=ado.getUserpw()%>"> </td>
 		</tr>
 		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 이름 </td>
-			<td width="100%"><input type="text" name="username" value="<%=ado.getUsername()%>"></td>
-		</tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 국가 </td>
-			<td width="100%"><input type="text" name="usercountry" value="<%=ado.getUsercountry()%>"> </td>
-		</tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 생일 </td>
-			<td width="100%" id="flightdate"> 
-				<input type="text" name="userbirth" value="<%=ado.getUserbirth()%>">
-			</td>
-		</tr>
-		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 이메일 </td>
 			<td width="100%"> 
 				<input type="text" name="useremail" value="<%=ado.getUseremail()%>"> 
@@ -55,12 +41,6 @@
 			<td width="40%" style="border-right:1px solid #212529"> 전화번호 </td>
 			<td width="100%"> 
 				<input type="text" name="usertel" value="<%=ado.getUsertel()%>">
-			</td>
-		</tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529">고객등급</td>
-			<td width="100%"> 
-				<%= ado.getUsergrade() %>
 			</td>
 		</tr>
 		<tr height="60" align="center">

@@ -31,9 +31,8 @@
 					throw new Exception();
 				}else{
 					rdao.insertRegister(rdo);
-					session.setAttribute("username", rdo.getUsername());
 					session.setAttribute("userid", rdo.getUserid());
-					response.sendRedirect("main.jsp");
+					response.sendRedirect("index.jsp");
 				}
 			}
 		} catch (ArithmeticException e){
