@@ -11,7 +11,7 @@
 <div class="container">
 <%@ include file="banner.jsp" %>
 
-<jsp:useBean id="adao" class="finProj_flight.findResultDao" />
+<jsp:useBean id="adao" class="config.findResultDao" />
 	<%
 		String userid = (String)session.getAttribute("user_id");
 		findResultDo ado = adao.getmyInfo(userid);

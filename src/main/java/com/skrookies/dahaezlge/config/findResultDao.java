@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 //import finProj_counrty.countryDo;
 
@@ -165,7 +167,7 @@ public class findResultDao {  // DB 정보 수정 필요
 	//사용자 중복확인
 	public boolean findAtom(int i, String str) {
 		connect();
-		String sql = "select * from membership";
+		String sql = "select * from users";
 		try {
 			pstmt = conn.prepareStatement(sql);
 
@@ -187,18 +189,21 @@ public class findResultDao {  // DB 정보 수정 필요
 	public void insertRegister(findResultDo rdo) {
 		System.out.println("insertRegister() --> ");
 		connect();
+		LocalDateTime now = LocalDateTime.now();
+		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		
 		//sql
 		//3. SQL문 완성
-		String sql = "insert into membership values(?,?,?,?,?,?,?,?,'white')";
+		String sql = "insert into users values(?,?,?,?,?,"+formatedNow+")";
+
+
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1,rdo.getUserid());
-			pstmt.setString(2,rdo.getUserpw());
-			pstmt.setString(3,rdo.getUsername());
-			pstmt.setString(4,rdo.getUseremail());
-			pstmt.setString(5,rdo.getUsertel());
-			pstmt.setString(6,rdo.getUsergrade());
+			pstmt.setString(1,rdo.getUser_id());
+			pstmt.setString(2,rdo.getUser_pw());
+			pstmt.setString(3,rdo.getUser_phone());
+			pstmt.setString(4,rdo.getUser_email());
+			pstmt.setString(5,rdo.getUser_level());
 			
 			//4. SQL 실행
 			pstmt.executeUpdate();
@@ -213,69 +218,63 @@ public class findResultDao {  // DB 정보 수정 필요
 	}
 	
 	//전체 사용자 검색
-	public ArrayList<findResultDo> getAllUsers() {
-		connect();
-		
-		ArrayList<findResultDo> aList = new ArrayList<>();
-		
-		//3. SQL문 완성
-		String sql = "select * from membership";
-		try {
-			pstmt = conn.prepareStatement(sql);
-
-			//4. SQL문 실행(전송)
-			rs = pstmt.executeQuery();
-			int i = 1;
-			while(rs.next()) {
-				findResultDo rdo = new findResultDo();
-				rdo.setUserid(rs.getString(1));
-				rdo.setUserpw(rs.getString(2));
-				rdo.setUsername(rs.getString(3));
-				rdo.setUsercountry(rs.getString(4));
-				rdo.setUserbirth(rs.getString(5));
-				rdo.setUseremail(rs.getString(6));
-				rdo.setUsertel(rs.getString(7));
-				rdo.setUseragree(rs.getString(8));
-				
-				aList.add(rdo);
-				i++;
-			}
-			//System.out.println("getAllRegister() 처리 완료!!");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		disConnect();
-		return aList;
-		
-	}
+//	public ArrayList<findResultDo> getAllUsers() {
+//		connect();
+//
+//		ArrayList<findResultDo> aList = new ArrayList<>();
+//
+//		//3. SQL문 완성
+//		String sql = "select * from users";
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//
+//			//4. SQL문 실행(전송)
+//			rs = pstmt.executeQuery();
+//			int i = 1;
+//			while(rs.next()) {
+//				findResultDo rdo = new findResultDo();
+//				rdo.setUser_id(rs.getString(1));
+//				rdo.setUser_pw(rs.getString(2));
+//				rdo.setUser_email(rs.getString(6));
+//				rdo.setUser_phone(rs.getString(7));
+//				rdo.setUser_level(rs.getString(8));
+//
+//				aList.add(rdo);
+//				i++;
+//			}
+//			//System.out.println("getAllRegister() 처리 완료!!");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//
+//		disConnect();
+//		return aList;
+//
+//	}
 	
 	//내 정보 검색
-		public findResultDo getmyInfo(String a) {
+		public findResultDo getmyInfo(String user_id) {
 			connect();
 			
 			findResultDo rdo = new findResultDo();
 			
 			//3. SQL문 완성
-			String sql = "select * from membership where userid=?";
+			String sql = "select * from users where user_id=?";
 			
 			try {
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, a);
+				pstmt.setString(1, user_id);
 
 				//4. SQL문 실행(전송)
 				rs = pstmt.executeQuery();
 				while(rs.next()) {
-					rdo.setUserid(rs.getString(1));
-					rdo.setUserpw(rs.getString(2));
-					rdo.setUsername(rs.getString(3));
-					rdo.setUsercountry(rs.getString(4));
-					rdo.setUserbirth(rs.getString(5));
-					rdo.setUseremail(rs.getString(6));
-					rdo.setUsertel(rs.getString(7));
-					rdo.setUseragree(rs.getString(8));
-					rdo.setUsergrade(rs.getString(9));
+					rdo.setUser_id(rs.getString(1));
+					rdo.setUser_pw(rs.getString(2));
+					rdo.setUser_phone(rs.getString(3));
+					rdo.setUser_email(rs.getString(4));
+					rdo.setUser_created_at(rs.getString(5));
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -292,20 +291,14 @@ public class findResultDao {  // DB 정보 수정 필요
 					connect();
 					String agree ="1";
 					//3. SQL문 완성
-					String sql = "update membership set userpw=?, username=?, usercountry=?, userbirth=?, useremail=?, usertel=?, useragree=? where userid=?";
-					if(rdo.getUseragree() == null ) {
-						agree = "0";
-					}
+					String sql = "update users set user_pw=?, user_phone=? user_email=? where userid=?";
 					try {
 						pstmt = conn.prepareStatement(sql);
-						pstmt.setString(1, rdo.getUserpw());
-						pstmt.setString(2, rdo.getUsername());
-						pstmt.setString(3, rdo.getUsercountry().toUpperCase());
-						pstmt.setString(4, rdo.getUserbirth());
-						pstmt.setString(5, rdo.getUseremail());
-						pstmt.setString(6, rdo.getUsertel());
-						pstmt.setString(7, agree);
-						pstmt.setString(8, id);
+
+						pstmt.setString(1,rdo.getUser_pw());
+						pstmt.setString(2,rdo.getUser_email());
+						pstmt.setString(3,rdo.getUser_phone());
+						pstmt.setString(4,rdo.getUser_id());
 
 						//4. SQL문 실행(전송)
 						pstmt.executeUpdate();
@@ -338,15 +331,11 @@ public class findResultDao {  // DB 정보 수정 필요
 			int i = 1;
 			while(rs.next()) {
 				findResultDo rdo = new findResultDo();
-				rdo.setReserveno(rs.getString(1));
-				rdo.setUserid(rs.getString(2));
-				rdo.setReservedate(rs.getString(3));
-				rdo.setGoflightdate(rs.getString(4));
-				rdo.setGoflightairline(rs.getString(5));
-				rdo.setGoflightno(rs.getString(6));
-				rdo.setBackflightdate(rs.getString(7));
-				rdo.setBackflightairline(rs.getString(8));
-				rdo.setBackflightno(rs.getString(9));
+				rdo.setUser_id(rs.getString(1));
+				rdo.setUser_pw(rs.getString(2));
+				rdo.setUser_email(rs.getString(6));
+				rdo.setUser_phone(rs.getString(7));
+				rdo.setUser_level(rs.getString(8));
 				
 				aList.add(rdo);
 				i++;
@@ -359,27 +348,5 @@ public class findResultDao {  // DB 정보 수정 필요
 		disConnect();
 		return aList;
 		
-	}
-	
-	//출발지(국가) 검색
-	public String findCountry(String a) {
-		String str = "";
-		connect();
-		
-		//SQL
-		findResultDo rdo = new findResultDo();
-		String sql = "select country from flight, airport where flightfrom = ? and flightfrom = airportcode";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, a);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				str = rs.getString(1);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		disConnect();
-		return str;
 	}
 }
