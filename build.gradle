@@ -32,9 +32,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
-    implementation 'org.springframework.ai:spring-ai-oracle-store-spring-boot-starter'
     implementation 'org.springframework.session:spring-session-core'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -46,16 +43,13 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     /* Tomcat version 낮추기 **/
-    dependencies {
-        implementation('org.springframework.boot:spring-boot-starter-web') {
-            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-        }
-        implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.32' // 적절한 버전으로 대체
-    }
+//    dependencies {
+//        implementation('org.springframework.boot:spring-boot-starter-web') {
+//            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+//        }
+//        implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.32'
+//    }
 
-
-    /* Spring WebMVC (JSP 필요 의존성) **/
-    implementation 'org.springframework:spring-webmvc:6.1.14'
 
     /* web jsp 필요 의존성 **/
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.32'
@@ -63,6 +57,12 @@ dependencies {
     /* jstl 의존성**/
     implementation 'javax.servlet:jstl'
 
+    /* jakarta 의존성 **/
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+
+    /* test용 mysql DB **/
+    implementation 'com.mysql:mysql-connector-j'
 }
 
 dependencyManagement {
