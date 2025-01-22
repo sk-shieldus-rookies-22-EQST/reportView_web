@@ -33,19 +33,6 @@ public class MainController {
         return "banner";
     }
 
-    @GetMapping("/loginForm")
-    public String loginFormBoot_form(){
-
-        log.info("page_move: loginForm.jsp");
-        return "loginForm";
-    }
-
-    @GetMapping("/loginProc")
-    public String loginProc_form(){
-
-        log.info("page_move: loginProc.jsp");
-        return "loginProc";
-    }
 
     @GetMapping("/findUseridpw")
     public String findUseridpw_form(){
