@@ -33,7 +33,7 @@
                     </tf>
                 </tbody>
             </table>
-            <a href="qnaWrite.jsp" class="btn btn-primary pull-right">글 쓰기</a>
+            <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>
     </div>
 </div>
 </body>
