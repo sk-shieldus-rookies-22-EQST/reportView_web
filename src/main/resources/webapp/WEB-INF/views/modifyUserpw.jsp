@@ -16,28 +16,26 @@
 		<%@ include file="banner.jsp" %>
 <div cass="container">
 	<div class="container" style="max-width: 500px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">아이디 찾기</p>
+		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">비밀번호 변경</p>
 
 		<form action="findUserProc.jsp" method="post">
-            <input type="hidden" name="whatFind" id="whatFind" value='id'>
+		<input type="hidden" name="whatFind" id="whatFind" value='pw'>
 			<div class="mb-3" style="margin-bottom : 50px!important;">
-			  <label for="user_phone" class="form-label fw-bold fs-4">Phone</label>
+			  <label for="user_phone" class="form-label fw-bold fs-4">새로운 비밀번호</label>
 			  <input type="text" class="form-control" id="user_phone" aria-describedby="emailHelp" name="user_phone" required>
 			</div>
 
 			<div class="mb-3" style="margin-bottom : 50px!important;">
-              <label for="user_email" class="form-label fw-bold fs-4">email</label>
-              <input type="text" class="form-control" id="user_email" aria-describedby="emailHelp" name="user_email" required>
+              <label for="user_phone_re" class="form-label fw-bold fs-4">새로운 비밀번호 확인</label>
+              <input type="text" class="form-control" id="user_phone_re" aria-describedby="emailHelp" name="user_phone_re" required>
             </div>
 
 			<div class="d-grid gap-2 col-6 mx-auto">
-			  <button class="btn btn-primary" type="submit">아이디 찾기</button>
-			  <button class="btn btn-outline-primary" type="button" onclick="location.href='./findUserpw.jsp'">비밀번호 찾기</button>
+			  <button class="btn btn-primary" type="submit">비밀번호 변경</button>
 			</div>
 		</form>
 		<%
 		String warn = request.getParameter("warn");
-		String foundId = request.getParameter("foundId");
 
 		//warn 변수에 값이 있으면, 리셋
 		if(warn != null) {
@@ -48,19 +46,10 @@
 			</div>
 			<%
 		}
-		if (foundId != null) {
-%>          <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
-             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-             <div> 아이디는 <%=request.getParameter("findId")%>입니다. </div>
-         </div>
-
-    <%
-    }
-%>
+	%>
 	</div>
 
-</div>
-</div>
+</div></div>
 
 </body>
 </html>

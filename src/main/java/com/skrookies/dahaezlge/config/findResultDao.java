@@ -274,11 +274,32 @@ public class findResultDao {  // DB 정보 수정 필요
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
 		disConnect();
 		return rdo;
+	}
 
+	//사용자 비밀번호 검색
+	public findResultDo findUser_pw(String user_id, String user_phone, String user_email) {
+		connect();
+
+		findResultDo rdo = new findResultDo();
+
+		//3. SQL문 완성
+		String sql = "update users set user_pw=? where user_id=? and user_phone=? and user_email=?";
+
+		try {
+			if(findUser_id(user_phone, user_email) != null){
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, user_id);
+				pstmt.setString(2, user_phone);
+				pstmt.setString(3, user_email);
+				//4. SQL문 실행(전송)
+				pstmt.executeUpdate();
+			}
+		} catch (Exception e) {
+		}
+		disConnect();
+		return rdo;
 	}
 	
 	//내 정보 검색

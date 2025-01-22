@@ -9,7 +9,7 @@
 </head>
 <body>
 <% request.setCharacterEncoding("utf-8");
-String whatFind = request.getParameter("whatFind");
+    String whatFind = request.getParameter("whatFind");
     if (whatFind == "pw") {
         String user_id = request.getParameter("user_id");
     }
@@ -23,18 +23,21 @@ String whatFind = request.getParameter("whatFind");
 	<jsp:useBean id="rdao" class="config.findResultDao" />
 <%
 	    if (whatFind == 'id') {
-	        String findId = rdao.findUser_id(user_phone, user_email);
+	        String foundId = rdao.findUser_id(user_phone, user_email);
+	        if (foundId != null) {
+
+	        }
 %>
 
-        <jsp:forward page="findUserid.jsp">
-            <jsp:param name="findId" value="<%=findId%>"/>
+        <jsp:forward page="findUseridpsw.jsp">
+            <jsp:param name="foundId" value="<%=foundId%>"/>
         </jsp:forward>
 
 
 <%
 	    } else if (whatFind == 'pw') {
-            rdao.findUserpw(user_id, user_phone, user_email);
-            response.sendRedirect("findUserpw.jsp?foundPw="+user_pw);
+            rdao.findUser_pw(user_id, user_phone, user_email);
+            response.sendRedirect("modifyUserpw.jsp");
         }
 
 	%>
