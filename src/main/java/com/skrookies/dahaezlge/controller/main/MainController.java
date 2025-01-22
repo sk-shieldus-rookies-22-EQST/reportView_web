@@ -81,7 +81,7 @@ public class MainController {
     }
 
     @GetMapping("/registerForm")
-    public String registerFrom_form(){
+    public String registerForm_form(){
 
         log.info("page_move: registerForm.jsp");
         return "registerForm";

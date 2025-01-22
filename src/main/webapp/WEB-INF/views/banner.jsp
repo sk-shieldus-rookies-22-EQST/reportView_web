@@ -23,11 +23,23 @@
 
 	<body>
 
-		<% request.setCharacterEncoding("utf-8"); String logout=request.getParameter("logout"); //logout 변수에 값이 있으면, 리셋
-			if(logout !=null) { session.setAttribute("user_id", null); Cookie[] ck=request.getCookies(); try{ for(int
-			i=0; i< ck.length; i++){ ck[i].setMaxAge(0); response.addCookie(ck[i]); } }catch (Exception e) {
-			out.print("쿠키가 사라지지 않았습니다"); } } String user_id=(String)session.getAttribute("user_id"); if(user_id==null) {
-			user_id=" " ; } %>
+		<% request.setCharacterEncoding("utf-8");
+		    String logout=request.getParameter("logout"); //logout 변수에 값이 있으면, 리셋
+			if(logout !=null) {
+			    session.setAttribute("user_id", null);
+			    Cookie[] ck=request.getCookies();
+                try{
+                    for(int i=0; i< ck.length; i++){
+                        ck[i].setMaxAge(0); response.addCookie(ck[i]);
+                    }
+                } catch (Exception e) {
+                    out.print("쿠키가 사라지지 않았습니다");
+                }
+			}
+			String user_id=(String)session.getAttribute("user_id");
+			if(user_id==null) {
+			    user_id=" " ;
+			} %>
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
@@ -67,7 +79,7 @@
 							</ul>
 							<ul class="nav justify-content-end">
 								<li style="color:white;display: flex;align-items: center;margin-right:20px">
-											<!--<%=user_id %>--> abc 님
+											<%=user_id %> 님
 								</li>
 
 								<li class="nav-item dropdown">
