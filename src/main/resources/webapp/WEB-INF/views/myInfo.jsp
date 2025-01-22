@@ -11,7 +11,7 @@
 <div class="container">
 <%@ include file="banner.jsp" %>
 
-<jsp:useBean id="adao" class="finProj_flight.findResultDao" />
+<jsp:useBean id="adao" class="config.findResultDao" />
 	<%
 		String userid = (String)session.getAttribute("user_id");
 		findResultDo ado = adao.getmyInfo(userid);
@@ -25,24 +25,24 @@
 	<table border="1"  style="width: 100%">
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 아이디 </td>
-			<td width="100%"> <%= ado.getUserid() %> </td>
+			<td width="100%"> <%= ado.getUser_id() %> </td>
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 비밀번호 </td>
-			<td width="100%" id="user_pw"> <%=ado.getUserpw()%> </td>
-		</tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 이메일 </td>
-			<td width="100%"> 
-				<%=ado.getUseremail()%>
-			</td>
+			<td width="100%" id="user_pw"> <%=ado.getUser_pw()%> </td>
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 전화번호 </td>
 			<td width="100%"> 
-				<%=ado.getUsertel()%>
+				<%=ado.getUser_email()%>
 			</td>
 		</tr>
+		<tr height="60" align="center">
+            <td width="40%" style="border-right:1px solid #212529"> 이메일 </td>
+            <td width="100%">
+                <%=ado.getUser_phone()%>
+            </td>
+        </tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 개인정보 활용 동의 </td>
 			<td width="100%"> 

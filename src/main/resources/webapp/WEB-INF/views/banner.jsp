@@ -24,7 +24,7 @@
 
 	//logout 변수에 값이 있으면, 리셋
 	if(logout != null) {
-		session.setAttribute("user_name", null);
+		session.setAttribute("user_id", null);
 		Cookie[] ck = request.getCookies();
 		try{
 			for(int i=0; i< ck.length; i++){
@@ -36,18 +36,17 @@
 		}
 	}
 
-	String username = (String)session.getAttribute("user_name");
-	if(username == null) {
-		username = " ";
+	String user_id = (String)session.getAttribute("user_id");
+	if(user_id == null) {
+		user_id = " ";
 	}
 %>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
-    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
 
     <a class="navbar-brand" href="./index.jsp">
-      <img src="./assets/trip1.png" alt="" width="35" class="d-inline-block align-text-top">
+      <img src="" alt="" width="35" class="d-inline-block align-text-top">
       시스템 이름
     </a>
 
@@ -59,26 +58,19 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="./index.jsp">Home</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li> -->
       </ul>
-      <!-- <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form> -->
       <%
-      	if(username.equals(" ")){
+      	if(user_id.equals(" ")){
 	%>
-			<input class="btn btn-outline-light" type="button" value="로그인" onclick="location.href='loginFormBoot.jsp'" style="margin-left: 20px;">
-			<input class="btn btn-outline-light" type="button" value="회원가입" onclick="location.href='registerFormBoot.jsp'" style="margin-left: 20px;">
+			<input class="btn btn-outline-light" type="button" value="로그인" onclick="location.href='loginForm.jsp'" style="margin-left: 20px;">
+			<input class="btn btn-outline-light" type="button" value="회원가입" onclick="location.href='registerForm.jsp'" style="margin-left: 20px;">
 	<%
       	} else {
 	%>
       		<div style="color:white;display: flex;">
                 <div class="dropdown">
                   <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <%=username %> 님
+                    <%=user_id %> 님
                   </button>
 
 
@@ -88,8 +80,8 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                       <li><a class="dropdown-item" href="myInfo.jsp"></a>회원정보</li>
-                      <li><a class="dropdown-item" href="myReservation.jsp">결제 내역</a></li>
-                      <li><a class="dropdown-item" href="#">내 서재</a></li>
+                      <li><a class="dropdown-item" href="myPurchase.jsp">결제 내역</a></li>
+                      <li><a class="dropdown-item" href="myBook.jsp">내 서재</a></li>
                     </ul>
                   </li>
                 </div>

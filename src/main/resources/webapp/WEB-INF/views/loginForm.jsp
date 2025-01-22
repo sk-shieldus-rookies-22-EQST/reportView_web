@@ -13,12 +13,12 @@
 </head>
 <body>
 <div class="container">
-		<%@ include file="nav.jsp" %>
+		<%@ include file="banner.jsp" %>
 <div cass="container">
 	<div class="container" style="max-width: 500px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">로그인</p>
 
-		<form action="loginProcBoot.jsp" method="post">
+		<form action="loginProc.jsp" method="post">
 			<div class="mb-3">
 			  <label for="user_id" class="form-label fw-bold fs-4">ID</label>
 			  <input type="text" class="form-control" id="user_id" aria-describedby="emailHelp" name="user_id">
@@ -32,7 +32,7 @@
 
 			<div class="d-grid gap-2 col-6 mx-auto">
 			  <button class="btn btn-primary" type="submit">로그인</button>
-			  <button class="btn btn-outline-primary" type="button" onclick="location.href='./registerFormBoot.jsp'">회원가입</button>
+			  <button class="btn btn-outline-primary" type="button" onclick="location.href='./registerForm.jsp'">회원가입</button>
 			</div>
 		</form>
 		<%

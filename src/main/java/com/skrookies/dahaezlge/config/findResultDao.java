@@ -252,41 +252,34 @@ public class findResultDao {  // DB 정보 수정 필요
 		disConnect( );
 	}
 	
-	//전체 사용자 검색
-//	public ArrayList<findResultDo> getAllUsers() {
-//		connect();
-//
-//		ArrayList<findResultDo> aList = new ArrayList<>();
-//
-//		//3. SQL문 완성
-//		String sql = "select * from users";
-//		try {
-//			pstmt = conn.prepareStatement(sql);
-//
-//			//4. SQL문 실행(전송)
-//			rs = pstmt.executeQuery();
-//			int i = 1;
-//			while(rs.next()) {
-//				findResultDo rdo = new findResultDo();
-//				rdo.setUser_id(rs.getString(1));
-//				rdo.setUser_pw(rs.getString(2));
-//				rdo.setUser_email(rs.getString(6));
-//				rdo.setUser_phone(rs.getString(7));
-//				rdo.setUser_level(rs.getString(8));
-//
-//				aList.add(rdo);
-//				i++;
-//			}
-//			//System.out.println("getAllRegister() 처리 완료!!");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//
-//		disConnect();
-//		return aList;
-//
-//	}
+	//사용자 아이디 검색
+	public findResultDo findUser_id(String user_phone, String user_email) {
+		connect();
+
+		findResultDo rdo = new findResultDo();
+
+		//3. SQL문 완성
+		String sql = "select user_id from users where user_phone=?, user_email=?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user_phone);
+			pstmt.setString(2, user_email);
+			//4. SQL문 실행(전송)
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				rdo.setUser_id(rs.getString(1));
+			}
+			//System.out.println("getAllRegister() 처리 완료!!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		disConnect();
+		return rdo;
+
+	}
 	
 	//내 정보 검색
 		public findResultDo getmyInfo(String user_id) {
