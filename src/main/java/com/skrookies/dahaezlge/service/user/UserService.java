@@ -18,12 +18,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     public Boolean login(String user_id, String user_pw){
-
         return userRepository.login(user_id, user_pw);
     }
 
-    public List<Users> userInfo(String user_id){
+    public String findUserId(String user_phone, String user_email) {
+        return userRepository.findUserid(user_phone, user_email);
+    }
 
+    public List<Users> userInfo(String user_id){
         return userRepository.userinfo_list(user_id);
     }
 }

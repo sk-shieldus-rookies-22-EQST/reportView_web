@@ -19,6 +19,6 @@ public class QnaController {
 
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(@ModelAttribute QnaDto QnaDto) {
-
+        return "a";
     }
 }
