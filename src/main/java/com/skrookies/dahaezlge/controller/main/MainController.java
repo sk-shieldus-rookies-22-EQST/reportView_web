@@ -25,11 +25,11 @@ public class MainController {
         return "banner";
     }
 
-    @GetMapping("/loginFormBoot")
+    @GetMapping("/loginForm")
     public String loginFormBoot_form(){
 
-        log.info("page_move: loginFormBoot.jsp");
-        return "loginFormBoot";
+        log.info("page_move: loginForm.jsp");
+        return "loginForm";
     }
 
     @GetMapping("/loginProc")
