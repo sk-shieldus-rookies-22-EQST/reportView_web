@@ -26,7 +26,7 @@ public class QnaController {
         if (qnaResult > 0) {
             return "redirect:/qnaList/";
         } else {
-            return "/qnaWrite";
+            return "qnaWrite";
         }
     }
 }

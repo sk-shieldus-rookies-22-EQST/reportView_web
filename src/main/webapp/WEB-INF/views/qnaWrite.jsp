@@ -39,7 +39,7 @@
                 </table>
                     <input type="submit" class="btn btn-primary pull-right" value="글 작성"></a>
             </form>
-                    <a href="qnaList.jsp" class="btn btn-primary pull-right">취소</a>
+                    <a href="qnaList" class="btn btn-primary pull-right">취소</a>
         </div>
     </div>
 </body>
