@@ -34,6 +34,22 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
+    @Override
+    public String findUserid(String user_phone, String user_email) {
+
+        String sql = "Select user_id from users where user_phone = '" + user_phone + "' and user_email = '" + user_email + "';";
+        try {
+            if (jdbcTemplate.queryForObject(sql, String.class) != null){
+                return jdbcTemplate.queryForObject(sql, String.class);
+            } else {
+                return "no_users";
+            }
+
+        } catch (Exception e) {
+            return "error";
+        }
+    }
+
 
     public List<Users> userinfo_list(String user_id){
         String sql = "select * from users where user_id = '" + user_id + "';";
