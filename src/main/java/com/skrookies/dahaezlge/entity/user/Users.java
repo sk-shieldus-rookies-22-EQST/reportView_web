@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.entity.user;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,30 +13,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class Users {
 
     // users
 
     @Id
-    @Embedded
+    @Column(name = "user_id")
     private String user_id;
 
-    @Embedded
+    @Column(name = "user_pw")
     private String user_pw;
 
-    @Embedded
+    @Column(name = "user_email")
     private String user_email;
 
-    @Embedded
+    @Column(name = "user_phone")
     private String user_phone;
 
-    @Embedded
+    @Column(name = "user_level")
     private String user_level;
 
-    @Embedded
+    @Column(name = "user_created_at")
     private String user_created_at;
 
-    public User(String user_id, String user_pw, String user_email, String user_phone, String user_level, String user_created_at){
+    public Users(String user_id, String user_pw, String user_email, String user_phone, String user_level, String user_created_at){
         this.user_id = user_id;
         this.user_pw = user_pw;
         this.user_email = user_email;

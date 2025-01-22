@@ -18,7 +18,7 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean login(String user_id, String user_pw) {
 
-        String sql = "Select * from user where user_id = '" + user_id + "' and user_pw = '" + user_pw + "';";
+        String sql = "Select * from users where user_id = '" + user_id + "' and user_pw = '" + user_pw + "';";
 
         int count = jdbcTemplate.queryForObject(sql, int.class);
 
