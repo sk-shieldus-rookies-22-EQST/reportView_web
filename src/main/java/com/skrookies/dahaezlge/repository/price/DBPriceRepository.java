@@ -1,4 +1,4 @@
-package com.skrookies.dahaezlge.repository.cart;
+package com.skrookies.dahaezlge.repository.price;
 
 import com.skrookies.dahaezlge.entity.cart.CartId;
 import lombok.RequiredArgsConstructor;
@@ -14,15 +14,13 @@ import static org.springframework.data.relational.core.query.Query.query;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DBCartRepository implements CartRepository {
-
+public class DBPriceRepository implements PriceRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<CartId> getCartList(String user_id){
-        String sql = "Select cart_id from cart where cart_user_id = '" + user_id + "';";
+    public String getBookPrice(String book_id){
+        String sql = "Select book_price from price where book_id = '" + book_id + "';";
 
-        return jdbcTemplate.queryForObject(sql,List.class);
+        return jdbcTemplate.queryForObject(sql,String.class);
     }
-
 }

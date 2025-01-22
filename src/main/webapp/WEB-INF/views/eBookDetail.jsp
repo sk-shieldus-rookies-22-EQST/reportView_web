@@ -18,9 +18,9 @@
         <div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
             <table align="center" border="1" style="width: 100%">
                 <tr align="left">
-                    <td width="30%" rowsapn="4" style="border-right:1px solid #212529">
+                    <td width="30%" rowspan="4" style="border-right:1px solid #212529">
                         <img
-                            src="address/<%= eBook.getBookImagePath() %>"
+                            src=""
                             width="200" height="310"
                         />
                     </td>
