@@ -45,13 +45,10 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
 
-<<<<<<< HEAD:src/main/webapp/WEB-INF/views/banner.jsp
-    <a class="navbar-brand" href="index.jsp">
+    <a class="navbar-brand" href="/index">
       <img src="./assets/trip1.png" alt="" width="35" class="d-inline-block align-text-top">
-=======
-    <a class="navbar-brand" href="./index.jsp">
+    <a class="navbar-brand" href="/index">
       <img src="" alt="" width="35" class="d-inline-block align-text-top">
->>>>>>> 8bf24dc58059a0be37b1ed4a561a3bfe7ebe779f:src/main/resources/webapp/WEB-INF/views/banner.jsp
       시스템 이름
     </a>
 
@@ -61,14 +58,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
+          <a class="nav-link active" aria-current="page" href="/index">Home</a>
         </li>
       </ul>
       <%
       	if(user_id.equals(" ")){
 	%>
-			<input class="btn btn-outline-light" type="button" value="로그인" onclick="location.href='loginForm.jsp'" style="margin-left: 20px;">
-			<input class="btn btn-outline-light" type="button" value="회원가입" onclick="location.href='registerForm.jsp'" style="margin-left: 20px;">
+			<input class="btn btn-outline-light" type="button" value="로그인" onclick="location.href='/loginForm'" style="margin-left: 20px;">
+			<input class="btn btn-outline-light" type="button" value="회원가입" onclick="location.href='/registerForm'" style="margin-left: 20px;">
 	<%
       	} else {
 	%>
@@ -84,13 +81,13 @@
                       마이페이지
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" href="myInfo.jsp"></a>회원정보</li>
-                      <li><a class="dropdown-item" href="myPurchase.jsp">결제 내역</a></li>
-                      <li><a class="dropdown-item" href="myBook.jsp">내 서재</a></li>
+                      <li><a class="dropdown-item" href="/myInfo"></a>회원정보</li>
+                      <li><a class="dropdown-item" href="/myPurchase">결제 내역</a></li>
+                      <li><a class="dropdown-item" href="/myBook">내 서재</a></li>
                     </ul>
                   </li>
                 </div>
-      			<input class="btn btn-outline-light" type="button" value="로그아웃" onclick="location.href='index.jsp?logout=1'" style="margin-left: 20px;">
+      			<input class="btn btn-outline-light" type="button" value="로그아웃" onclick="location.href='/index?logout=1'" style="margin-left: 20px;">
       		</div>
 
 	<%

@@ -46,6 +46,13 @@ public class MainController {
         return "myInfo";
     }
 
+    @GetMapping("/registerForm")
+    public String registerFrom_form(){
+
+        log.info("page_move: registerForm.jsp");
+        return "registerForm";
+    }
+
     @GetMapping("/myInfoModify")
     public String myInfoModify_form(){
 
