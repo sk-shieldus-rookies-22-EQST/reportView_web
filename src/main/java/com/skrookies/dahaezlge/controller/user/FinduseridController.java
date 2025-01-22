@@ -1,7 +1,6 @@
 package com.skrookies.dahaezlge.controller.user;
 
 import com.skrookies.dahaezlge.controller.user.Dto.FinduseridDto;
-import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class FinduserController {
+public class FinduseridController {
 
     private final UserService userService;
 

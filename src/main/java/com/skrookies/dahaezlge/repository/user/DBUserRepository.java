@@ -21,15 +21,20 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean login(String user_id, String user_pw) {
 
-        String sql = "Select * from users where user_id = '" + user_id + "' and user_pw = '" + user_pw + "';";
+        String sql = "Select count(*) from users where user_id = ? and user_pw =?;";
         try {
-            if (jdbcTemplate.queryForObject(sql, int.class) != null){
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id, user_pw);
+            if ( count != null && count > 0 ){
+                log.info("not_null");
                 return true;
             } else {
+                log.info("null");
                 return false;
             }
 
         } catch (Exception e) {
+            log.info("error");
+            e.printStackTrace();
             return false;
         }
     }
