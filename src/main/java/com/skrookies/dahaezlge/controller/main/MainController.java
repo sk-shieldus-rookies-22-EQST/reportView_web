@@ -59,4 +59,11 @@ public class MainController {
         log.info("page_move: myInfoProc.jsp");
         return "myInfoProc";
     }
+
+    @GetMapping("/qnaList")
+    public String qnaList_form(){
+
+        log.info("page_move: qnaList.jsp");
+        return "qnaList";
+    }
 }
