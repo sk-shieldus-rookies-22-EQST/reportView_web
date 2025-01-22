@@ -8,12 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/qnaList")
 @Slf4j
 public class QnaController {
     private final QnaService QnaService;
@@ -25,7 +23,6 @@ public class QnaController {
         return "qnaWrite";
     }
 
-    @GetMapping("/qnaWrite")
 
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(@ModelAttribute QnaDto QnaDto) {
