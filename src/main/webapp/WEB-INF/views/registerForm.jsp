@@ -149,7 +149,7 @@
             if (agree != null) {
     %>          <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    <div> 개인정보 활용에 동의하셔야합니다. </div>
+                    <div> 개인정보 활용 동의가 필요합니다. </div>
                 </div>
 
             <%
