@@ -33,7 +33,7 @@
 			<div class="d-grid gap-2 col-6 mx-auto">
 			  <button class="btn btn-primary" type="submit">로그인</button>
 			  <button class="btn btn-outline-primary" type="button" onclick="location.href='/registerForm'">회원가입</button>
-			  <a class="link-offset-3 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style="text-align:center" href="#">
+			  <a class="link-offset-3 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style="text-align:center" href="/findUseridpw">
                 아이디/비밀번호 찾기
               </a>
 			</div>

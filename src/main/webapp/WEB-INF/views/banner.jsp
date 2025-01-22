@@ -55,20 +55,27 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/index">Home</a>
-        </li>
-      </ul>
       <%
       	if(user_id.equals(" ")){
 	%>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" type="hidden" aria-current="page" href="/index">Home</a>
+        </li>
+      </ul>
 			<input class="btn btn-outline-light" type="button" value="로그인" onclick="location.href='/loginForm'" style="margin-left: 20px;">
 			<input class="btn btn-outline-light" type="button" value="회원가입" onclick="location.href='/registerForm'" style="margin-left: 20px;">
+
 	<%
       	} else {
 	%>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/qnaList">QnA</a>
+            </li>
+          </ul>
       		<div style="color:white;display: flex;">
                 <div class="dropdown">
                   <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

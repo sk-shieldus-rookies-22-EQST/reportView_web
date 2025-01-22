@@ -29,7 +29,7 @@
 	        }
 %>
 
-        <jsp:forward page="findUseridpsw.jsp">
+        <jsp:forward page="/findUseridpsw">
             <jsp:param name="foundId" value="<%=foundId%>"/>
         </jsp:forward>
 
@@ -37,7 +37,7 @@
 <%
 	    } else if (whatFind == 'pw') {
             rdao.findUser_pw(user_id, user_phone, user_email);
-            response.sendRedirect("modifyUserpw.jsp");
+            response.sendRedirect("/modifyUserpw");
         }
 
 	%>

@@ -39,6 +39,13 @@ public class MainController {
         return "loginProc";
     }
 
+    @GetMapping("/findUseridpw")
+    public String findUseridpw_form(){
+
+        log.info("page_move: findUseridpw.jsp");
+        return "findUseridpw";
+    }
+
     @GetMapping("/myInfo")
     public String myInfo_form(){
 

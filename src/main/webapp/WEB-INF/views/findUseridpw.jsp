@@ -14,7 +14,7 @@
 <body>
 <div class="container">
 		<%@ include file="banner.jsp" %>
-<div cass="container">
+<div cass="container" style="display: flex;">
 	<div class="container" style="max-width: 500px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">아이디 찾기</p>
 
@@ -59,8 +59,13 @@
 %>
 	</div>
 	<div class="container" style="max-width: 500px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
+	    <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">비밀번호 찾기</p>
 	    <form action="findUserProc.jsp" method="post">
             <input type="hidden" name="whatFind" id="findPw" value='pw'>
+            <div class="mb-3" style="margin-bottom : 50px!important;">
+                          <label for="user_id" class="form-label fw-bold fs-4">아이디</label>
+                          <input type="text" class="form-control" id="user_id" aria-describedby="emailHelp" name="user_id" required>
+                        </div>
             <div class="mb-3" style="margin-bottom : 50px!important;">
               <label for="user_phone" class="form-label fw-bold fs-4">Phone</label>
               <input type="text" class="form-control" id="user_phone" aria-describedby="emailHelp" name="user_phone" required>
