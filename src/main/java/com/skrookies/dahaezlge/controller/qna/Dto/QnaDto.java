@@ -5,15 +5,16 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @ToString
 
 public class QnaDto {
-    private Long qna_id;
+    private Integer qna_id;
     private String qna_title;
     private String qna_body;
     private String qna_user_id;
-    private Timestamp qna_created_at;
+    private LocalDate qna_created_at;
 }
