@@ -25,14 +25,14 @@ public class UserService {
         return userRepository.login(user_id, user_pw);
     }
 
-<<<<<<< HEAD
-    public List<Users> userInfo(String user_id){
+
+    public List<Users> userInfo(String user_id) {
 
         return userRepository.userinfo_list(user_id);
-=======
+    }
+
     public int userPoint(String user_id){
 
         return userPointRepository.selectUserPoint(user_id);
->>>>>>> UserPoint
     }
 }

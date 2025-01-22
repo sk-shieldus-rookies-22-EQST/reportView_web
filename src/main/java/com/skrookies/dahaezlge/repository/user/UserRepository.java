@@ -12,10 +12,7 @@ public interface UserRepository {
      * @return Boolean */
     Boolean login(String user_id, String user_pw);
 
-<<<<<<< HEAD
     List<Users> userinfo_list(String user_id);
-=======
 
->>>>>>> UserPoint
 
 }
