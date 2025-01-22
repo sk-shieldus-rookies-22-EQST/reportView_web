@@ -40,7 +40,44 @@ public class findResultDao {  // DB 정보 수정 필요
 			}
 		}
 	}
-	
+
+
+	//사용자 로그인
+	public findResultDo user_login(String user_id, String user_pw, Boolean not_user) {
+		connect();
+
+		findResultDo rdo = new findResultDo();
+
+		//3. SQL문 완성
+		String sql = "select * from users where user_id=?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user_id);
+
+			//4. SQL문 실행(전송)
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				if (rs.getString(2) == user_pw) {
+					rdo.setUser_id(rs.getString(1));
+					rdo.setUser_pw(rs.getString(2));
+					rdo.setUser_phone(rs.getString(3));
+					rdo.setUser_email(rs.getString(4));
+					rdo.setUser_level(rs.getString(5));
+					rdo.setUser_created_at(rs.getString(6));
+				} else {
+					not_user = true;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		disConnect();
+		return rdo;
+
+	}
 	
 	//조건에 맞는 비행기 검색
 //	public ArrayList<findResultDo> getFlights(String a, String b, String c, String e) {
@@ -183,7 +220,7 @@ public class findResultDao {  // DB 정보 수정 필요
 		return false;
 	}
 	
-	//사용자테이블 삽입
+	//회원가입
 	public void insertRegister(findResultDo rdo) {
 		System.out.println("insertRegister() --> ");
 		connect();
@@ -192,7 +229,7 @@ public class findResultDao {  // DB 정보 수정 필요
 		
 		//sql
 		//3. SQL문 완성
-		String sql = "insert into users values(?,?,?,?,?,"+formatedNow+")";
+		String sql = "insert into users values(?,?,?,?,1,"+formatedNow+")";
 
 
 		try {
@@ -256,8 +293,7 @@ public class findResultDao {  // DB 정보 수정 필요
 			connect();
 			
 			findResultDo rdo = new findResultDo();
-			
-			//3. SQL문 완성
+
 			String sql = "select * from users where user_id=?";
 			
 			try {
@@ -287,7 +323,6 @@ public class findResultDao {  // DB 정보 수정 필요
 		//내 정보 수정
 				public findResultDo modifymyInfo(String id, findResultDo rdo) {
 					connect();
-					String agree ="1";
 					//3. SQL문 완성
 					String sql = "update users set user_pw=?, user_phone=? user_email=? where userid=?";
 					try {
