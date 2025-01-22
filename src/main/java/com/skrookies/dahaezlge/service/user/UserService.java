@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.service.user;
 
 
 import com.skrookies.dahaezlge.repository.user.UserRepository;
+import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,16 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserPointRepository userPointRepository;
+
 
     public Boolean login(String user_id, String user_pw){
 
         return userRepository.login(user_id, user_pw);
+    }
+
+    public int userPoint(String user_id){
+
+        return userPointRepository.selectUserPoint(user_id);
     }
 }

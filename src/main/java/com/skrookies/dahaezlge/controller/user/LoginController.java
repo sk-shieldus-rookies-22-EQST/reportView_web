@@ -46,5 +46,15 @@ public class LoginController {
         }
     }
 
+    @GetMapping("/testing")
+    public String testing_method(){
+
+        int point = userService.userPoint("1");
+
+        log.info("point = " + point);
+
+        return "loginForm";
+    }
+
 
 }
