@@ -59,4 +59,11 @@ public class MainController {
         log.info("page_move: myInfoProc.jsp");
         return "myInfoProc";
     }
+
+    @GetMapping("/eBookDetail")
+    public String eBookDetail_form(){
+
+        log.info("page_move: eBookDetail.jsp");
+        return "eBookDetail";
+    }
 }
