@@ -7,7 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-<title>Insert title here</title>
+<title>아이디 찾기</title>
 <style type="text/css">
 </style>
 </head>
@@ -16,23 +16,27 @@
 		<%@ include file="banner.jsp" %>
 <div cass="container">
 	<div class="container" style="max-width: 500px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">로그인</p>
+		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">비밀번호 찾기</p>
 
-		<form action="loginProc.jsp" method="post">
-			<div class="mb-3">
-			  <label for="user_id" class="form-label fw-bold fs-4">ID</label>
-			  <input type="text" class="form-control" id="user_id" aria-describedby="emailHelp" name="user_id">
+		<form action="findUserProc.jsp" method="post">
+		<input type="hidden" name="whatFind" id="whatFind" value='pw'>
+            <div class="mb-3" style="margin-bottom : 50px!important;">
+              <label for="user_id" class="form-label fw-bold fs-4">아이디</label>
+              <input type="text" class="form-control" id="user_id" aria-describedby="emailHelp" name="user_id" required>
+            </div>
+			<div class="mb-3" style="margin-bottom : 50px!important;">
+			  <label for="user_phone" class="form-label fw-bold fs-4">Phone</label>
+			  <input type="text" class="form-control" id="user_phone" aria-describedby="emailHelp" name="user_phone" required>
 			</div>
 
 			<div class="mb-3" style="margin-bottom : 50px!important;">
-			  <label for="user_pw" class="form-label fw-bold fs-4">Password</label>
-			  <input type="text" class="form-control" id="user_pw" aria-describedby="emailHelp" name="user_pw">
-			</div>
-
+              <label for="user_email" class="form-label fw-bold fs-4">email</label>
+              <input type="text" class="form-control" id="user_email" aria-describedby="emailHelp" name="user_email" required>
+            </div>
 
 			<div class="d-grid gap-2 col-6 mx-auto">
-			  <button class="btn btn-primary" type="submit">로그인</button>
-			  <button class="btn btn-outline-primary" type="button" onclick="location.href='./registerForm.jsp'">회원가입</button>
+			  <button class="btn btn-primary" type="submit">아이디 찾기</button>
+			  <button class="btn btn-outline-primary" type="button" onclick="location.href='./findUserid.jsp'">아이디 찾기</button>
 			</div>
 		</form>
 		<%
@@ -43,7 +47,7 @@
 %>
 			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
 				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-				<div> 아이디 또는 비밀번호를 잘못 입력하셨습니다. </div>
+				<div> 존재하지 않는 회원입니다. </div>
 			</div>
 			<%
 		}

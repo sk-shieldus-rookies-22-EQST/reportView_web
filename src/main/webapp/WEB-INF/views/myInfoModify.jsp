@@ -29,34 +29,18 @@
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 비밀번호 </td>
-			<td width="100%" id="flightno"> <input type="text" name="userpw" value="<%=ado.getUserpw()%>"> </td>
+			<td width="100%" id="user_pw"> <input type="text" name="user_pw" value="<%=ado.getUser_pw()%>"> </td>
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 이메일 </td>
 			<td width="100%"> 
-				<input type="text" name="useremail" value="<%=ado.getUseremail()%>"> 
+				<input type="text" name="user_email" value="<%=ado.getUser_email()%>">
 			</td>
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 전화번호 </td>
 			<td width="100%"> 
-				<input type="text" name="usertel" value="<%=ado.getUsertel()%>">
-			</td>
-		</tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 개인정보 활용 동의 </td>
-			<td width="100%"> 
-				<% 
-					String agree="비동의";
-					String check = "";
-					if(ado.getUseragree().equals("1")){
-						agree="동의";
-					}
-					if(agree.equals("동의")){
-						check = "checked";
-					}
-				%>
-				<input type="checkbox" name="useragree" value="1" <%=check %>> 동의
+				<input type="text" name="user_phone" value="<%=ado.getUser_phone()%>">
 			</td>
 		</tr>
 		</table>
