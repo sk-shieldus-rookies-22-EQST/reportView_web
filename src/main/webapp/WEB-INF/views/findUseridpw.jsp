@@ -18,7 +18,7 @@
 	<div class="container" style="max-width: 500px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:0;margin-top:16px">아이디 찾기</p>
 
-		<form action="findUserProc.jsp" method="post">
+		<form action="/findUserProc" method="post">
             <input type="hidden" name="whatFind" id="findId" value='id'>
 			<div class="mb-3" style="margin-bottom : 50px!important;">
 			  <label for="user_phone" class="form-label fw-bold fs-4">Phone</label>
