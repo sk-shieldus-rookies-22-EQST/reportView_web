@@ -34,15 +34,15 @@
 				}else{
 					rdao.insertRegister(rdo);
 					session.setAttribute("user_id", rdo.getUser_id());
-					response.sendRedirect("index.jsp");
+					response.sendRedirect("/index");
 				}
 			}
 		} catch (ArithmeticException e){
-			response.sendRedirect("registerForm.jsp?none=1");
+			response.sendRedirect("/registerForm?none=1");
 		} catch (NullPointerException e) {
-			response.sendRedirect("registerForm.jsp?agree=1");
+			response.sendRedirect("/registerForm?agree=1");
 		} catch(Exception e){
-			response.sendRedirect("registerForm.jsp?warn=1");
+			response.sendRedirect("/registerForm?warn=1");
 		}
 	%>
 </body>

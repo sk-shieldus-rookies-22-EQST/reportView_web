@@ -53,6 +53,13 @@ public class MainController {
         return "registerForm";
     }
 
+    @GetMapping("/registerProc")
+    public String registerProc_form(){
+
+        log.info("page_move: registerProc.jsp");
+        return "registerProc";
+    }
+
     @GetMapping("/myInfoModify")
     public String myInfoModify_form(){
 

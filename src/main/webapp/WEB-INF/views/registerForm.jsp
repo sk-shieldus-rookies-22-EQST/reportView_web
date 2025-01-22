@@ -4,9 +4,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title>회원가입</title>
     <style type="text/css">
         .form-control:focus {
@@ -54,7 +54,7 @@
         <div class="container" style="max-width: 700px; margin-bottom : 100px; border-radius: 5px;padding: 50px 20px;">
             <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; mrgin-bottom:0;margin-top:16px;">회원가입</p>
 
-            <form action="registerProc.jsp" method="post" style="display: flex;height: 80%;flex-direction: column; justify-content: space-evenly;">
+            <form action="/registerProc" method="post" style="display: flex;height: 80%;flex-direction: column; justify-content: space-evenly;">
                 <div class="mb-3">
                   <label for="user_id" class="form-label fw-bold fs-4">아이디</label>
                   <input type="text" class="form-control" id="user_id" name="user_id" required>
@@ -123,7 +123,7 @@
                 <div class="d-grid gap-2 col-6 mx-auto">
 
                   <button class="btn btn-primary" type="submit">회원가입</button>
-                  <button class="btn btn-outline-primary" type="button" onclick="location.href='./index.jsp'">취소</button>
+                  <button class="btn btn-outline-primary" type="button" onclick="location.href='/index'">취소</button>
                 </div>
             </form>
             <%
