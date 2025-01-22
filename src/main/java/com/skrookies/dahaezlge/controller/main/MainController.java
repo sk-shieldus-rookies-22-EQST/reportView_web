@@ -1,7 +1,6 @@
 package com.skrookies.dahaezlge.controller.main;
 
-import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
-import com.skrookies.dahaezlge.service.user.UserService;
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -106,6 +105,13 @@ public class MainController {
 
         log.info("page_move: myInfoProc.jsp");
         return "myInfoProc";
+    }
+
+    @GetMapping("/eBookDetail")
+    public String eBookDetail_form(){
+
+        log.info("page_move: eBookDetail.jsp");
+        return "eBookDetail";
     }
 
     @GetMapping("/qnaList")
