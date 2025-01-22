@@ -1,9 +1,12 @@
 package com.skrookies.dahaezlge.repository.user;
 
+import com.skrookies.dahaezlge.entity.user.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import static org.springframework.data.relational.core.query.Query.query;
 
@@ -23,6 +26,14 @@ public class DBUserRepository implements UserRepository{
         int count = jdbcTemplate.queryForObject(sql, int.class);
 
         return count > 0;
+    }
+
+
+    public List<Users> userinfo_list(String user_id){
+        String sql = "select * from users where user_id = '" + user_id + "';";
+
+        List<Users> user_info = jdbcTemplate.queryForList(sql, Users.class);
+        return user_info;
     }
 
 }

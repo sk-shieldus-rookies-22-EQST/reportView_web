@@ -24,7 +24,7 @@ public class LoginController {
     public String login_form(){
 
         log.info("login-form");
-        return "loginFormBoot";
+        return "loginForm";
     }
 
     @PostMapping("/loginProcess")
@@ -42,7 +42,7 @@ public class LoginController {
             return "redirect:/index";
         }
         else{
-            return "loginFormBoot";
+            return "loginForm";
         }
     }
 

@@ -1,4 +1,4 @@
-<%@page import="finProj_flight.findResultDo"%>
+<%@page import="config.findResultDo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -44,25 +44,12 @@
             </td>
         </tr>
 		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 개인정보 활용 동의 </td>
-			<td width="100%"> 
-				<% 
-					String agree="비동의";
-					String check = "";
-					if(ado.getUseragree().equals("1")){
-						agree="동의";
-					}
-					if(agree.equals("동의")){
-						check = "checked";
-					}
-				%>
-				<%=agree %>
-			</td>
+			<td width="40%" style="border-right:1px solid #212529"> 개인정보 활용 동의함 </td>
 		</tr>
 		</table>
 		<div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-			  <button class="btn btn-primary" type="button" onclick="location.href='myInfoModify.jsp'">수정하기</button>
-			  <button class="btn btn-outline-primary" type="button" onclick="location.href='main.jsp'">홈으로</button>
+			  <button class="btn btn-primary" type="button" onclick="location.href='/myInfoModify'">수정하기</button>
+			  <button class="btn btn-outline-primary" type="button" onclick="location.href='/main'">홈으로</button>
 			</div>
 	
 	</form>
