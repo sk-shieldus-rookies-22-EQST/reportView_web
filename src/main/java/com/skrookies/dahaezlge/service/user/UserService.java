@@ -35,4 +35,8 @@ public class UserService {
 
         return userPointRepository.selectUserPoint(user_id);
     }
+
+    public String findUserId(String userPhone, String userEmail) {
+        return userRepository.findUserid(userPhone,userEmail);
+    }
 }
