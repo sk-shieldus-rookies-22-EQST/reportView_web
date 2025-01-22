@@ -1,4 +1,4 @@
-<%@page import="finProj_flight.findResultDo"%>
+<%@page import="config.findResultDo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,12 +9,12 @@
 </head>
 <body>
 <% request.setCharacterEncoding("utf-8"); %>
-	<jsp:useBean id="rdo" class="finProj_flight.findResultDo">
+	<jsp:useBean id="rdo" class="config.findResultDo">
 		<jsp:setProperty name="rdo" property="*"/>
 	</jsp:useBean>
-	<jsp:useBean id="rdao" class="finProj_flight.findResultDao" />
+	<jsp:useBean id="rdao" class="config.findResultDao" />
 	<%
-		String userid = (String)session.getAttribute("userid");
+		String userid = (String)session.getAttribute("user_id");
 		rdao.modifymyInfo(userid, rdo);
 		response.sendRedirect("myInfo.jsp");
 	%>
