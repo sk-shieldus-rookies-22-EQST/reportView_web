@@ -40,6 +40,13 @@ public class LoginController {
         }
         else{
             log.info("test");
+            
+            /** point select 메소드 */
+            int point = userService.userPoint("1");
+            log.info("point = " + point);
+            
+            /** Point model로 전달 */
+            model.addAttribute("point", point);
             model.addAttribute("warn","1");
             return "loginForm";
         }

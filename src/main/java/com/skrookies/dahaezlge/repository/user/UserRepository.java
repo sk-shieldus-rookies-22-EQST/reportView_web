@@ -14,4 +14,5 @@ public interface UserRepository {
     String findUserid(String user_phone, String user_email);
     List<Users> userinfo_list(String user_id);
 
+
 }

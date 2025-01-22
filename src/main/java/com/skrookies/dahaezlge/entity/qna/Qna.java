@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -32,9 +32,9 @@ public class Qna {
     private String qna_user_id;
 
     @Column(name = "qna_created_at")
-    private LocalDate qna_created_at;
+    private LocalDateTime qna_created_at;
 
-    public Qna(Integer qna_id, String qna_title, String qna_body, String qna_user_id, LocalDate qna_created_at) {
+    public Qna(Integer qna_id, String qna_title, String qna_body, String qna_user_id, LocalDateTime qna_created_at) {
         this.qna_id = qna_id;
         this.qna_title = qna_title;
         this.qna_body = qna_body;
