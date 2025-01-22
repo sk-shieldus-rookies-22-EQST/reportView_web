@@ -6,8 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class LoginDto {
-
-    private String user_id;
-    private String user_pw;
+public class FinduseridDto {
+    private String user_phone;
+    private String user_email;
 }
