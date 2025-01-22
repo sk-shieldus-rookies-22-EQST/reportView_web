@@ -22,6 +22,7 @@ configurations {
 repositories {
     mavenCentral()
     maven { url 'https://repo.spring.io/milestone' }
+    maven { url "https://repo.spring.io/snapshot" }
 }
 
 ext {
@@ -52,10 +53,10 @@ dependencies {
 
 
     /** web jsp 필요 의존성 */
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.32'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 
     /** jstl 의존성 */
-    implementation 'javax.servlet:jstl'
+    implementation 'javax.servlet:jstl:1.2'
 
     /** jakarta 의존성 */
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
