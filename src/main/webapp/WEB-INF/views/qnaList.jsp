@@ -32,7 +32,7 @@
                 </thead>
                 <tbody>
                     <tf>
-                        <td>2</td>
+                        <td>1</td>
                         <td>제목입니당</td>
                         <td>심동진</td>
                         <td>2025-01-22</td>
