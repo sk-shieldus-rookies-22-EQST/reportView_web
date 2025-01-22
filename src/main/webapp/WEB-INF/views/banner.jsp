@@ -45,8 +45,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container-fluid">
 
+<<<<<<< HEAD:src/main/webapp/WEB-INF/views/banner.jsp
+    <a class="navbar-brand" href="index.jsp">
+      <img src="./assets/trip1.png" alt="" width="35" class="d-inline-block align-text-top">
+=======
     <a class="navbar-brand" href="./index.jsp">
       <img src="" alt="" width="35" class="d-inline-block align-text-top">
+>>>>>>> 8bf24dc58059a0be37b1ed4a561a3bfe7ebe779f:src/main/resources/webapp/WEB-INF/views/banner.jsp
       시스템 이름
     </a>
 
@@ -56,7 +61,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="./index.jsp">Home</a>
+          <a class="nav-link active" aria-current="page" href="index.jsp">Home</a>
         </li>
       </ul>
       <%
