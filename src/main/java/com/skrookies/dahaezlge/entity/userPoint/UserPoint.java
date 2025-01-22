@@ -16,14 +16,14 @@ public class UserPoint {
 
     @Id
     @Column(name = "point_user_id")
-    private String pointUserId;
+    private String point_user_id;
 
     @Column(name = "point")
     private Integer point;
 
 
-    public UserPoint(String pointUserId, Integer point) {
-        this.pointUserId = pointUserId;
+    public UserPoint(String point_user_id, Integer point) {
+        this.point_user_id = point_user_id;
         this.point = point;
     }
 
