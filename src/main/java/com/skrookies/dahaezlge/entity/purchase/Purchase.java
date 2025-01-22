@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,9 +29,9 @@ public class Purchase {
     private Integer purchase_book_id;
 
     @Column(name = "purchase_date")
-    private LocalDate purchase_date;
+    private LocalDateTime purchase_date;
 
-    public Purchase(Integer purchase_cart_id, String purchase_user_id, Integer purchase_book_id, LocalDate purchase_date) {
+    public Purchase(Integer purchase_cart_id, String purchase_user_id, Integer purchase_book_id, LocalDateTime purchase_date) {
         this.purchase_cart_id = purchase_cart_id;
         this.purchase_user_id = purchase_user_id;
         this.purchase_book_id = purchase_book_id;

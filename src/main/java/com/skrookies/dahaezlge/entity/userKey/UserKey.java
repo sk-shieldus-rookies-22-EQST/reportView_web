@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,9 +26,9 @@ public class UserKey {
     private String key_user_id;
 
     @Column(name = "key_created_at")
-    private LocalDate key_created_at;
+    private LocalDateTime key_created_at;
 
-    public UserKey(Integer key_id, String key_user_id, LocalDate key_created_at) {
+    public UserKey(Integer key_id, String key_user_id, LocalDateTime key_created_at) {
         this.key_id = key_id;
         this.key_user_id = key_user_id;
         this.key_created_at = key_created_at;

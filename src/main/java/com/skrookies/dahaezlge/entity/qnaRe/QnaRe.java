@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -29,9 +29,9 @@ public class QnaRe {
     private String qna_re_body;
 
     @Column(name = "qna_re_created_at")
-    private LocalDate qna_re_created_at;
+    private LocalDateTime qna_re_created_at;
 
-    public QnaRe(Integer qna_re_id, String qna_re_user_id, String qna_re_body, LocalDate qna_re_created_at) {
+    public QnaRe(Integer qna_re_id, String qna_re_user_id, String qna_re_body, LocalDateTime qna_re_created_at) {
         this.qna_re_id = qna_re_id;
         this.qna_re_user_id = qna_re_user_id;
         this.qna_re_body = qna_re_body;
