@@ -42,7 +42,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    /* Tomcat version 낮추기 **/
+    /** Tomcat version 낮추기 */
 //    dependencies {
 //        implementation('org.springframework.boot:spring-boot-starter-web') {
 //            exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
@@ -51,17 +51,17 @@ dependencies {
 //    }
 
 
-    /* web jsp 필요 의존성 **/
+    /** web jsp 필요 의존성 */
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:10.1.32'
 
-    /* jstl 의존성**/
+    /** jstl 의존성 */
     implementation 'javax.servlet:jstl'
 
-    /* jakarta 의존성 **/
+    /** jakarta 의존성 */
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
 
-    /* test용 mysql DB **/
+    /** test용 mysql DB */
     implementation 'com.mysql:mysql-connector-j'
 }
 
