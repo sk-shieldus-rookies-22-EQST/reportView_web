@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 public class QnaService {
     private final QnaRepository QnaRepository;
-    public int qna(QnaDto qnaDto) {
-        return QnaRepository.qna(qnaDto);
+    public int qna(QnaDto QnaDto) {
+        return QnaRepository.qna(QnaDto);
     }
 }
