@@ -18,7 +18,7 @@ public class DBCartBookRepository implements CartBookRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Boolean addCartBook(int cart_id, int book_id){
+    public Boolean addCartBook(int cart_id, Long book_id){
         String sql = "INSERT INTO cart_book (cart_book_id, cart_book_book_id) VALUES (?, ?)";
 
         // update 메서드는 영향을 받은 행의 개수를 반환

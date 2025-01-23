@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.controller.main;
 
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.controller.user.Dto.SessionDto;
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.service.book.BookService;
@@ -67,9 +68,17 @@ public class MainController {
         return "banner";
     }
 
-    @GetMapping("/eBookDetail")
+    @GetMapping("/eBookMain")
     public String eBookDetail_form(){
 
+        log.info("page_move: eBookMain.jsp");
+        return "eBookMain";
+    }
+
+    @GetMapping("/eBookDetail")
+    public String setBookInfo(Model model, @RequestParam("book_id") Long book_id){
+        BookDto bookInfo = bookService.getBookInfo(book_id);
+        model.addAttribute("bookInfo", bookInfo);
         log.info("page_move: eBookDetail.jsp");
         return "eBookDetail";
     }

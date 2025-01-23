@@ -16,7 +16,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
-    public List<BookDto> getBookInfo(int book_id){
+    public BookDto getBookInfo(Long book_id){
         return bookRepository.getBookInfo(book_id);
     }
 
