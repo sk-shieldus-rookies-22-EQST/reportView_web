@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Entity
 @Getter
 @Setter
@@ -34,9 +36,9 @@ public class Users {
     private String user_level;
 
     @Column(name = "user_created_at")
-    private String user_created_at;
+    private Timestamp user_created_at;
 
-    public Users(String user_id, String user_pw, String user_email, String user_phone, String user_level, String user_created_at){
+    public Users(String user_id, String user_pw, String user_email, String user_phone, String user_level, Timestamp user_created_at){
         this.user_id = user_id;
         this.user_pw = user_pw;
         this.user_email = user_email;

@@ -65,20 +65,20 @@ public class MainController {
 //        model.addAttribute("user_id", new UserDto(user_id, (String)user_info.get(0)));
 //        return "myInfo";
 //    }
-
-    @GetMapping("/registerForm")
-    public String registerForm_form(){
-
-        log.info("page_move: registerForm.jsp");
-        return "registerForm";
-    }
-
-    @GetMapping("/registerProc")
-    public String registerProc_form(){
-
-        log.info("page_move: registerProc.jsp");
-        return "registerProc";
-    }
+//
+//    @GetMapping("/registerForm")
+//    public String registerForm_form(){
+//
+//        log.info("page_move: registerForm.jsp");
+//        return "registerForm";
+//    }
+//
+//    @GetMapping("/registerProc")
+//    public String registerProc_form(){
+//
+//        log.info("page_move: registerProc.jsp");
+//        return "registerProc";
+//    }
 
     @GetMapping("/myInfoModify")
     public String myInfoModify_form(){
