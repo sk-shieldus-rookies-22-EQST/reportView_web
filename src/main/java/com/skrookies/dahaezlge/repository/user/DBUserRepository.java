@@ -34,7 +34,6 @@ public class DBUserRepository implements UserRepository{
 
         } catch (Exception e) {
             log.info("error");
-            e.printStackTrace();
             return false;
         }
     }

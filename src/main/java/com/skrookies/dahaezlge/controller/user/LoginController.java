@@ -27,31 +27,39 @@ public class LoginController {
 
     @PostMapping("/loginProc")
     public String loginProc_form(Model model, @ModelAttribute LoginDto loginDto, HttpSession session){
-        log.info("Login Id: " + loginDto.getUser_id());
+        String user_id = loginDto.getUser_id();
+        log.info("Login Id: " + user_id);
         log.info("Login Password: " + loginDto.getUser_pw());
 
         if(userService.login(loginDto.getUser_id(), loginDto.getUser_pw())){
-
+            log.info("user_id = " + user_id);
+            model.addAttribute("user_id",user_id);
             SessionDto sessionDto = new SessionDto(loginDto.getUser_id());
 
             session.setAttribute("id", sessionDto);
+            log.info("sessionId = " + session.getAttribute("id"));
 
             /** point select 메소드 */
-            int point = userService.userPoint("1");
+            int point = userService.userPoint(user_id);
             log.info("point = " + point);
 
             /** Point model로 전달 */
             model.addAttribute("point", point);
-
-            return "redirect:/index";
+            log.info("user_id = " + user_id);
+            return "/index";
         }
         else{
-            log.info("test");
+            log.info("없는 아이디");
 
             model.addAttribute("warn","1");
             return "loginForm";
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(Model model, HttpSession session) {
+        session.setAttribute("id", null);
+        return "index";
+    }
 
 }

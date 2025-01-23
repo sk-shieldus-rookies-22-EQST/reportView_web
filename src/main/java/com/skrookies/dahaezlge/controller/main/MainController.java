@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.controller.main;
 
+import com.skrookies.dahaezlge.controller.user.Dto.SessionDto;
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -19,9 +20,12 @@ public class MainController {
 
     private final UserService userService;
 
+    public String login_id(HttpSession session) {
+        return (String) session.getAttribute("user_id");
+    }
+
     @GetMapping("/index")
     public String main_form(){
-
         log.info("page_move: index.jsp");
         return "index";
     }
