@@ -13,7 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpSession;
 
+import java.nio.file.FileStore;
 import java.util.List;
 
 @Slf4j
@@ -24,7 +26,8 @@ public class BookDetailController {
     private final BookService bookService;
 
     @PostMapping("/addCart")
-    public boolean addCart(String user_id,@RequestParam("book_id") Long book_id){
+    public boolean addCart(@RequestParam("book_id") Long book_id, HttpSession session){
+        String user_id = (String) session.getAttribute("user_id");
         return bookDetailService.addCart(user_id, book_id);
     }
 }

@@ -32,6 +32,7 @@ public class DBBookRepository implements BookRepository {
                     book.setBook_summary(rs.getString("book_summary"));
                     book.setBook_reg_date(String.valueOf(rs.getDate("book_reg_date")));
                     book.setBook_img_path(rs.getString("book_img_path"));
+                    book.setBook_price(rs.getString("book_price"));
                     return book;
                 }
         );
