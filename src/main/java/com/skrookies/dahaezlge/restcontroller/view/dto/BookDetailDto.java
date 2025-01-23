@@ -12,7 +12,7 @@ public class BookDetailDto {
 
     private Long book_id;
     private String book_title;
-    private String book_price;
+    private Integer book_price;
     private String book_auth;
     private String book_summary;
     private String book_img_path;
