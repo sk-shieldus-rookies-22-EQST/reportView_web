@@ -69,7 +69,6 @@ public class ViewController {
 
         BookDto book_data = bookService.getBookInfo(Long.parseLong(book_id));
 
-
         BookDetailDto bookDetailDto = new BookDetailDto(book_data.getBook_id(), book_data.getBook_title(), book_data.getBook_price(), book_data.getBook_auth(), book_data.getBook_summary(), book_data.getBook_img_path());
 
         return ResponseEntity.ok()
