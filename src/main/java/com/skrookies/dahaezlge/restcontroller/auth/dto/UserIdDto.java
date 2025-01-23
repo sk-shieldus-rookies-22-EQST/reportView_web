@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class FindPwDto {
+public class UserIdDto {
 
     private String user_id;
-    private String user_new_pw;
-
 }
