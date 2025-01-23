@@ -1,5 +1,7 @@
 package com.skrookies.dahaezlge.service.bookDetail;
 
+import com.skrookies.dahaezlge.entity.book.Book;
+import com.skrookies.dahaezlge.repository.book.BookRepository;
 import com.skrookies.dahaezlge.repository.cart.CartRepository;
 import com.skrookies.dahaezlge.repository.cartBook.CartBookRepository;
 import jakarta.transaction.Transactional;
@@ -15,13 +17,11 @@ public class BookDetailService {
 
     private final CartRepository cartRepository;
     private final CartBookRepository cartBookRepository;
+    private final BookRepository bookRepository;
 
-    public int addCart(String user_id, int book_price){
-        return cartRepository.addCart(user_id, book_price);
-    }
-
-    public boolean addCartBook(int cart_id, int book_id){
+    public Boolean addCart(String user_id, int book_id){
+        List<Book> book_info = bookRepository.getBookInfo(book_id);
+        int cart_id = cartRepository.addCart(user_id, book_info);
         return cartBookRepository.addCartBook(cart_id, book_id);
     }
-
 }

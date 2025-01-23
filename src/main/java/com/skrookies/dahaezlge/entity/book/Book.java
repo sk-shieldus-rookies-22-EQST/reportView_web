@@ -37,6 +37,9 @@ public class Book {
     @Column(name = "book_img_path", length = 255)
     private String book_img_path;
 
+    @Column(name = "book_price", length = 255)
+    private String book_price;
+
     public Book(Integer book_id, String book_title, String book_auth, String book_path,
                 String book_summary, LocalDateTime book_reg_date, String book_img_path) {
         this.book_id = book_id;
@@ -46,6 +49,7 @@ public class Book {
         this.book_summary = book_summary;
         this.book_reg_date = book_reg_date;
         this.book_img_path = book_img_path;
+        this.book_price = book_price;
     }
 
 }

@@ -1,11 +1,12 @@
 package com.skrookies.dahaezlge.repository.cart;
 
-import com.skrookies.dahaezlge.entity.cart.CartId;
+import com.skrookies.dahaezlge.entity.book.Book;
+import com.skrookies.dahaezlge.entity.cart.Cart;
 
 import java.util.List;
 
 public interface CartRepository {
-    List<CartId> getCartList(String user_id);
+    List<Cart> getCartList(String user_id);
 
-    int addCart(String user_id, int book_price);
+    int addCart(String user_id, List<Book> book_info);
 }

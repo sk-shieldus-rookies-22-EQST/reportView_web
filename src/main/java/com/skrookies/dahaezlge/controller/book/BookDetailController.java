@@ -17,10 +17,8 @@ import java.util.List;
 public class BookDetailController {
     private final BookDetailService bookDetailService;
 
+    @PostMapping("/addCart")
     public boolean addCart(String user_id, int book_id){
-        int cart_id = bookDetailService.addCart(user_id, book_id);
-
-
-        return true;
+        return bookDetailService.addCart(user_id, book_id);
     }
 }
