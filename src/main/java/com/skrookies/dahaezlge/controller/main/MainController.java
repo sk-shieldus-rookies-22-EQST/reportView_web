@@ -95,6 +95,13 @@ public class MainController {
         return "myInfoProc";
     }
 
+    @GetMapping("/eBookDetail")
+    public String eBookDetail_form(){
+
+        log.info("page_move: eBookDetail.jsp");
+        return "eBookDetail";
+    }
+
     @GetMapping("/qnaList")
     public String qnaList_form(){
 
