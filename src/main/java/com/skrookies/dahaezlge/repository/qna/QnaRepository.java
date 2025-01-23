@@ -31,7 +31,6 @@ public class QnaRepository {
             QnaDto qna = new QnaDto();
             qna.setQna_id(rs.getInt("qna_id"));
             qna.setQna_title(rs.getString("qna_title"));
-            qna.setQna_body(rs.getString("qna_body"));
             qna.setQna_user_id(rs.getString("qna_user_id"));
             qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
             return qna;

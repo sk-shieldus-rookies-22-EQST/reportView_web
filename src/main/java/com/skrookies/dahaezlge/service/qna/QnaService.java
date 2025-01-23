@@ -20,4 +20,6 @@ public class QnaService {
     public List<QnaDto> getQnaList() {
         return QnaRepository.getQnaList();
     }
+
+
 }
