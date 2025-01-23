@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Controller
@@ -20,6 +21,8 @@ public class QnaController {
 
     @GetMapping("/qnaList")
     public String qnaList_form(){
+
+        List<QnaDto> qnaList = QnaService.getQnaList();
 
         log.info("page_move: qnaList.jsp");
         return "qnaList";
@@ -35,10 +38,10 @@ public class QnaController {
 
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(@ModelAttribute QnaDto QnaDto) {
-        QnaDto.setQna_created_at(LocalDate.now());
+        QnaDto.setQna_created_at(LocalDateTime.now());
         int qnaResult = QnaService.qna(QnaDto);
         if (qnaResult > 0) {
-            return "redirect:/qnaList/";
+            return "redirect:/qna/qnaList";
         } else {
             return "qnaWrite";
         }

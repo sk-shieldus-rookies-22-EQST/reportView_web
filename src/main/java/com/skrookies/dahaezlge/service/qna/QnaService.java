@@ -5,6 +5,8 @@ import com.skrookies.dahaezlge.repository.qna.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 
@@ -13,5 +15,9 @@ public class QnaService {
     private final QnaRepository QnaRepository;
     public int qna(QnaDto QnaDto) {
         return QnaRepository.qna(QnaDto);
+    }
+
+    public List<QnaDto> getQnaList() {
+        return QnaRepository.getQnaList();
     }
 }

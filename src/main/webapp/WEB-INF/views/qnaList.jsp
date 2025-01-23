@@ -25,12 +25,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tf>
-                        <td>2</td>
-                        <td>제목입니당</td>
-                        <td>심동진</td>
-                        <td>2025-01-22</td>
-                    </tf>
+                    <c:forEach var="qna" items="${qnaList}">
+                        <tr>
+                            <td>${qna.qna_id}</td>
+                            <td>${qna.qna_title}</td>
+                            <td>${qna.qna_user_id}</td>
+                            <td>${qna.qna_created_at}</td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
             <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>
