@@ -56,4 +56,9 @@ public class QnaRepository {
             }
         });
     }
+
+    public int deleteQna(int qna_id) {
+        String sql = "DELETE FROM qna WHERE qna_id= ?";
+        return jdbcTemplate.update(sql, qna_id);
+    }
 }
