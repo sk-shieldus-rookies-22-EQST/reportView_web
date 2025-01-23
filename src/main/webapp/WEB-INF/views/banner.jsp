@@ -43,10 +43,8 @@
 					</button>
                     <%
                              // JSP Scriptlet: EL 표현식 값을 Java 변수에 할당
-                             //HttpServletRequest req = request;
-                             //HttpSession session = req.getSession();
                              String user_id = (String) session.getAttribute("user_id");
-                             System.out.println(user_id);
+                             //System.out.println(user_id);
                              if(user_id == null) {
                      %>
 					<div class=" collapse navbar-collapse" id="navbarSupportedContent">

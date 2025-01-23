@@ -35,7 +35,16 @@ public class UserService {
         return userPointRepository.selectUserPoint(user_id);
     }
 
+    public String registerUser(String user_id, String user_pw, String user_phone, String user_email){
+
+        return userRepository.findUserid(user_phone,user_email);
+    }
+
     public String findUserId(String userPhone, String userEmail) {
         return userRepository.findUserid(userPhone,userEmail);
+    }
+
+    public Boolean updateUserpw(String userId, String userPw) {
+        return userRepository.updateUserpw(userId, userPw);
     }
 }

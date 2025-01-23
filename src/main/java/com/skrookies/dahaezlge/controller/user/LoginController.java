@@ -41,14 +41,13 @@ public class LoginController {
             int point = userService.userPoint(user_id);
             session.setAttribute("point", point);
             log.info("point = " + point);
-
             log.info("user_id = " + user_id);
             return "redirect:/index";
         }
         else{
             log.info("없는 아이디");
 
-            model.addAttribute("warn","1");
+            model.addAttribute("warn", "1");
             return "loginForm";
         }
     }

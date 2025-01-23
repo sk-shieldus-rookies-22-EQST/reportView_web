@@ -38,12 +38,7 @@ public class MainController {
     }
 
 
-    @GetMapping("/findUseridpw")
-    public String findUseridpw_form(){
 
-        log.info("page_move: findUseridpw.jsp");
-        return "findUseridpw";
-    }
 
 //    @GetMapping("/myInfo") => FinduserController로 이동
 //    public String myInfo_form(Model model, HttpSession session){
