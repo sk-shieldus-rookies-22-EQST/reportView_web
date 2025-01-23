@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,8 +28,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:if test"${empty qnaList}">
-                        <p>데이터가 없습니다.</p>
+                    <c:if test="${empty qnaList}">
+                        <tr>
+                            <td colspan="4">데이터가 없습니다.</td>
+                        </tr>
                     </c:if>
                     <c:forEach var="qna" items="${qnaList}">
                         <tr>
