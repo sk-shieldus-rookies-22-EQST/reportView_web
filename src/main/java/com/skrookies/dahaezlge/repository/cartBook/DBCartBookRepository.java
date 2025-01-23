@@ -1,14 +1,9 @@
 package com.skrookies.dahaezlge.repository.cartBook;
 
-import com.skrookies.dahaezlge.entity.cart.CartId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-import static org.springframework.data.relational.core.query.Query.query;
 
 
 @Slf4j
@@ -19,9 +14,13 @@ public class DBCartBookRepository implements CartBookRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Boolean addPrice(int cart_id, String price){
-        String sql = "Insert into cart_book (book_id, book_price) values ("+ cart_id + ", '" + price + "';";
+    public Boolean addCartBook(int cart_id, int book_id){
+        String sql = "INSERT INTO cart_book (cart_book_id, cart_book_book_id) VALUES (?, ?)";
 
-        return true;
+        // update 메서드는 영향을 받은 행의 개수를 반환
+        int rowsAffected = jdbcTemplate.update(sql, cart_id, book_id);
+
+        // 삽입이 성공했는지 여부를 boolean으로 반환
+        return rowsAffected > 0;
     }
 }

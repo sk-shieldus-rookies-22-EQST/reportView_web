@@ -1,11 +1,7 @@
 package com.skrookies.dahaezlge.controller.book;
 
 import ch.qos.logback.core.model.Model;
-import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
-import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
-import com.skrookies.dahaezlge.entity.book.BookInfo;
-import com.skrookies.dahaezlge.repository.book.BookRepository;
-import com.skrookies.dahaezlge.service.book.BookService;
+import com.skrookies.dahaezlge.service.bookDetail.BookDetailService;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -19,10 +15,11 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class BookDetailController {
-    private final BookService bookService;
+    private final BookDetailService bookDetailService;
 
-    @PostMapping("/eBookCart")
-    public Boolean addCart(Model model, String user_id, int book_id){
+    public boolean addCart(String user_id, int book_id){
+        int cart_id = bookDetailService.addCart(user_id, book_id);
+
 
         return true;
     }

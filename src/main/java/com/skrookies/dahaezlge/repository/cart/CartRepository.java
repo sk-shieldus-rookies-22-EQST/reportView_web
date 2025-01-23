@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CartRepository {
     List<CartId> getCartList(String user_id);
+
+    int addCart(String user_id, int book_price);
 }

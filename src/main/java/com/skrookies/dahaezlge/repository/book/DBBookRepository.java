@@ -16,7 +16,8 @@ public class DBBookRepository implements BookRepository {
 
     @Override
     public List<BookInfo> getBookInfo(int book_id){
-        String sql = "Select book_id, book_img_path, book_title, book_auth, book_reg_date from book where book_id = '" + book_id + "';";
+        String sql = "Select book_id, book_img_path, book_title, book_auth, book_reg_date from book " +
+                "where book_id = '" + book_id + "';";
 
         return jdbcTemplate.queryForObject(sql,List.class);
     }
