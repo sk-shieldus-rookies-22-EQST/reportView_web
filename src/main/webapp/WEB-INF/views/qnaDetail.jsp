@@ -52,6 +52,9 @@
         </table>
 
         <a href="qnaList" class="btn btn-primary pull-right">목록</a>
+        <a href="qnaEdit" class="btn btn-primary pull-right">수정</a>
+        <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
+
     </div>
 
 </body>

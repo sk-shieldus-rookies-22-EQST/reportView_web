@@ -55,4 +55,10 @@ public class QnaController {
         }
     }
 
+    @GetMapping("/qnaDelete")
+    public String qnaDelete_form(@RequestParam("qna_id") int qna_id){
+        QnaService.deleteQna(qna_id);
+        return "redirect:/qnaList";
+    }
+
 }
