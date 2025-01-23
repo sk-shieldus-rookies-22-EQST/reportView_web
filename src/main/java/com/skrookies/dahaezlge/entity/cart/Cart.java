@@ -1,36 +1,36 @@
 package com.skrookies.dahaezlge.entity.cart;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.skrookies.dahaezlge.entity.user.Users;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "cart")
 public class Cart {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
-    private Integer cart_id;
+    private Long cart_id;
 
-    @Column(name = "cart_user_id")
-    private String cart_user_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_user_id", nullable = false)
+    private Users users;
 
-    @Column(name = "cart_total_price")
+    @Column(name = "cart_total_price", nullable = false)
     private Integer cart_total_price;
 
-    public Cart(Integer cart_id, String cart_user_id, Integer cart_total_price) {
-        this.cart_id = cart_id;
-        this.cart_user_id = cart_user_id;
+    public Cart(Users users, Integer cart_total_price) {
+        this.users = users;
         this.cart_total_price = cart_total_price;
     }
 }
+
 
 

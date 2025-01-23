@@ -1,6 +1,7 @@
 package com.skrookies.dahaezlge.restcontroller.view;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.entity.book.Book;
 import com.skrookies.dahaezlge.restcontroller.util.StatusDto;
 import com.skrookies.dahaezlge.restcontroller.view.dto.*;
 import com.skrookies.dahaezlge.service.book.BookService;
