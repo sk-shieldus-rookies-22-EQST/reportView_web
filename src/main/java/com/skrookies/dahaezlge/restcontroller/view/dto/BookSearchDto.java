@@ -5,16 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class BookDetailDto {
+public class BookSearchDto {
 
     private Long book_id;
     private String book_title;
     private String book_price;
     private String book_auth;
-    private String book_summary;
+    private Timestamp book_reg_date;
     private String book_img_path;
-
 }

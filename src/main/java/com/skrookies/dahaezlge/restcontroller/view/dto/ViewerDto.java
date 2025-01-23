@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ViewerDto {
 
-    private Long book_id;
+    private Long book_id ;
 
 }

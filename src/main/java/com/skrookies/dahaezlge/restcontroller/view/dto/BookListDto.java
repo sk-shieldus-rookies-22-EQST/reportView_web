@@ -10,11 +10,10 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class BookDto {
+public class BookListDto {
 
-    private Long id;
-    private String title;
-    private String price;
-    private String writer;
-    private Timestamp write_date;
+    private Long book_id;
+    private String book_title;
+    private String book_price;
+    private String book_auth;
 }

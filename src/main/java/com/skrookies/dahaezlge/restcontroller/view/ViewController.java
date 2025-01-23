@@ -1,7 +1,6 @@
 package com.skrookies.dahaezlge.restcontroller.view;
 
 import com.skrookies.dahaezlge.restcontroller.util.StatusDto;
-import com.skrookies.dahaezlge.restcontroller.view.dto.BookDto;
 import com.skrookies.dahaezlge.restcontroller.view.dto.ViewerDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
