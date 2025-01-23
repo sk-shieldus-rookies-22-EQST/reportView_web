@@ -69,7 +69,7 @@
             <%}else if (myInfoModifyForm == "1"){%>
                 <button class="btn btn-primary" type="submit">저장하기</button>
             <%}%>
-			  <button class="btn btn-outline-primary" type="button" onclick="location.href='/main'">홈으로</button>
+			  <button class="btn btn-outline-primary" type="button" onclick="location.href='/index'">홈으로</button>
 			</div>
 	
 	</form>
