@@ -61,7 +61,7 @@
     <c:forEach var="book" items="${books}">
         <tr>
             <td>${book['book_id']}</td>
-            <td>${book['book_title']}</td>
+            <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">${book['book_title']}</td>
             <td>${book['book_auth']}</td>
             <td>${book['book_path']}</td>
             <td>${book['book_summary']}</td>

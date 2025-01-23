@@ -18,15 +18,27 @@ public class DBBookRepository implements BookRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public BookDto getBookInfo(int book_id){
-        String sql = "Select * from book where book_id = '" + book_id + "';";
+    public BookDto getBookInfo(Long book_id){
+        String sql = "Select * from book where book_id = "+ book_id +" limit 1";
 
-        return jdbcTemplate.queryForObject(sql,BookDto.class);
+        return jdbcTemplate.queryForObject(
+                sql,
+                (rs, rowNum) -> {
+                    BookDto book = new BookDto();
+                    book.setBook_id(rs.getLong("book_id"));
+                    book.setBook_title(rs.getString("book_title"));
+                    book.setBook_auth(rs.getString("book_auth"));
+                    book.setBook_path(rs.getString("book_path"));
+                    book.setBook_summary(rs.getString("book_summary"));
+                    book.setBook_reg_date(String.valueOf(rs.getDate("book_reg_date")));
+                    book.setBook_img_path(rs.getString("book_img_path"));
+                    return book;
+                }
+        );
     }
     @Override
     public List<BookDto> getCartBookInfo(List<Integer> bookIdList){
         String sql = "Select * from book where book_id = ?";
-
 
         // 결과를 저장할 리스트
         List<BookDto> cartBookInfoList = new ArrayList<>();

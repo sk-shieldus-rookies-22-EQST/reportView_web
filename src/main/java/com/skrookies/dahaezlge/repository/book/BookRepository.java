@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface BookRepository {
-    public BookDto getBookInfo(int book_id);
+    BookDto getBookInfo(Long book_id);
 
     List<BookDto> getCartBookInfo(List<Integer> bookIdList);
 

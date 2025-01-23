@@ -77,13 +77,19 @@ public class MainController {
         return "myInfoProc";
     }
 
-    private final BookService bookService;
+    @GetMapping("/eBookMain")
+    public String eBookDetail_form(){
+
+         log.info("page_move: eBookMain.jsp");
+        return "eBookMain";
+    }
 
     @GetMapping("/eBookDetail")
-    public Boolean setBookInfo(Model model, Integer book_id){
-        BookDto bookInfo = bookService.getBookInfo(1000020);
+    public String setBookInfo(Model model, @RequestParam("book_id") Long book_id){
+        BookDto bookInfo = bookService.getBookInfo(book_id);
         model.addAttribute("bookInfo", bookInfo);
-        return true;
+        log.info("page_move: eBookDetail.jsp");
+        return "eBookDetail";
     }
     //@GetMapping("/eBookDetail")
     //public String eBookDetail_form(){

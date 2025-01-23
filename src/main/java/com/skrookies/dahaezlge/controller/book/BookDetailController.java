@@ -23,7 +23,7 @@ public class BookDetailController {
     private final BookService bookService;
 
     @PostMapping("/addCart")
-    public boolean addCart(String user_id, int book_id){
+    public boolean addCart(String user_id, Long book_id){
         return bookDetailService.addCart(user_id, book_id);
     }
 }

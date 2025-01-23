@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookDto {
-    private Integer book_id;
+    private Long book_id;
     private String book_title;
     private String book_auth;
     private String book_path;
