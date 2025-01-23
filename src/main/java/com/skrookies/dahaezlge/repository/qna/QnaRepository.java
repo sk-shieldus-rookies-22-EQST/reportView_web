@@ -56,4 +56,15 @@ public class QnaRepository {
             }
         });
     }
+
+    public int deleteQna(int qna_id) {
+        String sql = "DELETE FROM qna WHERE qna_id= ?";
+        return jdbcTemplate.update(sql, qna_id);
+    }
+
+    public int qnaUpdate(QnaDto QnaDto) {
+            //DB에 작성
+            String sql = "UPDATE qna SET qna_title = ?, qna_body = ?";
+            return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body());
+    }
 }

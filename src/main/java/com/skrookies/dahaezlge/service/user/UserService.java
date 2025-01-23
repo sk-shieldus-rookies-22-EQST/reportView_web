@@ -45,4 +45,8 @@ public class UserService {
     public Boolean updateUserpw(String userId, String userPw) {
         return userRepository.updateUserpw(userId, userPw);
     }
+
+    public Boolean updateUserInfo(String userId, String userPw, String userPhone, String userEmail) {
+        return userRepository.updateUserInfo(userId, userPw, userPhone, userEmail);
+    }
 }

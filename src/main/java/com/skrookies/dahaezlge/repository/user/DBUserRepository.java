@@ -114,6 +114,26 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
+    @Override
+    public Boolean updateUserInfo(String user_id, String user_pw, String user_phone, String user_email) {
+
+        String sql = "UPDATE users SET user_pw = ?, user_phone = ?, user_email = ? WHERE user_id = ?";
+        try {
+            int count = jdbcTemplate.update(sql, user_pw,user_phone, user_email,user_id);
+            if ( count > 0 ){
+                log.info("changed userInfo");
+                return true;
+            } else {
+                log.info("not changed userInfo");
+                return false;
+            }
+
+        } catch (Exception e) {
+            log.info("UserRepository : exception catched");
+            return false;
+        }
+    }
+
 
     public List<Users> userinfo_list(String user_id) {
         // SQL 쿼리 작성
@@ -128,7 +148,7 @@ public class DBUserRepository implements UserRepository{
 
             // Map을 Users 객체로 변환하여 리스트에 추가
             for (Map<String, Object> row : results) {
-                Users user = new Users((String) row.get("user_id"),(String) row.get("user_pw"), (String) row.get("user_email"), (String) row.get("user_phone"),(Integer) row.get("user_level"),(Timestamp) row.get("user_created_at"));
+                Users user = new Users((String) row.get("user_id"),(String) row.get("user_pw"), (String) row.get("user_phone"),(String) row.get("user_email"), (Integer) row.get("user_level"),(Timestamp) row.get("user_created_at"));
                 // 추가적인 필드가 있으면 여기에 세팅
                 user_info.add(user);
             }

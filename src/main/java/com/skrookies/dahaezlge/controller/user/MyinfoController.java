@@ -1,6 +1,7 @@
 package com.skrookies.dahaezlge.controller.user;
 
 
+import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -39,12 +40,59 @@ public class MyinfoController {
                 return "redirect:/loginForm";  // 예시로 에러 페이지로 리다이렉트
             } else {
                 Users user = user_info.get(0);
-                model.addAttribute("user_id", user.getUser_id());
+                log.info(user.getUser_phone());
+                //model.addAttribute("user_id", user.getUser_id());
                 model.addAttribute("user_pw", user.getUser_pw());
                 model.addAttribute("user_phone", user.getUser_phone());
                 model.addAttribute("user_email", user.getUser_email());
+                model.addAttribute("myInfoModifyForm", "0");
                 return "/myInfo";
             }
         }
+    }
+    @GetMapping("/myInfoModify")
+    public String myInfoModify_form(Model model, UserDto userDto, HttpSession session){
+
+        String user_id = (String) session.getAttribute("user_id");
+        if (user_id == null) {
+            log.info("User not logged in");
+            return "redirect:/loginForm";  // 로그인 페이지로 리다이렉트
+        } else {
+            // 사용자 정보를 가져오기
+            log.info("mtinfocontroller - else문 입장!");
+            List<Users> user_info = userService.userInfo(user_id);
+
+            if (user_info == null || user_info.isEmpty()) {
+                return "redirect:/loginForm";  // 예시로 에러 페이지로 리다이렉트
+            } else {
+                Users user = user_info.get(0);
+                model.addAttribute("user_pw", user.getUser_pw());
+                model.addAttribute("user_phone", user.getUser_phone());
+                model.addAttribute("user_email", user.getUser_email());
+                model.addAttribute("myInfoModifyForm", "1");
+                return "/myInfo";
+            }
+        }
+    }
+
+    @PostMapping("/myInfoSave")
+    public String myInfoSave_form(Model model, UserDto userDto, HttpSession session){
+        log.info("myInfoSave");
+        String user_id = (String)session.getAttribute("user_id");
+        String user_pw = userDto.getUser_pw();
+        String user_phone = userDto.getUser_phone();
+        String user_email = userDto.getUser_email();
+        if(user_pw != null && user_phone != null && user_email != null){
+            log.info("입력한 모든 값이 not null입니다.");
+            Boolean update_result = userService.updateUserInfo(user_id, user_pw,user_phone,user_email);
+            if (update_result){
+                return "redirect:/myInfo";
+            }
+        } else {
+            log.info("입력한 모든 값 중 null이 있습니다.");
+            return "/myInfo";
+        }
+
+        return "/myInfo";
     }
 }
