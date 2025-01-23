@@ -22,7 +22,6 @@ public class QnaController {
 
     @GetMapping("/qnaList")
     public String qnaList_form(Model model){
-
         List<QnaDto> qnaList = QnaService.getQnaList();
         model.addAttribute("qnaList", qnaList);
         log.info("page_move: qnaList.jsp");
@@ -44,9 +43,11 @@ public class QnaController {
     }
 
     @PostMapping("/qnaWriteProcess")
-    public String qnaWrite(@ModelAttribute QnaDto QnaDto) {
+    public String qnaWrite(Model model, @ModelAttribute QnaDto QnaDto) {
         QnaDto.setQna_created_at(LocalDateTime.now());
         int qnaResult = QnaService.qna(QnaDto);
+        List<QnaDto> qnaList = QnaService.getQnaList();
+        model.addAttribute("qnaList", qnaList);
         if (qnaResult > 0) {
             return "redirect:/qnaList";
         } else {
