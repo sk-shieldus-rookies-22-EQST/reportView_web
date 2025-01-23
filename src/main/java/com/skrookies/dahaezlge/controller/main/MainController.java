@@ -37,26 +37,6 @@ public class MainController {
         return "banner";
     }
 
-
-
-
-
-//
-
-    @GetMapping("/myInfoModify")
-    public String myInfoModify_form(){
-
-        log.info("page_move: myInfoModify.jsp");
-        return "myInfoModify";
-    }
-
-    @GetMapping("/myInfoProc")
-    public String myInfoProc_form(){
-
-        log.info("page_move: myInfoProc.jsp");
-        return "myInfoProc";
-    }
-
     @GetMapping("/eBookDetail")
     public String eBookDetail_form(){
 

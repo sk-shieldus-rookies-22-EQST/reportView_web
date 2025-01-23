@@ -1,9 +1,7 @@
 package com.skrookies.dahaezlge.controller.user;
 
 
-import com.skrookies.dahaezlge.controller.user.Dto.LoginDto;
-import com.skrookies.dahaezlge.controller.user.Dto.RegisterDto;
-import com.skrookies.dahaezlge.controller.user.Dto.SessionDto;
+import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +25,11 @@ public class RegistuserController {
     }
 
     @PostMapping("/registerProc")
-    public String registerProc_form(Model model, @ModelAttribute RegisterDto registerDto, HttpSession session){
-        String user_id = registerDto.getUser_id();
-        String user_pw = registerDto.getUser_pw();
-        String user_phone = registerDto.getUser_phone();
-        String user_email = registerDto.getUser_email();
+    public String registerProc_form(Model model, @ModelAttribute UserDto userDto, HttpSession session){
+        String user_id = userDto.getUser_id();
+        String user_pw = userDto.getUser_pw();
+        String user_phone = userDto.getUser_phone();
+        String user_email = userDto.getUser_email();
         if (userService.registerUser(user_id, user_pw,user_phone,user_email)){
             // 회원가입 직후 자동 로그인
             int point = userService.userPoint(user_id);

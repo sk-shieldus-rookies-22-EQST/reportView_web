@@ -117,6 +117,26 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
+    @Override
+    public Boolean updateUserInfo(String user_id, String user_pw, String user_phone, String user_email) {
+
+        String sql = "UPDATE users SET user_pw = ?, user_phone = ?, user_email = ? WHERE user_id = ?";
+        try {
+            int count = jdbcTemplate.update(sql, user_pw,user_phone, user_email,user_id);
+            if ( count > 0 ){
+                log.info("changed userInfo");
+                return true;
+            } else {
+                log.info("not changed userInfo");
+                return false;
+            }
+
+        } catch (Exception e) {
+            log.info("UserRepository : exception catched");
+            return false;
+        }
+    }
+
 
     public List<Users> userinfo_list(String user_id) {
         // SQL 쿼리 작성
