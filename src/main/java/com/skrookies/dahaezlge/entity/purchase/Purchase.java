@@ -1,42 +1,44 @@
 package com.skrookies.dahaezlge.entity.purchase;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.skrookies.dahaezlge.entity.book.Book;
+import com.skrookies.dahaezlge.entity.user.Users;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "purchase")
 public class Purchase {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "purchase_cart_id")
-    private Integer purchase_cart_id;
+    private Long purchase_cart_id;
 
-    @Column(name = "purchase_user_id")
-    private String purchase_user_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_user_id", nullable = false)
+    private Users users;
 
-    @Column(name = "purchase_book_id")
-    private Integer purchase_book_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_book_id", nullable = false)
+    private Book book;
 
-    @Column(name = "purchase_date")
-    private LocalDateTime purchase_date;
+    @Column(name = "purchase_date", nullable = false)
+    private Timestamp purchase_date;
 
-    public Purchase(Integer purchase_cart_id, String purchase_user_id, Integer purchase_book_id, LocalDateTime purchase_date) {
-        this.purchase_cart_id = purchase_cart_id;
-        this.purchase_user_id = purchase_user_id;
-        this.purchase_book_id = purchase_book_id;
+    public Purchase(Users users, Book book, Timestamp purchase_date) {
+        this.users = users;
+        this.book = book;
         this.purchase_date = purchase_date;
     }
 }
+
 
 
