@@ -43,7 +43,8 @@
 					</button>
                     <%
                              // JSP Scriptlet: EL 표현식 값을 Java 변수에 할당
-                             String user_id = (String) request.getAttribute("id");
+                             String user_id = (String) request.getAttribute("user_id");
+                             System.out.println(user_id);
                              if(user_id == null) {
                      %>
 					<div class=" collapse navbar-collapse" id="navbarSupportedContent">
@@ -57,7 +58,9 @@
 						<input class="btn btn-outline-light" type="button" value="회원가입"
 								onclick="location.href='/registerForm'" style="margin-left: 20px;">
 
-							<% } else { %>
+							<% } else {
+							    Integer point = (Integer) request.getAttribute("point");
+							%>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<li class="nav-item">
@@ -65,6 +68,10 @@
 								</li>
 							</ul>
 							<ul class="nav justify-content-end">
+							    <li style="color:white;display: flex;align-items: center;margin-right:20px">
+                                            <%=point %> pt
+                                </li>
+
 								<li style="color:white;display: flex;align-items: center;margin-right:20px">
 											<%=user_id %> 님
 								</li>
