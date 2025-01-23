@@ -16,10 +16,10 @@
 <div class="container">
     <div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
         <%
-            List<CartBookId> itemList = (List<CartBookId>) request.getAttribute("cartList");
-            Iterator<CartBookId> iterator = itemList.iterator();
+            List<Book> itemList = (List<Book>) request.getAttribute("cartList");
+            Iterator<Book> iterator = itemList.iterator();
             while (iterator.hasNext()) {
-                CartBookId book_id = iterator.next();
+                Book book = iterator.next();
         %>
         <li>
         <table align="center" border="1" style="width: 100%">

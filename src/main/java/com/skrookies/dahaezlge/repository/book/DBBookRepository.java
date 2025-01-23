@@ -1,6 +1,6 @@
 package com.skrookies.dahaezlge.repository.book;
 
-import com.skrookies.dahaezlge.entity.book.Book;
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -17,25 +17,25 @@ public class DBBookRepository implements BookRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Book> getBookInfo(int book_id){
+    public List<BookDto> getBookInfo(int book_id){
         String sql = "Select * from book where book_id = '" + book_id + "';";
 
         return jdbcTemplate.queryForObject(sql,List.class);
     }
     @Override
-    public List<Book> getCartBookInfo(List<Integer> bookIdList){
+    public List<BookDto> getCartBookInfo(List<Integer> bookIdList){
         String sql = "Select * from book where book_id = ?";
 
 
         // 결과를 저장할 리스트
-        List<Book> cartBookInfoList = new ArrayList<>();
+        List<BookDto> cartBookInfoList = new ArrayList<>();
 
         // 각 bookId에 대해 개별적으로 쿼리 실행
         for (Integer bookId : bookIdList) {
-            List<Book> books = jdbcTemplate.query(
+            List<BookDto> books = jdbcTemplate.query(
                     sql,
                     new Object[]{bookId},
-                    new BeanPropertyRowMapper<>(Book.class)
+                    new BeanPropertyRowMapper<>(BookDto.class)
             );
             cartBookInfoList.addAll(books); // 결과를 리스트에 추가
         }

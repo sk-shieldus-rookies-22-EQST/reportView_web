@@ -1,5 +1,7 @@
 package com.skrookies.dahaezlge.service.cart;
 
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.controller.cart.Dto.CartDto;
 import com.skrookies.dahaezlge.entity.book.Book;
 import com.skrookies.dahaezlge.entity.cart.Cart;
 import com.skrookies.dahaezlge.entity.cartBook.CartBook;
@@ -22,8 +24,8 @@ public class CartService {
     private final CartBookRepository cartBookRepository;
     private final BookRepository bookRepository;
 
-    public List<Book> setCartList(String user_id){
-        List<Cart> cartIdList = cartRepository.getCartList(user_id);
+    public List<BookDto> setCartList(String user_id){
+        List<CartDto> cartIdList = cartRepository.getCartList(user_id);
 
         List<Integer> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 

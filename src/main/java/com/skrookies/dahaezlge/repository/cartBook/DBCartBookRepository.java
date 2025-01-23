@@ -1,6 +1,6 @@
 package com.skrookies.dahaezlge.repository.cartBook;
 
-import com.skrookies.dahaezlge.entity.cart.Cart;
+import com.skrookies.dahaezlge.controller.cart.Dto.CartDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,11 +29,11 @@ public class DBCartBookRepository implements CartBookRepository {
     }
 
     @Override
-    public List<Integer> getCartBookList(List<Cart> CartList){
+    public List<Integer> getCartBookList(List<CartDto> CartList){
         List<Integer> bookIds = new ArrayList<>();
 
         String sql = "SELECT cart_book_book_id FROM cart_book WHERE cart_id = ?";
-        for (Cart cart : CartList) {
+        for (CartDto cart : CartList) {
             List<Integer> ids = jdbcTemplate.query(sql, new Object[]{cart.getCart_id()},
                     (rs, rowNum) -> rs.getInt("cart_book_book_id"));
 
