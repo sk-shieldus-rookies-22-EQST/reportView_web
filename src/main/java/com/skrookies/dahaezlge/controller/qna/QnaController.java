@@ -41,17 +41,33 @@ public class QnaController {
         return "qnaDetail";
     }
 
+    @GetMapping("/qnaEdit")
+    public String qnaEdit_form(@RequestParam("qna_id") int qna_id, Model model){
+        QnaDto qnaEdit = QnaService.getQnaById(qna_id);
+        model.addAttribute("qnaEdit", qnaEdit);
+        log.info("page_move: qnaEdit.jsp");
+        return "qnaEdit";
+    }
 
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(Model model, @ModelAttribute QnaDto QnaDto) {
         QnaDto.setQna_created_at(LocalDateTime.now());
         int qnaResult = QnaService.qna(QnaDto);
-        List<QnaDto> qnaList = QnaService.getQnaList();
-        model.addAttribute("qnaList", qnaList);
         if (qnaResult > 0) {
             return "redirect:/qnaList";
         } else {
             return "qnaWrite";
+        }
+    }
+
+    @PostMapping("/qnaUpdateProcess")
+    public String qnaUpdate(Model model, @ModelAttribute QnaDto QnaDto) {
+        QnaDto.setQna_created_at(LocalDateTime.now());
+        int qnaResult = QnaService.qnaUpdate(QnaDto);
+        if (qnaResult > 0) {
+            return "redirect:/qnaList";
+        } else {
+            return "qnaEdit";
         }
     }
 
@@ -60,5 +76,7 @@ public class QnaController {
         QnaService.deleteQna(qna_id);
         return "redirect:/qnaList";
     }
+
+
 
 }
