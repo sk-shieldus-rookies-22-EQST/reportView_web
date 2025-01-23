@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 public class SignDto {
 
     private String user_id;
-    private String pw;
-    private String mail;
-    private String phone;
+    private String user_pw;
+    private String user_phone;
+    private String user_email;
 
 }

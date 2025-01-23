@@ -24,8 +24,8 @@ public class SignupController {
     @PostMapping("/signup")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid SignDto signDto) {
 
-//        StatusDto statusDto = new StatusDto(userService.signup(signDto.getUser_id(), signDto.getPw(), signDto.getMail(), signDto.getPhone()));
-        StatusDto statusDto = new StatusDto(true);
+        StatusDto statusDto = new StatusDto(userService.registerUser(signDto.getUser_id(), signDto.getUser_pw(), signDto.getUser_phone(), signDto.getUser_email()));
+
         return ResponseEntity.ok()
                 .body(statusDto);
 
