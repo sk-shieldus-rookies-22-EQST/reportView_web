@@ -13,6 +13,5 @@ public interface UserRepository {
     Boolean login(String user_id, String user_pw);
     String findUserid(String user_phone, String user_email);
     List<Users> userinfo_list(String user_id);
-
-
+    Boolean updateUserpw(String userId, String userPw);
 }
