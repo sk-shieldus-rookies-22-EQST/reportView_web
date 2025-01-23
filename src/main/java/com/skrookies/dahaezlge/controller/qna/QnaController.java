@@ -42,9 +42,8 @@ public class QnaController {
     }
 
     @GetMapping("/qnaEdit")
-    public String qnaEdit_form(@RequestParam("qna_id") int qna_id, Model model){
-        QnaDto qnaEdit = QnaService.getQnaById(qna_id);
-        model.addAttribute("qnaEdit", qnaEdit);
+    public String qnaEdit_form() {
+
         log.info("page_move: qnaEdit.jsp");
         return "qnaEdit";
     }
@@ -61,7 +60,7 @@ public class QnaController {
     }
 
     @PostMapping("/qnaUpdateProcess")
-    public String qnaUpdate(Model model, @ModelAttribute QnaDto QnaDto) {
+    public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto) {
         QnaDto.setQna_created_at(LocalDateTime.now());
         int qnaResult = QnaService.qnaUpdate(QnaDto);
         if (qnaResult > 0) {

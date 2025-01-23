@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.repository.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-
+@Slf4j
 
 public class QnaRepository {
     private final JdbcTemplate jdbcTemplate;
@@ -64,7 +65,7 @@ public class QnaRepository {
 
     public int qnaUpdate(QnaDto QnaDto) {
             //DB에 작성
-            String sql = "UPDATE qna SET qna_title = ?, qna_body = ?";
-            return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body());
+            String sql = "UPDATE qna SET qna_title = ?, qna_body = ? WHERE qna_id = ? ";
+            return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getQna_id().intValue());
     }
 }
