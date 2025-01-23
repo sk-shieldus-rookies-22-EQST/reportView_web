@@ -45,7 +45,7 @@
             </table>
             <div>
                 <span style="display: inline-block; float: right;">
-                    <button action="/addCart">장바구니</button>
+                    <button onclick="location.href='/addCart'">장바구니</button>
                     <button action="/Purchase">구매</button>
                 </span>
             </div>

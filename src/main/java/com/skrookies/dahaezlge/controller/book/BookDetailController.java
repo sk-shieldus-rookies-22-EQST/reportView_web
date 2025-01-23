@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class BookDetailController {
     private final BookService bookService;
 
     @PostMapping("/addCart")
-    public boolean addCart(String user_id, Long book_id){
+    public boolean addCart(String user_id,@RequestParam("book_id") Long book_id){
         return bookDetailService.addCart(user_id, book_id);
     }
 }
