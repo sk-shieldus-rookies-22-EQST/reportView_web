@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.restcontroller.auth;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.FindIdDto;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.FindPwDto;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.LoginDto;
+import com.skrookies.dahaezlge.restcontroller.util.StatusDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,11 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> androidLogin(@RequestBody @Valid LoginDto loginDto) {
+    public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid LoginDto loginDto) {
 
+        StatusDto statusDto = new StatusDto(userService.login(loginDto.getUser_id(), loginDto.getUser_pw()));
         return ResponseEntity.ok()
-                .body(userService.login(loginDto.getUser_id(), loginDto.getUser_pw()));
+                .body(statusDto);
 
     }
 
