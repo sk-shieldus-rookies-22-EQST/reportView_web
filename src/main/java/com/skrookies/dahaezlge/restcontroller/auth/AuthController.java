@@ -25,7 +25,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid LoginDto loginDto) {
 
-        StatusDto statusDto = new StatusDto(userService.login(loginDto.getUser_id(), loginDto.getUser_pw()));
+        StatusDto statusDto = new StatusDto(userService.login(loginDto.getUser_id(), loginDto.getPasswd()));
         return ResponseEntity.ok()
                 .body(statusDto);
 
@@ -35,7 +35,7 @@ public class AuthController {
     public ResponseEntity<String> androidFindID(@RequestBody @Valid FindIdDto findIdDto){
 
         return ResponseEntity.ok()
-                .body(userService.findUserId(findIdDto.getUser_phone(), findIdDto.getUser_email()));
+                .body(userService.findUserId(findIdDto.getPhone(), findIdDto.getEmail()));
 
     }
 
@@ -43,7 +43,7 @@ public class AuthController {
     public ResponseEntity<String> androidFindPW(@RequestBody @Valid FindPwDto findPwDto){
 
 //        return ResponseEntity.ok()
-//                .body(userService.findUserPw(findPwDto.getUser_id(), findPwDto.getUser_phone()), findPwDto.getUser_email());
+//                .body(userService.findUserPw(findPwDto.getUser_id(), findPwDto.getPhone()), findPwDto.getEmail());
 
         return ResponseEntity.ok().body("null");
     }
