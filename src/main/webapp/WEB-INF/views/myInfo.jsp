@@ -1,4 +1,3 @@
-<%@page import="config.findResultDo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -10,11 +9,11 @@
 <body>
 <div class="container">
 <%@ include file="banner.jsp" %>
-
-<jsp:useBean id="adao" class="config.findResultDao" />
 	<%
-		String userid = (String)session.getAttribute("user_id");
-		findResultDo ado = adao.getmyInfo(userid);
+		//String user_id = (String)session.getAttribute("user_id");
+		String user_pw = (String) request.getAttribute("user_pw");
+		String user_phone = (String) request.getAttribute("user_phone");
+		String user_email = (String) request.getAttribute("user_email");
 	%>
 
 <div class="container">
@@ -25,26 +24,27 @@
 	<table border="1"  style="width: 100%">
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 아이디 </td>
-			<td width="100%"> <%= ado.getUser_id() %> </td>
+			<td width="100%"> <%= user_id %> </td>
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 비밀번호 </td>
-			<td width="100%" id="user_pw"> <%=ado.getUser_pw()%> </td>
+			<td width="100%" id="user_pw"> <%= user_pw %> </td>
 		</tr>
 		<tr height="60" align="center">
 			<td width="40%" style="border-right:1px solid #212529"> 전화번호 </td>
 			<td width="100%"> 
-				<%=ado.getUser_email()%>
+				<%=user_phone%>
 			</td>
 		</tr>
 		<tr height="60" align="center">
             <td width="40%" style="border-right:1px solid #212529"> 이메일 </td>
             <td width="100%">
-                <%=ado.getUser_phone()%>
+                <%=user_email%>
             </td>
         </tr>
 		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 개인정보 활용 동의함 </td>
+			<td width="40%" style="border-right:1px solid #212529"> 개인정보 활용 동의 </td>
+			<td width="100%">동의함</td>
 		</tr>
 		</table>
 		<div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">

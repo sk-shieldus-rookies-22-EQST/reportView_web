@@ -26,27 +26,28 @@ public class FinduseridController {
 
     @PostMapping("/findUserProc")
     public String findUseridpw_form(Model model, HttpSession session, @ModelAttribute FinduseridDto finduseridDto, @RequestParam("whatFind") Integer whatFind){
-        String user_id = userService.findUserId(finduseridDto.getUser_phone(), finduseridDto.getUser_email());
+        String user_id = userService.findUserId((String)finduseridDto.getUser_phone(), finduseridDto.getUser_email());
+        String user_id_pw = userService.findUserId(finduseridDto.getUser_phone_pw(), finduseridDto.getUser_email());
         log.info("FinduseridController - whatfind = " + whatFind);
          if(whatFind == 1){
              log.info("FinduseridController - user_id = " + user_id);
-            if(user_id == "no_users"){
-                return "redirect:/findUseridpw?warnid='1'";
-            } else if (user_id == "error"){
-                return "redirect:/findUseridpw?errorid='1'";
+            if(user_id == "no_users" && user_id_pw == "no_users"){
+                return "redirect:/findUseridpw?warnid=1";
+            } else if (user_id == "error" && user_id_pw == "error"){
+                return "redirect:/findUseridpw?errorid=1";
             } else {
                 return "redirect:/findUseridpw?foundId=" + user_id;
             }
         } else if(whatFind == 2) {
-             log.info("FinduseridController - user_id = " + user_id);
-             if(user_id == "no_users"){
+             log.info("FinduseridController - user_id_pw = " + user_id_pw);
+             if(user_id == "no_users" && user_id_pw == "no_users"){
                  log.info("FinduseridController - nousers ");
-                 return "redirect:/findUseridpw?warnpw='1'";
-             } else if (user_id == "error"){
+                 return "redirect:/findUseridpw?warnpw=1";
+             } else if (user_id == "error" && user_id_pw == "error"){
                  log.info("FinduseridController - error ");
-                 return "redirect:/findUseridpw?errorpw='1'";
+                 return "redirect:/findUseridpw?errorpw=1";
              } else {
-                 session.setAttribute("find_pw_userid", user_id);
+                 session.setAttribute("find_pw_userid", user_id_pw);
                  return "redirect:/modifyUserpwForm";
              }
         } else {

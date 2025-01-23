@@ -21,13 +21,51 @@
 		<form action="/findUserProc" method="post">
             <input type="hidden" name="whatFind" id="findId" value=1>
 			<div class="mb-3" style="margin-bottom : 50px!important;">
-			  <label for="user_phone" class="form-label fw-bold fs-4">Phone</label>
-			  <input type="text" class="form-control" id="user_phone" aria-describedby="emailHelp" name="user_phone" required>
+			  <label for="user_phone" class="form-label fw-bold fs-4">전화번호</label>
+			  <input type="text" class="form-control" maxlength="13" id="user_phone" name="user_phone" placeholder="숫자만 입력하세요." required>
+			  <script type="text/javascript">
+                                  let autoTel = function(str){
+                                        str = str.replace(/[^0-9]/g, '');
+                                        let tmp = '';
+                                        if( str.length < 4){
+                                            return str;
+                                        }else if(str.length < 7){
+                                            tmp += str.substr(0, 3);
+                                            tmp += '-';
+                                            tmp += str.substr(3);
+                                            return tmp;
+                                        }else if(str.length < 11){
+                                            tmp += str.substr(0, 3);
+                                            tmp += '-';
+                                            tmp += str.substr(3, 3);
+                                            tmp += '-';
+                                            tmp += str.substr(6);
+                                            return tmp;
+                                        }else{
+                                            tmp += str.substr(0, 3);
+                                            tmp += '-';
+                                            tmp += str.substr(3, 4);
+                                            tmp += '-';
+                                            tmp += str.substr(7);
+                                            return tmp;
+                                        }
+              
+                                        return str;
+                                  }
+              
+              
+                                  let user_phone = document.getElementById('user_phone');
+              
+                                  user_phone.onkeyup = function(){
+                                    console.log(this.value);
+                                    this.value = autoTel( this.value ) ;
+                                  }
+                              </script>
 			</div>
 
 			<div class="mb-3" style="margin-bottom : 50px!important;">
               <label for="user_email" class="form-label fw-bold fs-4">email</label>
-              <input type="text" class="form-control" id="user_email" aria-describedby="emailHelp" name="user_email" required>
+              <input type="text" class="form-control" id="user_email" aria-describedby="emailHelp" name="user_email" placeholder="someone@example.com" required>
             </div>
 
 			<div class="d-grid gap-2 col-6 mx-auto">
@@ -89,13 +127,50 @@
                           <input type="text" class="form-control" id="user_id" aria-describedby="emailHelp" name="user_id" required>
                         </div>
             <div class="mb-3" style="margin-bottom : 50px!important;">
-              <label for="user_phone" class="form-label fw-bold fs-4">Phone</label>
-              <input type="text" class="form-control" id="user_phone" aria-describedby="emailHelp" name="user_phone" required>
+              <label for="user_phone_pw" class="form-label fw-bold fs-4">전화번호</label>
+              <input type="text" class="form-control" maxlength="13" id="user_phone_pw" name="user_phone_pw" placeholder="숫자만 입력하세요." required>
+              <script type="text/javascript">
+                let autoTelPw = function(str){
+                      str = str.replace(/[^0-9]/g, '');
+                      let tmp = '';
+                      if( str.length < 4){
+                          return str;
+                      }else if(str.length < 7){
+                          tmp += str.substr(0, 3);
+                          tmp += '-';
+                          tmp += str.substr(3);
+                          return tmp;
+                      }else if(str.length < 11){
+                          tmp += str.substr(0, 3);
+                          tmp += '-';
+                          tmp += str.substr(3, 3);
+                          tmp += '-';
+                          tmp += str.substr(6);
+                          return tmp;
+                      }else{
+                          tmp += str.substr(0, 3);
+                          tmp += '-';
+                          tmp += str.substr(3, 4);
+                          tmp += '-';
+                          tmp += str.substr(7);
+                          return tmp;
+                      }
+
+                      return str;
+                }
+
+
+                let user_phone_pw = document.getElementById('user_phone_pw');
+
+                user_phone_pw.onkeyup = function(){
+                  this.value = autoTelPw( this.value ) ;
+                }
+            </script>
             </div>
 
             <div class="mb-3" style="margin-bottom : 50px!important;">
               <label for="user_email" class="form-label fw-bold fs-4">email</label>
-              <input type="text" class="form-control" id="user_email" aria-describedby="emailHelp" name="user_email" required>
+              <input type="text" class="form-control" id="user_email" aria-describedby="emailHelp" name="user_email" placeholder="someone@example.com" required>
             </div>
 
             <div class="d-grid gap-2 col-6 mx-auto">

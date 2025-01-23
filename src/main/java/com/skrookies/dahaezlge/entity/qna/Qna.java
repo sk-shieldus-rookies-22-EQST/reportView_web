@@ -1,47 +1,47 @@
 package com.skrookies.dahaezlge.entity.qna;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.skrookies.dahaezlge.entity.user.Users;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "qna")
 public class Qna {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_id")
-    private Integer qna_id;
+    private Long qna_id;
 
-    @Column(name = "qna_title")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "qna_user_id", nullable = false)
+    private Users users;
+
+    @Column(name = "qna_title", nullable = false)
     private String qna_title;
 
-    @Column(name = "qna_body")
+    @Column(name = "qna_body", nullable = false)
     private String qna_body;
 
-    @Column(name = "qna_user_id")
-    private String qna_user_id;
-
     @Column(name = "qna_created_at")
-    private LocalDateTime qna_created_at;
+    private Timestamp qna_created_at;
 
-    public Qna(Integer qna_id, String qna_title, String qna_body, String qna_user_id, LocalDateTime qna_created_at) {
-        this.qna_id = qna_id;
+    public Qna(Users users, String qna_title, String qna_body, Timestamp qna_created_at) {
+        this.users = users;
         this.qna_title = qna_title;
         this.qna_body = qna_body;
-        this.qna_user_id = qna_user_id;
         this.qna_created_at = qna_created_at;
     }
 }
+
 
 

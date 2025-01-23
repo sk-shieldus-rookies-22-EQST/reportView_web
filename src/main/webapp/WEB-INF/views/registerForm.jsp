@@ -74,7 +74,7 @@
                   <label for="user_phone" class="form-label fw-bold fs-4">전화번호</label>
                   <input type="text" class="form-control" maxlength="13" id="user_phone" name="user_phone" placeholder="숫자만 입력하세요.">
                 </div>
-                <input type="hidden" class="form-control" id="user_level" name="user_level" value=1>
+
                 <script type="text/javascript">
                     let autoTel = function(str){
                           str = str.replace(/[^0-9]/g, '');
@@ -113,7 +113,7 @@
                       this.value = autoTel( this.value ) ;
                     }
                 </script>
-
+                <input type="hidden" class="form-control" id="user_level" name="user_level" value=1>
                     <div class="mb-3 agree form-label fw-bold fs-4" style="margin-bottom:50px!important">
                             <input type="checkbox" id="user_agree" name="user_agree" value="1"> <label for="user_agree">
                             <span>개인정보 활용 동의</span></label>

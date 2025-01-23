@@ -38,8 +38,8 @@
             </table>
             <div>
                 <span style="display: inline-block; float: right;">
-                    <button action="./eBookCartProc.jsp">장바구니</button>
-                    <button action="./eBookPurchase.jsp">구매</button>
+                    <button action="/addCart">장바구니</button>
+                    <button action="/Purchase">구매</button>
                 </span>
             </div>
             <div>
