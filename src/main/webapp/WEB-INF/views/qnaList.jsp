@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.skrookies.dahaezlge.controller.qna.Dto.QnaDto" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <title>QnA 게시판</title>
 </head>
@@ -25,12 +28,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tf>
-                        <td>2</td>
-                        <td>제목입니당</td>
-                        <td>심동진</td>
-                        <td>2025-01-22</td>
-                    </tf>
+                    <%
+                        // request에서 qnaList를 받아와 처리
+                        List<QnaDto> qnaList = (List<QnaDto>) request.getAttribute("qnaList");
+                        if (qnaList != null) {
+                            for (QnaDto qna : qnaList) {
+                    %>
+                            <tr>
+                                <td><%= qna.getQna_id() %></td>
+                                <td>
+                                    <a href="/qnaDetail?qna_id=<%= qna.getQna_id() %>"><%= qna.getQna_title() %></a>
+                                </td>
+                                <td><%= qna.getQna_user_id() %></td>
+                                <td><%= qna.getQna_created_at() %></td>
+                            </tr>
+                    <%
+                            }
+                        } else {
+                    %>
+                            <tr>
+                                <td colspan="4">데이터가 없습니다.</td>
+                            </tr>
+                    <%
+                        }
+                    %>
                 </tbody>
             </table>
             <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>

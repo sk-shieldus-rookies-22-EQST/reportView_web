@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.controller.main;
 
+import com.skrookies.dahaezlge.controller.user.Dto.SessionDto;
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -19,9 +20,12 @@ public class MainController {
 
     private final UserService userService;
 
+    public String login_id(HttpSession session) {
+        return (String) session.getAttribute("user_id");
+    }
+
     @GetMapping("/index")
     public String main_form(){
-
         log.info("page_move: index.jsp");
         return "index";
     }
@@ -34,12 +38,7 @@ public class MainController {
     }
 
 
-    @GetMapping("/findUseridpw")
-    public String findUseridpw_form(){
 
-        log.info("page_move: findUseridpw.jsp");
-        return "findUseridpw";
-    }
 
 //    @GetMapping("/myInfo") => FinduserController로 이동
 //    public String myInfo_form(Model model, HttpSession session){
@@ -66,20 +65,20 @@ public class MainController {
 //        model.addAttribute("user_id", new UserDto(user_id, (String)user_info.get(0)));
 //        return "myInfo";
 //    }
-
-    @GetMapping("/registerForm")
-    public String registerForm_form(){
-
-        log.info("page_move: registerForm.jsp");
-        return "registerForm";
-    }
-
-    @GetMapping("/registerProc")
-    public String registerProc_form(){
-
-        log.info("page_move: registerProc.jsp");
-        return "registerProc";
-    }
+//
+//    @GetMapping("/registerForm")
+//    public String registerForm_form(){
+//
+//        log.info("page_move: registerForm.jsp");
+//        return "registerForm";
+//    }
+//
+//    @GetMapping("/registerProc")
+//    public String registerProc_form(){
+//
+//        log.info("page_move: registerProc.jsp");
+//        return "registerProc";
+//    }
 
     @GetMapping("/myInfoModify")
     public String myInfoModify_form(){
@@ -102,10 +101,4 @@ public class MainController {
         return "eBookDetail";
     }
 
-    @GetMapping("/qnaList")
-    public String qnaList_form(){
-
-        log.info("page_move: qnaList.jsp");
-        return "qnaList";
-    }
 }

@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,5 +16,5 @@ public class QnaDto {
     private String qna_title;
     private String qna_body;
     private String qna_user_id;
-    private LocalDate qna_created_at;
+    private LocalDateTime qna_created_at;
 }

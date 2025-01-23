@@ -6,6 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.springframework.data.relational.core.query.Query.query;
@@ -34,7 +38,6 @@ public class DBUserRepository implements UserRepository{
 
         } catch (Exception e) {
             log.info("error");
-            e.printStackTrace();
             return false;
         }
     }
@@ -42,16 +45,73 @@ public class DBUserRepository implements UserRepository{
     @Override
     public String findUserid(String user_phone, String user_email) {
 
-        String sql = "Select user_id from users where user_phone = '" + user_phone + "' and user_email = '" + user_email + "';";
+        String sql = "Select user_id from users where user_phone = ? and user_email = ?;";
         try {
-            if (jdbcTemplate.queryForObject(sql, String.class) != null){
-                return jdbcTemplate.queryForObject(sql, String.class);
+            if (jdbcTemplate.queryForObject(sql, String.class, user_phone, user_email)!= null) {
+                String user_id = (String) jdbcTemplate.queryForObject(sql, String.class, user_phone, user_email);
+                if (user_id != null) {
+                    log.info("userReposistory : user_id = " + user_id);
+                    return user_id;
+                } else {
+                    return "no_users";
+                }
+            }else { return "no_users"; }
+        } catch (Exception e) {
+            return "no_users";
+        }
+    }
+
+
+    public Boolean updateUserpw(String user_id, String user_pw) {
+        log.info("updateUserpw user_id: " + user_id);
+        log.info("updateUserpw user_pw: " + user_pw);
+        String sql = "UPDATE users SET user_pw = ? WHERE user_id = ?";
+        try {
+            int count = jdbcTemplate.update(sql, user_pw,user_id);
+            if ( count > 0 ){
+                log.info("changed pw");
+                return true;
             } else {
-                return "no_users";
+                log.info("no user");
+                return false;
             }
 
         } catch (Exception e) {
-            return "error";
+            return false;
+        }
+    }
+
+    public Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email) {
+        String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 0)";
+        log.info("user_id: "+ user_id);
+        log.info("user_pw: "+ user_pw);
+        log.info("user_phone: "+ user_phone);
+        log.info("user_email: "+ user_email);
+
+        try {
+            // JdbcTemplate을 사용하여 INSERT 실행
+            LocalDateTime now = LocalDateTime.now();
+            Timestamp formatedNow = Timestamp.valueOf(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            log.info(formatedNow.toString());
+            int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, 1, formatedNow);
+            log.info("sql success");
+            int result2 = jdbcTemplate.update(sql2_point, user_id);
+            log.info("sql2 success");
+            // result 값이 1이면 성공
+            if (result > 0 && result2 > 0) {
+                log.info("user_id: "+ user_id);
+                log.info("user_pw: "+ user_pw);
+                log.info("user_phone: "+ user_phone);
+                log.info("user_email: "+ user_email);
+                return true;
+            } else {
+                log.info("registerUser : if에 안들어갔어");
+                return false;
+            }
+        } catch (Exception e) {
+            log.info("registerUser : catch로 빠졌어");
+            return false;
         }
     }
 
