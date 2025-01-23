@@ -1,9 +1,13 @@
 package com.skrookies.dahaezlge.repository.cartBook;
 
+import com.skrookies.dahaezlge.entity.cart.CartId;
+import com.skrookies.dahaezlge.entity.cartBook.CartBookId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
 @Slf4j
@@ -22,5 +26,16 @@ public class DBCartBookRepository implements CartBookRepository {
 
         // 삽입이 성공했는지 여부를 boolean으로 반환
         return rowsAffected > 0;
+    }
+
+    @Override
+    public List<CartBookId> getCartBookList(List<CartId> CartIdList){
+        String sql = "SELECT cart_book_book_id FROM cart_book WHERE cart_book_id=";
+
+        return jdbcTemplate.query(sql, new Object[]{CartIdList}, (rs, rowNum) -> {
+            CartBookId cartBookId = new CartBookId();
+            cartBookId.setCart_book_id(rs.getInt("cart_book_book_id"));
+            return cartBookId;
+        });
     }
 }
