@@ -1,10 +1,12 @@
 package com.skrookies.dahaezlge.controller.book.Dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class BookDto {
     private Long book_id;
     private String book_title;

@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.restcontroller.view;
 
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.restcontroller.view.dto.*;
 import com.skrookies.dahaezlge.service.book.BookService;
@@ -21,7 +22,7 @@ public class ViewController {
     private final BookService bookService;
 
     @PostMapping("/booklist")
-    public ResponseEntity<List<BookListDto>> bookList(){
+    public ResponseEntity<BookListCapDto> bookList(){
 
         /** bookService에서 Book Entity를 모두 가져온다
          * BookListDto 형식에 맞게 데이터를 setting한다.
@@ -36,14 +37,16 @@ public class ViewController {
             // bookListDto.add(bookListDto);
         }
 
+        BookListCapDto bookListCapDto = new BookListCapDto(bookListDto);
+
         return ResponseEntity.ok()
-                .body(bookListDto);
+                .body(bookListCapDto);
 
     }
 
 
     @PostMapping("/search")
-    public ResponseEntity<List<BookSearchDto>> bookSearch(@RequestBody @Valid BookSearchRequestDto bookSearchRequestDto){
+    public ResponseEntity<BookSearchCapDto> bookSearch(@RequestBody @Valid BookSearchRequestDto bookSearchRequestDto){
 
         // bookService.searchBook(bookSearchRequestDto);
 
@@ -54,23 +57,22 @@ public class ViewController {
             // bookSearchDto.add(bookListDto);
         }
 
+        BookSearchCapDto bookSearchCapDto = new BookSearchCapDto(bookSearchDto);
 
         return ResponseEntity.ok()
-                .body(bookSearchDto);
+                .body(bookSearchCapDto);
 
     }
 
     @GetMapping("/bookdetail/{book_id}")
     public ResponseEntity<BookDetailDto> bookDetail(@PathVariable("book_id") String book_id){
 
-        //List<Book> book_data = bookService.getBookInfo(Integer.parseInt(book_id));
+        BookDto book_data = bookService.getBookInfo(Long.parseLong(book_id));
 
-        //BookDetailDto bookDetailDto = new BookDetailDto();
+        BookDetailDto bookDetailDto = new BookDetailDto(book_data.getBook_id(), book_data.getBook_title(), book_data.getBook_price(), book_data.getBook_auth(), book_data.getBook_summary(), book_data.getBook_img_path());
 
-//        return ResponseEntity.ok()
-//                .body(bookDetailDto);
         return ResponseEntity.ok()
-                .body(null);
+                .body(bookDetailDto);
     }
 
     @PostMapping("/book/viewer")
