@@ -43,7 +43,9 @@
 					</button>
                     <%
                              // JSP Scriptlet: EL 표현식 값을 Java 변수에 할당
-                             String user_id = (String) request.getAttribute("user_id");
+                             //HttpServletRequest req = request;
+                             //HttpSession session = req.getSession();
+                             String user_id = (String) session.getAttribute("user_id");
                              System.out.println(user_id);
                              if(user_id == null) {
                      %>
@@ -59,7 +61,7 @@
 								onclick="location.href='/registerForm'" style="margin-left: 20px;">
 
 							<% } else {
-							    Integer point = (Integer) request.getAttribute("point");
+							    Integer point = (Integer) session.getAttribute("point");
 							%>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
