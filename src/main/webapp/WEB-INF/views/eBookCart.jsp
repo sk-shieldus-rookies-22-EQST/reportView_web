@@ -24,10 +24,11 @@
         <li>
         <table align="center" border="1" style="width: 100%">
             <tr align="left">
-                <td> <%= book_id.getBookTitle() %>  </td>
-                <td> <%= cartList.getBookPrice() %>  </td>
+                <td> <img src="<%=book.getBook_title()%>" </td>
+                <td> <%= book.getBook_title() %> </td>
+                <td> <%= book.getBook_price() %> </td>
                 <td> 
-                    <form name="eBookCartDelete" action="./eBookCartProc.jsp" method="post">
+                    <form name="eBookCartDelete" action="/eBookCartProc.jsp" method="post">
                         <input type="hidden" name="cart_id" value="<%= cartList.getCartId() %>">
                         <button type="submit">삭제</button>
                     </form> 
