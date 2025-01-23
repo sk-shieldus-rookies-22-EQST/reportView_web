@@ -10,7 +10,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.relational.core.query.Query.query;
 
@@ -116,11 +118,31 @@ public class DBUserRepository implements UserRepository{
     }
 
 
-    public List<Users> userinfo_list(String user_id){
-        String sql = "select * from users where user_id = '" + user_id + "';";
+    public List<Users> userinfo_list(String user_id) {
+        // SQL 쿼리 작성
+        String sql = "SELECT * FROM users WHERE user_id = ?";
 
-        List<Users> user_info = jdbcTemplate.queryForList(sql, Users.class);
-        return user_info;
+        // queryForList로 데이터를 가져옴
+        try {
+            List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, user_id);
+            log.info("list 성공");
+            // 반환할 Users 객체 리스트 초기화
+            List<Users> user_info = new ArrayList<>();
+
+            // Map을 Users 객체로 변환하여 리스트에 추가
+            for (Map<String, Object> row : results) {
+                Users user = new Users((String) row.get("user_id"),(String) row.get("user_pw"), (String) row.get("user_email"), (String) row.get("user_phone"),(Integer) row.get("user_level"),(Timestamp) row.get("user_created_at"));
+                // 추가적인 필드가 있으면 여기에 세팅
+                user_info.add(user);
+            }
+
+            // 변환된 Users 객체 리스트 반환
+            return user_info;
+        } catch (Exception e) {
+            List<Users> user_test = new ArrayList<>();
+            return user_test;
+        }
+
     }
 
 }
