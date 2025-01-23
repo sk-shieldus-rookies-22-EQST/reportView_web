@@ -64,4 +64,11 @@ public class MainController {
         return "eBookDetail";
     }
 
+    @GetMapping("/eBookCart")
+    public String eBookCart_form(){
+
+        log.info("page_move: eBookCart.jsp");
+        return "eBookCart";
+    }
+
 }

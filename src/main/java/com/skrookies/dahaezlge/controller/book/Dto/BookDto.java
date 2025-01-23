@@ -12,6 +12,6 @@ public class BookDto {
     private String book_path;
     private String book_summary;
     private String book_reg_date;
-    private String book_image_path;
+    private String book_img_path;
     private String book_price;
 }

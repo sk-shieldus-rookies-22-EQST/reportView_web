@@ -24,4 +24,9 @@ public class CartController {
         return "eBookCart";
     }
 
+    @PostMapping("/deleteCart")
+    public Boolean delCartList(Model model, String user_id, int book_id){
+        return true;
+    }
+
 }
