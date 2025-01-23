@@ -17,10 +17,10 @@ public class DBBookRepository implements BookRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<BookDto> getBookInfo(int book_id){
+    public BookDto getBookInfo(int book_id){
         String sql = "Select * from book where book_id = '" + book_id + "';";
 
-        return jdbcTemplate.queryForObject(sql,List.class);
+        return jdbcTemplate.queryForObject(sql,BookDto.class);
     }
     @Override
     public List<BookDto> getCartBookInfo(List<Integer> bookIdList){

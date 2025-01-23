@@ -1,7 +1,9 @@
 package com.skrookies.dahaezlge.controller.main;
 
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.controller.user.Dto.SessionDto;
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
+import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -57,12 +59,20 @@ public class MainController {
         return "myInfoProc";
     }
 
-    @GetMapping("/eBookDetail")
-    public String eBookDetail_form(){
+    private final BookService bookService;
 
-        log.info("page_move: eBookDetail.jsp");
-        return "eBookDetail";
+    @GetMapping("/eBookDetail")
+    public Boolean setBookInfo(Model model, Integer book_id){
+        BookDto bookInfo = bookService.getBookInfo(1000020);
+        model.addAttribute("bookInfo", bookInfo);
+        return true;
     }
+    //@GetMapping("/eBookDetail")
+    //public String eBookDetail_form(){
+    //
+    //     log.info("page_move: eBookDetail.jsp");
+    //    return "eBookDetail";
+    //}
 
     @GetMapping("/eBookCart")
     public String eBookCart_form(){

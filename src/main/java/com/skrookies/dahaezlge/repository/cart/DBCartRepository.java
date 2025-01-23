@@ -29,10 +29,10 @@ public class DBCartRepository implements CartRepository {
 
 
     @Override
-    public int addCart(String user_id, List<BookDto> book_info) {
+    public int addCart(String user_id, BookDto book_info) {
         String sql = "INSERT INTO cart (cart_user_id, cart_total_price) VALUES (?, ?)";
 
-        String book_price = book_info.getFirst().getBook_price();
+        String book_price = book_info.getBook_price();
 
         // KeyHolder 객체 생성
         KeyHolder keyHolder = new GeneratedKeyHolder();

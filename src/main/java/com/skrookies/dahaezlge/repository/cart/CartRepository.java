@@ -10,5 +10,5 @@ import java.util.List;
 public interface CartRepository {
     List<CartDto> getCartList(String user_id);
 
-    int addCart(String user_id, List<BookDto> book_info);
+    int addCart(String user_id, BookDto book_info);
 }

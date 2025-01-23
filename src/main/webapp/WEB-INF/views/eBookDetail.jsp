@@ -17,23 +17,30 @@
     <div class="container">
         <div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
             <table align="center" border="1" style="width: 100%">
+            <%@ page import="java.util.List" %>
+            <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
+
+            <%
+                BookDto eBook = (BookDto) request.getAttribute("bookInfo");
+            %>
+
                 <tr align="left">
-                    <td width="30%" rowspan="4" style="border-right:1px solid #212529">
+                    <td width="30%" rowspan="4">
                         <img
-                            src=""
+                            src="<%= eBook.getBook_img_path() %>"
                             width="200" height="310"
                         />
                     </td>
-                    <td width="70%"> <%= eBook.getBookTitle() %>  </td>
+                    <td width="70%"> <%= eBook.getBook_title() %>  </td>
                 </tr>
                 <tr align="left">
-                    <td width="70%"> <%= eBook.getBookAuth() %>  </td>
+                    <td width="70%"> <%= eBook.getBook_auth() %>  </td>
                 </tr>
                 <tr align="left">
-                    <td width="70%"> <%= eBook.getBookRegDate() %>  </td>
+                    <td width="70%"> <%= eBook.getBook_reg_date() %>  </td>
                 </tr>
                 <tr align="left">
-                    <td width="70%"> <%= eBook.getBookPrice() %>  </td>
+                    <td width="70%"> <%= eBook.getBook_price() %>  </td>
                 </tr>
             </table>
             <div>
@@ -43,7 +50,7 @@
                 </span>
             </div>
             <div>
-                <%= eBook.getBookSummary() %>
+                <%= eBook.getBook_summary() %>
             </div>
             <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
                 <% String previousPage = request.getHeader("referer"); %>
