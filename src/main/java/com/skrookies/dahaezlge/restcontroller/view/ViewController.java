@@ -21,7 +21,7 @@ public class ViewController {
     private final BookService bookService;
 
     @PostMapping("/booklist")
-    public ResponseEntity<List<BookListDto>> bookList(){
+    public ResponseEntity<BookListCapDto> bookList(){
 
         /** bookService에서 Book Entity를 모두 가져온다
          * BookListDto 형식에 맞게 데이터를 setting한다.
@@ -36,14 +36,16 @@ public class ViewController {
             // bookListDto.add(bookListDto);
         }
 
+        BookListCapDto bookListCapDto = new BookListCapDto(bookListDto);
+
         return ResponseEntity.ok()
-                .body(bookListDto);
+                .body(bookListCapDto);
 
     }
 
 
     @PostMapping("/search")
-    public ResponseEntity<List<BookSearchDto>> bookSearch(@RequestBody @Valid BookSearchRequestDto bookSearchRequestDto){
+    public ResponseEntity<BookSearchCapDto> bookSearch(@RequestBody @Valid BookSearchRequestDto bookSearchRequestDto){
 
         // bookService.searchBook(bookSearchRequestDto);
 
@@ -54,9 +56,10 @@ public class ViewController {
             // bookSearchDto.add(bookListDto);
         }
 
+        BookSearchCapDto bookSearchCapDto = new BookSearchCapDto(bookSearchDto);
 
         return ResponseEntity.ok()
-                .body(bookSearchDto);
+                .body(bookSearchCapDto);
 
     }
 
