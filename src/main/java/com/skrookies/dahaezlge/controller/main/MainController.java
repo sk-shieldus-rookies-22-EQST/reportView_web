@@ -101,10 +101,4 @@ public class MainController {
         return "eBookDetail";
     }
 
-    @GetMapping("/qnaList")
-    public String qnaList_form(){
-
-        log.info("page_move: qnaList.jsp");
-        return "qnaList";
-    }
 }
