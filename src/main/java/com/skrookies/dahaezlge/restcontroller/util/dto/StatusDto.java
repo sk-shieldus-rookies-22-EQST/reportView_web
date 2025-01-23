@@ -1,4 +1,4 @@
-package com.skrookies.dahaezlge.restcontroller.util;
+package com.skrookies.dahaezlge.restcontroller.util.dto;
 
 import lombok.*;
 

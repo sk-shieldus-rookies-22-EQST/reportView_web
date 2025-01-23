@@ -3,7 +3,8 @@ package com.skrookies.dahaezlge.restcontroller.auth;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.FindIdDto;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.FindPwDto;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.LoginDto;
-import com.skrookies.dahaezlge.restcontroller.util.StatusDto;
+import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
+import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,20 +33,23 @@ public class AuthController {
     }
 
     @PostMapping("/find/id")
-    public ResponseEntity<String> androidFindID(@RequestBody @Valid FindIdDto findIdDto){
+    public ResponseEntity<UserIdDto> androidFindID(@RequestBody @Valid FindIdDto findIdDto){
+
+        UserIdDto userIdDto = new UserIdDto(userService.findUserId(findIdDto.getUser_phone(), findIdDto.getUser_email()));
 
         return ResponseEntity.ok()
-                .body(userService.findUserId(findIdDto.getUser_phone(), findIdDto.getUser_email()));
+                .body(userIdDto);
 
     }
 
     @PostMapping("/find/pw")
-    public ResponseEntity<String> androidFindPW(@RequestBody @Valid FindPwDto findPwDto){
+    public ResponseEntity<StatusDto> androidFindPW(@RequestBody @Valid FindPwDto findPwDto){
 
-//        return ResponseEntity.ok()
-//                .body(userService.findUserPw(findPwDto.getUser_id(), findPwDto.getUser_phone()), findPwDto.getUser_email());
+        StatusDto statusDto = new StatusDto(userService.updateUserpw(findPwDto.getUser_id(), findPwDto.getUser_new_pw()));
 
-        return ResponseEntity.ok().body("null");
+        return ResponseEntity.ok()
+                .body(statusDto);
+
     }
 
 }
