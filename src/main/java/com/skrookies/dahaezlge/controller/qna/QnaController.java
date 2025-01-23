@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class QnaController {
     private final QnaService QnaService;
 
+    @GetMapping("/qnaList")
+    public String qnaList_form(){
+
+        log.info("page_move: qnaList.jsp");
+        return "qnaList";
+    }
+
     @GetMapping("/qnaWrite")
     public String qnaWrite_form(){
 

@@ -95,10 +95,4 @@ public class MainController {
         return "myInfoProc";
     }
 
-    @GetMapping("/qnaList")
-    public String qnaList_form(){
-
-        log.info("page_move: qnaList.jsp");
-        return "qnaList";
-    }
 }
