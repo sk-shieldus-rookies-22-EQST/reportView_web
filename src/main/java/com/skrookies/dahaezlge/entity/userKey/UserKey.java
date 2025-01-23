@@ -1,36 +1,37 @@
 package com.skrookies.dahaezlge.entity.userKey;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.skrookies.dahaezlge.entity.user.Users;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Table(name = "user_key")
 public class UserKey {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "key_id")
-    private Integer key_id;
+    private Long key_id;
 
-    @Column(name = "key_user_id")
-    private String key_user_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "key_user_id", nullable = false)
+    private Users users;
 
     @Column(name = "key_created_at")
-    private LocalDateTime key_created_at;
+    private Timestamp key_created_at;
 
-    public UserKey(Integer key_id, String key_user_id, LocalDateTime key_created_at) {
-        this.key_id = key_id;
-        this.key_user_id = key_user_id;
+    public UserKey(Users users, Timestamp key_created_at) {
+        this.users = users;
         this.key_created_at = key_created_at;
     }
 }
+
+

@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,11 +34,13 @@ public class QnaController {
     }
 
     @GetMapping("/qnaDetail")
-    public String qnaDetail_form(){
-
+    public String QnaDetail_form(@RequestParam("qna_id") int qna_id, Model model) {
+        QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+        model.addAttribute("qnaDetail", qnaDetail);
         log.info("page_move: qnaDetail.jsp");
         return "qnaDetail";
     }
+
 
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(Model model, @ModelAttribute QnaDto QnaDto) {
@@ -54,6 +53,12 @@ public class QnaController {
         } else {
             return "qnaWrite";
         }
+    }
+
+    @GetMapping("/qnaDelete")
+    public String qnaDelete_form(@RequestParam("qna_id") int qna_id){
+        QnaService.deleteQna(qna_id);
+        return "redirect:/qnaList";
     }
 
 }

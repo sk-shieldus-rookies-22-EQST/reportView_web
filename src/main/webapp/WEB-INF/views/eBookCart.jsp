@@ -15,26 +15,37 @@
 
 <div class="container">
     <div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
+        <%@ page import="java.util.List" %>
+        <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
+
         <%
-            List<CartBookId> itemList = (List<CartBookId>) request.getAttribute("cartList");
-            Iterator<CartBookId> iterator = itemList.iterator();
-            while (iterator.hasNext()) {
-                CartBookId book_id = iterator.next();
+            List<BookDto> bookList = (List<BookDto>) request.getAttribute("cartList");
+
+            if (bookList != null) {
+                for (BookDto book : bookList) {
         %>
         <li>
         <table align="center" border="1" style="width: 100%">
             <tr align="left">
-                <td> <%= book_id.getBookTitle() %>  </td>
-                <td> <%= cartList.getBookPrice() %>  </td>
+                <td> <img src="<%=book.getBook_img_path()%>" </td>
+                <td> <%= book.getBook_title() %> </td>
+                <td> <%= book.getBook_price() %> </td>
                 <td> 
-                    <form name="eBookCartDelete" action="./eBookCartProc.jsp" method="post">
-                        <input type="hidden" name="cart_id" value="<%= cartList.getCartId() %>">
+                    <form name="eBookCartDelete" action="/deleteCart" method="post">
+                        <input type="hidden" name="book_id" value="<%= book.getBook_id() %>">
                         <button type="submit">삭제</button>
                     </form> 
                 </td>
             </tr>  
         </table>
         </li>
+        <%
+                }
+            } else {
+        %>
+            <tr>
+                <td colspan="4">데이터가 없습니다.</td>
+            </tr>
         <%
             }
         %>

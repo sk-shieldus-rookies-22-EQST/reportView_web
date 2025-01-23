@@ -1,7 +1,6 @@
 package com.skrookies.dahaezlge.service.user;
 
 
-import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.repository.user.UserRepository;
 import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;

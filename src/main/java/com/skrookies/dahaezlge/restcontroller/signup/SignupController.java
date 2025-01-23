@@ -1,8 +1,7 @@
 package com.skrookies.dahaezlge.restcontroller.signup;
 
-import com.skrookies.dahaezlge.restcontroller.auth.dto.LoginDto;
 import com.skrookies.dahaezlge.restcontroller.signup.dto.SignDto;
-import com.skrookies.dahaezlge.restcontroller.util.StatusDto;
+import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +23,8 @@ public class SignupController {
     @PostMapping("/signup")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid SignDto signDto) {
 
-//        StatusDto statusDto = new StatusDto(userService.signup(signDto.getUser_id(), signDto.getPw(), signDto.getMail(), signDto.getPhone()));
-        StatusDto statusDto = new StatusDto(true);
+        StatusDto statusDto = new StatusDto(userService.registerUser(signDto.getUser_id(), signDto.getUser_pw(), signDto.getUser_phone(), signDto.getUser_email()));
+
         return ResponseEntity.ok()
                 .body(statusDto);
 

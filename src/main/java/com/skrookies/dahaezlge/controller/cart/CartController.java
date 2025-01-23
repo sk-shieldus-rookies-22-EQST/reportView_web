@@ -1,7 +1,6 @@
 package com.skrookies.dahaezlge.controller.cart;
 
-import com.skrookies.dahaezlge.entity.book.Book;
-import com.skrookies.dahaezlge.entity.cartBook.CartBook;
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.service.cart.CartService;
 
 
@@ -20,9 +19,14 @@ public class CartController {
     private final CartService cartService;
     @PostMapping("/showList")
     public String setCartList(Model model, String user_id){
-        List<Book> cartList = cartService.setCartList(user_id);
+        List<BookDto> cartList = cartService.setCartList(user_id);
         model.addAttribute("cartList", cartList);
         return "eBookCart";
+    }
+
+    @PostMapping("/deleteCart")
+    public Boolean delCartList(Model model, String user_id, int book_id){
+        return true;
     }
 
 }

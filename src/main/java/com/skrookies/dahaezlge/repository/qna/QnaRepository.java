@@ -3,8 +3,11 @@ package com.skrookies.dahaezlge.repository.qna;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -31,9 +34,31 @@ public class QnaRepository {
             QnaDto qna = new QnaDto();
             qna.setQna_id(rs.getInt("qna_id"));
             qna.setQna_title(rs.getString("qna_title"));
+            qna.setQna_body(rs.getString("qna_body"));
             qna.setQna_user_id(rs.getString("qna_user_id"));
             qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
             return qna;
         });
+    }
+
+    public QnaDto QnaById(int qna_id) {
+        String sql = "SELECT * from qna where qna_id= ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{qna_id}, new RowMapper<QnaDto>() {
+            @Override
+            public QnaDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                QnaDto qna = new QnaDto();
+                qna.setQna_id(rs.getInt("qna_id"));
+                qna.setQna_title(rs.getString("qna_title"));
+                qna.setQna_body(rs.getString("qna_body"));
+                qna.setQna_user_id(rs.getString("qna_user_id"));
+                qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
+                return qna;
+            }
+        });
+    }
+
+    public int deleteQna(int qna_id) {
+        String sql = "DELETE FROM qna WHERE qna_id= ?";
+        return jdbcTemplate.update(sql, qna_id);
     }
 }

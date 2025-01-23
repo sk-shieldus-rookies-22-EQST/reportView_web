@@ -22,4 +22,11 @@ public class QnaService {
     }
 
 
+    public QnaDto getQnaById(int qna_id) {
+        return QnaRepository.QnaById(qna_id);
+    }
+
+    public void deleteQna(int qna_id) {
+        QnaRepository.deleteQna(qna_id);
+    }
 }
