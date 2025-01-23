@@ -24,14 +24,9 @@ public class DBBookRepository implements BookRepository {
         return jdbcTemplate.queryForObject(
                 sql,
                 (rs, rowNum) -> {
-                    BookDto book = new BookDto();
-                    book.setBook_id(rs.getLong("book_id"));
-                    book.setBook_title(rs.getString("book_title"));
-                    book.setBook_auth(rs.getString("book_auth"));
-                    book.setBook_path(rs.getString("book_path"));
-                    book.setBook_summary(rs.getString("book_summary"));
-                    book.setBook_reg_date(String.valueOf(rs.getDate("book_reg_date")));
-                    book.setBook_img_path(rs.getString("book_img_path"));
+                    BookDto book = new BookDto(rs.getLong("book_id"), rs.getString("book_title"), rs.getString("book_auth")
+                            , rs.getString("book_path"), rs.getString("book_summary"), String.valueOf(rs.getDate("book_reg_date"))
+                            , rs.getString("book_img_path"), rs.getInt("book_price"));
                     return book;
                 }
         );
