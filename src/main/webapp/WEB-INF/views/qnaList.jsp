@@ -25,6 +25,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <c:if test"${empty qnaList}">
+                        <p>데이터가 없습니다.</p>
+                    </c:if>
                     <c:forEach var="qna" items="${qnaList}">
                         <tr>
                             <td>${qna.qna_id}</td>
