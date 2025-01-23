@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.restcontroller.view;
 
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.restcontroller.view.dto.*;
 import com.skrookies.dahaezlge.service.book.BookService;
@@ -66,14 +67,13 @@ public class ViewController {
     @GetMapping("/bookdetail/{book_id}")
     public ResponseEntity<BookDetailDto> bookDetail(@PathVariable("book_id") String book_id){
 
-        //List<Book> book_data = bookService.getBookInfo(Integer.parseInt(book_id));
+        List<BookDto> book_data = bookService.getBookInfo(Integer.parseInt(book_id));
+        BookDto bookDto = book_data.get(0);
 
-        //BookDetailDto bookDetailDto = new BookDetailDto();
+        BookDetailDto bookDetailDto = new BookDetailDto(bookDto.getBook_id(), bookDto.getBook_title(), bookDto.getBook_price(), bookDto.getBook_auth(), bookDto.getBook_summary(), bookDto.getBook_img_path());
 
-//        return ResponseEntity.ok()
-//                .body(bookDetailDto);
         return ResponseEntity.ok()
-                .body(null);
+                .body(bookDetailDto);
     }
 
     @PostMapping("/book/viewer")

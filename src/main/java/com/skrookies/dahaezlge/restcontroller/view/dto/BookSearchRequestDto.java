@@ -16,5 +16,4 @@ public class BookSearchRequestDto {
     private String keyword;
     private LocalDateTime sdate;
     private LocalDateTime edate;
-    private String theme;
 }
