@@ -42,7 +42,7 @@ public class QnaController {
         QnaDto.setQna_created_at(LocalDateTime.now());
         int qnaResult = QnaService.qna(QnaDto);
         if (qnaResult > 0) {
-            return "/qnaList";
+            return "redirect:/qnaList";
         } else {
             return "qnaWrite";
         }
