@@ -5,15 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class BookSearchRequestDto {
+public class BookListCapDto {
 
-    private String keyword;
-    private LocalDateTime sdate;
-    private LocalDateTime edate;
+    List<BookListDto> book_list;
 }
