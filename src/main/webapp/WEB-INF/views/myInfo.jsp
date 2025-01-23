@@ -4,6 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -44,7 +48,45 @@
 				<%if (myInfoModifyForm == "0") {%>
                     <%= user_phone %>
                 <%}else if (myInfoModifyForm == "1"){%>
-                    <input type="text" name="user_phone" id="user_phone" value="<%= user_phone %>" required>
+                    <input type="text" name="user_phone" maxlength="13"  id="user_phone" value="<%= user_phone %>" required>
+                    <script type="text/javascript">
+                                        let autoTel = function(str){
+                                              str = str.replace(/[^0-9]/g, '');
+                                              let tmp = '';
+                                              if( str.length < 4){
+                                                  return str;
+                                              }else if(str.length < 7){
+                                                  tmp += str.substr(0, 3);
+                                                  tmp += '-';
+                                                  tmp += str.substr(3);
+                                                  return tmp;
+                                              }else if(str.length < 11){
+                                                  tmp += str.substr(0, 3);
+                                                  tmp += '-';
+                                                  tmp += str.substr(3, 3);
+                                                  tmp += '-';
+                                                  tmp += str.substr(6);
+                                                  return tmp;
+                                              }else{
+                                                  tmp += str.substr(0, 3);
+                                                  tmp += '-';
+                                                  tmp += str.substr(3, 4);
+                                                  tmp += '-';
+                                                  tmp += str.substr(7);
+                                                  return tmp;
+                                              }
+
+                                              return str;
+                                        }
+
+
+                                        let usertel = document.getElementById('user_phone');
+
+                                        usertel.onkeyup = function(){
+                                          console.log(this.value);
+                                          this.value = autoTel( this.value ) ;
+                                        }
+                                    </script>
                 <%}%>
 			</td>
 		</tr>
