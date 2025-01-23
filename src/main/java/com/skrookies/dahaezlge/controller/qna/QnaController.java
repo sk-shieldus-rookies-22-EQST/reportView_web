@@ -36,6 +36,12 @@ public class QnaController {
         return "qnaWrite";
     }
 
+    @GetMapping("/qnaDetail")
+    public String qnaDetail_form(){
+
+        log.info("page_move: qnaDetail.jsp");
+        return "qnaDetail";
+    }
 
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(@ModelAttribute QnaDto QnaDto) {

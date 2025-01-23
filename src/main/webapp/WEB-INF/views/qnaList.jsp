@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ taglib uri="http://xmlns.jcp.org/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +34,9 @@
                     <c:forEach var="qna" items="${qnaList}">
                         <tr>
                             <td>${qna.qna_id}</td>
-                            <td>${qna.qna_title}</td>
+                            <td>
+                                <a href="/qnaDetail?qna_id=${qna_id}">${qna.qna_title}</a>
+                            </td>
                             <td>${qna.qna_user_id}</td>
                             <td>${qna.qna_created_at}</td>
                         </tr>
