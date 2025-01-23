@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -17,6 +18,19 @@ public class BookService {
 
     public BookDto getBookInfo(int book_id){
         return bookRepository.getBookInfo(book_id);
+    }
+
+    public List<Map<String, Object>> getBooks(int page, int pageSize) {
+        return bookRepository.getBooks(page, pageSize);
+    }
+
+    public int getTotalBooks() {
+        return bookRepository.getTotalBooks();
+    }
+
+    // ▼ 전체 도서 목록 (Map) 가져오기
+    public List<Map<String, Object>> findAllBooks() {
+        return bookRepository.findAllBooks();
     }
 
 }
