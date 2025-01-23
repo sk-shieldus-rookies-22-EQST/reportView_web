@@ -23,23 +23,7 @@
 
 	<body>
 
-		<% request.setCharacterEncoding("utf-8");
-		    String logout=request.getParameter("logout"); //logout 변수에 값이 있으면, 리셋
-			if(logout !=null) {
-			    session.setAttribute("user_id", null);
-			    Cookie[] ck=request.getCookies();
-                try{
-                    for(int i=0; i< ck.length; i++){
-                        ck[i].setMaxAge(0); response.addCookie(ck[i]);
-                    }
-                } catch (Exception e) {
-                    out.print("쿠키가 사라지지 않았습니다");
-                }
-			}
-			String user_id=(String)session.getAttribute("user_id");
-			if(user_id==null) {
-			    user_id=" " ;
-			} %>
+		<% request.setCharacterEncoding("utf-8"); %>
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
@@ -57,8 +41,11 @@
 							aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-						<% if(user_id.equals(" ")){
-	%>
+                    <%
+                             // JSP Scriptlet: EL 표현식 값을 Java 변수에 할당
+                             String user_id = (String) request.getAttribute("id");
+                             if(user_id == null) {
+                     %>
 					<div class=" collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 							<li class="nav-item">
@@ -97,7 +84,7 @@
 								</li>
 							</ul>
 							<input class="btn btn-outline-light" type="button" value="로그아웃"
-										onclick="location.href='/index?logout=1'" style="margin-left: 20px;">
+										onclick="location.href='/logout'" style="margin-left: 20px;">
 						</div>
 
 								<% } %>

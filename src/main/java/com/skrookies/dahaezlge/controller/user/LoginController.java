@@ -35,6 +35,7 @@ public class LoginController {
             SessionDto sessionDto = new SessionDto(loginDto.getUser_id());
 
             session.setAttribute("id", sessionDto);
+            log.info("sessionId = " + session.getAttribute("id"));
 
             /** point select 메소드 */
             int point = userService.userPoint("1");
@@ -42,6 +43,8 @@ public class LoginController {
 
             /** Point model로 전달 */
             model.addAttribute("point", point);
+
+            model.addAttribute("user_id",loginDto.getUser_id());
 
             return "redirect:/index";
         }
@@ -53,5 +56,10 @@ public class LoginController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(Model model, HttpSession session) {
+        session.setAttribute("id", null);
+        return "index";
+    }
 
 }
