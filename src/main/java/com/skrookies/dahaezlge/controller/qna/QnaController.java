@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDate;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -33,6 +35,7 @@ public class QnaController {
 
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(@ModelAttribute QnaDto QnaDto) {
+        QnaDto.setQna_created_at(LocalDate.now());
         int qnaResult = QnaService.qna(QnaDto);
         if (qnaResult > 0) {
             return "redirect:/qnaList/";
