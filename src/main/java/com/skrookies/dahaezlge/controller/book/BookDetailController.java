@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.file.FileStore;
 import java.util.List;
@@ -26,14 +27,16 @@ public class BookDetailController {
     private final BookService bookService;
 
     @PostMapping("/addCart")
-    public String addCart(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
+    public String addCart(Model model, RedirectAttributes redirectAttributes, @RequestParam("book_id") Long book_id, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
+        log.info("detail controller addcart");
         if (user_id == null){
-            model.addAttribute("message","로그인이 필요합니다.");
+            log.info("detail controller user id null");
+            redirectAttributes.addFlashAttribute("message","로그인이 필요합니다.");
             return "loginForm";
         }
         else {
-            log.info("controller");
+            log.info("detail controller do addcart");
             bookDetailService.addCart(user_id, book_id);
             return "forward:/eBookCart";
         }

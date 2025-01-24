@@ -19,7 +19,7 @@
         <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
 
         <%
-            List<BookDto> bookList = (List<BookDto>) request.getAttribute("cartList");
+            List<BookDto> bookList = (List<BookDto>) request.getAttribute("purchaseList");
 
             if (bookList != null) {
                 for (BookDto book : bookList) {
@@ -42,6 +42,7 @@
         <%
             }
         %>
+
 
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
             <form method="POST" action="/purchaseProc">
