@@ -36,9 +36,13 @@
                             <img class="image_container" src="/images/test.jpg" style="position: relative;width: 100%;overflow: hidden;">
 
                         </div>
-                        <div>
-                            <p class="fs-4 fw-semibold" style="margin:0;white-space: nowrap;overflow: hidden;width:184px;text-overflow: ellipsis;">${book['book_title']}</p>
-                            <p class="text-secondary fs-6">${book['book_auth']}</p>
+                        <div style="margin-bottom:16px">
+                        <div style=" height:100px;display: flex; flex-direction: column; justify-content: space-between;">
+
+                            <p class="fs-4 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
+
+                            <p class="text-secondary fs-6" style="margin:0;">${book['book_auth']}</p>
+                        </div>
                         </div>
                     </div>
 
