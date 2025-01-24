@@ -28,7 +28,7 @@
             <c:forEach var="bookList" items="${books_info}">
                 <c:forEach var="book" items="${bookList}" varStatus="status">
                     <!-- 각 col은 고정된 width로 5개가 들어감 -->
-                    <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;width: 184px; margin:0 2%" onclick="window.location.href='RookiesDRM://run?user_id=<%=user_id%>&book_id=${book["book_id"]}'">
+                    <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;width: 184px; margin:0 2%" onclick="window.location.href='BookiesDRM://run?user_id=<%=user_id%>&book_id=${book["book_id"]}'">
 
                         <div style="border:1px solid; margin: 0% 10%;width:184px;">
                             <!--<img src="${book['book_img_path']}">-->
