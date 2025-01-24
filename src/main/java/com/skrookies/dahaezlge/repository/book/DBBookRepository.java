@@ -24,22 +24,28 @@ public class DBBookRepository implements BookRepository {
         return jdbcTemplate.queryForObject(
                 sql,
                 (rs, rowNum) -> {
-                    BookDto book = new BookDto(rs.getLong("book_id"), rs.getString("book_title"), rs.getString("book_auth")
-                            , rs.getString("book_path"), rs.getString("book_summary"), String.valueOf(rs.getDate("book_reg_date"))
-                            , rs.getString("book_img_path"), rs.getInt("book_price"));
+                    BookDto book = new BookDto(
+                            rs.getLong("book_id"),
+                            rs.getString("book_title"),
+                            rs.getString("book_auth"),
+                            rs.getString("book_path"),
+                            rs.getString("book_summary"),
+                            rs.getTimestamp("book_reg_date").toLocalDateTime(),
+                            rs.getString("book_img_path"),
+                            rs.getInt("book_price"));
                     return book;
                 }
         );
     }
     @Override
-    public List<BookDto> getCartBookInfo(List<Integer> bookIdList){
+    public List<BookDto> getCartBookInfo(List<Long> bookIdList){
         String sql = "Select * from book where book_id = ?";
 
         // 결과를 저장할 리스트
         List<BookDto> cartBookInfoList = new ArrayList<>();
 
         // 각 bookId에 대해 개별적으로 쿼리 실행
-        for (Integer bookId : bookIdList) {
+        for (Long bookId : bookIdList) {
             List<BookDto> books = jdbcTemplate.query(
                     sql,
                     new Object[]{bookId},
@@ -73,7 +79,7 @@ public class DBBookRepository implements BookRepository {
     @Override
     public List<Map<String, Object>> findAllBooks() {
         String sql = """
-            SELECT book_id, book_title, book_auth, book_path, 
+            SELECT book_id, book_title, book_auth, book_path,
                    book_summary, book_reg_date, book_img_path, book_price
             FROM book
         """;

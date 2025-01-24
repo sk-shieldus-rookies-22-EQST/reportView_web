@@ -49,13 +49,13 @@
         <%
             }
         %>
-        
+
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
             <% String previousPage = request.getHeader("referer"); %>
-            <button class="btn btn-primary" type="button" 
-                onclick="location.href='<%= previousPage %>'">목록으로</button>
-        </div>  
-        
+            <button class="btn btn-primary" type="button"
+                onclick="location.href='/eBookPurchase'">결제하기</button>
+        </div>
+
     </div>
 </div>
 

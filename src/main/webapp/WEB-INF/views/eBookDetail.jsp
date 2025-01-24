@@ -43,10 +43,24 @@
                     <td width="70%"> <%= eBook.getBook_price() %>  </td>
                 </tr>
             </table>
+    <!-- 메시지를 숨긴 상태로 HTML에 포함 -->
+    <span id="message" style="display: none;">${message}</span>
+
+    <script>
+        // HTML 요소에서 메시지를 읽어와 alert 표시
+        var messageElement = document.getElementById("message");
+        var message = messageElement.innerText || messageElement.textContent;
+        if (message) {
+            alert(message);
+        }
+    </script>
             <div>
                 <span style="display: inline-block; float: right;">
-                    <button onclick="location.href='/addCart'">장바구니</button>
-                    <button action="/Purchase">구매</button>
+                    <form method="POST" action="/addCart">
+                        <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
+                        <button>장바구니</button>
+                        <button onclick="location.href='/Purchase'">구매</button>
+                    </form>
                 </span>
             </div>
             <div>

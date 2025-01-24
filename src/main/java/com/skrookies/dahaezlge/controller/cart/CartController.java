@@ -19,15 +19,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-    @PostMapping("/showList")
-    public String setCartList(Model model, String user_id){
-        List<BookDto> cartList = cartService.setCartList(user_id);
-        model.addAttribute("cartList", cartList);
-        return "eBookCart";
+    @PostMapping("/eBookCart")
+    public String setCartList(Model model, HttpSession session){
+        String user_id = (String) session.getAttribute("user_id");
+        if (user_id == null){
+            model.addAttribute("message","로그인이 필요합니다.");
+            return "loginForm";
+        }
+        else {
+            log.info("cartcontroller");
+            List<BookDto> cartList = cartService.setCartList(user_id);
+            model.addAttribute("cartList", cartList);
+            return "eBookCart";
+        }
     }
 
     @PostMapping("/deleteCart")
-    public Boolean delCartList(Model model, String user_id, int book_id){
+    public Boolean delCartList(Model model, String user_id, Long book_id){
         return true;
     }
 

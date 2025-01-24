@@ -9,7 +9,7 @@ public interface BookRepository {
 
     BookDto getBookInfo(Long book_id);
 
-    List<BookDto> getCartBookInfo(List<Integer> bookIdList);
+    List<BookDto> getCartBookInfo(List<Long> bookIdList);
 
     // 페이지별로 책 리스트 가져오기
     List<Map<String, Object>> getBooks(int page, int pageSize);

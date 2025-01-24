@@ -10,15 +10,15 @@ import com.skrookies.dahaezlge.repository.cart.CartRepository;
 import com.skrookies.dahaezlge.repository.cartBook.CartBookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
-
-
 public class CartService {
     private final CartRepository cartRepository;
     private final CartBookRepository cartBookRepository;
@@ -26,8 +26,8 @@ public class CartService {
 
     public List<BookDto> setCartList(String user_id){
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
-
-        List<Integer> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
+        log.info("Service");
+        List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
         return bookRepository.getCartBookInfo(cartBookIdList);
     }
