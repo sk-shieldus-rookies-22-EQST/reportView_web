@@ -26,8 +26,16 @@ public class BookDetailController {
     private final BookService bookService;
 
     @PostMapping("/addCart")
-    public boolean addCart(@RequestParam("book_id") Long book_id, HttpSession session){
+    public String addCart(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
-        return bookDetailService.addCart(user_id, book_id);
+        if (user_id == null){
+            model.addAttribute("message","로그인이 필요합니다.");
+            return "loginForm";
+        }
+        else {
+            log.info("controller");
+            bookDetailService.addCart(user_id, book_id);
+            return "forward:/eBookCart";
+        }
     }
 }

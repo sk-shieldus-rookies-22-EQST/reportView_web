@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
 @ToString
 
 public class QnaDto {
-    private Integer qna_id;
+    private Long qna_id;
     private String qna_title;
     private String qna_body;
     private String qna_user_id;
     private LocalDateTime qna_created_at;
+
 }

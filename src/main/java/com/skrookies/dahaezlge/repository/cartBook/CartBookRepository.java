@@ -5,7 +5,7 @@ import com.skrookies.dahaezlge.controller.cart.Dto.CartDto;
 import java.util.List;
 
 public interface CartBookRepository {
-    Boolean addCartBook(int cart_id, Long book_id);
+    Boolean addCartBook(Long cart_id, Long book_id);
 
-    List<Integer> getCartBookList(List<CartDto> CartIdList);
+    List<Long> getCartBookList(List<CartDto> CartIdList);
 }

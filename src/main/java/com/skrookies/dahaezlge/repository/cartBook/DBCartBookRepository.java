@@ -18,7 +18,7 @@ public class DBCartBookRepository implements CartBookRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Boolean addCartBook(int cart_id, Long book_id){
+    public Boolean addCartBook(Long cart_id, Long book_id){
         String sql = "INSERT INTO cart_book (cart_book_id, cart_book_book_id) VALUES (?, ?)";
 
         // update 메서드는 영향을 받은 행의 개수를 반환
@@ -29,16 +29,17 @@ public class DBCartBookRepository implements CartBookRepository {
     }
 
     @Override
-    public List<Integer> getCartBookList(List<CartDto> CartList){
-        List<Integer> bookIds = new ArrayList<>();
+    public List<Long> getCartBookList(List<CartDto> CartList){
+        List<Long> bookIds = new ArrayList<>();
 
-        String sql = "SELECT cart_book_book_id FROM cart_book WHERE cart_id = ?";
+        String sql = "SELECT cart_book_book_id FROM cart_book WHERE cart_book_id = ?";
         for (CartDto cart : CartList) {
-            List<Integer> ids = jdbcTemplate.query(sql, new Object[]{cart.getCart_id()},
-                    (rs, rowNum) -> rs.getInt("cart_book_book_id"));
+            List<Long> ids = jdbcTemplate.query(sql, new Object[]{cart.getCart_id()},
+                    (rs, rowNum) -> rs.getLong("cart_book_book_id"));
 
             bookIds.addAll(ids);
         }
+        log.info(String.valueOf(bookIds.size()));
 
         return bookIds;
     }

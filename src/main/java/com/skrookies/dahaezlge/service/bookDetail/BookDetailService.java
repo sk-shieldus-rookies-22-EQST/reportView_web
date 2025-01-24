@@ -21,7 +21,7 @@ public class BookDetailService {
 
     public Boolean addCart(String user_id, Long book_id){
         BookDto book_info = bookRepository.getBookInfo(book_id);
-        int cart_id = cartRepository.addCart(user_id, book_info);
+        Long cart_id = cartRepository.addCart(user_id, book_info);
         return cartBookRepository.addCartBook(cart_id, book_id);
     }
 }
