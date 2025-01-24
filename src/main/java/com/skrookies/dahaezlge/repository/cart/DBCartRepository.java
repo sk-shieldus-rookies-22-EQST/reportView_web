@@ -32,7 +32,7 @@ public class DBCartRepository implements CartRepository {
     public int addCart(String user_id, BookDto book_info) {
         String sql = "INSERT INTO cart (cart_user_id, cart_total_price) VALUES (?, ?)";
 
-        String book_price = book_info.getBook_price();
+        Integer book_price = book_info.getBook_price();
 
         // KeyHolder 객체 생성
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -40,7 +40,7 @@ public class DBCartRepository implements CartRepository {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[] { "cart_id" });
             ps.setString(1, user_id);
-            ps.setString(2, book_price);
+            ps.setString(2, book_price.toString());
             return ps;
         }, keyHolder);
 
