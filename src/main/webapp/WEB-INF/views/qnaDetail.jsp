@@ -64,22 +64,43 @@
 
     </div>
 
-    <div>
-        <c:forEach var="reply" items="${replies}">
-                <div class="mb-3">
-                    <p><strong>${reply.qna_re_user_id}</strong> - ${reply.qna_re_created_at}</p>
-                    <p>${reply.qna_re_body}</p>
-                </div>
-                <hr>
-        </c:forEach>
-
-        <h4>답글</h4>
-            <form method="post" action="/qnaReply">
-                <input type="hidden" name="qna_id" value="${qna.qna_id}" />
-                <textarea name="qna_re_body" class="form-control" rows="3" placeholder="답글을 입력하세요"></textarea>
-                <button type="submit" class="btn btn-primary mt-2">답글 작성</button>
-        </form>
+    <!-- 답글 목록 -->
+    <div class="mt-5">
+        <h5>답글 목록</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>작성자</th>
+                    <th>내용</th>
+                    <th>작성일자</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="reply" items="${qnaReplies}">
+                    <tr>
+                        <td>${reply.qna_re_user_id}</td>
+                        <td>${reply.qna_re_body}</td>
+                        <td>${reply.qna_re_created_at}</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
     </div>
+
+    <!-- 답글 작성 폼 -->
+    <c:if test="${sessionScope.user_level == 123}">
+        <div class="mt-4">
+            <h5>답글 작성</h5>
+            <form action="qnaReplyProcess" method="post">
+                <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
+                <div class="mb-3">
+                    <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">답글 달기</button>
+            </form>
+        </div>
+    </c:if>
+
 
 </body>
 </html>

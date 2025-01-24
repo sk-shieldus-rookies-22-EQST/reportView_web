@@ -2,9 +2,7 @@ package com.skrookies.dahaezlge.controller.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
-import com.skrookies.dahaezlge.repository.qnaRe.QnaReRepository;
 import com.skrookies.dahaezlge.service.qna.QnaService;
-import com.skrookies.dahaezlge.service.qnaRe.QnaReService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +19,6 @@ import java.util.List;
 @Slf4j
 public class QnaController {
     private final QnaService QnaService;
-    private final QnaReService QnaReService;
 
     @GetMapping("/qnaList")
     public String qnaList_form(@RequestParam(defaultValue = "1") int page, Model model) {
@@ -63,7 +60,7 @@ public class QnaController {
     }
 
     @GetMapping("/qnaDetail")
-    public String QnaDetail_form(HttpSession session, @RequestParam("qna_re_id") int qna_re_id,@RequestParam("qna_id") int qna_id, Model model) {
+    public String QnaDetail_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
         // 세션에서 user_id를 가져옵니다.
         String userId = (String) session.getAttribute("user_id");
 
@@ -73,10 +70,10 @@ public class QnaController {
 
         // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
-        List<QnaReDto> replies = QnaReService.getRepliesByQnaId((long) qna_re_id);
+        List<QnaReDto> qnaReplies = QnaService.getRepliesByQnaId(qna_id);
 
         model.addAttribute("qnaDetail", qnaDetail);
-        model.addAttribute("replies", replies);
+        model.addAttribute("qnaReplies", qnaReplies);
 
         log.info("page_move: qnaDetail.jsp");
         return "qnaDetail";
@@ -141,17 +138,22 @@ public class QnaController {
         return "qnaList";
     }
 
-    @PostMapping("/qnaReply")
-    public String saveReply(HttpSession session, @RequestParam("qna_id") Long qnaId, @RequestParam("qna_re_body") String replyBody) {
+    @PostMapping("/qnaReplyProcess")
+    public String qnaReplyProcess(HttpSession session, @RequestParam("qna_id") int qnaId, @RequestParam("qna_re_body") String qnaReBody) {
         String userId = (String) session.getAttribute("user_id");
+        int userLevel = (int) session.getAttribute("user_level");
 
-        QnaReDto qnaReDto = new QnaReDto();
-        qnaReDto.setQna_re_user_id(userId);
-        qnaReDto.setQna_re_body(replyBody);
-        qnaReDto.setQna_re_created_at(LocalDateTime.now());
+        if (userId == null || userId.isEmpty() || userLevel != 123) {
+            return "redirect:/qnaList"; // 권한이 없을 경우 목록으로 리다이렉트
+        }
 
-        QnaReService.saveReply(qnaReDto);
-        return "redirect:/qnaDetail?qna_id=" + qnaId;
+        QnaReDto reply = new QnaReDto();
+        reply.setQna_re_user_id(userId);
+        reply.setQna_re_body(qnaReBody);
+        reply.setQna_re_created_at(LocalDateTime.now());
+        QnaService.saveReply(qnaId, reply);
+
+        return "redirect:/qnaDetail?qna_id=" + qnaId; // 답글 저장 후 상세 페이지로 리다이렉트
     }
 
 }

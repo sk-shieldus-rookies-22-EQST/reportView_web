@@ -1,6 +1,7 @@
 package com.skrookies.dahaezlge.service.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
+import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.repository.qna.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,12 @@ public class QnaService {
         int pageSize = 10;
         int offset = (page - 1) * pageSize;
         return QnaRepository.findByKeyword(keyword, offset, pageSize);
+    }
+
+    public void saveReply(int qnaId, QnaReDto reply) {
+        QnaRepository.saveReply(qnaId, reply);
+    }
+    public List<QnaReDto> getRepliesByQnaId(int qnaId) {
+        return QnaRepository.findRepliesByQnaId(qnaId);
     }
 }
