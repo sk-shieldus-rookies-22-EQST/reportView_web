@@ -23,16 +23,16 @@ public interface BookRepository {
     List<Map<String, Object>> findAllBooks();
 
     /** keyword 기반 book list 출력
-     * @return List<Book> */
-    List<Book> findByKeyword(String keyword);
+     * @return List<Map<String, Object>> */
+    List<Map<String, Object>> findByKeyword(String keyword);
 
 
     /** Date 기반 book list 출력
-     * @return List<Book> */
-    List<Book> findByDate(LocalDateTime sdate, LocalDateTime edate);
+     * @return List<Map<String, Object>> */
+    List<Map<String, Object>> findByDate(LocalDateTime sdate, LocalDateTime edate);
 
     /** keyword & Date 기반 book list 출력
-     * @return List<Book> */
-    List<Book> findByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate);
+     * @return List<Map<String, Object>> */
+    List<Map<String, Object>> findByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate);
 
 }
