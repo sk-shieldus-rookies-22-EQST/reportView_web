@@ -64,4 +64,22 @@ public class QnaRepository {
             String sql = "UPDATE qna SET qna_title = ?, qna_body = ? WHERE qna_id = ?";
             return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getQna_id());
     }
+
+    public int countTotalQnas() {
+        String sql = "SELECT COUNT(*) FROM qna";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    public List<QnaDto> findQnasByPage(int offset, int pageSize) {
+        String sql = "SELECT * FROM qna ORDER BY qna_created_at DESC LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(sql, new Object[]{pageSize, offset}, (rs, rowNum) -> {
+            QnaDto qna = new QnaDto();
+            qna.setQna_id(rs.getLong("qna_id"));
+            qna.setQna_title(rs.getString("qna_title"));
+            qna.setQna_body(rs.getString("qna_body"));
+            qna.setQna_user_id(rs.getString("qna_user_id"));
+            qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
+            return qna;
+        });
+    }
 }

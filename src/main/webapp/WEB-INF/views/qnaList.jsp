@@ -54,7 +54,27 @@
                     %>
                 </tbody>
             </table>
+            <nav class="mt-4" style="display: flex; justify-content: center;">
+                <ul class="pagination">
+                    <c:if test="${currentPage > 1}">
+                        <li class="page-item">
+                            <a class="page-link" href="/qnaList?page=${currentPage - 1}">이전</a>
+                        </li>
+                    </c:if>
 
+                    <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                        <li class="page-item <c:if test='${i == currentPage}'>active</c:if>">
+                            <a class="page-link" href="/qnaList?page=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <li class="page-item">
+                            <a class="page-link" href="/qnaList?page=${currentPage + 1}">다음</a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
             <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>
     </div>
 </div>

@@ -33,4 +33,13 @@ public class QnaService {
     public int qnaUpdate(QnaDto QnaDto) {
         return QnaRepository.qnaUpdate(QnaDto);
     }
+
+    public int getTotalQnas() {
+        return QnaRepository.countTotalQnas(); //전체 게시글 수 조회
+    }
+
+    public List<QnaDto> getQnasByPage(int page, int pageSize) {
+        int offset = (page - 1) * pageSize; // 가져올 데이터 시작 위치
+        return QnaRepository.findQnasByPage(offset, pageSize);
+    }
 }
