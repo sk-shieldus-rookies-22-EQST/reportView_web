@@ -22,14 +22,18 @@ public class UserKey {
     private Long key_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "key_user_id", nullable = false)
+    @JoinColumn(name = "key_book_id", nullable = false)
     private Users users;
+
+    @Column(name = "key_value")
+    private String key_value;
 
     @Column(name = "key_created_at")
     private Timestamp key_created_at;
 
-    public UserKey(Users users, Timestamp key_created_at) {
+    public UserKey(Users users, String key_value, Timestamp key_created_at) {
         this.users = users;
+        this.key_value = key_value;
         this.key_created_at = key_created_at;
     }
 }
