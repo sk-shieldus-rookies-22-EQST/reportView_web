@@ -20,7 +20,7 @@
             <thead>
             <tr>
                 <th style="background-color: #eeeeee; text-align: center;">도서 이미지</th>
-                <th style="background-color: #eeeeee; text-align: center;">제목</th>
+                <th style="background-color: #eeeeee; text-align: center;width:500px">제목</th>
                 <th style="background-color: #eeeeee; text-align: center;">작가</th>
                 <th style="background-color: #eeeeee; text-align: center;">가격</th>
                 <th style="background-color: #eeeeee; text-align: center;">장바구니</th>
@@ -39,7 +39,9 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">${book['book_title']}</td>
+                    <td style="width:500px" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                        <p style="white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">${book['book_title']}</p>
+                    </td>
                     <td>${book['book_auth']}</td>
                     <td>${book['book_price']}원</td>
                     <td>
