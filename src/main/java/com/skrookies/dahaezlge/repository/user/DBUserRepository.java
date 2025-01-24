@@ -84,7 +84,7 @@ public class DBUserRepository implements UserRepository{
 
 
         String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, 1, ?)";
-        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, ?)";
+        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 1000000)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
         log.info("user_phone: "+ user_phone);
@@ -98,10 +98,8 @@ public class DBUserRepository implements UserRepository{
             int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, formatedNow);
             log.info("sql success");
 
-            Random random = new Random();
-            int randint = random.nextInt(5000000) + 5000000;
 
-            int result2 = jdbcTemplate.update(sql2_point, randint);
+            int result2 = jdbcTemplate.update(sql2_point, user_id);
             log.info("sql2 success");
             // result 값이 1이면 성공
             if (result > 0 && result2 > 0) {
