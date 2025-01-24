@@ -64,5 +64,22 @@
 
     </div>
 
+    <div>
+        <c:forEach var="reply" items="${replies}">
+                <div class="mb-3">
+                    <p><strong>${reply.qna_re_user_id}</strong> - ${reply.qna_re_created_at}</p>
+                    <p>${reply.qna_re_body}</p>
+                </div>
+                <hr>
+        </c:forEach>
+
+        <h4>답글</h4>
+            <form method="post" action="/qnaReply">
+                <input type="hidden" name="qna_id" value="${qna.qna_id}" />
+                <textarea name="qna_re_body" class="form-control" rows="3" placeholder="답글을 입력하세요"></textarea>
+                <button type="submit" class="btn btn-primary mt-2">답글 작성</button>
+        </form>
+    </div>
+
 </body>
 </html>

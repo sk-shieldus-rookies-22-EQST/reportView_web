@@ -1,7 +1,10 @@
 package com.skrookies.dahaezlge.controller.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
+import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
+import com.skrookies.dahaezlge.repository.qnaRe.QnaReRepository;
 import com.skrookies.dahaezlge.service.qna.QnaService;
+import com.skrookies.dahaezlge.service.qnaRe.QnaReService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import java.util.List;
 @Slf4j
 public class QnaController {
     private final QnaService QnaService;
+    private final QnaReService QnaReService;
 
     @GetMapping("/qnaList")
     public String qnaList_form(@RequestParam(defaultValue = "1") int page, Model model) {
@@ -59,7 +63,7 @@ public class QnaController {
     }
 
     @GetMapping("/qnaDetail")
-    public String QnaDetail_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
+    public String QnaDetail_form(HttpSession session, @RequestParam("qna_re_id") int qna_re_id,@RequestParam("qna_id") int qna_id, Model model) {
         // 세션에서 user_id를 가져옵니다.
         String userId = (String) session.getAttribute("user_id");
 
@@ -69,7 +73,10 @@ public class QnaController {
 
         // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+        List<QnaReDto> replies = QnaReService.getRepliesByQnaId((long) qna_re_id);
+
         model.addAttribute("qnaDetail", qnaDetail);
+        model.addAttribute("replies", replies);
 
         log.info("page_move: qnaDetail.jsp");
         return "qnaDetail";
@@ -132,6 +139,19 @@ public class QnaController {
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
         return "qnaList";
+    }
+
+    @PostMapping("/qnaReply")
+    public String saveReply(HttpSession session, @RequestParam("qna_id") Long qnaId, @RequestParam("qna_re_body") String replyBody) {
+        String userId = (String) session.getAttribute("user_id");
+
+        QnaReDto qnaReDto = new QnaReDto();
+        qnaReDto.setQna_re_user_id(userId);
+        qnaReDto.setQna_re_body(replyBody);
+        qnaReDto.setQna_re_created_at(LocalDateTime.now());
+
+        QnaReService.saveReply(qnaReDto);
+        return "redirect:/qnaDetail?qna_id=" + qnaId;
     }
 
 }
