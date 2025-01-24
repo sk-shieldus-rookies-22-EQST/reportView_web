@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.repository.purchase;
 
+import com.skrookies.dahaezlge.controller.cart.Dto.CartDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDateTime;
 
 
 @Slf4j
@@ -16,6 +18,23 @@ import java.util.Map;
 
 public class DBPurchaseRepository implements PurchaseRepository {
     private final JdbcTemplate jdbcTemplate;
+
+    public boolean purchaseCart(String user_id, List<Long> cartBookIdList){
+        String sql = "INSERT INTO purchase (purchase_user_id, purchase_book_id, purchase_date) VALUES (?, ?, ?)";
+
+        List<Long> bookIds = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        int rowsAffected = 0;
+
+        for (Long cartbookid : cartBookIdList) {
+            rowsAffected += jdbcTemplate.update(sql, user_id, cartbookid, now);
+        }
+
+        log.info("Total rows affected: " + rowsAffected);
+
+        return rowsAffected > 0;
+
+    }
 
     @Override
     public List<Long> purchaseBook_list(String user_id) {

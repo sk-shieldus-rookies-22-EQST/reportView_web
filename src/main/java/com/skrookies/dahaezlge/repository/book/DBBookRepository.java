@@ -140,5 +140,15 @@ public class DBBookRepository implements BookRepository {
 
     }
 
+    @Override
+    public List<Map<String, Object>> getMyBooks(Long bookId) {
+        String sql = """
+        SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price
+        FROM book WHERE book_id = ?
+        ORDER BY book_reg_date DESC
+    """;
+        return jdbcTemplate.queryForList(sql, bookId);
+    }
+
 
 }

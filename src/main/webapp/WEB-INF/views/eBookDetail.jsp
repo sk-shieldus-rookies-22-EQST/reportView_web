@@ -7,7 +7,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+<script>
+    var message = "${message}";
+    if (message) {
+        alert(message);
+    }
+</script>
 </head>
 <body>
     <div class="container">
@@ -46,20 +51,15 @@
     <!-- 메시지를 숨긴 상태로 HTML에 포함 -->
     <span id="message" style="display: none;">${message}</span>
 
-    <script>
-        // HTML 요소에서 메시지를 읽어와 alert 표시
-        var messageElement = document.getElementById("message");
-        var message = messageElement.innerText || messageElement.textContent;
-        if (message) {
-            alert(message);
-        }
-    </script>
             <div>
                 <span style="display: inline-block; float: right;">
                     <form method="POST" action="/addCart">
                         <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
                         <button>장바구니</button>
-                        <button onclick="location.href='/Purchase'">구매</button>
+                    </form>
+                    <form method="POST" action="/purchase">
+                          <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
+                          <button>결제</button>
                     </form>
                 </span>
             </div>

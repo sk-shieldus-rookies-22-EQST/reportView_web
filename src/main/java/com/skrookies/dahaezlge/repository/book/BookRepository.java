@@ -35,4 +35,5 @@ public interface BookRepository {
      * @return List<Map<String, Object>> */
     List<Map<String, Object>> findByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate);
 
+    List<Map<String, Object>> getMyBooks(Long bookId);
 }

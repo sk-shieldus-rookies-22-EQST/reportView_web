@@ -27,6 +27,9 @@ public class BookService {
     public List<Map<String, Object>> getBooks(int page, int pageSize) {
         return bookRepository.getBooks(page, pageSize);
     }
+    public List<Map<String, Object>> getMyBooks(Long book_id) {
+        return bookRepository.getMyBooks(book_id);
+    }
 
     public int getTotalBooks() {
         return bookRepository.getTotalBooks();
