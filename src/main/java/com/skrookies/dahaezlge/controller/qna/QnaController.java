@@ -84,18 +84,27 @@ public class QnaController {
     }
 
     @PostMapping("/qnaWriteProcess")
-    public String qnaWrite(@RequestParam("qna_user_id") String qnaUserId,HttpSession session, Model model, @ModelAttribute QnaDto QnaDto) {
+    public String qnaWrite(HttpSession session, Model model, @ModelAttribute QnaDto qnaDto) {
+        // 세션에서 사용자 ID 가져오기
         String userId = (String) session.getAttribute("user_id");
 
-        QnaDto qnaDto = new QnaDto();
+        if (userId == null || userId.isEmpty()) {
+            // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
+            return "redirect:/loginForm";
+        }
+
+        // 사용자 ID와 작성 시간 설정
         qnaDto.setQna_user_id(userId);
-        QnaService.qna(qnaDto);
-        QnaDto.setQna_created_at(LocalDateTime.now());
-        int qnaResult = QnaService.qna(QnaDto);
+        qnaDto.setQna_created_at(LocalDateTime.now());
+
+        // QnA 저장 처리
+        int qnaResult = QnaService.qna(qnaDto);
+
         if (qnaResult > 0) {
-            return "redirect:/qnaList";
+            return "redirect:/qnaList"; // 성공 시 목록 페이지로 이동
         } else {
-            return "qnaWrite";
+            model.addAttribute("errorMessage", "글 작성에 실패했습니다.");
+            return "qnaWrite"; // 실패 시 작성 페이지로 이동
         }
     }
 

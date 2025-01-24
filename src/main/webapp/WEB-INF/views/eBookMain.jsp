@@ -28,7 +28,7 @@
             </thead>
             <tbody>
             <c:forEach var="book" items="${books}">
-                <tr onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                <tr>
                     <td>
                         <c:choose>
                             <c:when test="${book['book_img_path'] != null}">
@@ -39,7 +39,9 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td>${book['book_title']}</td>
+                    <td style="width:500px" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                        <p style="white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">${book['book_title']}</p>
+                    </td>
                     <td>${book['book_auth']}</td>
                     <td>${book['book_price']}원</td>
                     <td>
