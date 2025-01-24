@@ -116,6 +116,13 @@ public class QnaController {
         return "redirect:/qnaList";
     }
 
-
+    @GetMapping("/qnaSearch")
+    public String searchQnaList(@RequestParam("keyword") String keyword, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        List<QnaDto> qnaList = QnaService.searchQnaByKeyword(keyword, page);
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+        return "qnaList";
+    }
 
 }
