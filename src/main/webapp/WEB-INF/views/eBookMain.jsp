@@ -18,7 +18,7 @@
 
         <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
             <form method="get" action="/index?page=${1}&keyword=${name}" style="display: flex; align-items: center; gap: 10px;">
-                <input type="text" class="form-control" placeholder="제목 입력" name="keyword" style="width: 150px;">
+                <input type="text" class="form-control" placeholder="제목 입력" name="keyword" value="${keyword}" style="width: 150px;">
                 <button type="submit" class="btn btn-primary">검색</button>
             </form>
         </div>
@@ -66,19 +66,19 @@
             <ul class="pagination">
                 <c:if test="${currentPage > 1}">
                     <li class="page-item">
-                        <a class="page-link" href="/index?page=${currentPage - 1}">이전</a>
+                        <a class="page-link" href="/index?page=${currentPage - 1}&keyword=${keyword}">이전</a>
                     </li>
                 </c:if>
 
                 <c:forEach begin="${startPage}" end="${endPage}" var="i">
                     <li class="page-item <c:if test='${i == currentPage}'>active</c:if>">
-                        <a class="page-link" href="/index?page=${i}">${i}</a>
+                        <a class="page-link" href="/index?page=${i}&keyword=${keyword}">${i}</a>
                     </li>
                 </c:forEach>
 
                 <c:if test="${currentPage < totalPages}">
                     <li class="page-item">
-                        <a class="page-link" href="/index?page=${currentPage + 1}">다음</a>
+                        <a class="page-link" href="/index?page=${currentPage + 1}&keyword=${keyword}">다음</a>
                     </li>
                 </c:if>
             </ul>

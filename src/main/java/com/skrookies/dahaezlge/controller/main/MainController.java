@@ -65,6 +65,8 @@ public class MainController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("keyword", keyword);
+
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
 
@@ -106,6 +108,7 @@ public class MainController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("keyword", keyword);
 
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
