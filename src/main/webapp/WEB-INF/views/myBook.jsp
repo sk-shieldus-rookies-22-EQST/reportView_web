@@ -33,7 +33,7 @@
 
                         <div style="border:1px solid; margin: 0% 10%;width:184px;">
                             <!--<img src="${book['book_img_path']}">-->
-                            <img class="image_container" src="/images/test.jpg" style="position: relative;width: 100%;overflow: hidden;">
+                            <img class="image_container" src="${book['book_img_path']}" style="position: relative;width: 100%;overflow: hidden;">
 
                         </div>
                         <div style="margin-bottom:16px">
