@@ -23,14 +23,14 @@
             </form>
         </div>
 
-        <table class="table table-striped table-hover" style="text-align: center; border: 1px solid #dddddd">
+        <table class="table table-hover" style="text-align: center; border: 1px solid #dddddd">
             <thead>
             <tr>
-                <th style="background-color: #eeeeee; text-align: center;">도서 이미지</th>
-                <th style="background-color: #eeeeee; text-align: center;">제목</th>
-                <th style="background-color: #eeeeee; text-align: center;">작가</th>
-                <th style="background-color: #eeeeee; text-align: center;">가격</th>
-                <th style="background-color: #eeeeee; text-align: center;">장바구니</th>
+                <th style="text-align: center;">도서 이미지</th>
+                <th style="text-align: center;">제목</th>
+                <th style="text-align: center;">작가</th>
+                <th style="text-align: center;">가격</th>
+                <th style="text-align: center;">장바구니</th>
             </tr>
             </thead>
             <tbody>
