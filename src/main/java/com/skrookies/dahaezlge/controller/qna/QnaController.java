@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.controller.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.service.qna.QnaService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,7 @@ public class QnaController {
     private final QnaService QnaService;
 
     @GetMapping("/qnaList")
-    public String qnaList_form(
-            @RequestParam(defaultValue = "1") int page, // 현재 페이지 (기본값: 1)
-            Model model) {
+    public String qnaList_form(@RequestParam(defaultValue = "1") int page, Model model) {
         int pageSize = 10; // 한 페이지에 표시할 게시글 수
         int totalQnas = QnaService.getTotalQnas(); // 전체 게시글 수
         int totalPages = (int) Math.ceil((double) totalQnas / pageSize);
@@ -46,7 +45,14 @@ public class QnaController {
     }
 
     @GetMapping("/qnaWrite")
-    public String qnaWrite_form(){
+    public String qnaWrite_form(HttpSession session) {
+        // 세션에서 user_id 확인
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null || userId.isEmpty()) {
+            // 세션에 user_id가 없으면 loginForm으로 리다이렉트
+            return "redirect:/loginForm";
+        }
 
         log.info("page_move: qnaWrite.jsp");
         return "qnaWrite";
