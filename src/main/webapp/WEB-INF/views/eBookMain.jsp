@@ -23,7 +23,7 @@
             </form>
         </div>
 
-        <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+        <table class="table table-striped table-hover" style="text-align: center; border: 1px solid #dddddd">
             <thead>
             <tr>
                 <th style="background-color: #eeeeee; text-align: center;">도서 이미지</th>
@@ -35,7 +35,7 @@
             </thead>
             <tbody>
             <c:forEach var="book" items="${books}">
-                <tr>
+                <tr style="cursor:pointer;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                     <td>
                         <c:choose>
                             <c:when test="${book['book_img_path'] != null}">
@@ -46,7 +46,7 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td style="width:500px" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                    <td style="width:500px;">
                         <p style="white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">${book['book_title']}</p>
                     </td>
                     <td>${book['book_auth']}</td>
@@ -54,7 +54,7 @@
                     <td>
                         <form method="post" action="/eBookCart">
                             <input type="hidden" name="book_id" value="${book['book_id']}">
-                            <button type="submit" class="btn btn-primary">장바구니</button>
+                            <button type="submit" class="btn btn-primary" >장바구니</button>
                         </form>
                     </td>
                 </tr>
