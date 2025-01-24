@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -24,20 +26,22 @@ public class ViewController {
     @PostMapping("/booklist")
     public ResponseEntity<BookListCapDto> bookList(){
 
-        /** bookService에서 Book Entity를 모두 가져온다
-         * BookListDto 형식에 맞게 데이터를 setting한다.
-         * 만든 BookListDto를 List<BookListDto>에 add 한다.*/
+        List<Map<String, Object>> bookList = bookService.findAllBooks();
 
-        // bookService.findAll을 통해 List<Book> 형식으로 데이터 수령할 부분
-        List<BookListDto> bookListDto = new ArrayList<>();
-        for(int i = 0; i < 100; i++) {
+        List<BookListDto> bookListDtoList = new ArrayList<>();
+        for(int i = 0; i < bookList.size(); i++){
 
-            // 수령한 데이터를 List<Book> 개수 만큼 반복
-            // 수령한 데이터를 BookListDto bookListDto = new BookListDto(); 에 할당
-            // bookListDto.add(bookListDto);
+            BookListDto bookListDto = new BookListDto(
+                    (Long) bookList.get(i).get("book_id"),
+                    (String) bookList.get(i).get("book_title"),
+                    (Integer) bookList.get(i).get("book_price"),
+                    (String) bookList.get(i).get("book_auth")
+            );
+
+            bookListDtoList.add(bookListDto);
         }
 
-        BookListCapDto bookListCapDto = new BookListCapDto(bookListDto);
+        BookListCapDto bookListCapDto = new BookListCapDto(bookListDtoList);
 
         return ResponseEntity.ok()
                 .body(bookListCapDto);
@@ -45,25 +49,65 @@ public class ViewController {
     }
 
 
+    /** book 검색 데이터 */
     @PostMapping("/search")
     public ResponseEntity<BookSearchCapDto> bookSearch(@RequestBody @Valid BookSearchRequestDto bookSearchRequestDto){
 
-        // bookService.searchBook(bookSearchRequestDto);
+        List<BookDto> returnBookList = new ArrayList<>();
 
-        List<BookSearchDto> bookSearchDto = new ArrayList<>();
-        for(int i = 0; i < 100; i++){
-            // 수령한 데이터를 List<Book> 개수 만큼 반복
-            // 수령한 데이터를 BookListDto bookListDto = new BookListDto(); 에 할당
-            // bookSearchDto.add(bookListDto);
+        if(bookSearchRequestDto.getKeyword() == null || bookSearchRequestDto.getSdate() == null || bookSearchRequestDto.getEdate() == null){
+
+            List<Map<String, Object>> bookList = bookService.findAllBooks();
+
+            for(int i = 0; i < bookList.size(); i++){
+
+                BookDto bookDto = new BookDto(
+                        (Long) bookList.get(i).get("book_id"),
+                        (String) bookList.get(i).get("book_title"),
+                        (String) bookList.get(i).get("book_auth"),
+                        (String) bookList.get(i).get("book_path"),
+                        (String) bookList.get(i).get("book_summary"),
+                        (LocalDateTime) bookList.get(i).get("book_reg_date"),
+                        (String) bookList.get(i).get("book_img_path"),
+                        (Integer) bookList.get(i).get("book_price")
+                );
+
+                returnBookList.add(bookDto);
+            }
+        }
+        else if(bookSearchRequestDto.getSdate() == null || bookSearchRequestDto.getEdate() == null){
+
+            returnBookList = bookService.findBookListByKeyword(bookSearchRequestDto.getKeyword());
+        }
+        else if(bookSearchRequestDto.getKeyword() == null){
+
+            returnBookList = bookService.findBookListByDate(bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
+        }
+        else{
+            returnBookList = bookService.findBookListByBoth(bookSearchRequestDto);
         }
 
-        BookSearchCapDto bookSearchCapDto = new BookSearchCapDto(bookSearchDto);
+        List<BookSearchDto> bookSearchDtoList = new ArrayList<>();
+        for(int i = 0; i < returnBookList.size(); i++){
+            BookSearchDto bookSearchDto = new BookSearchDto(
+                    (Long) returnBookList.get(i).getBook_id(),
+                    (String) returnBookList.get(i).getBook_title(),
+                    (Integer) returnBookList.get(i).getBook_price(),
+                    (String) returnBookList.get(i).getBook_auth(),
+                    (LocalDateTime) returnBookList.get(i).getBook_reg_date(),
+                    (String) returnBookList.get(i).getBook_img_path()
+            );
+            bookSearchDtoList.add(bookSearchDto);
+        }
+
+        BookSearchCapDto bookSearchCapDto = new BookSearchCapDto(bookSearchDtoList);
 
         return ResponseEntity.ok()
                 .body(bookSearchCapDto);
 
     }
 
+    /** book 상세 페이지 데이터 */
     @GetMapping("/bookdetail/{book_id}")
     public ResponseEntity<BookDetailDto> bookDetail(@PathVariable("book_id") String book_id){
 
@@ -75,6 +119,7 @@ public class ViewController {
                 .body(bookDetailDto);
     }
 
+    /** viewer page */
     @PostMapping("/book/viewer")
     public ResponseEntity<StatusDto> viewer(@RequestBody @Valid ViewerDto viewerDto){
 
