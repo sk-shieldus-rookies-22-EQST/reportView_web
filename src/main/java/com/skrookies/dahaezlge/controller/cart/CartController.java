@@ -39,4 +39,12 @@ public class CartController {
         return true;
     }
 
+    @PostMapping("Purchase")
+    public String purchase(Model model, HttpSession session){
+        String user_id = (String) session.getAttribute("user_id");
+        List<BookDto> cartList = cartService.setCartList(user_id);
+        model.addAttribute("cartList", cartList);
+        return "PurchaseList";
+    }
+
 }
