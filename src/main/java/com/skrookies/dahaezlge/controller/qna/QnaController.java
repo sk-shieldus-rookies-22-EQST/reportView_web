@@ -59,9 +59,18 @@ public class QnaController {
     }
 
     @GetMapping("/qnaDetail")
-    public String QnaDetail_form(@RequestParam("qna_id") int qna_id, Model model) {
+    public String QnaDetail_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
+        // 세션에서 user_id를 가져옵니다.
+        String userId = (String) session.getAttribute("user_id");
+
+        // qna_user_id는 세션에서 가져온 userId로 설정합니다.
+        QnaDto qnaDto = new QnaDto();
+        qnaDto.setQna_user_id(userId); // 세션에서 가져온 user_id를 설정
+
+        // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
         model.addAttribute("qnaDetail", qnaDetail);
+
         log.info("page_move: qnaDetail.jsp");
         return "qnaDetail";
     }
@@ -107,6 +116,13 @@ public class QnaController {
         return "redirect:/qnaList";
     }
 
-
+    @GetMapping("/qnaSearch")
+    public String searchQnaList(@RequestParam("keyword") String keyword, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        List<QnaDto> qnaList = QnaService.searchQnaByKeyword(keyword, page);
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("keyword", keyword);
+        return "qnaList";
+    }
 
 }

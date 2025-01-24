@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.repository.qna;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -81,5 +82,11 @@ public class QnaRepository {
             qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
             return qna;
         });
+    }
+
+    public List<QnaDto> findByKeyword(String keyword, int offset, int pageSize) {
+        String sql = "SELECT qna_id, qna_title, qna_user_id, qna_created_at FROM qna WHERE qna_title LIKE ? LIMIT ? OFFSET ? ";
+        return jdbcTemplate.query(sql, new Object[]{"%" + keyword + "%", pageSize, offset},
+                new BeanPropertyRowMapper<>(QnaDto.class));
     }
 }
