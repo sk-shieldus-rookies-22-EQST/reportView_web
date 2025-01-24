@@ -16,10 +16,17 @@
     <div class="container" style="max-width: 1200px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
         <p class="text-start fs-1 fw-bold" style="display: flex; justify-content: center; margin-bottom: 30px; margin-top: 16px">전체 도서 목록</p>
 
+
+
+
         <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
             <form method="get" action="/index?page=${1}&keyword=${name}" style="display: flex; align-items: center; gap: 10px;">
-                <input type="text" class="form-control" placeholder="제목 입력" name="keyword" value="${keyword}" style="width: 150px;">
-                <button type="submit" class="btn btn-primary">검색</button>
+
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="제목 입력" name="keyword" value="${keyword}" style="width: 200px;box-shadow:none;" aria-describedby="button-addon2" onfocus="this.style.backgroundColor='#f9f9f9';" onblur="this.style.backgroundColor='';">
+                  <button type="submit" class="btn btn-primary" id="button-addon2">검색</button>
+                </div>
+
             </form>
         </div>
 
