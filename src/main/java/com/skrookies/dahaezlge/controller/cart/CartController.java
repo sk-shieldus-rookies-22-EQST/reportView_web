@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.List;
@@ -20,14 +21,15 @@ import java.util.List;
 public class CartController {
     private final CartService cartService;
     @PostMapping("/eBookCart")
-    public String setCartList(Model model, HttpSession session){
+    public String setCartList(Model model, RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
         if (user_id == null){
-            model.addAttribute("message","로그인이 필요합니다.");
-            return "loginForm";
+            log.info("cart controller user_id null");
+            redirectAttributes.addFlashAttribute("messageLoginForm","로그인이 필요합니다.");
+            return "redirect:/loginForm";
         }
         else {
-            log.info("cartcontroller");
+            log.info("cart controller ");
             List<BookDto> cartList = cartService.setCartList(user_id);
             model.addAttribute("cartList", cartList);
             return "eBookCart";
@@ -39,7 +41,7 @@ public class CartController {
         return true;
     }
 
-    @PostMapping("Purchase")
+    @PostMapping("/Purchase")
     public String purchase(Model model, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
         List<BookDto> cartList = cartService.setCartList(user_id);

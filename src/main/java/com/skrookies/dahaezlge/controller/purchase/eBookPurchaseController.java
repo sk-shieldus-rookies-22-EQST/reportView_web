@@ -27,23 +27,22 @@ public class eBookPurchaseController {
     public String setPurchaseList(Model model, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
 
-        List<BookDto> cartList = cartService.setCartList(user_id);
-        model.addAttribute("cartList", cartList);
+        List<BookDto> purchaseList = cartService.setCartList(user_id);
+        model.addAttribute("purchaseList", purchaseList);
 
         int userPoint = userService.userPoint(user_id);
-
         model.addAttribute("userPoint", userPoint);
 
-        return "eBookDetail";
+        return "eBookPurchase";
     }
-    @PostMapping("/PurchaseProc")
+    @PostMapping("/purchaseProc")
     public String PurchaseCart(RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
         if(purchaseService.purchaseCart(user_id)){
-            redirectAttributes.addFlashAttribute("message","결제가 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("messageMypurchase","결제가 완료되었습니다.");
             return "redirect:/myPurchase";
         } else {
-            redirectAttributes.addFlashAttribute("message","결제를 실패했습니다.");
+            redirectAttributes.addFlashAttribute("messageCart","결제를 실패했습니다.");
             return "redirect:/eBookCart";
         }
 

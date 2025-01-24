@@ -32,7 +32,7 @@
 					<img src="" alt="" width="35" class="d-inline-block align-text-top">
 					<a class="navbar-brand" href="/index">
 						<img src="" alt="" width="35" class="d-inline-block align-text-top">
-						시스템 이름
+						Bookies
 					</a>
 				</a>
 
@@ -84,6 +84,7 @@
 										</button>
 										<ul class="dropdown-menu">
 											<li><a class="dropdown-item" href="/myInfo">회원정보</a></li>
+											<li><a class="dropdown-item" href="/eBookCart">장바구니</a></li>
 											<li><a class="dropdown-item" href="/myPurchase">결제 내역</a></li>
 											<li><a class="dropdown-item" href="/myBook">내 서재</a></li>
 										</ul>

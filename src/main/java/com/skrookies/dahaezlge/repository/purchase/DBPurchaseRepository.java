@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 public class DBPurchaseRepository implements PurchaseRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    @Override
     public boolean purchaseCart(String user_id, List<Long> cartBookIdList){
         String sql = "INSERT INTO purchase (purchase_user_id, purchase_book_id, purchase_date) VALUES (?, ?, ?)";
 
-        List<Long> bookIds = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
         int rowsAffected = 0;
 

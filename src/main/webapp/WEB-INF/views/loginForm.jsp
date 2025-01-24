@@ -9,6 +9,12 @@
 <title>Insert title here</title>
 <style type="text/css">
 </style>
+<script>
+        var message = "${messageLoginForm}";
+        if (message) {
+            window.alert(message);
+        }
+    </script>
 </head>
 <body>
 <div class="container">

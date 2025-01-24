@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,10 @@ public class BookService {
     }
     public List<Map<String, Object>> getMyBooks(Long book_id) {
         return bookRepository.getMyBooks(book_id);
+    }
+
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword, int page, int pageSize) {
+        return bookRepository.getBooksWithKeyword(keyword, page, pageSize);
     }
 
     public int getTotalBooks() {
@@ -54,7 +59,7 @@ public class BookService {
                     (String) bookList.get(i).get("book_auth"),
                     (String) bookList.get(i).get("book_path"),
                     (String) bookList.get(i).get("book_summary"),
-                    (LocalDateTime) bookList.get(i).get("book_reg_date"),
+                    ((Timestamp) bookList.get(i).get("book_reg_date")).toLocalDateTime(),
                     (String) bookList.get(i).get("book_img_path"),
                     (Integer) bookList.get(i).get("book_price")
             );
