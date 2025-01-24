@@ -18,12 +18,12 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class PurchaseController {
+public class eBookPurchaseController {
     private final CartService cartService;
     private final UserService userService;
     private final PurchaseService purchaseService;
 
-    @PostMapping("/eBookDetail")
+    @PostMapping("/eBookPurchase")
     public String setPurchaseList(Model model, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
 
