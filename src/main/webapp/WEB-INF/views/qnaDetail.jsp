@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,8 +55,12 @@
         </table>
 
         <a href="qnaList" class="btn btn-primary pull-right">목록</a>
-        <a href="qnaEdit?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">수정</a>
-        <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
+
+        <!-- 세션에서 user_id와 qna_user_id가 일치하면 수정/삭제 버튼을 표시 -->
+        <c:if test="${sessionScope.user_id == qnaDetail.qna_user_id}">
+            <a href="qnaEdit?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">수정</a>
+            <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
+        </c:if>
 
     </div>
 

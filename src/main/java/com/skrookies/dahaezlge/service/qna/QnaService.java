@@ -42,4 +42,10 @@ public class QnaService {
         int offset = (page - 1) * pageSize; // 가져올 데이터 시작 위치
         return QnaRepository.findQnasByPage(offset, pageSize);
     }
+
+    public List<QnaDto> searchQnaByKeyword(String keyword, int page) {
+        int pageSize = 10;
+        int offset = (page - 1) * pageSize;
+        return QnaRepository.findByKeyword(keyword, offset, pageSize);
+    }
 }

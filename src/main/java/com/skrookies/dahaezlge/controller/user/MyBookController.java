@@ -42,17 +42,18 @@ public class MyBookController {
             List<Long> books_id = purchaseService.purchaseBook_list(user_id);
             log.info("books_id: "+ Arrays.toString(books_id.toArray()));
             log.info(books_id.toString());
-            List<BookDto> books_info = new ArrayList<>();
-            if (books_id != null){
+            List<List<Map<String, Object>>> books_info = new ArrayList<>();
+            if (!books_id.isEmpty()){
                 for(int i = 0; i< books_id.size(); i++){
                     log.info(String.valueOf("id" + books_id.get(i)));
-                    BookDto book_info = bookService.getBookInfo(books_id.get(i));
+                    List<Map<String, Object>> book_info = bookService.getMyBooks((Long)books_id.get(i));
                     log.info (String.valueOf(book_info));
                     books_info.add(book_info);
                 }
                 model.addAttribute("books_info", books_info);
                 model.addAttribute("books_size", books_info.size());
                 log.info(String.valueOf(books_id.size()));
+                log.info(String.valueOf(books_info.toString()));
                 return "myBook";
             }else {
                 return "myBook";

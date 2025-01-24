@@ -18,6 +18,19 @@
 
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 정보</p>
+
+        <!-- 검색 폼 -->
+            <form action="/qnaSearch" method="get" class="mb-4">
+                <div class="row">
+                    <div class="col-md-10">
+                        <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요" value="${param.keyword}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">검색</button>
+                    </div>
+                </div>
+            </form>
+
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <thead>
                     <tr>
