@@ -10,10 +10,13 @@ import com.skrookies.dahaezlge.repository.cartBook.CartBookRepository;
 import com.skrookies.dahaezlge.repository.purchase.PurchaseRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -24,7 +27,10 @@ public class PurchaseService {
 
     public Boolean purchaseCart(String user_id){
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
+        log.info(String.valueOf(cartIdList.size()));
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
+        log.info(String.valueOf(cartBookIdList.size()));
+
         if(purchaseRepository.purchaseCart(user_id, cartBookIdList)){
             return true;
         } else{
