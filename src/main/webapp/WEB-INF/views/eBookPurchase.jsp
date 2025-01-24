@@ -8,13 +8,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-<script>
-    // Flash Attribute를 사용하여 메시지 가져오기
-    var message = "${message}";
-    if (message) {
-        alert(message);
-    }
-</script>
 </head>
 <body>
     <div class="container">
@@ -34,16 +27,9 @@
         <li>
         <table align="center" border="1" style="width: 100%">
             <tr align="left">
-                <td> <img src="<%=book.getBook_img_path()%>" </td>
                 <td> <%= book.getBook_title() %> </td>
                 <td> <%= book.getBook_price() %> </td>
-                <td> 
-                    <form name="eBookCartDelete" action="/deleteCart" method="post">
-                        <input type="hidden" name="book_id" value="<%= book.getBook_id() %>">
-                        <button type="submit">삭제</button>
-                    </form> 
-                </td>
-            </tr>  
+            </tr>
         </table>
         </li>
         <%
@@ -51,16 +37,16 @@
             } else {
         %>
             <tr>
-                <td colspan="4">데이터가 없습니다.</td>
+                <td colspan="2">데이터가 없습니다.</td>
             </tr>
         <%
             }
         %>
 
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <% String previousPage = request.getHeader("referer"); %>
-            <button class="btn btn-primary" type="button"
-                onclick="location.href='/eBookPurchase'">결제하기</button>
+            <form method="POST" action="/purchaseProc">
+                <button>결제하기</button>
+            </form>
         </div>
 
     </div>
