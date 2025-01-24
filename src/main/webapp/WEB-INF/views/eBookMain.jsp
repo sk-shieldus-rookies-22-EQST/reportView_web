@@ -17,8 +17,12 @@
         <p class="text-start fs-1 fw-bold" style="display: flex; justify-content: center; margin-bottom: 30px; margin-top: 16px">전체 도서 목록</p>
 
         <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
-            <input type="text" class="form-control" placeholder="제목 입력" style="width: 150px;">
+            <form method="post" action="/eBookMain" style="display: flex; align-items: center; gap: 10px;">
+                <input type="text" class="form-control" placeholder="제목 입력" name="book_title" style="width: 150px;">
+                <button type="submit" class="btn btn-primary">검색</button>
+            </form>
         </div>
+
         <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
             <thead>
             <tr>
