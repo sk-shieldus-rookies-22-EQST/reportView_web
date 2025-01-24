@@ -59,7 +59,10 @@
                     <form method="POST" action="/addCart">
                         <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
                         <button>장바구니</button>
-                        <button onclick="location.href='/Purchase'">구매</button>
+                    </form>
+                    <form method="POST" action="/purchase">
+                          <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
+                          <button>결제</button>
                     </form>
                 </span>
             </div>
