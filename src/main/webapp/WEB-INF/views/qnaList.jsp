@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.skrookies.dahaezlge.controller.qna.Dto.QnaDto" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -54,6 +54,7 @@
                     %>
                 </tbody>
             </table>
+
             <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>
     </div>
 </div>
