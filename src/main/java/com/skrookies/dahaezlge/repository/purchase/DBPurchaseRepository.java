@@ -1,6 +1,5 @@
 package com.skrookies.dahaezlge.repository.purchase;
 
-import com.skrookies.dahaezlge.controller.cart.Dto.CartDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,13 +7,42 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DBPurchaseRepository {
+
+public class DBPurchaseRepository implements PurchaseRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    @Override
+    public List<Long> purchaseBook_list(String user_id) {
+        String sql = "SELECT purchase_book_id FROM purchase WHERE purchase_user_id = ?";
+
+        // queryForList로 데이터를 가져옴
+        try {
+            List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, user_id);
+            log.info("PurchaseRepository: Got purchase_book_id List");
+
+            // 반환할 book_id 리스트 초기화
+            List<Long> purchase_books_id = new ArrayList<>();
+
+            // Map에서 book_id 값을 추출하여 리스트에 추가
+            for (Map<String, Object> row : results) {
+                Long book_id = (Long) row.get("purchase_book_id");
+                purchase_books_id.add(book_id);
+            }
+
+            // 변환된 book_id 리스트 반환
+            log.info("purchase_books_id.size() : " + purchase_books_id.size());
+            return purchase_books_id;
+        } catch (Exception e) {
+            // 예외 발생 시 빈 리스트 반환
+            log.error("Error retrieving purchase_book_ids", e);
+            return new ArrayList<>();
+        }
+    }
 
 }
