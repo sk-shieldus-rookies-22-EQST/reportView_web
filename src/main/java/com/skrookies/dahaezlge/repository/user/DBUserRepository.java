@@ -81,7 +81,7 @@ public class DBUserRepository implements UserRepository{
     }
 
     public Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email) {
-        String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, 1, ?)";
         String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 0)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
@@ -93,7 +93,7 @@ public class DBUserRepository implements UserRepository{
             LocalDateTime now = LocalDateTime.now();
             Timestamp formatedNow = Timestamp.valueOf(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             log.info(formatedNow.toString());
-            int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, 1, formatedNow);
+            int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, formatedNow);
             log.info("sql success");
             int result2 = jdbcTemplate.update(sql2_point, user_id);
             log.info("sql2 success");
@@ -109,6 +109,7 @@ public class DBUserRepository implements UserRepository{
                 return false;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.info("registerUser : catch로 빠졌어");
             return false;
         }
@@ -130,6 +131,25 @@ public class DBUserRepository implements UserRepository{
 
         } catch (Exception e) {
             log.info("UserRepository : exception catched");
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean checkId(String user_id) {
+        String sql = "Select count(*) from users where user_id = ? ;";
+        try {
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
+            if ( count != null && count > 0){
+                log.info("not_null");
+                return true;
+            } else {
+                log.info("null");
+                return false;
+            }
+
+        } catch (Exception e) {
+            log.info("error");
             return false;
         }
     }

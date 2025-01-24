@@ -49,4 +49,8 @@ public class UserService {
     public Boolean updateUserInfo(String userId, String userPw, String userPhone, String userEmail) {
         return userRepository.updateUserInfo(userId, userPw, userPhone, userEmail);
     }
+
+    public Boolean checkId(String user_id) {
+        return  userRepository.checkId(user_id);
+    }
 }
