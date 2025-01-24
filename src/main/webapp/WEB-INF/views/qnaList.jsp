@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="com.skrookies.dahaezlge.controller.qna.Dto.QnaDto" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -16,7 +16,7 @@
 <div class="container">
 <%@ include file="banner.jsp" %>
 
-	<div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
+	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 정보</p>
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <thead>
@@ -54,6 +54,27 @@
                     %>
                 </tbody>
             </table>
+            <nav class="mt-4" style="display: flex; justify-content: center;">
+                <ul class="pagination">
+                    <c:if test="${currentPage > 1}">
+                        <li class="page-item">
+                            <a class="page-link" href="/qnaList?page=${currentPage - 1}">이전</a>
+                        </li>
+                    </c:if>
+
+                    <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                        <li class="page-item <c:if test='${i == currentPage}'>active</c:if>">
+                            <a class="page-link" href="/qnaList?page=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <li class="page-item">
+                            <a class="page-link" href="/qnaList?page=${currentPage + 1}">다음</a>
+                        </li>
+                    </c:if>
+                </ul>
+            </nav>
             <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>
     </div>
 </div>

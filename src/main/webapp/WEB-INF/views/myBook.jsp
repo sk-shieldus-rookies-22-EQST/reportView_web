@@ -13,35 +13,48 @@
 <body>
 <div class="container">
 <%@ include file="banner.jsp" %>
-	<%
-		String user_id = (String) session.getAttribute("iser_id");
-	%>
-
 <div class="container">
-	<div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 정보</p>
+	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
+		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 서재</p>
 
 
-	<table border="1"  style="width: 100%">
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 아이디 </td>
-			<td width="100%">
-                    <%= user_id %>
-			</td>
+	<table style="width: 100%">
+		<tr height="40%" align="center">
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
 		</tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 비밀번호 </td>
+		<tr height="40%" align="center">
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
 		</tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 전화번호 </td>
+		<tr height="40%" align="center">
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
 		</tr>
-		<tr height="60" align="center">
-            <td width="40%" style="border-right:1px solid #212529"> 이메일 </td>
+		<tr height="40%" align="center">
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
         </tr>
-		<tr height="60" align="center">
-			<td width="40%" style="border-right:1px solid #212529"> 개인정보 활용 동의 </td>
+		<tr height="40%" align="center">
+			<td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
+            <td width="20%" > <div style="border:1px solid; margin: 10%" > 아이디 </div> </td>
 		</tr>
-		</table>
+	</table>
 
 
 

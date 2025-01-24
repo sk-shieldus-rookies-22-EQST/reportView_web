@@ -19,10 +19,29 @@ public class QnaController {
     private final QnaService QnaService;
 
     @GetMapping("/qnaList")
-    public String qnaList_form(Model model){
-        List<QnaDto> qnaList = QnaService.getQnaList();
+    public String qnaList_form(
+            @RequestParam(defaultValue = "1") int page, // 현재 페이지 (기본값: 1)
+            Model model) {
+        int pageSize = 10; // 한 페이지에 표시할 게시글 수
+        int totalQnas = QnaService.getTotalQnas(); // 전체 게시글 수
+        int totalPages = (int) Math.ceil((double) totalQnas / pageSize);
+
+        // 현재 페이지에 해당하는 QnA 목록 가져오기
+        List<QnaDto> qnaList = QnaService.getQnasByPage(page, pageSize);
+
+        // 페이징 범위 계산
+        int maxPagesToShow = 5;
+        int startPage = Math.max(1, page - maxPagesToShow / 2);
+        int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+
+        // 모델에 데이터 추가
         model.addAttribute("qnaList", qnaList);
-        log.info("page_move: qnaList.jsp");
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         return "qnaList";
     }
 
@@ -42,9 +61,9 @@ public class QnaController {
     }
 
     @GetMapping("/qnaEdit")
-    public String qnaEdit_form(@RequestParam("qna_id") int qna_id, Model model){
-        QnaDto qnaEdit = QnaService.getQnaById(qna_id);
-        model.addAttribute("qnaEdit", qnaEdit);
+    public String qnaEdit_form(@RequestParam("qna_id") int qna_id, Model model) {
+        QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+        model.addAttribute("qnaDetail", qnaDetail);
         log.info("page_move: qnaEdit.jsp");
         return "qnaEdit";
     }
@@ -61,7 +80,7 @@ public class QnaController {
     }
 
     @PostMapping("/qnaUpdateProcess")
-    public String qnaUpdate(Model model, @ModelAttribute QnaDto QnaDto) {
+    public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto) {
         QnaDto.setQna_created_at(LocalDateTime.now());
         int qnaResult = QnaService.qnaUpdate(QnaDto);
         if (qnaResult > 0) {

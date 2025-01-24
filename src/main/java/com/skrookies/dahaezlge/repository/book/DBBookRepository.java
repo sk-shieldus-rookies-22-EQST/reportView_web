@@ -1,12 +1,14 @@
 package com.skrookies.dahaezlge.repository.book;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.entity.book.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,5 +90,55 @@ public class DBBookRepository implements BookRepository {
         log.info("[findAllBooks] Fetched {} books from DB", result.size());
         return result;
     }
+
+    @Override
+    public List<Map<String, Object>> findByKeyword(String keyword) {
+
+        String sql = "select * from book where book_title like '%" + keyword + "%'";
+
+        try {
+            log.info("findByKeyword try");
+            return jdbcTemplate.queryForList(sql);
+        }
+        catch (Exception e){
+            log.info("findByKeyword fail");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> findByDate(LocalDateTime sdate, LocalDateTime edate) {
+
+        String sql = "select * from book where book_reg_data between sdate and edate";
+
+        try {
+            log.info("findByDate try");
+            return jdbcTemplate.queryForList(sql);
+        }
+        catch (Exception e){
+            log.info("findByDate fail");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> findByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
+
+        String sql = "select * from book where book_title like '%" + keyword + "%' and (book_reg_data between sdate and edate)";
+
+        try {
+            log.info("findByBoth try");
+            return jdbcTemplate.queryForList(sql);
+        }
+        catch (Exception e){
+            log.info("findByBoth fail");
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
 }

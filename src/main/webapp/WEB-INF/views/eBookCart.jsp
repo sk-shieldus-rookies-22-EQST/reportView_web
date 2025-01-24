@@ -14,7 +14,7 @@
         <%@ include file="banner.jsp" %>
 
 <div class="container">
-    <div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
+    <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
         <%@ page import="java.util.List" %>
         <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
 

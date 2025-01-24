@@ -49,7 +49,7 @@ public class DBCartRepository implements CartRepository {
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, new String[] { "cart_id" });
             ps.setString(1, user_id);
-            ps.setInt(2, book_price);
+            ps.setString(2, book_price.toString());
             return ps;
         }, keyHolder);
 
