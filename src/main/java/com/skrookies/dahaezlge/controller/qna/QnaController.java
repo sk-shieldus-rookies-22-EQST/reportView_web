@@ -75,7 +75,12 @@ public class QnaController {
     }
 
     @PostMapping("/qnaWriteProcess")
-    public String qnaWrite(Model model, @ModelAttribute QnaDto QnaDto) {
+    public String qnaWrite(@RequestParam("qna_user_id") String qnaUserId,HttpSession session, Model model, @ModelAttribute QnaDto QnaDto) {
+        String userId = (String) session.getAttribute("user_id");
+
+        QnaDto qnaDto = new QnaDto();
+        qnaDto.setQna_user_id(userId);
+        QnaService.qna(qnaDto);
         QnaDto.setQna_created_at(LocalDateTime.now());
         int qnaResult = QnaService.qna(QnaDto);
         if (qnaResult > 0) {
