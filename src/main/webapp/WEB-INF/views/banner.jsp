@@ -32,7 +32,7 @@
 					<img src="" alt="" width="35" class="d-inline-block align-text-top">
 					<a class="navbar-brand" href="/index">
 						<img src="" alt="" width="35" class="d-inline-block align-text-top">
-						시스템 이름
+						Bookies
 					</a>
 				</a>
 
