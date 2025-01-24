@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.controller.user;
 
 
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
+import com.skrookies.dahaezlge.entity.userPoint.UserPoint;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

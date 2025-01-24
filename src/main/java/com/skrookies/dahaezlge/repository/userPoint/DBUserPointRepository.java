@@ -16,8 +16,13 @@ public class DBUserPointRepository implements UserPointRepository{
     @Override
     public int selectUserPoint(String user_id) {
 
-        String sql = "select point from user_point where point_user_id = '" + user_id + "';";
+        try {
+            String sql = "select point from user_point where point_user_id = '" + user_id + "';";
 
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+            return jdbcTemplate.queryForObject(sql, Integer.class);
+        }catch (Exception e){
+            return  -1;
+        }
     }
+
 }
