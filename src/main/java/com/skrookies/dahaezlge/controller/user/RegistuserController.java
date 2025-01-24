@@ -31,16 +31,35 @@ public class RegistuserController {
         String user_pw = userDto.getUser_pw();
         String user_phone = userDto.getUser_phone();
         String user_email = userDto.getUser_email();
-        if (userService.registerUser(user_id, user_pw,user_phone,user_email)){
-            // 회원가입 직후 자동 로그인
-            int point = userService.userPoint(user_id);
-            session.setAttribute("user_id", user_id);
-            session.setAttribute("point", point);
-
-            return "redirect:/index";
-        } else {
+        String user_agree = userDto.getUser_agree();
+        log.info("agree: " + user_agree);
+        if(userService.checkId(user_id)) {
+            log.info("이미 있는 아이디");
+            session.setAttribute("status", "1");
             return "redirect:/registerForm";
+        }else {
+            if (user_agree != null) {
+                if (userService.registerUser(user_id, user_pw,user_phone,user_email)) {
+                    // 회원가입 직후 자동 로그인
+                    int point = userService.userPoint(user_id);
+                    session.setAttribute("user_id", user_id);
+                    session.setAttribute("point", point);
+                    session.removeAttribute("status");
+                    return "redirect:/index";
+                } else {
+                    session.setAttribute("status","2");
+                    log.info("모든 input 채우기");
+                    return "redirect:/registerForm";
+                }
+
+            } else {
+                session.setAttribute("status","3");
+                log.info("활용 동의");
+                return "redirect:/registerForm";
+            }
+
         }
+
 
     }
 

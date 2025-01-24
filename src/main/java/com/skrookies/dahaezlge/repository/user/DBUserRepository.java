@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-
 @Slf4j
 @Repository
 @RequiredArgsConstructor
@@ -84,8 +83,8 @@ public class DBUserRepository implements UserRepository{
     public Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email) {
 
 
-        String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, ?, ?)";
-        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, ?)";
+        String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, 1, ?)";
+        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 1000000)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
         log.info("user_phone: "+ user_phone);
@@ -96,13 +95,11 @@ public class DBUserRepository implements UserRepository{
             LocalDateTime now = LocalDateTime.now();
             Timestamp formatedNow = Timestamp.valueOf(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             log.info(formatedNow.toString());
-            int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, 1, formatedNow);
+            int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, formatedNow);
             log.info("sql success");
 
-            Random random = new Random();
-            int randint = random.nextInt(5000000) + 5000000;
 
-            int result2 = jdbcTemplate.update(sql2_point, randint);
+            int result2 = jdbcTemplate.update(sql2_point, user_id);
             log.info("sql2 success");
             // result 값이 1이면 성공
             if (result > 0 && result2 > 0) {
@@ -137,6 +134,25 @@ public class DBUserRepository implements UserRepository{
 
         } catch (Exception e) {
             log.info("UserRepository : exception catched");
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean checkId(String user_id) {
+        String sql = "Select count(*) from users where user_id = ? ;";
+        try {
+            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
+            if ( count != null && count > 0){
+                log.info("not_null");
+                return true;
+            } else {
+                log.info("null");
+                return false;
+            }
+
+        } catch (Exception e) {
+            log.info("error");
             return false;
         }
     }
