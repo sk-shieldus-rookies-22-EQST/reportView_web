@@ -28,6 +28,10 @@ public class BookService {
         return bookRepository.getBooks(page, pageSize);
     }
 
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword, int page, int pageSize) {
+        return bookRepository.getBooksWithKeyword(keyword, page, pageSize);
+    }
+
     public int getTotalBooks() {
         return bookRepository.getTotalBooks();
     }

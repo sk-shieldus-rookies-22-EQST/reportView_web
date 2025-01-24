@@ -72,6 +72,18 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
+                "FROM book " +
+                "WHERE book_title like '%" + keyword + "%' " +
+                "ORDER BY book_reg_date DESC " +
+                "LIMIT " + pageSize + " OFFSET " + offset + ";";
+
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    @Override
     public int getTotalBooks() {
         String sql = "SELECT COUNT(*) FROM book";
         return jdbcTemplate.queryForObject(sql, Integer.class);

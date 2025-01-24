@@ -30,42 +30,67 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String main(@RequestParam(defaultValue = "1") int page, Model model ) {
-            int pageSize = 5; // 한 페이지에 출력할 책 개수
-            int totalBooks = bookService.getTotalBooks(); // 전체 책 개수
-            int totalPages = (int) Math.ceil((double) totalBooks / pageSize);
+    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam() String keyword, Model model ) {
+
+        int pageSize = 5; // 한 페이지에 출력할 책 개수
+        int totalBooks = 0;
+        int totalPages = 0;
+        List<Map<String, Object>> books;
+        if(keyword.isEmpty()) {
+            totalBooks = bookService.getTotalBooks(); // 전체 책 개수
+            totalPages = (int) Math.ceil((double) totalBooks / pageSize);
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            List<Map<String, Object>> books = bookService.getBooks(page, pageSize);
+            books = bookService.getBooks(page, pageSize);
+        }
+        else{
+            totalBooks = bookService.findBookListByKeyword(keyword).size(); // 전체 책 개수
+            totalPages = (int) Math.ceil((double) totalBooks / pageSize);
 
-            // 시작 페이지와 끝 페이지 계산 (최대 5개 페이지 번호)
-            int maxPagesToShow = 5;
-            int startPage = Math.max(1, page - maxPagesToShow / 2);
-            int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+            // 현재 페이지에 해당하는 책 목록 가져오기
+            books = bookService.getBooksWithKeyword(keyword, page, pageSize);
+        }
 
-            // startPage가 너무 클 경우 조정
-            startPage = Math.max(1, endPage - maxPagesToShow + 1);
+        // 시작 페이지와 끝 페이지 계산 (최대 5개 페이지 번호)
+        int maxPagesToShow = 5;
+        int startPage = Math.max(1, page - maxPagesToShow / 2);
+        int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-            // JSP로 데이터 전달
-            model.addAttribute("books", books);
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", totalPages);
-            model.addAttribute("startPage", startPage);
-            model.addAttribute("endPage", endPage);
+        // startPage가 너무 클 경우 조정
+        startPage = Math.max(1, endPage - maxPagesToShow + 1);
+
+        // JSP로 데이터 전달
+        model.addAttribute("books", books);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
 
     @GetMapping("/index")
-    public String eBookMain(
-            @RequestParam(defaultValue = "1") int page, // 현재 페이지 (기본값: 1)
-            Model model
-    ) {
-        int pageSize = 5; // 한 페이지에 출력할 책 개수
-        int totalBooks = bookService.getTotalBooks(); // 전체 책 개수
-        int totalPages = (int) Math.ceil((double) totalBooks / pageSize);
+    public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam() String keyword, Model model ) {
 
-        // 현재 페이지에 해당하는 책 목록 가져오기
-        List<Map<String, Object>> books = bookService.getBooks(page, pageSize);
+        int pageSize = 5; // 한 페이지에 출력할 책 개수
+        int totalBooks = 0;
+        int totalPages = 0;
+        List<Map<String, Object>> books;
+        if(keyword.isEmpty()) {
+            totalBooks = bookService.getTotalBooks(); // 전체 책 개수
+            totalPages = (int) Math.ceil((double) totalBooks / pageSize);
+
+            // 현재 페이지에 해당하는 책 목록 가져오기
+            books = bookService.getBooks(page, pageSize);
+        }
+        else{
+            totalBooks = bookService.findBookListByKeyword(keyword).size(); // 전체 책 개수
+            totalPages = (int) Math.ceil((double) totalBooks / pageSize);
+
+            // 현재 페이지에 해당하는 책 목록 가져오기
+            books = bookService.getBooksWithKeyword(keyword, page, pageSize);
+        }
+
+
 
         // 시작 페이지와 끝 페이지 계산 (최대 5개 페이지 번호)
         int maxPagesToShow = 5;
@@ -85,20 +110,11 @@ public class MainController {
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
 
-
-
     @GetMapping("/banner")
     public String banner_form(){
 
         log.info("page_move: banner.jsp");
         return "banner";
-    }
-
-    @GetMapping("/eBookMain")
-    public String eBookDetail_form(){
-
-        log.info("page_move: eBookMain.jsp");
-        return "eBookMain";
     }
 
     @GetMapping("/eBookDetail")
