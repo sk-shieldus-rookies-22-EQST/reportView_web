@@ -30,7 +30,7 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam() String keyword, Model model ) {
+    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, Model model ) {
 
         int pageSize = 5; // 한 페이지에 출력할 책 개수
         int totalBooks = 0;
@@ -69,7 +69,7 @@ public class MainController {
     }
 
     @GetMapping("/index")
-    public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam() String keyword, Model model ) {
+    public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, Model model ) {
 
         int pageSize = 5; // 한 페이지에 출력할 책 개수
         int totalBooks = 0;
