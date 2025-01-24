@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 @Slf4j
@@ -81,8 +82,10 @@ public class DBUserRepository implements UserRepository{
     }
 
     public Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email) {
+
+
         String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, ?, ?)";
-        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 0)";
+        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, ?)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
         log.info("user_phone: "+ user_phone);
@@ -95,7 +98,11 @@ public class DBUserRepository implements UserRepository{
             log.info(formatedNow.toString());
             int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, 1, formatedNow);
             log.info("sql success");
-            int result2 = jdbcTemplate.update(sql2_point, user_id);
+
+            Random random = new Random();
+            int randint = random.nextInt(5000000) + 5000000;
+
+            int result2 = jdbcTemplate.update(sql2_point, randint);
             log.info("sql2 success");
             // result 값이 1이면 성공
             if (result > 0 && result2 > 0) {

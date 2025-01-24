@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.controller.user;
 
 
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
+import com.skrookies.dahaezlge.entity.userPoint.UserPoint;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,7 @@ public class RegistuserController {
             int point = userService.userPoint(user_id);
             session.setAttribute("user_id", user_id);
             session.setAttribute("point", point);
+
             return "redirect:/index";
         } else {
             return "redirect:/registerForm";
