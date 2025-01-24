@@ -70,10 +70,8 @@ public class QnaController {
 
         // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
-        List<QnaReDto> qnaReplies = QnaService.getRepliesByQnaId(qna_id);
 
         model.addAttribute("qnaDetail", qnaDetail);
-        model.addAttribute("qnaReplies", qnaReplies);
 
         log.info("page_move: qnaDetail.jsp");
         return "qnaDetail";
@@ -138,22 +136,5 @@ public class QnaController {
         return "qnaList";
     }
 
-    @PostMapping("/qnaReplyProcess")
-    public String qnaReplyProcess(HttpSession session, @RequestParam("qna_id") int qnaId, @RequestParam("qna_re_body") String qnaReBody) {
-        String userId = (String) session.getAttribute("user_id");
-        int userLevel = (int) session.getAttribute("user_level");
-
-        if (userId == null || userId.isEmpty() || userLevel != 123) {
-            return "redirect:/qnaList"; // 권한이 없을 경우 목록으로 리다이렉트
-        }
-
-        QnaReDto reply = new QnaReDto();
-        reply.setQna_re_user_id(userId);
-        reply.setQna_re_body(qnaReBody);
-        reply.setQna_re_created_at(LocalDateTime.now());
-        QnaService.saveReply(qnaId, reply);
-
-        return "redirect:/qnaDetail?qna_id=" + qnaId; // 답글 저장 후 상세 페이지로 리다이렉트
-    }
 
 }

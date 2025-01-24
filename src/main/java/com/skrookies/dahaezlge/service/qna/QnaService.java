@@ -50,10 +50,4 @@ public class QnaService {
         return QnaRepository.findByKeyword(keyword, offset, pageSize);
     }
 
-    public void saveReply(int qnaId, QnaReDto reply) {
-        QnaRepository.saveReply(qnaId, reply);
-    }
-    public List<QnaReDto> getRepliesByQnaId(int qnaId) {
-        return QnaRepository.findRepliesByQnaId(qnaId);
-    }
 }

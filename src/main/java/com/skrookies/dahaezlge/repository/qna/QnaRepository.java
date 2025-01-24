@@ -92,20 +92,4 @@ public class QnaRepository {
                 new BeanPropertyRowMapper<>(QnaDto.class));
     }
 
-    public void saveReply(int qnaId, QnaReDto reply) {
-        String sql = "INSERT INTO qna_re (qna_re_user_id, qna_re_body, qna_re_created_at, qna_re_qna_id) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, reply.getQna_re_user_id(), reply.getQna_re_body(), Timestamp.valueOf(reply.getQna_re_created_at()), qnaId);
-    }
-
-    public List<QnaReDto> findRepliesByQnaId(int qnaId) {
-        String sql = "SELECT * FROM qna_re WHERE qna_re_id = ? ORDER BY qna_re_created_at DESC";
-        return jdbcTemplate.query(sql, new Object[]{qnaId}, (rs, rowNum) -> {
-            QnaReDto reply = new QnaReDto();
-            reply.setQna_re_id(rs.getLong("qna_re_id"));
-            reply.setQna_re_user_id(rs.getString("qna_re_user_id"));
-            reply.setQna_re_body(rs.getString("qna_re_body"));
-            reply.setQna_re_created_at(rs.getTimestamp("qna_re_created_at").toLocalDateTime());
-            return reply;
-        });
-    }
 }

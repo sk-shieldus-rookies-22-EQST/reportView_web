@@ -88,18 +88,21 @@
     </div>
 
     <!-- 답글 작성 폼 -->
-    <c:if test="${sessionScope.user_level == 123}">
+
         <div class="mt-4">
             <h5>답글 작성</h5>
             <form action="qnaReplyProcess" method="post">
+                <!-- 몇번 째 글인지 확인할 수 있도록 qna_id -->
                 <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
+                <!-- user_level 확인하기 위해 user_id 보냄 -->
+                <!-- <input type="hidden" name="qna_user_id" value="${qnaDetail.qna_user_id}"> -->
                 <div class="mb-3">
                     <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-success">답글 달기</button>
             </form>
         </div>
-    </c:if>
+
 
 
 </body>
