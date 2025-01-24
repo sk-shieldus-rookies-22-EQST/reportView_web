@@ -10,10 +10,11 @@
 <title>게시판 글 수정</title>
 </head>
 <body>
-	<div class="container" style="max-width: 700px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
+	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 정보</p>
 
             <form method="post" action="qnaUpdateProcess">
+            <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
                 <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                     <thead>
                         <tr>

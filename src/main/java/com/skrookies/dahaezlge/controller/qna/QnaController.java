@@ -42,8 +42,9 @@ public class QnaController {
     }
 
     @GetMapping("/qnaEdit")
-    public String qnaEdit_form() {
-
+    public String qnaEdit_form(@RequestParam("qna_id") int qna_id, Model model) {
+        QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+        model.addAttribute("qnaDetail", qnaDetail);
         log.info("page_move: qnaEdit.jsp");
         return "qnaEdit";
     }
