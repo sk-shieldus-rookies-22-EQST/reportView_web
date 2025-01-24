@@ -10,11 +10,21 @@
 
 </head>
 <body>
-    <div class="container">
-        <%@ include file="banner.jsp" %>
-
 <div class="container">
-    <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
+    <jsp:include page="banner.jsp" />
+
+    <div class="container" style="max-width: 1200px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
+        <p class="text-start fs-1 fw-bold" style="display: flex; justify-content: center; margin-bottom: 30px; margin-top: 16px">결제 정보</p>
+
+        <table class="table" style="text-align: center; border: 1px solid #dddddd">
+            <thead>
+                    <tr>
+                        <th style="background-color: #eeeeee; text-align: center;">도서 이미지</th>
+                        <th style="background-color: #eeeeee; text-align: center;">제목</th>
+                        <th style="background-color: #eeeeee; text-align: center;">가격</th>
+                    </tr>
+            </thead>
+            <tbody>
         <%@ page import="java.util.List" %>
         <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
 
@@ -24,14 +34,11 @@
             if (bookList != null) {
                 for (BookDto book : bookList) {
         %>
-        <li>
-        <table align="center" border="1" style="width: 100%">
             <tr align="left">
+                <td> <img src="<%= book.getBook_img_path() %>"</td>
                 <td> <%= book.getBook_title() %> </td>
                 <td> <%= book.getBook_price() %> </td>
             </tr>
-        </table>
-        </li>
         <%
                 }
             } else {
@@ -42,11 +49,17 @@
         <%
             }
         %>
-
-
+            </tbody>
+        </table>
+        <div align="center" style="font-weight:bold; font-size:25px;">
+        <%
+            int userPoint = (int) request.getAttribute("userPoint");
+        %>
+        보유 포인트: <%= userPoint %> - 총 금액:
+        </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
             <form method="POST" action="/purchaseProc">
-                <button>결제하기</button>
+                <button type="submit">결제하기</button>
             </form>
         </div>
 

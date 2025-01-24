@@ -38,10 +38,13 @@ public class eBookPurchaseController {
     @PostMapping("/purchaseProc")
     public String PurchaseCart(RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
+        log.info("purchaseProc");
         if(purchaseService.purchaseCart(user_id)){
+            log.info("purchase success");
             redirectAttributes.addFlashAttribute("messageMypurchase","결제가 완료되었습니다.");
             return "redirect:/myPurchase";
         } else {
+            log.info("purchase fail");
             redirectAttributes.addFlashAttribute("messageCart","결제를 실패했습니다.");
             return "redirect:/eBookCart";
         }

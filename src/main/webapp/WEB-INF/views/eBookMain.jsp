@@ -59,7 +59,7 @@
                     <td>${book['book_auth']}</td>
                     <td>${book['book_price']}원</td>
                     <td>
-                        <form method="post" action="/eBookCart">
+                        <form method="post" action="/addCart">
                             <input type="hidden" name="book_id" value="${book['book_id']}">
                             <button type="submit" class="btn btn-primary" >장바구니</button>
                         </form>

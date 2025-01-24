@@ -84,7 +84,10 @@
 										</button>
 										<ul class="dropdown-menu">
 											<li><a class="dropdown-item" href="/myInfo">회원정보</a></li>
-											<li><a class="dropdown-item" href="/eBookCart">장바구니</a></li>
+											<li>
+											    <a class="dropdown-item" href="#" onclick="document.getElementById('myCart').submit();">장바구니</a>
+                                                <form id="myCart" action="/eBookCart" method="POST" style="display: none;"/>
+											</li>
 											<li><a class="dropdown-item" href="/myPurchase">결제 내역</a></li>
 											<li><a class="dropdown-item" href="/myBook">내 서재</a></li>
 										</ul>
