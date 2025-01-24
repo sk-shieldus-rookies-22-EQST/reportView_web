@@ -51,7 +51,7 @@ public class BookService {
                     (String) bookList.get(i).get("book_auth"),
                     (String) bookList.get(i).get("book_path"),
                     (String) bookList.get(i).get("book_summary"),
-                    (String) bookList.get(i).get("book_reg_date"),
+                    (LocalDateTime) bookList.get(i).get("book_reg_date"),
                     (String) bookList.get(i).get("book_img_path"),
                     (Integer) bookList.get(i).get("book_price")
             );
@@ -78,7 +78,7 @@ public class BookService {
                     (String) bookList.get(i).get("book_auth"),
                     (String) bookList.get(i).get("book_path"),
                     (String) bookList.get(i).get("book_summary"),
-                    (String) bookList.get(i).get("book_reg_date"),
+                    (LocalDateTime) bookList.get(i).get("book_reg_date"),
                     (String) bookList.get(i).get("book_img_path"),
                     (Integer) bookList.get(i).get("book_price")
             );
@@ -105,7 +105,7 @@ public class BookService {
                     (String) bookList.get(i).get("book_auth"),
                     (String) bookList.get(i).get("book_path"),
                     (String) bookList.get(i).get("book_summary"),
-                    (String) bookList.get(i).get("book_reg_date"),
+                    (LocalDateTime) bookList.get(i).get("book_reg_date"),
                     (String) bookList.get(i).get("book_img_path"),
                     (Integer) bookList.get(i).get("book_price")
             );
