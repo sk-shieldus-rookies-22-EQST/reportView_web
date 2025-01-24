@@ -51,25 +51,25 @@
     <!-- 메시지를 숨긴 상태로 HTML에 포함 -->
     <span id="message" style="display: none;">${message}</span>
 
-            <div>
-                <span style="display: inline-block; float: right;">
-                    <form method="POST" action="/addCart">
-                        <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
-                        <button>장바구니</button>
-                    </form>
-                    <form method="POST" action="/purchase">
-                          <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
-                          <button>결제</button>
-                    </form>
-                </span>
-            </div>
+
             <div>
                 <%= eBook.getBook_summary() %>
             </div>
-            <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
+            <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px; width:700px">
+                <div class="grid text-center" style="display:flex;justify-content: space-between;">
+                    <form method="POST" action="/addCart" class="g-col-6"  style="width:49%">
+                        <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
+                        <button class="btn btn-outline-primary" type="submit" style="width:100%;padding:20px;">장바구니</button>
+                    </form>
+                    <form method="POST" action="/purchase" class="g-col-6" style="width:49%;">
+                          <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
+                          <button class="btn btn-primary" type="submit" style="width:100%;padding:20px;">결제</button>
+                    </form>
+
+                </div>
                 <% String previousPage = request.getHeader("referer"); %>
                 <button class="btn btn-primary" type="button"
-                    onclick="location.href='<%= previousPage %>'">목록으로</button>
+                    onclick="location.href='<%= previousPage %>'" style="padding:20px;">목록으로</button>
             </div>
 
         </div>

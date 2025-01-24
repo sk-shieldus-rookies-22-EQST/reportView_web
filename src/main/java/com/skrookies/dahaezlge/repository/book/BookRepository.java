@@ -16,6 +16,8 @@ public interface BookRepository {
     // 페이지별로 책 리스트 가져오기
     List<Map<String, Object>> getBooks(int page, int pageSize);
 
+    List<Map<String, Object>> getBooksWithKeyword(String keyword, int page, int pageSize);
+
     // 전체 책 개수
     int getTotalBooks();
 

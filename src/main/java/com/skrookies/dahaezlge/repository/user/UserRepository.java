@@ -17,4 +17,6 @@ public interface UserRepository {
     Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email);
 
     Boolean updateUserInfo(String userId, String userPw, String userPhone, String userEmail);
+
+    Boolean checkId(String userId);
 }
