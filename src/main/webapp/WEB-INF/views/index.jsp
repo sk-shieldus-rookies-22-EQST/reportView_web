@@ -12,6 +12,7 @@
 <body>
 	<div class="container" style="margin-bottom: 30px;">
 		<%@ include file="banner.jsp" %>
+
 	</div>
 </body>
 </html>

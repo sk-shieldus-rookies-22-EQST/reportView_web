@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.controller.main;
 
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.controller.user.Dto.SessionDto;
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.service.book.BookService;
@@ -26,6 +27,32 @@ public class MainController {
 
     public String login_id(HttpSession session) {
         return (String) session.getAttribute("user_id");
+    }
+
+    @GetMapping("/")
+    public String main(@RequestParam(defaultValue = "1") int page, Model model ) {
+            int pageSize = 5; // 한 페이지에 출력할 책 개수
+            int totalBooks = bookService.getTotalBooks(); // 전체 책 개수
+            int totalPages = (int) Math.ceil((double) totalBooks / pageSize);
+
+            // 현재 페이지에 해당하는 책 목록 가져오기
+            List<Map<String, Object>> books = bookService.getBooks(page, pageSize);
+
+            // 시작 페이지와 끝 페이지 계산 (최대 5개 페이지 번호)
+            int maxPagesToShow = 5;
+            int startPage = Math.max(1, page - maxPagesToShow / 2);
+            int endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+            // startPage가 너무 클 경우 조정
+            startPage = Math.max(1, endPage - maxPagesToShow + 1);
+
+            // JSP로 데이터 전달
+            model.addAttribute("books", books);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("startPage", startPage);
+            model.addAttribute("endPage", endPage);
+        return "eBookMain"; // eBookMain.jsp 렌더링
     }
 
     @GetMapping("/index")
@@ -67,9 +94,17 @@ public class MainController {
         return "banner";
     }
 
-    @GetMapping("/eBookDetail")
+    @GetMapping("/eBookMain")
     public String eBookDetail_form(){
 
+        log.info("page_move: eBookMain.jsp");
+        return "eBookMain";
+    }
+
+    @GetMapping("/eBookDetail")
+    public String setBookInfo(Model model, @RequestParam("book_id") Long book_id){
+        BookDto bookInfo = bookService.getBookInfo(book_id);
+        model.addAttribute("bookInfo", bookInfo);
         log.info("page_move: eBookDetail.jsp");
         return "eBookDetail";
     }

@@ -51,7 +51,7 @@
     <div class="container">
 		<%@ include file="banner.jsp" %>
     <div cass="container">
-        <div class="container" style="max-width: 700px; margin-bottom : 100px; border-radius: 5px;padding: 50px 20px;">
+        <div class="container" style="max-width: 500px; margin-bottom : 100px; border-radius: 5px;padding: 50px 20px;">
             <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; mrgin-bottom:0;margin-top:16px;">회원가입</p>
 
             <form action="/registerProc" method="post" style="display: flex;height: 80%;flex-direction: column; justify-content: space-evenly;">

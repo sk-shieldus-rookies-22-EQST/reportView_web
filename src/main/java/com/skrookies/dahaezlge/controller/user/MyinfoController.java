@@ -40,6 +40,7 @@ public class MyinfoController {
                 return "redirect:/loginForm";  // 예시로 에러 페이지로 리다이렉트
             } else {
                 Users user = user_info.get(0);
+                log.info(user.getUser_phone());
                 //model.addAttribute("user_id", user.getUser_id());
                 model.addAttribute("user_pw", user.getUser_pw());
                 model.addAttribute("user_phone", user.getUser_phone());
@@ -89,9 +90,6 @@ public class MyinfoController {
             }
         } else {
             log.info("입력한 모든 값 중 null이 있습니다.");
-            log.info(user_pw);
-            log.info(user_phone);
-            log.info(user_phone);
             return "/myInfo";
         }
 
