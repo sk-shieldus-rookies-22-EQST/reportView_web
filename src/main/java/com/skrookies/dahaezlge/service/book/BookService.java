@@ -1,6 +1,9 @@
 package com.skrookies.dahaezlge.service.book;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.entity.book.Book;
+import com.skrookies.dahaezlge.entity.purchase.Purchase;
+import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.repository.book.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +35,5 @@ public class BookService {
     public List<Map<String, Object>> findAllBooks() {
         return bookRepository.findAllBooks();
     }
-
-
 
 }

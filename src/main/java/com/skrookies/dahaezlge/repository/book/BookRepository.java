@@ -1,6 +1,7 @@
 package com.skrookies.dahaezlge.repository.book;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.entity.book.Book;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,5 @@ public interface BookRepository {
 
     // 전체 책 정보를 가져오는 메서드 (BookInfo 대신 Map 사용)
     List<Map<String, Object>> findAllBooks();
+
 }
