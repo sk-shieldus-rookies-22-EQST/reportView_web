@@ -49,7 +49,7 @@
                 <td align="left"> <%= book.getBook_title() %> </td>
                 <td> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
                 <td> 
-                    <form name="eBookCartDelete" action="/deleteCart" method="post">
+                    <form name="eBookCartDelete" action="/deleteCart" method="POST">
                         <input type="hidden" name="book_id" value="<%= book.getBook_id() %>">
                         <button type="submit">삭제</button>
                     </form> 
@@ -68,7 +68,19 @@
             </tbody>
         </table>
         <div align="center" style="font-weight:bold; font-size:25px;">
-        장바구니에 담긴 총 금액: <%= total_price/1000 %>,<%= String.format("%03d", total_price % 1000) %>원
+        장바구니에 담긴 총 금액:
+        <%
+        if (total_price>1000) {
+        %>
+            <%=total_price/1000 %>,<%= String.format("%03d", total_price % 1000) %>원
+        <%
+            } else {
+        %>
+            <%=total_price/1000 %>원
+        <%
+            }
+        %>
+
         </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
             <form method="POST" action="/eBookPurchase">

@@ -26,9 +26,16 @@ public class CartService {
 
     public List<BookDto> setCartList(String user_id){
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
-        log.info("Service");
+        log.info("cart Service");
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
         return bookRepository.getCartBookInfo(cartBookIdList);
+    }
+
+    public Boolean delCartItem(String user_id, Long book_id){
+        log.info("cart Service delCartItem");
+        List<CartDto> cartIdList = cartRepository.getCartList(user_id);
+        List<Long> deletedCartId = cartBookRepository.delCartBookItem(cartIdList, book_id);
+        return cartRepository.delCartItem(deletedCartId);
     }
 }

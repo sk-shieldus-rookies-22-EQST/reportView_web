@@ -8,4 +8,6 @@ public interface CartBookRepository {
     Boolean addCartBook(Long cart_id, Long book_id);
 
     List<Long> getCartBookList(List<CartDto> CartIdList);
+
+    List<Long> delCartBookItem(List<CartDto> cartIdList, Long book_id);
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -37,8 +38,24 @@ public class CartController {
     }
 
     @PostMapping("/deleteCart")
-    public Boolean delCartList(Model model, String user_id, Long book_id){
-        return true;
+    public String delCartItem(Model model, RedirectAttributes redirectAttributes,
+                              @RequestParam("book_id") Long book_id, HttpSession session){
+        log.info("cart Controller delCart");
+        log.info(String.valueOf(book_id));
+        String user_id = (String) session.getAttribute("user_id");
+        if (user_id == null){
+            redirectAttributes.addFlashAttribute("messageLoginForm","로그인이 필요합니다.");
+            return "redirect:/loginForm";
+        }
+        else {
+            log.info("cart Controller delCartItem");
+            if(cartService.delCartItem(user_id, book_id)){
+                model.addAttribute("messageCart", "장바구니 삭제가 완료되었습니다!");
+            } else {
+                model.addAttribute("messageCart", "장바구니 삭제에 실패했습니다.");
+            }
+            return "forward:/eBookCart";
+        }
     }
 
     @PostMapping("/Purchase")

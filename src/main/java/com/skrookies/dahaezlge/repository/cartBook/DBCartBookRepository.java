@@ -43,4 +43,23 @@ public class DBCartBookRepository implements CartBookRepository {
 
         return bookIds;
     }
+
+    @Override
+    public List<Long> delCartBookItem(List<CartDto> cartIdList, Long book_id){
+        String sql = "DELETE FROM cart_book WHERE cart_book_id = ? AND cart_book_book_id = ?";
+        List<Long> deletedCartIds = new ArrayList<>(); // 삭제가 성공한 cart_id를 저장할 리스트
+
+        for (CartDto cart : cartIdList) {
+            int updatedRows = jdbcTemplate.update(sql, cart.getCart_id(), book_id);
+            if (updatedRows > 0) {
+                deletedCartIds.add(cart.getCart_id()); // 삭제가 성공하면 cart_id를 리스트에 추가
+            } else {
+                log.warn("cart_id: " + cart.getCart_id() + "와 book_id: " + book_id + "에 대한 삭제 실패");
+            }
+        }
+
+        log.info("삭제된 cart_id들: " + deletedCartIds);
+        // 삭제가 성공한 cart_id들의 리스트를 반환
+        return deletedCartIds;
+    }
 }

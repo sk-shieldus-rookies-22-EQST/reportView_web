@@ -4,7 +4,6 @@ import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.controller.cart.Dto.CartDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -59,5 +58,19 @@ public class DBCartRepository implements CartRepository {
         } else {
             throw new RuntimeException("cart_id 값을 생성하지 못했습니다.");
         }
+    }
+
+    @Override
+    public Boolean delCartItem(List<Long> deletedCartId) {
+        String sql = "DELETE FROM cart WHERE cart_id = ?";
+
+        for (Long cartId : deletedCartId) {
+            int updatedRows = jdbcTemplate.update(sql, cartId);
+            if (updatedRows <= 0) {
+                return false;
+            }
+        }
+        // 모든 삭제가 성공했을 경우 true 반환
+        return true;
     }
 }
