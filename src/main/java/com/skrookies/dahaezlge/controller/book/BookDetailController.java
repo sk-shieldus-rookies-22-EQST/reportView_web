@@ -32,8 +32,8 @@ public class BookDetailController {
         log.info("detail controller addcart");
         if (user_id == null){
             log.info("detail controller user id null");
-            redirectAttributes.addFlashAttribute("message","로그인이 필요합니다.");
-            return "loginForm";
+            redirectAttributes.addFlashAttribute("messageLoginForm","로그인이 필요합니다.");
+            return "redirect:/loginForm";
         }
         else {
             log.info("detail controller do addcart");

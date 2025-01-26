@@ -5,16 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<title>eBookCart</title>
 
-    <script>
-        // Flash Attribute를 사용하여 메시지 가져오기
-        var message = "${messageCart}";
-        if (message) {
-            window.alert(message);
-        }
-    </script>
+<script>
+    // Flash Attribute를 사용하여 메시지 가져오기
+    var message = "${messageCart}";
+    if (message) {
+        window.alert(message);
+    }
+</script>
 </head>
 <body>
 <div class="container">
@@ -38,14 +38,16 @@
             <tbody>
         <%
             List<BookDto> bookList = (List<BookDto>) request.getAttribute("cartList");
+            Integer total_price = 0;
 
             if (bookList != null) {
                 for (BookDto book : bookList) {
+                    total_price += book.getBook_price();
         %>
-            <tr align="left">
+            <tr align="center">
                 <td> <img src="<%=book.getBook_img_path()%>" </td>
-                <td> <%= book.getBook_title() %> </td>
-                <td> <%= book.getBook_price() %> </td>
+                <td align="left"> <%= book.getBook_title() %> </td>
+                <td> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
                 <td> 
                     <form name="eBookCartDelete" action="/deleteCart" method="post">
                         <input type="hidden" name="book_id" value="<%= book.getBook_id() %>">
@@ -65,10 +67,12 @@
         %>
             </tbody>
         </table>
-
+        <div align="center" style="font-weight:bold; font-size:25px;">
+        장바구니에 담긴 총 금액: <%= total_price/1000 %>,<%= String.format("%03d", total_price % 1000) %>원
+        </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
             <form method="POST" action="/eBookPurchase">
-                <button>결제하기</button>
+                <button type="submit">결제하기</button>
             </form>
         </div>
     </div>
