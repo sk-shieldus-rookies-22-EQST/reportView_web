@@ -48,11 +48,8 @@
                 <td> <img src="<%=book.getBook_img_path()%>" </td>
                 <td align="left"> <%= book.getBook_title() %> </td>
                 <td> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
-                <td> 
-                    <form name="eBookCartDelete" action="/deleteCart" method="POST">
-                        <input type="hidden" name="book_id" value="<%= book.getBook_id() %>">
-                        <button type="submit">삭제</button>
-                    </form> 
+                <td>
+                    <button class="btn btn-danger" type="button" onclick="submitForm(<%= book.getBook_id() %>)">삭제</button>
                 </td>
             </tr>  
         <%
@@ -67,6 +64,22 @@
         %>
             </tbody>
         </table>
+        <script>
+            function submitForm(bookId) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/deleteCart';
+
+                var hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = 'book_id';
+                hiddenField.value = bookId;
+
+                form.appendChild(hiddenField);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        </script>
         <div align="center" style="font-weight:bold; font-size:25px;">
         장바구니에 담긴 총 금액:
         <%

@@ -47,7 +47,7 @@ public class eBookPurchaseController {
         } else {
             log.info("purchase fail");
             redirectAttributes.addFlashAttribute("messageCart","결제를 실패했습니다.");
-            return "redirect:/myPurchase";
+            return "redirect:/eBookCart";
         }
     }
 }
