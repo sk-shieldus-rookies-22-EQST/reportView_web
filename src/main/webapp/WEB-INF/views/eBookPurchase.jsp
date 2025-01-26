@@ -57,15 +57,33 @@
         <%
             int userPoint = (int) request.getAttribute("userPoint");
         %>
-        보유 포인트: <%= userPoint/1000 %>,<%= String.format("%03d", userPoint % 1000) %> -
-        총 금액: <%= total_price/1000 %>,<%= String.format("%03d", total_price % 1000) %>원
+        보유 포인트:
+        <%
+        if (userPoint>1000) {
+        %>
+            <%=userPoint/1000 %>,<%= String.format("%03d", userPoint % 1000) %>원
+        <%
+            } else {
+        %>
+            <%=userPoint/1000 %>원
+        <%
+            }
+        %>
+        - 총 금액: <%= total_price/1000 %>,<%= String.format("%03d", total_price % 1000) %>원
         </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <form method="POST" action="/purchaseProc">
-                <button type="submit">결제하기</button>
-            </form>
+            <button id="purchaseProc" type="button">결제하기</button>
         </div>
+        <script>
+            document.getElementById('purchaseProc').addEventListener('click', function () {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/purchaseProc';
 
+                document.body.appendChild(form);
+                form.submit();
+            });
+        </script>
     </div>
 </div>
 

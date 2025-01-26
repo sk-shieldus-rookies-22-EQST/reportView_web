@@ -25,18 +25,27 @@ public class PurchaseService {
     private final CartBookRepository cartBookRepository;
     private final CartRepository cartRepository;
 
-    public Boolean purchaseCart(String user_id){
+    @Transactional
+    public Boolean purchaseCart(String user_id) {
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
-        log.info(String.valueOf(cartIdList.size()));
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
-        log.info(String.valueOf(cartBookIdList.size()));
 
-        if(purchaseRepository.purchaseCart(user_id, cartBookIdList)){
-            return true;
-        } else{
-            return false;
+        if (!purchaseRepository.purchaseCart(user_id, cartBookIdList)) {
+            return false; // 구매 실패 시 롤백
         }
+
+        List<Long> deletedCartBookItems = cartBookRepository.delCartBookItems(cartIdList);
+        if (deletedCartBookItems == null || deletedCartBookItems.isEmpty()) {
+            return false; // 삭제된 항목이 없으면 실패
+        }
+
+        if (!cartRepository.delCartItem(deletedCartBookItems)) {
+            return false; // 실패 시 롤백
+        }
+
+        return true;
     }
+
     public List<Long> purchaseBook_list(String user_id) {
         return purchaseRepository.purchaseBook_list(user_id);
     }

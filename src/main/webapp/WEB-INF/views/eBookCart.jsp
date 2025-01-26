@@ -64,22 +64,7 @@
         %>
             </tbody>
         </table>
-        <script>
-            function submitForm(bookId) {
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '/deleteCart';
 
-                var hiddenField = document.createElement('input');
-                hiddenField.type = 'hidden';
-                hiddenField.name = 'book_id';
-                hiddenField.value = bookId;
-
-                form.appendChild(hiddenField);
-                document.body.appendChild(form);
-                form.submit();
-            }
-        </script>
         <div align="center" style="font-weight:bold; font-size:25px;">
         장바구니에 담긴 총 금액:
         <%
@@ -96,10 +81,33 @@
 
         </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <form method="POST" action="/eBookPurchase">
-                <button type="submit">결제하기</button>
-            </form>
+            <button id="purchaseButton" type="button">결제하기</button>
         </div>
+        <script>
+            function submitForm(bookId) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/deleteCart';
+
+                var hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = 'book_id';
+                hiddenField.value = bookId;
+
+                form.appendChild(hiddenField);
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            document.getElementById('purchaseButton').addEventListener('click', function () {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/eBookPurchase';
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+        </script>
     </div>
 </div>
 </body>

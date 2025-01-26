@@ -10,4 +10,6 @@ public interface CartBookRepository {
     List<Long> getCartBookList(List<CartDto> CartIdList);
 
     List<Long> delCartBookItem(List<CartDto> cartIdList, Long book_id);
+
+    List<Long> delCartBookItems(List<CartDto> cartIdList);
 }

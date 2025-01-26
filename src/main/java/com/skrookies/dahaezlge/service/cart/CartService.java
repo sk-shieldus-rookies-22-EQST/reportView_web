@@ -36,6 +36,11 @@ public class CartService {
         log.info("cart Service delCartItem");
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
         List<Long> deletedCartId = cartBookRepository.delCartBookItem(cartIdList, book_id);
-        return cartRepository.delCartItem(deletedCartId);
+        if(deletedCartId.size() != 0){
+            return cartRepository.delCartItem(deletedCartId);
+        }
+        else{
+            return false;
+        }
     }
 }

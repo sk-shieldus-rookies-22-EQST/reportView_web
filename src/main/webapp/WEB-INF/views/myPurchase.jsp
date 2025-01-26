@@ -14,7 +14,7 @@
         if (message) {
             window.alert(message);
         }
-            </script>
+    </script>
     </head>
 </head>
 <body>
