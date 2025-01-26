@@ -45,7 +45,7 @@
                     <td width="70%"> <%= eBook.getBook_reg_date() %>  </td>
                 </tr>
                 <tr align="left">
-                    <td width="70%"> <%= eBook.getBook_price() %>  </td>
+                    <td width="70%"> <%= String.format("%,d원", eBook.getBook_price()) %>  </td>
                 </tr>
             </table>
     <!-- 메시지를 숨긴 상태로 HTML에 포함 -->

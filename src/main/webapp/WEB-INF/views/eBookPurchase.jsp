@@ -57,19 +57,8 @@
         <%
             int userPoint = (int) request.getAttribute("userPoint");
         %>
-        보유 포인트:
-        <%
-        if (userPoint>1000) {
-        %>
-            <%=userPoint/1000 %>,<%= String.format("%03d", userPoint % 1000) %>원
-        <%
-            } else {
-        %>
-            <%=userPoint/1000 %>원
-        <%
-            }
-        %>
-        - 총 금액: <%= total_price/1000 %>,<%= String.format("%03d", total_price % 1000) %>원
+        보유 포인트: <%= String.format("%,d", userPoint) %>
+        - 총 금액: <%= String.format("%,d원", total_price) %>
         </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
             <button id="purchaseProc" type="button">결제하기</button>
