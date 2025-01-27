@@ -53,9 +53,12 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td style="width:500px;">
-                        <p style="white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">${book['book_title']}</p>
+                    <td style="width:500px; text-align: center; vertical-align: middle;">
+                        <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">
+                            ${book['book_title']}
+                        </p>
                     </td>
+
                     <td>${book['book_auth']}</td>
                     <td>${book['book_price']}원</td>
                     <td>
