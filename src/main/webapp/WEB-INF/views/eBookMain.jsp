@@ -59,8 +59,8 @@
                         </p>
                     </td>
 
-                    <td>${book['book_auth']}</td>
-                    <td>${book['book_price']}원</td>
+                    <td style=" text-align: center; vertical-align: middle;">${book['book_auth']}</td>
+                    <td style=" text-align: center; vertical-align: middle;">${book['book_price']}원</td>
                     <td>
                         <form method="post" action="/addCart">
                             <input type="hidden" name="book_id" value="${book['book_id']}">
