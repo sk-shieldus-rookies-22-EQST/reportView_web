@@ -123,8 +123,8 @@
 	    <form action="findUserProc" method="post">
             <input type="hidden" name="whatFind" id="findPw" value=2>
             <div class="mb-3" style="margin-bottom : 50px!important;">
-                          <label for="user_id" class="form-label fw-bold fs-4">아이디</label>
-                          <input type="text" class="form-control" id="user_id" aria-describedby="emailHelp" name="user_id" required>
+                          <label for="user_id_pw" class="form-label fw-bold fs-4">아이디</label>
+                          <input type="text" class="form-control" id="user_id_pw" aria-describedby="emailHelp" name="user_id_pw" required>
                         </div>
             <div class="mb-3" style="margin-bottom : 50px!important;">
               <label for="user_phone_pw" class="form-label fw-bold fs-4">전화번호</label>
@@ -169,8 +169,8 @@
             </div>
 
             <div class="mb-3" style="margin-bottom : 50px!important;">
-              <label for="user_email" class="form-label fw-bold fs-4">email</label>
-              <input type="text" class="form-control" id="user_email" aria-describedby="emailHelp" name="user_email" placeholder="someone@example.com" required>
+              <label for="user_email_pw" class="form-label fw-bold fs-4">email</label>
+              <input type="text" class="form-control" id="user_email_pw" aria-describedby="emailHelp" name="user_email_pw" placeholder="someone@example.com" required>
             </div>
 
             <div class="d-grid gap-2 col-6 mx-auto">

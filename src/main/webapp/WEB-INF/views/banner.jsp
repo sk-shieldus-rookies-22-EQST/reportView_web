@@ -13,10 +13,70 @@
 
 		<style type="text/css">
 			.btn-outline-light:hover {
-				color: #0d6efd !important;
+				color: #FF7A00 !important;
 			}
+            .bg-primary{
+                background-color: #FF7A00!important; /* 원하는 색으로 변경 */
+            }
+            .btn-outline-primary {
+                border-color: #FF7A00!important;
+                color: #FF7A00!important;
+            }
+            .btn-outline-primary:hover {
+                background-color: #EA002C!important;
+                border-color: #EA002C!important;
+                color: white!important;
+            }
+            .dropdown-item:onclick{
+                background-color: #EA002C!important;
+            }
 
-			/* point-color : #E3F321*/
+
+            .btn-primary {
+                    background-color: #FF7A00!important; /* 원하는 색으로 변경 */
+                    border-color: #FF7A00!important; /* 버튼 테두리 색상 변경 */
+                }
+
+            /* 버튼 호버 시 색상 변경 */
+            .btn-primary:hover {
+                background-color: #EA002C!important; /* 호버 시 색상 */
+                border-color: #EA002C!important;
+            }
+
+            /* pagination 기본 색상 변경 */
+             .pagination {
+                 background-color: #ffffff; /* 배경색 변경 */
+                 border-radius: 5px;
+                 box-shadow:none;
+             }
+
+             .pagination .page-link {
+                 color: #FF7A00; /* 페이지 링크 색상 */
+             }
+
+             .pagination .page-link:hover {
+                 background-color: #f8f9fa; /* hover 시 배경색 */
+                 color: #FF7A00; /* hover 시 글자 색상 */
+                 box-shadow:none;
+             }
+
+             .pagination .page-item.active .page-link {
+                 background-color: #FF7A00; /* 활성화된 페이지의 배경색 */
+                 border-color: #FF7A00; /* 활성화된 페이지의 테두리 색 */
+                 color : white!important;
+             }
+
+            input:focus {
+                border-color: #ff7a00!important;
+                box-shadow: none!important;
+            }
+
+            /* 드롭다운 항목 선택 시 색상 변경 */
+            .nav-item .dropdown-menu .dropdown-item:focus {
+                background-color: #FF7A00!important;  /* 원하는 색으로 변경 */
+                color: white!important;               /* 항목 텍스트 색상 */
+            }
+
 		</style>
 		<title>Insert title here</title>
 	</head>

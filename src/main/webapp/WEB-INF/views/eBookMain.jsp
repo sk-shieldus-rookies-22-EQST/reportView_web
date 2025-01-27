@@ -8,6 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title>eBookMain</title>
+    <style>
+
+    </style>
 </head>
 <body>
 <div class="container">
@@ -53,11 +56,14 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td style="width:500px;">
-                        <p style="white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">${book['book_title']}</p>
+                    <td style="width:500px; text-align: center; vertical-align: middle;">
+                        <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">
+                            ${book['book_title']}
+                        </p>
                     </td>
-                    <td>${book['book_auth']}</td>
-                    <td>${book['book_price']}원</td>
+
+                    <td style=" text-align: center; vertical-align: middle;">${book['book_auth']}</td>
+                    <td style=" text-align: center; vertical-align: middle;">${book['book_price']}원</td>
                     <td>
                         <form method="post" action="/addCart">
                             <input type="hidden" name="book_id" value="${book['book_id']}">
