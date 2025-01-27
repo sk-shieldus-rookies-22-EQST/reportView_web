@@ -39,6 +39,7 @@ public class DBPurchaseRepository implements PurchaseRepository {
 
     @Override
     public boolean purchaseCart(String user_id, List<Long> cartBookIdList){
+
         String sql = "INSERT INTO purchase (purchase_user_id, purchase_book_id, purchase_date) VALUES (?, ?, ?)";
 
         LocalDateTime now = LocalDateTime.now();
@@ -81,5 +82,7 @@ public class DBPurchaseRepository implements PurchaseRepository {
             return new ArrayList<>();
         }
     }
+
+
 
 }
