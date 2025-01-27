@@ -69,7 +69,8 @@ public class eBookPurchaseController {
     }
 
     @PostMapping("/purchaseProc")
-    public String purchaseProc(@RequestParam("total_book_price") int total_book_price, RedirectAttributes redirectAttributes, HttpSession session){
+    public String purchaseProc(Model model, RedirectAttributes redirectAttributes,
+                               @RequestParam("total_book_price") int total_book_price, HttpSession session){
         log.info("purchaseProc");
         log.info("total_book_price");
         String user_id = (String) session.getAttribute("user_id");
@@ -77,7 +78,10 @@ public class eBookPurchaseController {
 
         if (total_book_price > user_point) {
             log.info("total_book_price > user_point");
-            return "/pointCharger";
+            // 조건에 맞으면 모달을 띄우기 위한 정보를 JSP로 전달
+            model.addAttribute("showPointChargerModal", true);
+            model.addAttribute("totalBookPrice", total_book_price);  // 모달에서 필요한 데이터
+            return "eBookPurchase";
         } else {
             log.info("user_point: "+ user_point);
             if (purchaseService.purchaseCart(user_id, total_book_price)) {
@@ -95,18 +99,28 @@ public class eBookPurchaseController {
     }
 
     @PostMapping("/purchaseItemProc")
-    public String purchaseItemProc(RedirectAttributes redirectAttributes,
-                                   @RequestParam("book_id") Long book_id, HttpSession session){
+    public String purchaseItemProc(RedirectAttributes redirectAttributes, HttpSession session,
+                                   @RequestParam("book_id") Long book_id, @RequestParam("total_book_price") int total_book_price){
         String user_id = (String) session.getAttribute("user_id");
+        int user_point = (int) session.getAttribute("point");
+
         log.info("purchaseProc");
-        if(purchaseService.purchaseItem(user_id, book_id)){
-            log.info("purchaseItem success");
-            redirectAttributes.addFlashAttribute("messageMypurchase","결제가 완료되었습니다.");
-            return "redirect:/myPurchase";
+        if (total_book_price > user_point) {
+            log.info("total_book_price > user_point");
+            return "forward:/pointCharger";
         } else {
-            log.info("purchase fail");
-            redirectAttributes.addFlashAttribute("messageCart","결제를 실패했습니다.");
-            return "redirect:/eBookCart";
+            log.info("user_point: "+ user_point);
+            if(purchaseService.purchaseItem(user_id, book_id, total_book_price)){
+                log.info("purchaseItem success");
+                int point = userService.userPoint(user_id);
+                session.setAttribute("point", point);
+                redirectAttributes.addFlashAttribute("messageMypurchase","결제가 완료되었습니다.");
+                return "redirect:/myPurchase";
+            } else {
+                log.info("purchase fail");
+                redirectAttributes.addFlashAttribute("messageCart","결제를 실패했습니다.");
+                return "redirect:/eBookCart";
+            }
         }
     }
 }

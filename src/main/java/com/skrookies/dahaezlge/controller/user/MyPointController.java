@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,8 @@ public class MyPointController {
     }
 
     @PostMapping("/pointChargeProc")
-    public String pointChargeProc(@RequestParam("charge_point") int charge_point, HttpSession session, RedirectAttributes redirectAttributes){
+    public String pointChargeProc(Model model, RedirectAttributes redirectAttributes,
+                                  @RequestParam("charge_point") int charge_point, HttpSession session){
         log.info("pointChargeProc");
         if(session.getAttribute("user_id") != null) {
             int point = (int) session.getAttribute("point");
@@ -34,6 +36,8 @@ public class MyPointController {
             log.info("충전 후 잔액 : " + after_charge_point);
             if(purchaseService.chargePoint((String)session.getAttribute("user_id"), charge_point)){
                 session.setAttribute("point", after_charge_point);
+                redirectAttributes.addFlashAttribute("showPointChargerModal", false);
+
                 return "redirect:/eBookPurchase";
             } else {
                 return "false";

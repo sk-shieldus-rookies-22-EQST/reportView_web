@@ -101,6 +101,80 @@
         </script>
     </div>
 </div>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<!-- Modal -->
+<c:if test="${showPointChargerModal}">
+    <div id="pointChargerModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Point Charger</h2>
+        <iframe src="/pointCharger" width="100%" height="400px" frameborder="0"></iframe>
+      </div>
+    </div>
+</c:if>
+
+
+<!-- CSS for Modal -->
+<style>
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>
+
+<!-- JavaScript to handle modal -->
+<script>
+    var modal = document.getElementById("pointChargerModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    // 모달을 자동으로 띄우기 위해 컨트롤러에서 설정한 조건을 확인
+    if (modal) {
+        modal.style.display = "block";
+    }
+
+    // 'x' 버튼을 클릭하면 모달 닫기
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // 모달 외부를 클릭하면 모달 닫기
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 </body>
 </html>

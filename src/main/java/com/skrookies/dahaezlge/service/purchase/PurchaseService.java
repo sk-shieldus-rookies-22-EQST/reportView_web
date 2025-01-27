@@ -54,7 +54,7 @@ public class PurchaseService {
     }
 
     @Transactional
-    public Boolean purchaseItem(String user_id, Long book_id) {
+    public Boolean purchaseItem(String user_id, Long book_id, int use_point) {
         List<Long> purchaseItem = new ArrayList<>();
         purchaseItem.add(book_id);
 
@@ -66,7 +66,7 @@ public class PurchaseService {
             return false; // 구매 실패 시 롤백
         }
 
-        return true;
+        return userPointRepository.use_point(user_id, use_point);
     }
 
     public List<Long> purchaseBook_list(String user_id) {
