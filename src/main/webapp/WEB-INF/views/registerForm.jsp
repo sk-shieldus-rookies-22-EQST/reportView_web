@@ -166,6 +166,7 @@
             }}
         %>
         </div>
+        <% session.removeAttribute("status");%>
 
     </div></div>
 
