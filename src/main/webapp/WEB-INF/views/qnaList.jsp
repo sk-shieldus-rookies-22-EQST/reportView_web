@@ -49,8 +49,11 @@
                     %>
                             <tr style="cursor:pointer;" onclick="window.location.href='/qnaDetail?qna_id=<%= qna.getQna_id() %>';">
                                 <td><%= qna.getQna_id() %></td>
-                                <td style="display:flex;justify-content: center;">
-                                    <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;"><%= qna.getQna_title() %></p></td>
+                                <td style="width:500px; text-align: center; vertical-align: middle;">
+                                    <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">
+                                        <%= qna.getQna_title() %>
+                                    </p>
+                                </td>
                                 <td><%= qna.getQna_user_id() %></td>
                                 <td><%= qna.getQna_created_at() %></td>
                             </tr>
