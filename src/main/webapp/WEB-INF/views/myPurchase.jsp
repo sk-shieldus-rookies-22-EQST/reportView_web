@@ -36,8 +36,8 @@
             <c:forEach var="bookList" items="${books}">
                 <c:forEach var="book" items="${bookList}" varStatus="status">
                 <tr onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
-                    <td style="width:500px">
-                        <p style="white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">${book['book_title']}</p>
+                    <td style="width:700px; text-align: center; vertical-align: middle;">
+                        <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">${book['book_title']}</p>
                     </td>
                     <td>${book['book_auth']}</td>
                     <td>${book['book_price']}원</td>
