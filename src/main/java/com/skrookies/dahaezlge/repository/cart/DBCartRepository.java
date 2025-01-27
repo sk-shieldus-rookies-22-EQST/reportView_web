@@ -38,25 +38,43 @@ public class DBCartRepository implements CartRepository {
 
     @Override
     public Long addCart(String user_id, BookDto book_info) {
-        String sql = "INSERT INTO cart (cart_user_id, cart_total_price) VALUES (?, ?)";
+        try {
+            // 동일한 책이 이미 장바구니에 있는지 확인
+            String checkSql = "SELECT COUNT(*) FROM cart_book cb " +
+                    "JOIN cart c ON cb.cart_book_id = c.cart_id " +
+                    "WHERE c.cart_user_id = ? AND cb.cart_book_book_id = ?";
 
-        Integer book_price = book_info.getBook_price();
+            Integer count = jdbcTemplate.queryForObject(
+                    checkSql,
+                    new Object[]{user_id, book_info.getBook_id()},
+                    Integer.class
+            );
 
-        // KeyHolder 객체 생성
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+            // 이미 책이 장바구니에 있다면 에러 메시지 출력 및 null 반환
+            if (count != null && count > 0) {
+                throw new IllegalStateException("이미 장바구니에 담겨있습니다.");
+            }
 
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[] { "cart_id" });
-            ps.setString(1, user_id);
-            ps.setString(2, book_price.toString());
-            return ps;
-        }, keyHolder);
+            // 새로운 장바구니 생성
+            String cartSql = "INSERT INTO cart (cart_user_id, cart_total_price) VALUES (?, ?)";
 
-        // 키를 정수로 반환
-        if (keyHolder.getKey() != null) {
-            return keyHolder.getKey().longValue();
-        } else {
-            throw new RuntimeException("cart_id 값을 생성하지 못했습니다.");
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(cartSql, new String[]{"cart_id"});
+                ps.setString(1, user_id);
+                ps.setInt(2, book_info.getBook_price());
+                return ps;
+            }, keyHolder);
+
+            // 생성된 cart_id 반환
+            return keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
+
+        } catch (IllegalStateException e) {
+            // 이미 장바구니에 존재하는 경우 사용자에게 메시지를 보여줌
+            System.out.println(e.getMessage()); // "이미 장바구니에 담겨있습니다."
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to add cart", e);
         }
     }
 
