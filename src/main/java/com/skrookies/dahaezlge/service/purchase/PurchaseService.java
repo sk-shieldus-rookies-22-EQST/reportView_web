@@ -8,6 +8,7 @@ import com.skrookies.dahaezlge.repository.book.BookRepository;
 import com.skrookies.dahaezlge.repository.cart.CartRepository;
 import com.skrookies.dahaezlge.repository.cartBook.CartBookRepository;
 import com.skrookies.dahaezlge.repository.purchase.PurchaseRepository;
+import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,10 @@ public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
     private final CartBookRepository cartBookRepository;
     private final CartRepository cartRepository;
+    private final UserPointRepository userPointRepository;
 
     @Transactional
-    public Boolean purchaseCart(String user_id) {
+    public Boolean purchaseCart(String user_id, int use_point) {
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
@@ -43,11 +45,14 @@ public class PurchaseService {
             return false; // 실패 시 롤백
         }
 
-        return true;
+        return userPointRepository.use_point(user_id, use_point);
     }
 
     public List<Long> purchaseBook_list(String user_id) {
         return purchaseRepository.purchaseBook_list(user_id);
     }
 
+    public boolean chargePoint(String userId, int charge_point) {
+        return userPointRepository.charge_point(userId, charge_point);
+    }
 }

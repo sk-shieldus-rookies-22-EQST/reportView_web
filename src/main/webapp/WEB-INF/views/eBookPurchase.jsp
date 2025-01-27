@@ -9,6 +9,9 @@
 
 </head>
 <body>
+
+
+
 <div class="container">
     <jsp:include page="banner.jsp" />
 
@@ -54,7 +57,7 @@
         </table>
         <div align="center" style="font-weight:bold; font-size:25px;">
         <%
-            int userPoint = (int) request.getAttribute("userPoint");
+            int userPoint = (int) session.getAttribute("point");
         %>
         보유 포인트: <%= String.format("%,d", userPoint) %>
         - 총 금액: <%= String.format("%,d원", total_price) %>
@@ -67,6 +70,13 @@
                 var form = document.createElement('form');
                 form.method = 'POST';
                 form.action = '/purchaseProc';
+
+                var total_book_price = document.createElement('input');
+                total_book_price.type = 'hidden';
+                total_book_price.name = 'total_book_price';
+                total_book_price.value = <%=total_price%>; // 보내고자 하는 데이터
+
+                form.appendChild(total_book_price);
 
                 document.body.appendChild(form);
                 form.submit();

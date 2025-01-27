@@ -7,4 +7,6 @@ import java.util.List;
 public interface PurchaseRepository {
         boolean purchaseCart(String user_id, List<Long> cartBookIdList);
         List<Long> purchaseBook_list(String userId);
+
+
 }
