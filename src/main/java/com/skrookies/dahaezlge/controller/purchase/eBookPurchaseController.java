@@ -1,6 +1,7 @@
 package com.skrookies.dahaezlge.controller.purchase;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.cart.CartService;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import com.skrookies.dahaezlge.service.user.UserService;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,6 +25,7 @@ public class eBookPurchaseController {
     private final CartService cartService;
     private final UserService userService;
     private final PurchaseService purchaseService;
+    private final BookService bookService;
 
     @PostMapping("/eBookPurchase")
     public String setPurchaseList(Model model, HttpSession session){
@@ -33,6 +37,29 @@ public class eBookPurchaseController {
         int userPoint = userService.userPoint(user_id);
         model.addAttribute("userPoint", userPoint);
 
+        String purchaseUrl = "/purchaseProc";
+        model.addAttribute("purchaseUrl", purchaseUrl);
+
+        return "eBookPurchase";
+    }
+
+    @PostMapping("/eBookPurchaseItem")
+    public String setPurchaseItem(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
+        String user_id = (String) session.getAttribute("user_id");
+
+        BookDto book_info = bookService.getBookInfo(book_id);
+
+        List<BookDto> purchaseList = new ArrayList<>();
+        purchaseList.add(book_info);
+
+        model.addAttribute("purchaseList", purchaseList);
+
+        int userPoint = userService.userPoint(user_id);
+        model.addAttribute("userPoint", userPoint);
+
+        String purchaseUrl = "/purchaseItemProc";
+        model.addAttribute("purchaseUrl", purchaseUrl);
+
         return "eBookPurchase";
     }
 
@@ -42,6 +69,22 @@ public class eBookPurchaseController {
         log.info("purchaseProc");
         if(purchaseService.purchaseCart(user_id)){
             log.info("purchase success");
+            redirectAttributes.addFlashAttribute("messageMypurchase","결제가 완료되었습니다.");
+            return "redirect:/myPurchase";
+        } else {
+            log.info("purchase fail");
+            redirectAttributes.addFlashAttribute("messageCart","결제를 실패했습니다.");
+            return "redirect:/eBookCart";
+        }
+    }
+
+    @PostMapping("/purchaseItemProc")
+    public String purchaseItemProc(RedirectAttributes redirectAttributes,
+                                   @RequestParam("book_id") Long book_id, HttpSession session){
+        String user_id = (String) session.getAttribute("user_id");
+        log.info("purchaseProc");
+        if(purchaseService.purchaseItem(user_id, book_id)){
+            log.info("purchaseItem success");
             redirectAttributes.addFlashAttribute("messageMypurchase","결제가 완료되었습니다.");
             return "redirect:/myPurchase";
         } else {

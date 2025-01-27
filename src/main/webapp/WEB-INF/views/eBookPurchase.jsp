@@ -64,10 +64,27 @@
             <button id="purchaseProc" type="button">결제하기</button>
         </div>
         <script>
+            var purchaseUrl = "${purchaseUrl}";
+
             document.getElementById('purchaseProc').addEventListener('click', function () {
                 var form = document.createElement('form');
                 form.method = 'POST';
-                form.action = '/purchaseProc';
+                form.action = purchaseUrl;
+
+                if (purchaseUrl === "/purchaseItemProc") {
+                <%
+                    if (bookList != null && !bookList.isEmpty()) {
+                        BookDto book = bookList.get(0); // 첫 번째 책을 선택
+                %>
+                    var bookIdInput = document.createElement('input');
+                    bookIdInput.type = 'hidden';
+                    bookIdInput.name = 'book_id';
+                    bookIdInput.value = '<%= book.getBook_id() %>';
+                    form.appendChild(bookIdInput);
+                <%
+                    }
+                %>
+                }
 
                 document.body.appendChild(form);
                 form.submit();

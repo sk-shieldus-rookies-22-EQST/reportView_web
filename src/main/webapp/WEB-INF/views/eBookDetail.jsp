@@ -51,7 +51,6 @@
     <!-- 메시지를 숨긴 상태로 HTML에 포함 -->
     <span id="message" style="display: none;">${message}</span>
 
-
             <div>
                 <%= eBook.getBook_summary() %>
             </div>
@@ -61,11 +60,10 @@
                         <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
                         <button class="btn btn-outline-primary" type="submit" style="width:100%;padding:20px;">장바구니</button>
                     </form>
-                    <form method="POST" action="/purchase" class="g-col-6" style="width:49%;">
+                    <form method="POST" action="/eBookPurchaseItem" class="g-col-6" style="width:49%;">
                           <input type="hidden" name="book_id" value="<%= eBook.getBook_id() %>" />
                           <button class="btn btn-primary" type="submit" style="width:100%;padding:20px;">결제</button>
                     </form>
-
                 </div>
                 <% String previousPage = request.getHeader("referer"); %>
                 <button class="btn btn-primary" type="button"

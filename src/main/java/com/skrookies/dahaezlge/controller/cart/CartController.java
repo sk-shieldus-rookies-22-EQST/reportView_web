@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-    @PostMapping("/eBookCart")
+    @RequestMapping("/eBookCart")
     public String setCartList(Model model, RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
         if (user_id == null){

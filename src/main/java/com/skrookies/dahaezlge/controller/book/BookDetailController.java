@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.controller.book;
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.bookDetail.BookDetailService;
+import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +25,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookDetailController {
     private final BookDetailService bookDetailService;
+    private final PurchaseService purchaseService;
     private final BookService bookService;
 
     @PostMapping("/addCart")
-    public String addCart(Model model, RedirectAttributes redirectAttributes, @RequestParam("book_id") Long book_id, HttpSession session){
+    public String addCart(Model model, RedirectAttributes redirectAttributes,
+                          @RequestParam("book_id") Long book_id, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
         log.info("detail controller addcart");
         if (user_id == null){
@@ -40,5 +43,9 @@ public class BookDetailController {
             bookDetailService.addCart(user_id, book_id);
             return "forward:/eBookCart";
         }
+
+
     }
+
 }
+

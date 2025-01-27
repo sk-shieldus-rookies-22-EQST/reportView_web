@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,10 @@ public class PurchaseService {
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
+        if(!purchaseRepository.getDuplicateBooks(user_id,cartBookIdList).isEmpty()){
+            return false;
+        }
+
         if (!purchaseRepository.purchaseCart(user_id, cartBookIdList)) {
             return false; // 구매 실패 시 롤백
         }
@@ -41,6 +46,22 @@ public class PurchaseService {
 
         if (!cartRepository.delCartItem(deletedCartBookItems)) {
             return false; // 실패 시 롤백
+        }
+
+        return true;
+    }
+
+    @Transactional
+    public Boolean purchaseItem(String user_id, Long book_id) {
+        List<Long> purchaseItem = new ArrayList<>();
+        purchaseItem.add(book_id);
+
+        if(!purchaseRepository.getDuplicateBooks(user_id, purchaseItem).isEmpty()){
+            return false;
+        }
+
+        if (!purchaseRepository.purchaseCart(user_id, purchaseItem)) {
+            return false; // 구매 실패 시 롤백
         }
 
         return true;
