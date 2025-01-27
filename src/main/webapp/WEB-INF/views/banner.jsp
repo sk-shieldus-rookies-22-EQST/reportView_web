@@ -27,6 +27,9 @@
                 border-color: #EA002C!important;
                 color: white!important;
             }
+            .dropdown-item:onclick{
+                background-color: #EA002C!important;
+            }
 
 
             .btn-primary {
@@ -66,6 +69,12 @@
             input:focus {
                 border-color: #ff7a00!important;
                 box-shadow: none!important;
+            }
+
+            /* 드롭다운 항목 선택 시 색상 변경 */
+            .nav-item .dropdown-menu .dropdown-item:focus {
+                background-color: #FF7A00!important;  /* 원하는 색으로 변경 */
+                color: white!important;               /* 항목 텍스트 색상 */
             }
 
 		</style>
