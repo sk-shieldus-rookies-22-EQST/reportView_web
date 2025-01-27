@@ -25,29 +25,35 @@ public class FinduseridController {
     }
 
     @PostMapping("/findUserProc")
-    public String findUseridpw_form(Model model, HttpSession session, @ModelAttribute FinduseridDto finduseridDto, @RequestParam("whatFind") Integer whatFind){
-        String user_id = userService.findUserId((String)finduseridDto.getUser_phone(), finduseridDto.getUser_email());
-        String user_id_pw = userService.findUserId(finduseridDto.getUser_phone_pw(), finduseridDto.getUser_email());
+    public String findUseridpw_form(HttpSession session, @ModelAttribute FinduseridDto finduseridDto, @RequestParam("whatFind") Integer whatFind){
+        String user_phone = finduseridDto.getUser_phone();
+        String user_email = finduseridDto.getUser_email();
+        String user_is_pw = finduseridDto.getUser_id_pw();
+        String user_phone_pw = finduseridDto.getUser_phone_pw();
+        String user_email_pw = finduseridDto.getUser_email_pw();
+
         log.info("FinduseridController - whatfind = " + whatFind);
          if(whatFind == 1){
-             log.info("FinduseridController - user_id = " + user_id);
-            if(user_id == "no_users" && user_id_pw == "no_users"){
+            String found_user_id = userService.findUserId(user_phone, user_email);
+             log.info("FinduseridController - user_id = " + found_user_id);
+            if(found_user_id == "no_users" && found_user_id == "no_users"){
                 return "redirect:/findUseridpw?warnid=1";
-            } else if (user_id == "error" && user_id_pw == "error"){
+            } else if (found_user_id == "error" && found_user_id == "error"){
                 return "redirect:/findUseridpw?errorid=1";
             } else {
-                return "redirect:/findUseridpw?foundId=" + user_id;
+                return "redirect:/findUseridpw?foundId=" + found_user_id;
             }
         } else if(whatFind == 2) {
-             log.info("FinduseridController - user_id_pw = " + user_id_pw);
-             if(user_id == "no_users" && user_id_pw == "no_users"){
+             String found_user_id_pw = userService.findUserId(user_phone_pw, user_email_pw);
+             log.info("FinduseridController - found_user_id_pw = " + found_user_id_pw);
+             if(found_user_id_pw == "no_users" && found_user_id_pw == "no_users"){
                  log.info("FinduseridController - nousers ");
                  return "redirect:/findUseridpw?warnpw=1";
-             } else if (user_id == "error" && user_id_pw == "error"){
+             } else if (found_user_id_pw == "error" && found_user_id_pw == "error"){
                  log.info("FinduseridController - error ");
                  return "redirect:/findUseridpw?errorpw=1";
              } else {
-                 session.setAttribute("find_pw_userid", user_id_pw);
+                 session.setAttribute("find_pw_userid", found_user_id_pw);
                  return "redirect:/modifyUserpwForm";
              }
         } else {
