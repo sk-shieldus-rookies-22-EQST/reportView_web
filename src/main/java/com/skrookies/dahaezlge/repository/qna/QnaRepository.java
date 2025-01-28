@@ -102,4 +102,9 @@ public class QnaRepository {
         String sql = "SELECT * FROM qna_re WHERE qna_id = ?";
         return jdbcTemplate.query(sql, new Object[]{qna_id}, new BeanPropertyRowMapper<>(QnaRe.class));
     }
+
+    public void deleteByQnaID(Long qna_re_id) {
+        String sql = "DELETE FROM qna_re WHERE qna_re_id= ?";
+        jdbcTemplate.update(sql, qna_re_id);
+    }
 }

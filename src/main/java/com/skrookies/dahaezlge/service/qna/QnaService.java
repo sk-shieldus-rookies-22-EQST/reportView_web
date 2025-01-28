@@ -58,4 +58,8 @@ public class QnaService {
     public List<QnaRe> getRepliesByQnaId(int qna_id) {
         return QnaRepository.findRepliesByQnaId((long) qna_id);
     }
+
+    public void deleteById(Long qna_re_id) {
+        QnaRepository.deleteByQnaID(qna_re_id);
+    }
 }

@@ -139,6 +139,20 @@ public class QnaController {
         return "qnaList";
     }
 
+    @RequestMapping("/qnaReplyDelete")
+    public String qnaReplyDelete(@RequestParam("qna_re_id") Long qna_re_id, @RequestParam("qna_id") Long qna_id) {
+        try {
+            // 해당 답글을 삭제
+            QnaService.deleteById(qna_re_id);
+        } catch (Exception e) {
+            // 예외 처리 (삭제 실패 시)
+            e.printStackTrace();
+        }
+
+        // 삭제 후 같은 페이지로 리다이렉트 (게시글 상세 페이지로 돌아가기)
+        return "redirect:/qnaDetail?qna_id=" + qna_id;
+    }
+
     @PostMapping("/qnaReplyProcess")
     public String qnaReplyProcess(HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
         // 세션에서 user_id 확인
@@ -165,6 +179,9 @@ public class QnaController {
             // 실패 시 처리 (예: 오류 메시지 처리)
             return "redirect:/qnaDetail?qna_id=" + qna_id; // 실패 시에도 상세 페이지로 리다이렉트
         }
+
+
+
     }
 
 }

@@ -74,6 +74,7 @@
                             <th>작성자</th>
                             <th>내용</th>
                             <th>작성일자</th>
+                            <th>삭제</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,6 +83,9 @@
                                 <td>관리자</td>
                                 <td>${reply.qna_re_body}</td>
                                 <td>${reply.qna_re_created_at}</td>
+                                <td>
+                                    <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;">X</a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
