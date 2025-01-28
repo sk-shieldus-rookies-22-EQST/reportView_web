@@ -27,7 +27,7 @@ public class QnaRe {
     private Users users;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "qna_re_qna_id", nullable = false)
+    @JoinColumn(name = "qna_id", nullable = false)
     private Qna qna;
 
     @Column(name = "qna_re_body", nullable = false)

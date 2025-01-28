@@ -50,4 +50,8 @@ public class QnaService {
         return QnaRepository.findByKeyword(keyword, offset, pageSize);
     }
 
+    public int addQnaReply(QnaReDto qnaReDto) {
+        return QnaRepository.qnaReply(qnaReDto);
+    }
+
 }

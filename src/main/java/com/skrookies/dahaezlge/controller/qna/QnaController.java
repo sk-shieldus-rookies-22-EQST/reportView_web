@@ -136,5 +136,32 @@ public class QnaController {
         return "qnaList";
     }
 
+    @PostMapping("/qnaReplyProcess")
+    public String qnaReplyProcess(HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
+        // 세션에서 user_id 확인
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null || userId.isEmpty()) {
+            // 세션에 user_id가 없으면 로그인 페이지로 리다이렉트
+            return "redirect:/loginForm";
+        }
+
+        // 답글 DTO 생성
+        QnaReDto qnaReDto = new QnaReDto();
+        qnaReDto.setQna_re_user_id(userId);
+        qnaReDto.setQna_re_body(qna_re_body);
+        qnaReDto.setQna_re_created_at(LocalDateTime.now());
+        qnaReDto.setQna_id((long) qna_id);
+
+        // 서비스 호출하여 답글 추가
+        int result = QnaService.addQnaReply(qnaReDto);
+
+        if (result > 0) {
+            return "redirect:/qnaDetail?qna_id=" + qna_id; // 답글 추가 후 상세 페이지로 리다이렉트
+        } else {
+            // 실패 시 처리 (예: 오류 메시지 처리)
+            return "redirect:/qnaDetail?qna_id=" + qna_id; // 실패 시에도 상세 페이지로 리다이렉트
+        }
+    }
 
 }

@@ -92,4 +92,8 @@ public class QnaRepository {
                 new BeanPropertyRowMapper<>(QnaDto.class));
     }
 
+    public int qnaReply(QnaReDto qnaReDto) {
+        String sql = "INSERT INTO qna_re (qna_re_user_id, qna_re_body, qna_re_created_at, qna_id) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, qnaReDto.getQna_re_user_id(), qnaReDto.getQna_re_body(), qnaReDto.getQna_re_created_at(), qnaReDto.getQna_id());
+    }
 }
