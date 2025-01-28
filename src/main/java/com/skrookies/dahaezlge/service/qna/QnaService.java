@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.service.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
+import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
 import com.skrookies.dahaezlge.repository.qna.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,4 +55,7 @@ public class QnaService {
         return QnaRepository.qnaReply(qnaReDto);
     }
 
+    public List<QnaRe> getRepliesByQnaId(int qna_id) {
+        return QnaRepository.findRepliesByQnaId((long) qna_id);
+    }
 }

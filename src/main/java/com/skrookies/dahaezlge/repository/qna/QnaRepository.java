@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.repository.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
+import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -95,5 +96,10 @@ public class QnaRepository {
     public int qnaReply(QnaReDto qnaReDto) {
         String sql = "INSERT INTO qna_re (qna_re_user_id, qna_re_body, qna_re_created_at, qna_id) VALUES (?, ?, ?, ?)";
         return jdbcTemplate.update(sql, qnaReDto.getQna_re_user_id(), qnaReDto.getQna_re_body(), qnaReDto.getQna_re_created_at(), qnaReDto.getQna_id());
+    }
+
+    public List<QnaRe> findRepliesByQnaId(Long qna_id) {
+        String sql = "SELECT * FROM qna_re WHERE qna_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{qna_id}, new BeanPropertyRowMapper<>(QnaRe.class));
     }
 }

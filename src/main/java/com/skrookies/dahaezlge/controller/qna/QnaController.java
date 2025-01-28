@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.controller.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
+import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -70,8 +71,10 @@ public class QnaController {
 
         // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+        List<QnaRe> qnaReplies = QnaService.getRepliesByQnaId(qna_id);
 
         model.addAttribute("qnaDetail", qnaDetail);
+        model.addAttribute("qnaReplies", qnaReplies);
 
         log.info("page_move: qnaDetail.jsp");
         return "qnaDetail";

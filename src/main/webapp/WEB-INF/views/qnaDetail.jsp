@@ -65,42 +65,40 @@
     </div>
 
     <!-- 답글 목록 -->
-    <div class="mt-5">
-        <h5>답글 목록</h5>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>작성자</th>
-                    <th>내용</th>
-                    <th>작성일자</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="reply" items="${qnaReplies}">
-                    <tr>
-                        <td>${reply.qna_re_user_id}</td>
-                        <td>${reply.qna_re_body}</td>
-                        <td>${reply.qna_re_created_at}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+    <div class="container" style="max-width: 1200px;">
+            <div class="mt-5">
+                <h5>답글 목록</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>작성자</th>
+                            <th>내용</th>
+                            <th>작성일자</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="reply" items="${qnaReplies}">
+                            <tr>
+                                <td>관리자</td>
+                                <td>${reply.qna_re_body}</td>
+                                <td>${reply.qna_re_created_at}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
 
-    <!-- 답글 작성 폼 -->
-
-        <div class="mt-4">
-            <h5>답글 작성</h5>
-            <form action="qnaReplyProcess" method="post">
-                <!-- 몇번 째 글인지 확인할 수 있도록 qna_id -->
-                <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
-                <!-- user_level 확인하기 위해 user_id 보냄 -->
-                <!-- <input type="hidden" name="qna_user_id" value="${qnaDetail.qna_user_id}"> -->
-                <div class="mb-3">
-                    <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-success">답글 달기</button>
-            </form>
+            <!-- 답글 작성 폼 -->
+            <div class="mt-4">
+                <h5>답글 작성</h5>
+                <form action="qnaReplyProcess" method="post">
+                    <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
+                    <div class="mb-3">
+                        <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">답글 달기</button>
+                </form>
+            </div>
         </div>
 
 
