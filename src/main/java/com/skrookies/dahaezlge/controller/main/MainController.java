@@ -121,8 +121,9 @@ public class MainController {
     }
 
     @GetMapping("/eBookDetail")
-    public String setBookInfo(Model model, @RequestParam("book_id") Long book_id){
+    public String setBookInfo(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
         BookDto bookInfo = bookService.getBookInfo(book_id);
+        session.setAttribute("book_id", book_id);
         model.addAttribute("bookInfo", bookInfo);
         log.info("page_move: eBookDetail.jsp");
         return "eBookDetail";

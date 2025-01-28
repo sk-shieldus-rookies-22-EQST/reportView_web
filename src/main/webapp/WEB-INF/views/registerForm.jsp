@@ -36,7 +36,7 @@
             align-items: center;
         }
         .agree input[type="checkbox"]:checked + label {
-            background: #0d6efd no-repeat center/10px 10px;
+            background: #FF7A00 no-repeat center/10px 10px;
             float: left
         }
         .agree input[type="checkbox"] + label span {
@@ -166,6 +166,7 @@
             }}
         %>
         </div>
+        <% session.removeAttribute("status");%>
 
     </div></div>
 

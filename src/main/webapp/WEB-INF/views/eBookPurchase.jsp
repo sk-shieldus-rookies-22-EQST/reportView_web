@@ -4,12 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </head>
 <body>
+
+
+
 <div class="container">
     <jsp:include page="banner.jsp" />
 
@@ -30,14 +32,17 @@
 
         <%
             List<BookDto> bookList = (List<BookDto>) request.getAttribute("purchaseList");
+            Integer total_price = 0;
 
             if (bookList != null) {
                 for (BookDto book : bookList) {
+                    total_price += book.getBook_price();
         %>
-            <tr align="left">
+            <tr align="center">
                 <td> <img src="<%= book.getBook_img_path() %>"</td>
-                <td> <%= book.getBook_title() %> </td>
-                <td> <%= book.getBook_price() %> </td>
+                <td style="width:500px; text-align: center; vertical-align: middle;"> <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;">
+                <%= book.getBook_title() %> </p></td>
+                <td style=" text-align: center; vertical-align: middle;"> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
             </tr>
         <%
                 }
@@ -53,18 +58,49 @@
         </table>
         <div align="center" style="font-weight:bold; font-size:25px;">
         <%
-            int userPoint = (int) request.getAttribute("userPoint");
+            int userPoint = (int) session.getAttribute("point");
         %>
-        보유 포인트: <%= userPoint %> - 총 금액:
+        보유 포인트: <%= String.format("%,d", userPoint) %>
+        - 총 금액: <%= String.format("%,d원", total_price) %>
         </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <form method="POST" action="/purchaseProc">
-                <button type="submit">결제하기</button>
-            </form>
+            <button id="purchaseProc" type="button">결제하기</button>
         </div>
+        <script>
+            var purchaseUrl = "${purchaseUrl}";
 
+            document.getElementById('purchaseProc').addEventListener('click', function () {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = purchaseUrl;
+
+                if (purchaseUrl === "/purchaseItemProc") {
+                <%
+                    if (bookList != null && !bookList.isEmpty()) {
+                        BookDto book = bookList.get(0); // 첫 번째 책을 선택
+                %>
+                    var bookIdInput = document.createElement('input');
+                    bookIdInput.type = 'hidden';
+                    bookIdInput.name = 'book_id';
+                    bookIdInput.value = '<%= book.getBook_id() %>';
+                    form.appendChild(bookIdInput);
+                <%
+                    }
+                %>
+                }
+
+                var total_book_price = document.createElement('input');
+                total_book_price.type = 'hidden';
+                total_book_price.name = 'total_book_price';
+                total_book_price.value = <%=total_price%>; // 보내고자 하는 데이터
+
+                form.appendChild(total_book_price);
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+        </script>
     </div>
 </div>
-
 </body>
 </html>

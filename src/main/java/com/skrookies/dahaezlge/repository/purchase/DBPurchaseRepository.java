@@ -1,6 +1,5 @@
 package com.skrookies.dahaezlge.repository.purchase;
 
-import com.skrookies.dahaezlge.controller.cart.Dto.CartDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +19,27 @@ public class DBPurchaseRepository implements PurchaseRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
+    public List<Long> getDuplicateBooks(String user_id, List<Long> cartBookIdList) {
+        String sql = "SELECT purchase_book_id FROM purchase WHERE purchase_user_id = ? AND purchase_book_id = ?";
+
+        List<Long> duplicateBooks = new ArrayList<>();
+
+        for (Long bookId : cartBookIdList) {
+            List<Long> result = jdbcTemplate.queryForList(sql, Long.class, user_id, bookId);
+            if (!result.isEmpty()) {
+                duplicateBooks.add(bookId);
+            }
+        }
+
+        log.info("Duplicate books found: " + duplicateBooks);
+
+        return duplicateBooks;
+    }
+
+
+    @Override
     public boolean purchaseCart(String user_id, List<Long> cartBookIdList){
+
         String sql = "INSERT INTO purchase (purchase_user_id, purchase_book_id, purchase_date) VALUES (?, ?, ?)";
 
         LocalDateTime now = LocalDateTime.now();
@@ -63,5 +82,7 @@ public class DBPurchaseRepository implements PurchaseRepository {
             return new ArrayList<>();
         }
     }
+
+
 
 }

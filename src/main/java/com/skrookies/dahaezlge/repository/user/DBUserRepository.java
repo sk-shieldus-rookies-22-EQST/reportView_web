@@ -56,6 +56,8 @@ public class DBUserRepository implements UserRepository{
                 }
             }else { return "no_users"; }
         } catch (Exception e) {
+            log.info("findUserId - phone: "+ user_phone);
+            log.info("findUserId - email: "+user_email);
             return "no_users";
         }
     }

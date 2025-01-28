@@ -9,4 +9,6 @@ public interface CartRepository {
     List<CartDto> getCartList(String user_id);
 
     Long addCart(String user_id, BookDto book_info);
+
+    Boolean delCartItem(List<Long> deletedCardId);
 }

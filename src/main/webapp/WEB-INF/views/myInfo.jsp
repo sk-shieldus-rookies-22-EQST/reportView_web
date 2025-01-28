@@ -38,7 +38,7 @@
 			    <%if (myInfoModifyForm == "0") {%>
                     <%= user_pw %>
                 <%}else if (myInfoModifyForm == "1"){%>
-                    <input type="text" name="user_pw" id="user_pw" value="<%= user_pw %>" required>
+                    <input type="text" class="form-control" style="width:50%;" name="user_pw" id="user_pw" value="<%= user_pw %>" required>
                 <%}%>
 			</td>
 		</tr>
@@ -48,7 +48,7 @@
 				<%if (myInfoModifyForm == "0") {%>
                     <%= user_phone %>
                 <%}else if (myInfoModifyForm == "1"){%>
-                    <input type="text" name="user_phone" maxlength="13"  id="user_phone" value="<%= user_phone %>" required>
+                    <input type="text" class="form-control" style="width:50%;" name="user_phone" maxlength="13"  id="user_phone" value="<%= user_phone %>" required>
                     <script type="text/javascript">
                                         let autoTel = function(str){
                                               str = str.replace(/[^0-9]/g, '');
@@ -96,7 +96,7 @@
                 <%if (myInfoModifyForm == "0") {%>
                     <%= user_email %>
                 <%}else if (myInfoModifyForm == "1"){%>
-                    <input type="text" name="user_email" id="user_email" value="<%= user_email %>" required>
+                    <input type="text" class="form-control" style="width:50%;" name="user_email" id="user_email" value="<%= user_email %>" required>
                 <%}%>
             </td>
         </tr>

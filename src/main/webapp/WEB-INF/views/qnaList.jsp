@@ -20,24 +20,24 @@
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 정보</p>
 
         <!-- 검색 폼 -->
-            <form action="/qnaSearch" method="get" class="mb-4">
-                <div class="row">
-                    <div class="col-md-10">
-                        <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요" value="${param.keyword}">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">검색</button>
-                    </div>
-                </div>
-            </form>
+        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
+            <form method="get" action="/qnaSearch" style="display: flex; align-items: center; gap: 10px;">
 
-            <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+                <div class="input-group mb-3">
+                    <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요" value="${param.keyword}" style="width: 200px;box-shadow:none;" aria-describedby="button-addon2" onfocus="this.style.backgroundColor='#f9f9f9';" onblur="this.style.backgroundColor='';">
+                  <button type="submit" class="btn btn-primary" id="button-addon2">검색</button>
+                </div>
+
+            </form>
+        </div>
+
+            <table class="table table-hover" style="text-align: center; border: 1px solid #dddddd">
                 <thead>
                     <tr>
-                        <th style="background-color: #eeeeee; text-align: center;">번호</th>
-                        <th style="background-color: #eeeeee; text-align: center;">제목</th>
-                        <th style="background-color: #eeeeee; text-align: center;">작성자</th>
-                        <th style="background-color: #eeeeee; text-align: center;">날짜</th>
+                        <th style="text-align: center;">번호</th>
+                        <th style="text-align: center;">제목</th>
+                        <th style="text-align: center;">작성자</th>
+                        <th style="text-align: center;">날짜</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,14 +47,17 @@
                         if (qnaList != null) {
                             for (QnaDto qna : qnaList) {
                     %>
-                            <tr>
+                            <tr style="cursor:pointer;" onclick="window.location.href='/qnaDetail?qna_id=<%= qna.getQna_id() %>';">
                                 <td><%= qna.getQna_id() %></td>
-                                <td>
-                                    <a href="/qnaDetail?qna_id=<%= qna.getQna_id() %>"><%= qna.getQna_title() %></a>
+                                <td style="width:500px; text-align: center; vertical-align: middle;">
+                                    <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">
+                                        <%= qna.getQna_title() %>
+                                    </p>
                                 </td>
                                 <td><%= qna.getQna_user_id() %></td>
                                 <td><%= qna.getQna_created_at() %></td>
                             </tr>
+
                     <%
                             }
                         } else {

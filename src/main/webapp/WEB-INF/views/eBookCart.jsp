@@ -4,17 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<title>eBookCart</title>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-    <script>
-        // Flash Attribute를 사용하여 메시지 가져오기
-        var message = "${messageCart}";
-        if (message) {
-            window.alert(message);
-        }
-    </script>
+<script>
+    // Flash Attribute를 사용하여 메시지 가져오기
+    var message = "${messageCart}";
+    if (message) {
+        window.alert(message);
+    }
+</script>
 </head>
 <body>
 <div class="container">
@@ -38,19 +38,19 @@
             <tbody>
         <%
             List<BookDto> bookList = (List<BookDto>) request.getAttribute("cartList");
+            Integer total_price = 0;
 
             if (bookList != null) {
                 for (BookDto book : bookList) {
+                    total_price += book.getBook_price();
         %>
-            <tr align="left">
+            <tr align="center">
                 <td> <img src="<%=book.getBook_img_path()%>" </td>
-                <td> <%= book.getBook_title() %> </td>
-                <td> <%= book.getBook_price() %> </td>
-                <td> 
-                    <form name="eBookCartDelete" action="/deleteCart" method="post">
-                        <input type="hidden" name="book_id" value="<%= book.getBook_id() %>">
-                        <button type="submit">삭제</button>
-                    </form> 
+                <td style="width:500px; text-align: center; vertical-align: middle;">
+                <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;"><%= book.getBook_title() %> </p></td>
+                <td style=" text-align: center; vertical-align: middle;"> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
+                <td style=" text-align: center; vertical-align: middle;">
+                    <button class="btn btn-danger" type="button" onclick="submitForm(<%= book.getBook_id() %>)">삭제</button>
                 </td>
             </tr>  
         <%
@@ -66,11 +66,37 @@
             </tbody>
         </table>
 
-        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <form method="POST" action="/eBookPurchase">
-                <button>결제하기</button>
-            </form>
+        <div align="center" style="font-weight:bold; font-size:25px;">
+        장바구니에 담긴 총 금액: <%= String.format("%,d원", total_price) %>
         </div>
+        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
+            <button id="purchaseButton" type="button">결제하기</button>
+        </div>
+        <script>
+            function submitForm(bookId) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/deleteCart';
+
+                var hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = 'book_id';
+                hiddenField.value = bookId;
+
+                form.appendChild(hiddenField);
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            document.getElementById('purchaseButton').addEventListener('click', function () {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/eBookPurchase';
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+        </script>
     </div>
 </div>
 </body>
