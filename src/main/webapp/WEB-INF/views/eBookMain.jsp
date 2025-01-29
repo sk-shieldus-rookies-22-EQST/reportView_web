@@ -40,8 +40,8 @@
             </thead>
             <tbody>
             <c:forEach var="book" items="${books}">
-                <tr>
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                <tr style="cursor:pointer;">
+                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                         <c:choose>
                             <c:when test="${book['book_img_path'] != null}">
                                 <img src="${book['book_img_path']}" alt="Book Image" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
@@ -51,14 +51,14 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="width:500px; text-align: center; vertical-align: middle;">
+                    <td  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="width:500px; text-align: center; vertical-align: middle;">
                         <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">
                                 ${book['book_title']}
                         </p>
                     </td>
 
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_auth']}</td>
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_price']}원</td>
+                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_auth']}</td>
+                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_price']}원</td>
                     <td>
 <%--                        <form method="post" action="/addCart">--%>
 <%--                            <input type="hidden" name="book_id" value="${book['book_id']}">--%>
