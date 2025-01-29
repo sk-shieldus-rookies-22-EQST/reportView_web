@@ -60,6 +60,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session) {
         session.removeAttribute("user_id");
+        session.removeAttribute("user_level");
         return "redirect:/index";
     }
 
