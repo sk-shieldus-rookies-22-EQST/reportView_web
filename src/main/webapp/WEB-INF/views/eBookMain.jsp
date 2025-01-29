@@ -66,6 +66,7 @@
 <%--                        </form>--%>
                         <form id="addToCartForm" method="post" action="/addCart" style="display: inline-block;">
                             <input type="hidden" name="book_id" value="${book['book_id']}">
+                            <input type="hidden" name="book_price" value="${book['book_price']}" />
                             <button type="button" class="btn btn-primary add-to-cart-btn" data-book-id="${book['book_id']}">장바구니</button>
                         </form>
 

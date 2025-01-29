@@ -8,7 +8,7 @@ import java.util.List;
 public interface CartRepository {
     List<CartDto> getCartList(String user_id);
 
-    Long addCart(String user_id, BookDto book_info);
+    Long addCart(String user_id, Long book_id, int book_price);
 
     Boolean delCartItem(List<Long> deletedCardId);
 }

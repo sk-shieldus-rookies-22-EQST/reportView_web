@@ -37,7 +37,8 @@ public class DBCartRepository implements CartRepository {
 
 
     @Override
-    public Long addCart(String user_id, BookDto book_info) {
+    public Long addCart(String user_id, Long book_id, int book_price) {
+        log.info(String.valueOf(book_id));
         try {
             // 동일한 책이 이미 장바구니에 있는지 확인
             String checkSql = "SELECT COUNT(*) FROM cart_book cb " +
@@ -46,7 +47,7 @@ public class DBCartRepository implements CartRepository {
 
             Integer count = jdbcTemplate.queryForObject(
                     checkSql,
-                    new Object[]{user_id, book_info.getBook_id()},
+                    new Object[]{user_id, book_id},
                     Integer.class
             );
 
@@ -62,7 +63,7 @@ public class DBCartRepository implements CartRepository {
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(cartSql, new String[]{"cart_id"});
                 ps.setString(1, user_id);
-                ps.setInt(2, book_info.getBook_price());
+                ps.setInt(2, book_price);
                 return ps;
             }, keyHolder);
 

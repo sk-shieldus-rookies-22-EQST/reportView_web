@@ -74,7 +74,7 @@
                 form.method = 'POST';
                 form.action = purchaseUrl;
 
-                if (purchaseUrl === "/purchaseItemProc") {
+                if (purchaseUrl === "/purchaseProc") {
                 <%
                     if (bookList != null && !bookList.isEmpty()) {
                         BookDto book = bookList.get(0); // 첫 번째 책을 선택
