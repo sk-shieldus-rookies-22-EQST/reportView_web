@@ -65,9 +65,7 @@
 <%--                            <button type="submit" class="btn btn-primary" >장바구니</button>--%>
 <%--                        </form>--%>
                         <form id="addToCartForm" method="post" action="/addCart" style="display: inline-block;">
-                            <input type="hidden" name="book_id" value="${book['book_id']}">
-                            <input type="hidden" name="book_price" value="${book['book_price']}" />
-                            <button type="button" class="btn btn-primary add-to-cart-btn" data-book-id="${book['book_id']}">장바구니</button>
+                            <button type="button" class="btn btn-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}">장바구니</button>
                         </form>
 
                         <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
@@ -119,7 +117,7 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const cartButtons = document.querySelectorAll('.add-to-cart-btn');
+        const cartButtons = document.querySelectorAll('.add-to-cart-btn'); // 버튼에 클래스를 지정하세요
         const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
         const cartModalBody = document.getElementById('cartModalBody');
         const goToCartBtn = document.getElementById('goToCartBtn');
@@ -127,54 +125,50 @@
         cartButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const bookId = event.target.getAttribute('data-book-id');
+                const bookPrice = event.target.getAttribute('data-book-price');
 
                 fetch('/addCart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ book_id: bookId }),
+                    body: JSON.stringify({ book_id: bookId,  book_price: bookPrice }),
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Response data:', data);
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response data:', data);
 
-                        // 상태에 따른 메시지 처리 및 버튼 표시
-                        switch (data.status) {
-                            case 'exists':
-                                cartModalBody.textContent = data.message; // 이미 존재
-                                goToCartBtn.style.display = 'inline-block'; // 버튼 표시
-                                break;
-                            case 'added':
-                                cartModalBody.textContent = data.message; // 추가 성공
-                                goToCartBtn.style.display = 'inline-block'; // 버튼 표시
-                                break;
-                            case 'error':
-                                cartModalBody.textContent = data.message; // 일반 오류
-                                goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                                break;
-                            case 'login_required':
-                                cartModalBody.textContent = data.message; // 로그인 필요
-                                goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                                break;
-                            default:
-                                cartModalBody.textContent = '알 수 없는 상태입니다.';
-                                goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                        }
+                    // 상태에 따른 메시지 처리 및 버튼 표시
+                    switch (data.status) {
+                        case 'exists':
+                            cartModalBody.textContent = data.message; // 이미 존재
+                            goToCartBtn.style.display = 'inline-block'; // 버튼 표시
+                            break;
+                        case 'added':
+                            cartModalBody.textContent = data.message; // 추가 성공
+                            goToCartBtn.style.display = 'inline-block'; // 버튼 표시
+                            break;
+                        case 'error':
+                            cartModalBody.textContent = data.message; // 일반 오류
+                            goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                            break;
+                        case 'login_required':
+                            cartModalBody.textContent = data.message; // 로그인 필요
+                            goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                            break;
+                        default:
+                            cartModalBody.textContent = '알 수 없는 상태입니다.';
+                            goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                    }
 
-                        cartModal.show(); // 팝업 표시
-                    })
-                    .catch(error => {
-                        console.error('Fetch Error:', error);
-                        cartModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-                        goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                        cartModal.show();
-                    });
+                    cartModal.show(); // 팝업 표시
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    cartModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+                    goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                    cartModal.show();
+                });
             });
         });
 
@@ -183,5 +177,6 @@
             goToCartBtn.style.display = 'none';
         });
     });
+
 </script>
 </html>
