@@ -11,6 +11,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <title>게시글 상세</title>
+<style>
+.form-control:focus {
+    box-shadow: none!important;
+    border-color : #FF7A00!important;
+}
+</style>
 </head>
 <body>
 	<div class="container" style="margin-bottom: 30px;">
@@ -68,7 +74,7 @@
     <div class="container" style="max-width: 1200px;">
             <div class="mt-5">
                 <h5>답글 목록</h5>
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="text-align:center;">
                     <thead>
                         <tr>
                             <th>작성자</th>
@@ -87,7 +93,7 @@
                                 <td>${reply.qna_re_created_at}</td>
                                 <c:if test="${sessionScope.user_level == 123}">
                                     <td>
-                                        <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;">X</a>
+                                        <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>
                                     </td>
                                 </c:if>
                             </tr>
@@ -105,7 +111,7 @@
                         <div class="mb-3">
                             <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-success">답글 달기</button>
+                        <button type="submit" class="btn btn-primary">답글 달기</button>
                     </form>
                 </div>
             </c:if>
