@@ -42,7 +42,7 @@
                 <td> <img src="<%= book.getBook_img_path() %>"</td>
                 <td style="width:500px; text-align: center; vertical-align: middle;"> <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;">
                 <%= book.getBook_title() %> </p></td>
-                <td style=" text-align: center; vertical-align: middle;"> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
+                <td style=" text-align: center; vertical-align: middle;"> <%= String.format("%,d원", book.getBook_price()) %> </td>
             </tr>
         <%
                 }
