@@ -24,9 +24,9 @@
         <table class="table" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                     <tr>
-                        <th style="background-color: #eeeeee; text-align: center;">도서 이미지</th>
-                        <th style="background-color: #eeeeee; text-align: center;">제목</th>
-                        <th style="background-color: #eeeeee; text-align: center;">가격</th>
+                        <th style="text-align: center;">도서 이미지</th>
+                        <th style="text-align: center;">제목</th>
+                        <th style="text-align: center;">가격</th>
                     </tr>
             </thead>
             <tbody>

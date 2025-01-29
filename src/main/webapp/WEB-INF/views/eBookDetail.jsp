@@ -26,8 +26,8 @@
     </div>
 
     <div class="container">
-        <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-            <table align="center" border="1" style="width: 100%">
+        <div class="container" style="max-width: 800px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
+            <table class="table" height="300px" style="text-align: left; vertical-align: middle; border: 1px solid #dddddd; padding: 15px;">
             <%@ page import="java.util.List" %>
             <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
 
@@ -36,23 +36,26 @@
                 String book_id = request.getParameter("book_id");
             %>
 
-                <tr align="left">
-                    <td width="30%" rowspan="4">
+                <tr>
+                    <td  align="center" width="30%" rowspan="4">
                         <img
                             src="<%= eBook.getBook_img_path() %>"
-                            width="200" height="310"
                         />
                     </td>
-                    <td width="70%"> <%= eBook.getBook_title() %>  </td>
+                    <td align="center"> 제목 </td>
+                    <td> <%= eBook.getBook_title() %>  </td>
                 </tr>
-                <tr align="left">
-                    <td width="70%"> <%= eBook.getBook_auth() %>  </td>
+                <tr>
+                    <td align="center"> 작가 </td>
+                    <td> <%= eBook.getBook_auth() %>  </td>
                 </tr>
-                <tr align="left">
-                    <td width="70%"> <%= eBook.getBook_reg_date() %>  </td>
+                <tr>
+                    <td align="center"> 등록일 </td>
+                    <td> <%= eBook.getBook_reg_date() %>  </td>
                 </tr>
-                <tr align="left">
-                    <td width="70%"> <%= String.format("%,d원", eBook.getBook_price()) %>  </td>
+                <tr>
+                    <td align="center"> 가격 </td>
+                    <td> <%= String.format("%,d원", eBook.getBook_price()) %>  </td>
                 </tr>
             </table>
     <!-- 메시지를 숨긴 상태로 HTML에 포함 -->

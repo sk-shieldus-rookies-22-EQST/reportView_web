@@ -32,10 +32,10 @@
         <table class="table" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                     <tr>
-                        <th style="background-color: #eeeeee; text-align: center;">도서 이미지</th>
-                        <th style="background-color: #eeeeee; text-align: center;">제목</th>
-                        <th style="background-color: #eeeeee; text-align: center;">가격</th>
-                        <th style="background-color: #eeeeee; text-align: center;">삭제</th>
+                        <th style="text-align: center;">도서 이미지</th>
+                        <th style="text-align: center;">제목</th>
+                        <th style="text-align: center;">가격</th>
+                        <th style="text-align: center;">삭제</th>
                     </tr>
             </thead>
             <tbody>
@@ -51,7 +51,7 @@
                 <td> <img src="<%=book.getBook_img_path()%>" </td>
                 <td style="width:500px; text-align: center; vertical-align: middle;">
                 <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;"><%= book.getBook_title() %> </p></td>
-                <td style=" text-align: center; vertical-align: middle;"> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
+                <td style=" text-align: center; vertical-align: middle;"> <%= String.format("%,d원", book.getBook_price()) %> </td>
                 <td style=" text-align: center; vertical-align: middle;">
                     <button class="btn btn-danger" type="button" onclick="submitForm(<%= book.getBook_id() %>)">삭제</button>
                 </td>
