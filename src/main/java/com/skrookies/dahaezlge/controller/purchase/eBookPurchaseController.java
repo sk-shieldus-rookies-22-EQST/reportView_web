@@ -92,7 +92,8 @@ public class eBookPurchaseController {
             return "/pointCharger";
         } else {
             log.info("user_point: "+ user_point);
-            if (purchaseService.purchaseCart(user_id, total_book_price)) {
+            String purchaseResult = purchaseService.purchaseCart(user_id, total_book_price);
+            if (purchaseResult.equals("success")) {
                 log.info("purchase success");
                 int point = userService.userPoint(user_id);
                 session.setAttribute("point", point);
@@ -101,7 +102,7 @@ public class eBookPurchaseController {
                 return "redirect:/myPurchase";
             } else {
                 log.info("purchase fail");
-                redirectAttributes.addFlashAttribute("messageCart", "결제를 실패했습니다.");
+                redirectAttributes.addFlashAttribute("messageCart", purchaseResult);
                 return "redirect:/eBookCart";
             }
         }
@@ -121,7 +122,8 @@ public class eBookPurchaseController {
             log.info("user_point: "+ user_point);
             Long book_id = (Long) session.getAttribute("book_id");
 
-            if(purchaseService.purchaseItem(user_id, book_id, total_book_price)){
+            String purchaseItemResult = purchaseService.purchaseItem(user_id, book_id, total_book_price);
+            if(purchaseItemResult.equals("success")){
                 log.info("purchaseItem success");
                 int point = userService.userPoint(user_id);
                 session.setAttribute("point", point);
@@ -130,7 +132,7 @@ public class eBookPurchaseController {
                 return "redirect:/myPurchase";
             } else {
                 log.info("purchase fail");
-                redirectAttributes.addFlashAttribute("messageDetail","결제를 실패했습니다.");
+                redirectAttributes.addFlashAttribute("messageDetail",purchaseItemResult);
                 return "redirect:/eBookDetail?book_id="+book_id;
             }
         }
