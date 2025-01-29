@@ -66,10 +66,29 @@
         보유 포인트: <%= String.format("%,d", userPoint) %>
         - 총 금액: <%= String.format("%,d원", total_price) %>
         </div>
+
+        <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="purchaseModalLabel">알림</h5>
+                    </div>
+                    <div class="modal-body" id="purchaseModalBody">
+                    </div>
+                    <div class="modal-footer">
+                        <a id="goToChargeBtn" class="btn btn-primary" href="/pointCharger" style="display: none;">충전 페이지로 바로가기</a>
+                        <a id="goToCartBtn" class="btn btn-primary" href="/eBookCart" style="display: none;">장바구니로 바로가기</a>
+                        <a id="goToMyPurchaseBtn" class="btn btn-primary" href="/myPurchase" style="display: none;">결제내역으로 바로가기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:50px">
-            <button class="btn btn-primary pull-right" id="purchaseProc" type="button">결제하기</button>
+            <button class="btn btn-primary pull-right add-to-purchase-btn" id="purchaseProc" type="submit">결제하기</button>
         </div>
         <script>
+        <%--
             document.addEventListener('DOMContentLoaded', function () {
                 var purchaseButton = document.getElementById('purchaseProc');
                 var userPoint = <%= userPoint %>;
@@ -79,37 +98,85 @@
                     purchaseButton.textContent = '충전하기';
                 }
             });
-            var purchaseUrl = "${purchaseUrl}";
+        --%>
+            document.addEventListener('DOMContentLoaded', () => {
+                const purchaseButton = document.getElementById('purchaseProc'); // 단일 버튼
+                const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+                const purchaseModalBody = document.getElementById('purchaseModalBody');
+                const goToChargeBtn = document.getElementById('goToChargeBtn');
+                const goToCartBtn = document.getElementById('goToCartBtn');
+                const goToMyPurchaseBtn = document.getElementById('goToMyPurchaseBtn');
 
-            document.getElementById('purchaseProc').addEventListener('click', function () {
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = purchaseUrl;
+                purchaseButton.addEventListener('click', function () {
+                    var bookId = <%= (bookList != null && !bookList.isEmpty()) ? bookList.get(0).getBook_id() : 0 %>; // 첫 번째 책의 ID
+                    var totalBookPrice = <%= total_price %>; // 총 금액
 
-                if (purchaseUrl === "/purchaseProc") {
-                <%
-                    if (bookList != null && !bookList.isEmpty()) {
-                        BookDto book = bookList.get(0); // 첫 번째 책을 선택
-                %>
-                    var bookIdInput = document.createElement('input');
-                    bookIdInput.type = 'hidden';
-                    bookIdInput.name = 'book_id';
-                    bookIdInput.value = '<%= book.getBook_id() %>';
-                    form.appendChild(bookIdInput);
-                <%
-                    }
-                %>
-                }
+                    // fetch 요청
+                    fetch('/purchaseItemProc', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',  // JSON 데이터로 보냄
+                        },
+                        body: JSON.stringify({
+                            bookId: bookId,  // 책 ID
+                            totalBookPrice: totalBookPrice,  // 총 금액
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Response data:', data);
 
-                var total_book_price = document.createElement('input');
-                total_book_price.type = 'hidden';
-                total_book_price.name = 'total_book_price';
-                total_book_price.value = <%=total_price%>; // 보내고자 하는 데이터
+                        // 상태에 따른 메시지 처리 및 버튼 표시
+                        switch (data.status) {
+                            case 'charge':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'inline-block';
+                                goToCartBtn.style.display = 'none';
+                                goToMyPurchaseBtn.style.display = 'none';
+                                break;
+                            case 'exists':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'inline-block';
+                                break;
+                            case 'purchase':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'inline-block';
+                                break;
+                            case 'error':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'none';
+                                break;
+                            default:
+                                purchaseModalBody.textContent = '알 수 없는 상태입니다.';
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'inline-block';
+                        }
 
-                form.appendChild(total_book_price);
+                        purchaseModal.show(); // 팝업 표시
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        purchaseModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+                        goToChargeBtn.style.display = 'none';
+                        goToCartBtn.style.display = 'none';
+                        goToMyPurchaseBtn.style.display = 'none';
+                        purchaseModal.show();
+                    });
+                });
 
-                document.body.appendChild(form);
-                form.submit();
+                // 팝업 닫힐 때 버튼 초기화
+                purchaseModal.addEventListener('hidden.bs.modal', () => {
+                    goToChargeBtn.style.display = 'none';
+                    goToCartBtn.style.display = 'none';
+                    goToMyPurchaseBtn.style.display = 'none';
+                });
             });
         </script>
     </div>

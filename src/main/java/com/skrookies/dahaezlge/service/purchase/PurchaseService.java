@@ -34,24 +34,24 @@ public class PurchaseService {
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
         if(!purchaseRepository.getDuplicateBooks(user_id,cartBookIdList).isEmpty()){
-            return "이미 구매한 도서가 포함되어 있습니다.";
+            return "exists";
         }
 
         if (!purchaseRepository.purchaseCart(user_id, cartBookIdList)) {
-            return "결제 도중 오류가 발생했습니다."; // 구매 실패 시 롤백
+            return "error"; // 구매 실패 시 롤백
         }
 
         List<Long> deletedCartBookItems = cartBookRepository.delCartBookItems(cartIdList);
         if (deletedCartBookItems == null || deletedCartBookItems.isEmpty()) {
-            return "결제 도중 오류가 발생했습니다."; // 삭제된 항목이 없으면 실패
+            return "error"; // 삭제된 항목이 없으면 실패
         }
 
         if (!cartRepository.delCartItem(deletedCartBookItems)) {
-            return "결제 도중 오류가 발생했습니다."; // 실패 시 롤백
+            return "error"; // 실패 시 롤백
         }
 
-        if (userPointRepository.use_point(user_id, use_point)) {
-            return "결제 도중 오류가 발생했습니다."; // 실패 시 롤백
+        if (!userPointRepository.use_point(user_id, use_point)) {
+            return "error"; // 실패 시 롤백
         }
 
         return "success";
@@ -63,15 +63,15 @@ public class PurchaseService {
         purchaseItem.add(book_id);
 
         if(!purchaseRepository.getDuplicateBooks(user_id, purchaseItem).isEmpty()){
-            return "이미 구매한 도서가 포함되어 있습니다.";
+            return "exists";
         }
 
         if (!purchaseRepository.purchaseCart(user_id, purchaseItem)) {
-            return "결제 도중 오류가 발생했습니다."; // 구매 실패 시 롤백
+            return "error"; // 구매 실패 시 롤백
         }
 
-        if (userPointRepository.use_point(user_id, use_point)) {
-            return "결제 도중 오류가 발생했습니다."; // 실패 시 롤백
+        if (!userPointRepository.use_point(user_id, use_point)) {
+            return "error"; // 실패 시 롤백
         }
 
         return "success";
