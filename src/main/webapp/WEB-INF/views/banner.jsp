@@ -91,8 +91,7 @@
 				<a class="navbar-brand" href="/index">
 					<img src="" alt="" width="35" class="d-inline-block align-text-top">
 					<a class="navbar-brand" href="/index">
-						<img src="" alt="" width="35" class="d-inline-block align-text-top">
-						Bookies
+						<img src="/images/bookies_logo.png" alt="Bookies logo" width="165" class="d-inline-block align-text-top">
 					</a>
 				</a>
 
