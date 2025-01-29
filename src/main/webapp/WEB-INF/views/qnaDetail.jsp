@@ -79,21 +79,21 @@
                     <thead>
                         <tr>
                             <th>작성자</th>
-                            <th>내용</th>
-                            <th>작성일자</th>
+                            <th style="width: 700px;">내용</th> <!-- 고정된 너비 설정 -->
+                            <th style="width: 200px;">작성일자</th>
                             <c:if test="${sessionScope.user_level == 123}">
-                                <th>삭제</th>
+                                <th style="width: 80px;">삭제</th>
                             </c:if>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="reply" items="${qnaReplies}">
                             <tr>
-                                <td>관리자</td>
-                                <td>${reply.qna_re_body}</td>
-                                <td>${reply.qna_re_created_at}</td>
+                                <td style="align-content:center;">관리자</td>
+                                <td style="align-content:center;">${reply.qna_re_body}</td>
+                                <td style="align-content:center;">${reply.qna_re_created_at}</td>
                                 <c:if test="${sessionScope.user_level == 123}">
-                                    <td>
+                                    <td style="align-content:center;">
                                         <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>
                                     </td>
                                 </c:if>
@@ -101,6 +101,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
+
             </div>
 
             <!-- 답글 작성 폼 -->
