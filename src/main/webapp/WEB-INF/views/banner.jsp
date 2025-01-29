@@ -110,7 +110,7 @@
 					<div class=" collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 							<li class="nav-item">
-								<a class="nav-link active" type="hidden" aria-current="page" href="/loginForm">QnA</a>
+								<input class="btn btn-outline-light" type="button" value="QnA" onclick="location.href='/qnaList'">
 							</li>
 						</ul>
 						<input class="btn btn-outline-light" type="button" value="로그인"
@@ -120,11 +120,12 @@
 
 							<% } else {
 							    Integer point = (Integer) session.getAttribute("point");
+							    Integer user_level = (Integer) session.getAttribute("user_level");
 							%>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 								<li class="nav-item">
-									<a class="nav-link active" aria-current="page" href="/qnaList">QnA</a>
+									<input class="btn btn-outline-light" type="button" value="QnA" onclick="location.href='/qnaList'">
 								</li>
 							</ul>
 							<ul class="nav justify-content-end">
@@ -132,9 +133,13 @@
                                             <%=point %> pt
                                 </li>
 
-								<li style="color:white;display: flex;align-items: center;margin-right:20px">
-											<%=user_id %> 님
-								</li>
+								<li style="color:white; display: flex; align-items: center; margin-right: 20px;">
+                                    <% if (user_level != null && user_level == 123) { %>
+                                        관리자
+                                    <% } else { %>
+                                        <%= user_id %> 님
+                                    <% } %>
+                                </li>
 
 								<li class="nav-item dropdown">
 									<div class="btn-group">
