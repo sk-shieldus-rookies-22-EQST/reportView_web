@@ -9,7 +9,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <title>eBookCart</title>
+    <title>Bookies Cart</title>
 
 <script>
     // Flash Attribute를 사용하여 메시지 가져오기
@@ -72,8 +72,8 @@
         <div align="center" style="font-weight:bold; font-size:25px;">
         장바구니에 담긴 총 금액: <%= String.format("%,d원", total_price) %>
         </div>
-        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <button id="purchaseButton" type="button">결제하기</button>
+        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:50px">
+            <button id="purchaseButton" class="btn btn-primary pull-right type="button">결제하기</button>
         </div>
         <script>
             function submitForm(bookId) {

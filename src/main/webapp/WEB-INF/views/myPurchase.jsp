@@ -10,7 +10,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <title>myPurchase</title>
+    <title>Bookies My Purchase</title>
 
     <script>
         var message = "${messageMypurchase}";

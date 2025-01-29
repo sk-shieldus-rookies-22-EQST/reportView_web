@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Bookies Purchase</title>
 
 </head>
 <body>
@@ -65,10 +66,19 @@
         보유 포인트: <%= String.format("%,d", userPoint) %>
         - 총 금액: <%= String.format("%,d원", total_price) %>
         </div>
-        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <button id="purchaseProc" type="button">결제하기</button>
+        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:50px">
+            <button class="btn btn-primary pull-right" id="purchaseProc" type="button">결제하기</button>
         </div>
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var purchaseButton = document.getElementById('purchaseProc');
+                var userPoint = <%= userPoint %>;
+                var totalPrice = <%= total_price %>;
+
+                if (userPoint < totalPrice) {
+                    purchaseButton.textContent = '충전하기';
+                }
+            });
             var purchaseUrl = "${purchaseUrl}";
 
             document.getElementById('purchaseProc').addEventListener('click', function () {
