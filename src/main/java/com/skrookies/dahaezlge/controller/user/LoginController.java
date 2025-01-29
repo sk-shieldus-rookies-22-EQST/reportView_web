@@ -61,6 +61,7 @@ public class LoginController {
     public String logout(Model model, HttpSession session) {
         session.removeAttribute("user_id");
         session.removeAttribute("user_level");
+        session.removeAttribute("point");
         return "redirect:/index";
     }
 
