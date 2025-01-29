@@ -109,7 +109,7 @@ public class eBookPurchaseController {
 
     @PostMapping("/purchaseItemProc")
     public String purchaseItemProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,
-                                   @RequestParam("book_id") Long book_id, @RequestParam("total_book_price") int total_book_price){
+                                   @RequestParam("total_book_price") int total_book_price){
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
 
@@ -119,6 +119,8 @@ public class eBookPurchaseController {
             return "/pointCharger";
         } else {
             log.info("user_point: "+ user_point);
+            Long book_id = (Long) session.getAttribute("book_id");
+
             if(purchaseService.purchaseItem(user_id, book_id, total_book_price)){
                 log.info("purchaseItem success");
                 int point = userService.userPoint(user_id);

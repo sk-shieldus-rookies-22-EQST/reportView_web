@@ -7,6 +7,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
 </head>
 <body>
 
@@ -42,7 +44,7 @@
                 <td> <img src="<%= book.getBook_img_path() %>"</td>
                 <td style="width:500px; text-align: center; vertical-align: middle;"> <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;">
                 <%= book.getBook_title() %> </p></td>
-                <td style=" text-align: center; vertical-align: middle;"> <%= book.getBook_price()/1000 %>,<%= String.format("%03d", book.getBook_price() % 1000) %>원 </td>
+                <td style=" text-align: center; vertical-align: middle;"> <%= String.format("%,d원", book.getBook_price()) %> </td>
             </tr>
         <%
                 }
@@ -74,7 +76,7 @@
                 form.method = 'POST';
                 form.action = purchaseUrl;
 
-                if (purchaseUrl === "/purchaseItemProc") {
+                if (purchaseUrl === "/purchaseProc") {
                 <%
                     if (bookList != null && !bookList.isEmpty()) {
                         BookDto book = bookList.get(0); // 첫 번째 책을 선택

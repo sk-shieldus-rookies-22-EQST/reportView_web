@@ -7,6 +7,9 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
     <title>eBookMain</title>
     <style>
 
@@ -40,8 +43,8 @@
             </thead>
             <tbody>
             <c:forEach var="book" items="${books}">
-                <tr>
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                <tr style="cursor:pointer;">
+                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                         <c:choose>
                             <c:when test="${book['book_img_path'] != null}">
                                 <img src="${book['book_img_path']}" alt="Book Image" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
@@ -51,22 +54,21 @@
                             </c:otherwise>
                         </c:choose>
                     </td>
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="width:500px; text-align: center; vertical-align: middle;">
+                    <td  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="width:500px; text-align: center; vertical-align: middle;">
                         <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">
                                 ${book['book_title']}
                         </p>
                     </td>
 
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_auth']}</td>
-                    <td style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_price']}원</td>
+                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_auth']}</td>
+                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_price']}원</td>
                     <td>
 <%--                        <form method="post" action="/addCart">--%>
 <%--                            <input type="hidden" name="book_id" value="${book['book_id']}">--%>
 <%--                            <button type="submit" class="btn btn-primary" >장바구니</button>--%>
 <%--                        </form>--%>
                         <form id="addToCartForm" method="post" action="/addCart" style="display: inline-block;">
-                            <input type="hidden" name="book_id" value="${book['book_id']}">
-                            <button type="button" class="btn btn-primary add-to-cart-btn" data-book-id="${book['book_id']}">장바구니</button>
+                            <button type="button" class="btn btn-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}">장바구니</button>
                         </form>
 
                         <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
@@ -118,7 +120,7 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const cartButtons = document.querySelectorAll('.add-to-cart-btn');
+        const cartButtons = document.querySelectorAll('.add-to-cart-btn'); // 버튼에 클래스를 지정하세요
         const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
         const cartModalBody = document.getElementById('cartModalBody');
         const goToCartBtn = document.getElementById('goToCartBtn');
@@ -126,54 +128,50 @@
         cartButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 const bookId = event.target.getAttribute('data-book-id');
+                const bookPrice = event.target.getAttribute('data-book-price');
 
                 fetch('/addCart', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ book_id: bookId }),
+                    body: JSON.stringify({ book_id: bookId,  book_price: bookPrice }),
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Response data:', data);
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response data:', data);
 
-                        // 상태에 따른 메시지 처리 및 버튼 표시
-                        switch (data.status) {
-                            case 'exists':
-                                cartModalBody.textContent = data.message; // 이미 존재
-                                goToCartBtn.style.display = 'inline-block'; // 버튼 표시
-                                break;
-                            case 'added':
-                                cartModalBody.textContent = data.message; // 추가 성공
-                                goToCartBtn.style.display = 'inline-block'; // 버튼 표시
-                                break;
-                            case 'error':
-                                cartModalBody.textContent = data.message; // 일반 오류
-                                goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                                break;
-                            case 'login_required':
-                                cartModalBody.textContent = data.message; // 로그인 필요
-                                goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                                break;
-                            default:
-                                cartModalBody.textContent = '알 수 없는 상태입니다.';
-                                goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                        }
+                    // 상태에 따른 메시지 처리 및 버튼 표시
+                    switch (data.status) {
+                        case 'exists':
+                            cartModalBody.textContent = data.message; // 이미 존재
+                            goToCartBtn.style.display = 'inline-block'; // 버튼 표시
+                            break;
+                        case 'added':
+                            cartModalBody.textContent = data.message; // 추가 성공
+                            goToCartBtn.style.display = 'inline-block'; // 버튼 표시
+                            break;
+                        case 'error':
+                            cartModalBody.textContent = data.message; // 일반 오류
+                            goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                            break;
+                        case 'login_required':
+                            cartModalBody.textContent = data.message; // 로그인 필요
+                            goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                            break;
+                        default:
+                            cartModalBody.textContent = '알 수 없는 상태입니다.';
+                            goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                    }
 
-                        cartModal.show(); // 팝업 표시
-                    })
-                    .catch(error => {
-                        console.error('Fetch Error:', error);
-                        cartModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-                        goToCartBtn.style.display = 'none'; // 버튼 숨기기
-                        cartModal.show();
-                    });
+                    cartModal.show(); // 팝업 표시
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    cartModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+                    goToCartBtn.style.display = 'none'; // 버튼 숨기기
+                    cartModal.show();
+                });
             });
         });
 
@@ -182,5 +180,6 @@
             goToCartBtn.style.display = 'none';
         });
     });
+
 </script>
 </html>
