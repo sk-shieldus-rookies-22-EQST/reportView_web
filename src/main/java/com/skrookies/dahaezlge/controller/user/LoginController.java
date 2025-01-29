@@ -59,9 +59,8 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session) {
-        session.removeAttribute("user_id");
-        session.removeAttribute("user_level");
-        session.removeAttribute("point");
+        // 세션을 무효화하여 모든 정보를 삭제
+        session.invalidate(); // 세션 무효화 (모든 세션 속성 삭제)
         return "redirect:/index";
     }
 
