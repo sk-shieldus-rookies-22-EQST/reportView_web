@@ -9,10 +9,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -102,6 +106,35 @@ public class QnaController {
         // 사용자 ID와 작성 시간 설정
         qnaDto.setQna_user_id(userId);
         qnaDto.setQna_created_at(LocalDateTime.now());
+
+        // 파일 처리
+        if (qnaDto.getQna_file() != null && !qnaDto.getQna_file().isEmpty()) {
+            String fileName = StringUtils.cleanPath(qnaDto.getQna_file().getOriginalFilename());
+            try {
+                // 파일 저장 경로 설정 (WebApp의 루트 경로 기준으로 상대경로 사용)
+                String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
+                File dir = new File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs(); // 디렉토리가 없으면 생성
+                }
+
+                // 파일 저장 경로 설정
+                Path filePath = Paths.get(uploadDir, fileName);
+                qnaDto.getQna_file().transferTo(filePath.toFile());
+
+                // 파일 정보 설정
+                qnaDto.setFile_name(fileName);     // 파일 이름
+                qnaDto.setFile_path(filePath.toString());  // 파일 경로
+                qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
+                qnaDto.setFile_type(qnaDto.getQna_file().getContentType());  // 파일 타입
+            } catch (IOException e) {
+                log.error("파일 업로드 실패", e);
+                model.addAttribute("errorMessage", "파일 업로드 실패");
+                return "qnaWrite"; // 파일 업로드 실패 시 다시 페이지로 돌아감
+            }
+        } else {
+            log.info("업로드된 파일이 없음");
+        }
 
         // QnA 저장 처리
         int qnaResult = QnaService.qna(qnaDto);

@@ -19,7 +19,7 @@
     <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
         <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
 
-        <form method="post" action="qnaWriteProcess">
+        <form method="post" action="qnaWriteProcess" enctype="multipart/form-data">
             <!-- 세션에서 user_id 값을 바로 사용 -->
             <input type="hidden" name="qna_user_id" value="${sessionScope.user_id}" />
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
@@ -35,6 +35,9 @@
                     <tr>
                         <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
                     </tr>
+                    <tr>
+                        <td><input type="file" name="qna_file" id="qna_file"></td>
+                    </tf>
                 </tbody>
             </table>
             <input type="submit" class="btn btn-primary pull-right" value="글 작성" />

@@ -22,11 +22,23 @@ import java.util.List;
 public class QnaRepository {
     private final JdbcTemplate jdbcTemplate;
     public int qna(QnaDto QnaDto) {
+        // 파일 관련 정보를 추가한 SQL 구문
+        String sql = "INSERT INTO qna (qna_id, qna_title, qna_body, qna_user_id, qna_created_at, file_name, file_path, file_size, file_type) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        
-        //DB에 작성
-        String sql = "insert into qna(qna_id, qna_title, qna_body, qna_user_id, qna_created_at) values(?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, QnaDto.getQna_id(), QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getQna_user_id(), QnaDto.getQna_created_at());
+        // 파일 정보를 포함하여 INSERT 실행
+        return jdbcTemplate.update(
+                sql,
+                QnaDto.getQna_id(),
+                QnaDto.getQna_title(),
+                QnaDto.getQna_body(),
+                QnaDto.getQna_user_id(),
+                Timestamp.valueOf(QnaDto.getQna_created_at()),  // LocalDateTime을 Timestamp로 변환
+                QnaDto.getFile_name(),  // 파일 이름
+                QnaDto.getFile_path(),  // 파일 경로
+                QnaDto.getFile_size(),  // 파일 크기
+                QnaDto.getFile_type()   // 파일 타입
+        );
     }
 
     public List<QnaDto> getQnaList() {

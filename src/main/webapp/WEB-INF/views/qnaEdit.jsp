@@ -13,7 +13,7 @@
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
 
-            <form method="post" action="qnaUpdateProcess">
+            <form method="post" action="qnaUpdateProcess" enctype="multipart/form-data">
             <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
                 <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                     <thead>
@@ -28,6 +28,9 @@
                         <tf>
                             <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
                         </tr>
+                        <tr>
+                            <td><input type="file" name="file" id="file"></td>
+                        </tf>
                     </tbody>
                 </table>
                     <input type="submit" class="btn btn-primary pull-right" value="글 수정"></a>

@@ -35,11 +35,27 @@ public class Qna {
     @Column(name = "qna_created_at")
     private Timestamp qna_created_at;
 
-    public Qna(Users users, String qna_title, String qna_body, Timestamp qna_created_at) {
+    @Column(name = "file_name")
+    private String file_name;  // 파일 이름
+
+    @Column(name = "file_path")
+    private String file_path;  // 파일 경로
+
+    @Column(name = "file_size")
+    private Long file_size;    // 파일 크기
+
+    @Column(name = "file_type")
+    private String file_type;  // 파일 타입
+
+    public Qna(Users users, String qna_title, String qna_body, Timestamp qna_created_at, String file_name, String file_path, Long file_size, String file_type) {
         this.users = users;
         this.qna_title = qna_title;
         this.qna_body = qna_body;
         this.qna_created_at = qna_created_at;
+        this.file_name = file_name;
+        this.file_path = file_path;
+        this.file_size = file_size;
+        this.file_type = file_type;
     }
 }
 
