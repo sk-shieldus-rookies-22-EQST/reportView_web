@@ -89,9 +89,9 @@
 			<div class="container-fluid">
 
 				<a class="navbar-brand" href="/index">
-					<img src="" alt="" width="35" class="d-inline-block align-text-top">
+					<img src="" alt="" width="5" class="d-inline-block align-text-top">
 					<a class="navbar-brand" href="/index">
-						<img src="/images/bookies_logo.png" alt="Bookies logo" width="165" class="d-inline-block align-text-top">
+						<img src="/images/bookies_logo3.svg" alt="Bookies logo" width="145" class="d-inline-block align-text-top">
 					</a>
 				</a>
 
@@ -134,7 +134,7 @@
 
 								<li style="color:white; display: flex; align-items: center; margin-right: 20px;">
                                     <% if (user_level != null && user_level == 123) { %>
-                                        관리자
+                                        관리자 님
                                     <% } else { %>
                                         <%= user_id %> 님
                                     <% } %>
