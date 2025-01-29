@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-    	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 정보</p>
+    	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
         <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                 <tr>
@@ -57,7 +57,7 @@
         <a href="qnaList" class="btn btn-primary pull-right">목록</a>
 
         <!-- 세션에서 user_id와 qna_user_id가 일치하면 수정/삭제 버튼을 표시 -->
-        <c:if test="${sessionScope.user_id == qnaDetail.qna_user_id}">
+        <c:if test="${sessionScope.user_id == qnaDetail.qna_user_id or sessionScope.user_level == 123}">
             <a href="qnaEdit?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">수정</a>
             <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
         </c:if>
@@ -74,7 +74,9 @@
                             <th>작성자</th>
                             <th>내용</th>
                             <th>작성일자</th>
-                            <th>삭제</th>
+                            <c:if test="${sessionScope.user_level == 123}">
+                                <th>삭제</th>
+                            </c:if>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,9 +85,11 @@
                                 <td>관리자</td>
                                 <td>${reply.qna_re_body}</td>
                                 <td>${reply.qna_re_created_at}</td>
-                                <td>
-                                    <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;">X</a>
-                                </td>
+                                <c:if test="${sessionScope.user_level == 123}">
+                                    <td>
+                                        <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;">X</a>
+                                    </td>
+                                </c:if>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -93,16 +97,18 @@
             </div>
 
             <!-- 답글 작성 폼 -->
-            <div class="mt-4">
-                <h5>답글 작성</h5>
-                <form action="qnaReplyProcess" method="post">
-                    <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
-                    <div class="mb-3">
-                        <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-success">답글 달기</button>
-                </form>
-            </div>
+            <c:if test="${sessionScope.user_level == 123}">
+                <div class="mt-4">
+                    <h5>답글 작성</h5>
+                    <form action="qnaReplyProcess" method="post">
+                        <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
+                        <div class="mb-3">
+                            <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">답글 달기</button>
+                    </form>
+                </div>
+            </c:if>
         </div>
 
 

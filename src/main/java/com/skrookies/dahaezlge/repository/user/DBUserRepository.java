@@ -187,4 +187,15 @@ public class DBUserRepository implements UserRepository{
 
     }
 
+    @Override
+    public Integer getUserLevel(String userId) {
+        String sql = "SELECT user_level FROM users WHERE user_id = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+        } catch (Exception e) {
+            log.info("getUserLevel error for user: " + userId);
+            return null; // 혹은 기본값 설정
+        }
+    }
+
 }

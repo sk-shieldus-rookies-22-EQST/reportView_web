@@ -19,4 +19,5 @@ public interface UserRepository {
     Boolean updateUserInfo(String userId, String userPw, String userPhone, String userEmail);
 
     Boolean checkId(String userId);
+    Integer getUserLevel(String userId);
 }

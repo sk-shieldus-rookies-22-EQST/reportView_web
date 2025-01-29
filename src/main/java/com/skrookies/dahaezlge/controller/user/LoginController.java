@@ -37,6 +37,11 @@ public class LoginController {
             session.setAttribute("user_id", user_id);
             log.info("sessionId = " + session.getAttribute("user_id"));
 
+            /** user_level 가져오기 */
+            int userLevel = userService.getUserLevel(user_id); // user_level 조회 메서드 추가 필요
+            session.setAttribute("user_level", userLevel);
+            log.info("user_level = " + userLevel);
+
             /** point select 메소드 */
             int point = userService.userPoint(user_id);
             session.setAttribute("point", point);

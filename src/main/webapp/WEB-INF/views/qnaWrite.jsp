@@ -17,7 +17,7 @@
 <%@ include file="banner.jsp" %>
 
     <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-        <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 정보</p>
+        <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
 
         <form method="post" action="qnaWriteProcess">
             <!-- 세션에서 user_id 값을 바로 사용 -->

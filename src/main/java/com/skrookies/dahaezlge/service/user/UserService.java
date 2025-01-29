@@ -53,4 +53,8 @@ public class UserService {
     public Boolean checkId(String user_id) {
         return  userRepository.checkId(user_id);
     }
+
+    public int getUserLevel(String userId) {
+        return userRepository.getUserLevel(userId);
+    }
 }
