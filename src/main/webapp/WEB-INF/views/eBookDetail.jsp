@@ -3,14 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Bookies eBook Detail</title>
 
     <script>
     var message = "${messageDetail}";
@@ -20,87 +18,86 @@
 </script>
 </head>
 <body>
-    <div class="container">
-        <%@ include file="banner.jsp" %>
-    </div>
+<div class="container">
+    <jsp:include page="banner.jsp" />
 
-    <div class="container">
-        <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-            <table align="center" border="1" style="width: 100%">
-            <%@ page import="java.util.List" %>
-            <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
+    <div class="container" style="max-width: 800px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
+        <table class="table" height="300px" style="text-align: left; vertical-align: middle; border: 1px solid #dddddd; padding: 15px;">
+        <%@ page import="java.util.List" %>
+        <%@ page import="com.skrookies.dahaezlge.controller.book.Dto.BookDto" %>
 
-            <%
-                BookDto eBook = (BookDto) request.getAttribute("bookInfo");
-                String book_id = request.getParameter("book_id");
-            %>
+        <%
+            BookDto eBook = (BookDto) request.getAttribute("bookInfo");
+            String book_id = request.getParameter("book_id");
+        %>
 
-                <tr align="left">
-                    <td width="30%" rowspan="4">
-                        <img
-                            src="<%= eBook.getBook_img_path() %>"
-                            width="200" height="310"
-                        />
-                    </td>
-                    <td width="70%"> <%= eBook.getBook_title() %>  </td>
-                </tr>
-                <tr align="left">
-                    <td width="70%"> <%= eBook.getBook_auth() %>  </td>
-                </tr>
-                <tr align="left">
-                    <td width="70%"> <%= eBook.getBook_reg_date() %>  </td>
-                </tr>
-                <tr align="left">
-                    <td width="70%"> <%= String.format("%,d원", eBook.getBook_price()) %>  </td>
-                </tr>
-            </table>
-    <!-- 메시지를 숨긴 상태로 HTML에 포함 -->
-    <span id="message" style="display: none;">${message}</span>
+            <tr>
+                <td  align="center" width="30%" rowspan="4">
+                    <img
+                        src="<%= eBook.getBook_img_path() %>"
+                    />
+                </td>
+                <td align="center" style="width: 100px"> 제목 </td>
+                <td> <%= eBook.getBook_title() %>  </td>
+            </tr>
+            <tr>
+                <td align="center"> 작가 </td>
+                <td> <%= eBook.getBook_auth() %>  </td>
+            </tr>
+            <tr>
+                <td align="center"> 등록일 </td>
+                <td> <%= eBook.getBook_reg_date() %>  </td>
+            </tr>
+            <tr>
+                <td align="center"> 가격 </td>
+                <td> <%= String.format("%,d원", eBook.getBook_price()) %>  </td>
+            </tr>
+        </table>
 
-            <div>
-                <%= eBook.getBook_summary() %>
-            </div>
-            <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px; width:700px">
-                <div class="grid text-center" style="display:flex;justify-content: space-between;">
-                        <!--<form method="POST" action="/addCart" class="g-col-6"  style="width:49%">
-                            <input type="hidden" name="book_id" value="<%= book_id %>" />
-                            <input type="hidden" name="book_price" value="<%= eBook.getBook_price() %>" />
-                            <button class="btn btn-outline-primary" type="submit" style="width:100%;padding:20px;">장바구니</button>
-                            <button type="button" style="width:100%;padding:20px;" class="btn btn-outline-primary add-to-cart-btn" data-book-id="<%= book_id %>">장바구니</button>
-                        </form>-->
-                        <form method="POST" action="/addCart" class="g-col-6" style="width:49%">
-                            <button type="button" style="width:100%;padding:20px;" class="btn btn-outline-primary add-to-cart-btn"
-                                data-book-id="<%= book_id %>" data-book-price="<%= eBook.getBook_price() %>">장바구니</button>
-                        </form>
-
-                    <form method="POST" action="/eBookPurchaseItem" class="g-col-6" style="width:49%;">
-                          <input type="hidden" name="book_id" value="<%= book_id %>" />
-                          <button class="btn btn-primary" type="submit" style="width:100%;padding:20px;">결제</button>
+        <div>
+            <%= eBook.getBook_summary() %>
+        </div>
+        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px; width:700px">
+            <div class="grid text-center" style="display:flex;justify-content: space-between;">
+                    <!--<form method="POST" action="/addCart" class="g-col-6"  style="width:49%">
+                        <input type="hidden" name="book_id" value="<%= book_id %>" />
+                        <input type="hidden" name="book_price" value="<%= eBook.getBook_price() %>" />
+                        <button class="btn btn-outline-primary" type="submit" style="width:100%;padding:20px;">장바구니</button>
+                        <button type="button" style="width:100%;padding:20px;" class="btn btn-outline-primary add-to-cart-btn" data-book-id="<%= book_id %>">장바구니</button>
+                    </form>-->
+                    <form method="POST" action="/addCart" class="g-col-6" style="width:49%">
+                        <button type="button" style="width:100%;padding:20px;" class="btn btn-outline-primary add-to-cart-btn"
+                            data-book-id="<%= book_id %>" data-book-price="<%= eBook.getBook_price() %>">장바구니</button>
                     </form>
-                </div>
-                <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="cartModalLabel">알림</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body" id="cartModalBody">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                <a id="goToCartBtn" class="btn btn-primary" href="/eBookCart" style="display: none;">장바구니로 바로가기</a>
-                            </div>
+
+                <form method="POST" action="/eBookPurchaseItem" class="g-col-6" style="width:49%;">
+                      <input type="hidden" name="book_id" value="<%= book_id %>" />
+                      <button class="btn btn-primary" type="submit" style="width:100%;padding:20px;">결제</button>
+                </form>
+            </div>
+            <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="cartModalLabel">알림</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="cartModalBody">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            <a id="goToCartBtn" class="btn btn-primary" href="/eBookCart" style="display: none;">장바구니로 바로가기</a>
                         </div>
                     </div>
                 </div>
-                <% String previousPage = request.getHeader("referer"); %>
-                <button class="btn btn-outline-primary" type="button"
-                    onclick="location.href='<%= previousPage %>'" style="padding:20px;">목록으로</button>
             </div>
-
+            <% String previousPage = request.getHeader("referer"); %>
+            <button class="btn btn-outline-primary" type="button"
+                onclick="location.href='<%= previousPage %>'" style="padding:20px;">목록으로</button>
         </div>
+
     </div>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const cartButtons = document.querySelectorAll('.add-to-cart-btn'); // 버튼에 클래스를 지정하세요

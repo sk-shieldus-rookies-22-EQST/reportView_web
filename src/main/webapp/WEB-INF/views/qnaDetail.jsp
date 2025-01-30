@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -58,6 +59,31 @@
                     <!-- qna_body 출력 -->
                     <td colspan="2" style="min-height: 200px; text-align: Left;">${qnaDetail.qna_body}</td>
                 </tr>
+                <tr>
+                    <td>파일</td>
+                    <td colspan="2">
+                        <c:choose>
+                            <c:when test="${not empty qnaDetail.file_name}">
+                                <a href="#" class="fw-bold">${qnaDetail.file_name}</a>
+                                <span class="text-muted" style="font-size: 0.85em;">
+                                    (<c:choose>
+                                        <c:when test="${qnaDetail.file_size >= 1024 * 1024}">
+                                            <fmt:formatNumber value="${qnaDetail.file_size / (1024.0 * 1024.0)}" type="number" maxFractionDigits="2"/> MB
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:formatNumber value="${qnaDetail.file_size / 1024}" type="number" maxFractionDigits="0"/> KB
+                                        </c:otherwise>
+                                    </c:choose>)
+                                </span>
+                            </c:when>
+                            <c:otherwise>
+                                <!-- 파일이 없을 때 칸만 남기기 -->
+                                &nbsp;
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+
             </tbody>
         </table>
 
@@ -75,32 +101,33 @@
     <div class="container" style="max-width: 1200px;">
             <div class="mt-5">
                 <h5>답글 목록</h5>
-                <table class="table table-bordered">
+                <table class="table table-bordered" style="text-align:center;">
                     <thead>
                         <tr>
                             <th>작성자</th>
-                            <th>내용</th>
-                            <th>작성일자</th>
+                            <th style="width: 700px;">내용</th> <!-- 고정된 너비 설정 -->
+                            <th style="width: 200px;">작성일자</th>
                             <c:if test="${sessionScope.user_level == 123}">
-                                <th>삭제</th>
+                                <th style="width: 80px;">삭제</th>
                             </c:if>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="reply" items="${qnaReplies}">
                             <tr>
-                                <td>관리자</td>
-                                <td>${reply.qna_re_body}</td>
-                                <td>${reply.qna_re_created_at}</td>
+                                <td style="align-content:center;">관리자</td>
+                                <td style="align-content:center;">${reply.qna_re_body}</td>
+                                <td style="align-content:center;">${reply.qna_re_created_at}</td>
                                 <c:if test="${sessionScope.user_level == 123}">
-                                    <td>
-                                        <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;">X</a>
+                                    <td style="align-content:center;">
+                                        <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>
                                     </td>
                                 </c:if>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
+
             </div>
 
             <!-- 답글 작성 폼 -->
@@ -112,7 +139,7 @@
                         <div class="mb-3">
                             <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-success">답글 달기</button>
+                        <button type="submit" class="btn btn-primary">답글 달기</button>
                     </form>
                 </div>
             </c:if>

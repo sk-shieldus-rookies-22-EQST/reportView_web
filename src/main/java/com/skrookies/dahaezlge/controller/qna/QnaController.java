@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -126,7 +127,6 @@ public class QnaController {
                 qnaDto.setFile_name(fileName);     // 파일 이름
                 qnaDto.setFile_path(filePath.toString());  // 파일 경로
                 qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
-                qnaDto.setFile_type(qnaDto.getQna_file().getContentType());  // 파일 타입
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
                 model.addAttribute("errorMessage", "파일 업로드 실패");
@@ -148,18 +148,77 @@ public class QnaController {
     }
 
     @PostMapping("/qnaUpdateProcess")
-    public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto) {
+    public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto, HttpSession session) {
         QnaDto.setQna_created_at(LocalDateTime.now());
-        int qnaResult = QnaService.qnaUpdate(QnaDto);
-        if (qnaResult > 0) {
-            return "redirect:/qnaList";
+
+        // 기존 파일 정보 가져오기
+        QnaDto existingQna = QnaService.getQnaById(Math.toIntExact(QnaDto.getQna_id()));
+
+        // 파일 처리
+        if (QnaDto.getQna_file() != null && !QnaDto.getQna_file().isEmpty()) {
+            String fileName = StringUtils.cleanPath(QnaDto.getQna_file().getOriginalFilename());
+            try {
+                // 파일 저장 경로 설정
+                String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
+                File dir = new File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                // 기존 파일이 있다면 삭제
+                if (existingQna.getFile_name() != null) {
+                    Path oldFilePath = Paths.get(uploadDir, existingQna.getFile_name());
+                    Files.deleteIfExists(oldFilePath);
+                }
+
+                // 새 파일 저장
+                Path filePath = Paths.get(uploadDir, fileName);
+                QnaDto.getQna_file().transferTo(filePath.toFile());
+
+                // 파일 정보 설정
+                QnaDto.setFile_name(fileName);
+                QnaDto.setFile_path(filePath.toString());
+                QnaDto.setFile_size(QnaDto.getQna_file().getSize());
+
+                int qnaResult = QnaService.qnaUpdate(QnaDto);
+                if (qnaResult > 0) {
+                    return "redirect:/qnaList";
+                } else {
+                    return "qnaEdit";
+                }
+
+            } catch (IOException e) {
+                log.error("파일 업로드 실패", e);
+                model.addAttribute("errorMessage", "파일 업로드 실패");
+                return "qnaEdit";
+            }
         } else {
-            return "qnaEdit";
+            // 기존 파일이 있는 경우 유지
+            QnaDto.setFile_name(existingQna.getFile_name());
+            QnaDto.setFile_path(existingQna.getFile_path());
+            QnaDto.setFile_size(existingQna.getFile_size());
+
+            int qnaResult2 = QnaService.qnaUpdate2(QnaDto);
+            if (qnaResult2 > 0) {
+                return "redirect:/qnaList";
+            } else {
+                return "qnaEdit";
+            }
         }
+
+
     }
 
     @GetMapping("/qnaDelete")
-    public String qnaDelete_form(@RequestParam("qna_id") int qna_id){
+    public String qnaDelete_form(@RequestParam("qna_id") int qna_id, @ModelAttribute QnaDto QnaDto, HttpSession session) throws IOException {
+        // 기존 파일 정보 가져오기
+        QnaDto existingQna = QnaService.getQnaById(Math.toIntExact(QnaDto.getQna_id()));
+        String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
+        if (existingQna.getFile_name() != null) {
+            Path oldFilePath = Paths.get(uploadDir, existingQna.getFile_name());
+            Files.deleteIfExists(oldFilePath);
+        }
+
         QnaService.deleteQna(qna_id);
         return "redirect:/qnaList";
     }

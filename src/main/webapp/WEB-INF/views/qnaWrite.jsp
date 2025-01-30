@@ -19,6 +19,11 @@
 <div class="container">
 <%@ include file="banner.jsp" %>
 
+    <c:if test="${not empty message}">
+        <script>
+            alert("${message}");  // 경고창 띄우기
+        </script>
+    </c:if>
     <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
         <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
 
@@ -40,7 +45,7 @@
                     </tr>
                     <tr>
                         <td><input type="file" name="qna_file" id="qna_file"></td>
-                    </tf>
+                    </tr>
                 </tbody>
             </table>
             <input type="submit" class="btn btn-primary pull-right" value="글 작성" />

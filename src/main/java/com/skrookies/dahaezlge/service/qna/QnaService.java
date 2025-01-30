@@ -36,6 +36,10 @@ public class QnaService {
         return QnaRepository.qnaUpdate(QnaDto);
     }
 
+    public int qnaUpdate2(QnaDto QnaDto) {
+        return QnaRepository.qnaUpdate2(QnaDto);
+    }
+
     public int getTotalQnas() {
         return QnaRepository.countTotalQnas(); //전체 게시글 수 조회
     }
