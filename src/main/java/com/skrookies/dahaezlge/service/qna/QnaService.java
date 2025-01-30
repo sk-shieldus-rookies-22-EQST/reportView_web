@@ -66,4 +66,8 @@ public class QnaService {
     public void deleteById(Long qna_re_id) {
         QnaRepository.deleteByQnaID(qna_re_id);
     }
+
+    public QnaDto getQnaByFileName(String fileName) {
+        return QnaRepository.findByFileName(fileName);
+    }
 }

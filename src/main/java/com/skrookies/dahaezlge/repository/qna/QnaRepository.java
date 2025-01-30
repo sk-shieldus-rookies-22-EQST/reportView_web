@@ -5,6 +5,7 @@ import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -126,5 +127,22 @@ public class QnaRepository {
     public void deleteByQnaID(Long qna_re_id) {
         String sql = "DELETE FROM qna_re WHERE qna_re_id= ?";
         jdbcTemplate.update(sql, qna_re_id);
+    }
+
+    public QnaDto findByFileName(String fileName) {
+        String sql = "SELECT file_name, new_file_name FROM qna WHERE new_file_name = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{fileName},
+                    (rs, rowNum) -> {
+                        QnaDto qnaDto = new QnaDto();
+                        qnaDto.setFile_name(rs.getString("file_name"));
+                        qnaDto.setNew_file_name(rs.getString("new_file_name"));
+                        return qnaDto;
+                    }
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null; // 해당 파일이 없을 경우 null 반환
+        }
     }
 }

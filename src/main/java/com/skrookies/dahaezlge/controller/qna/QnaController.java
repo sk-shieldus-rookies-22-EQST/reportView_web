@@ -4,6 +4,7 @@ import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
 import com.skrookies.dahaezlge.service.qna.QnaService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
+import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -253,6 +254,48 @@ public class QnaController {
 
         QnaService.deleteQna(qna_id);
         return "redirect:/qnaList";
+    }
+
+    @GetMapping("/download")
+    public void downloadFile(@RequestParam("file_name") String fileName, HttpServletResponse response, HttpSession session) {
+        try {
+            // 사용자가 요청한 원본 파일명을 기반으로 실제 저장된 파일명 조회
+            QnaDto qnaDto = QnaService.getQnaByFileName(fileName);
+            if (qnaDto == null || qnaDto.getNew_file_name() == null) {
+                throw new FileNotFoundException("파일을 찾을 수 없습니다.");
+            }
+
+            // DB에서 조회한 실제 저장된 파일명 (new_file_name)
+            String newFileName = qnaDto.getNew_file_name();
+
+            // 실제 저장된 파일의 경로를 올바르게 설정
+            String uploadDir = session.getServletContext().getRealPath("/uploads");
+            File file = new File(uploadDir, newFileName);
+
+            if (!file.exists()) {
+                throw new FileNotFoundException("파일이 존재하지 않습니다.");
+            }
+
+            // 다운로드 응답 헤더 설정
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(qnaDto.getFile_name(), "UTF-8") + "\"");
+            response.setContentLengthLong(file.length());
+
+            // 파일 전송
+            try (InputStream inputStream = new FileInputStream(file);
+                 OutputStream outputStream = response.getOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+                outputStream.flush();
+            }
+
+        } catch (Exception e) {
+            log.error("파일 다운로드 실패: " + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/qnaSearch")

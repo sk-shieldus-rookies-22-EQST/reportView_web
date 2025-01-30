@@ -64,7 +64,7 @@
                     <td colspan="2">
                         <c:choose>
                             <c:when test="${not empty qnaDetail.file_name}">
-                                <a href="#" class="fw-bold">${qnaDetail.file_name}</a>
+                                <a href="/download?file_name=${qnaDetail.new_file_name}" class="fw-bold">${qnaDetail.file_name}</a>
                                 <span class="text-muted" style="font-size: 0.85em;">
                                     (<c:choose>
                                         <c:when test="${qnaDetail.file_size >= 1024 * 1024}">
