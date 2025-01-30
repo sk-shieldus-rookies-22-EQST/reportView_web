@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -111,6 +112,20 @@ public class QnaController {
         // 파일 처리
         if (qnaDto.getQna_file() != null && !qnaDto.getQna_file().isEmpty()) {
             String fileName = StringUtils.cleanPath(qnaDto.getQna_file().getOriginalFilename());
+            String fileExtension = ""; // 파일 확장자 (예: .pdf)
+            String fileBaseName = fileName; // 확장자 없는 파일명
+
+            // 확장자 분리
+            int dotIndex = fileName.lastIndexOf(".");
+            if (dotIndex > 0) {
+                fileBaseName = fileName.substring(0, dotIndex);
+                fileExtension = fileName.substring(dotIndex);
+            }
+
+            // 현재 시간을 파일명에 추가
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String newFileName = fileBaseName + "_" + timestamp + fileExtension;
+
             try {
                 // 파일 저장 경로 설정 (WebApp의 루트 경로 기준으로 상대경로 사용)
                 String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
@@ -120,11 +135,12 @@ public class QnaController {
                 }
 
                 // 파일 저장 경로 설정
-                Path filePath = Paths.get(uploadDir, fileName);
+                Path filePath = Paths.get(uploadDir, newFileName);
                 qnaDto.getQna_file().transferTo(filePath.toFile());
 
                 // 파일 정보 설정
                 qnaDto.setFile_name(fileName);     // 파일 이름
+                qnaDto.setNew_file_name(newFileName);     // 날짜 추가된 파일 이름
                 qnaDto.setFile_path(filePath.toString());  // 파일 경로
                 qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
             } catch (IOException e) {
@@ -157,6 +173,20 @@ public class QnaController {
         // 파일 처리
         if (QnaDto.getQna_file() != null && !QnaDto.getQna_file().isEmpty()) {
             String fileName = StringUtils.cleanPath(QnaDto.getQna_file().getOriginalFilename());
+            String fileExtension = ""; // 파일 확장자 (예: .pdf)
+            String fileBaseName = fileName; // 확장자 없는 파일명
+
+            // 확장자 분리
+            int dotIndex = fileName.lastIndexOf(".");
+            if (dotIndex > 0) {
+                fileBaseName = fileName.substring(0, dotIndex);
+                fileExtension = fileName.substring(dotIndex);
+            }
+
+            // 현재 시간을 파일명에 추가
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String newFileName = fileBaseName + "_" + timestamp + fileExtension;
+
             try {
                 // 파일 저장 경로 설정
                 String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
@@ -166,17 +196,18 @@ public class QnaController {
                 }
 
                 // 기존 파일이 있다면 삭제
-                if (existingQna.getFile_name() != null) {
-                    Path oldFilePath = Paths.get(uploadDir, existingQna.getFile_name());
+                if (existingQna.getNew_file_name() != null) {
+                    Path oldFilePath = Paths.get(uploadDir, existingQna.getNew_file_name());
                     Files.deleteIfExists(oldFilePath);
                 }
 
                 // 새 파일 저장
-                Path filePath = Paths.get(uploadDir, fileName);
+                Path filePath = Paths.get(uploadDir, newFileName);
                 QnaDto.getQna_file().transferTo(filePath.toFile());
 
                 // 파일 정보 설정
                 QnaDto.setFile_name(fileName);
+                QnaDto.setNew_file_name(newFileName);
                 QnaDto.setFile_path(filePath.toString());
                 QnaDto.setFile_size(QnaDto.getQna_file().getSize());
 
@@ -195,6 +226,7 @@ public class QnaController {
         } else {
             // 기존 파일이 있는 경우 유지
             QnaDto.setFile_name(existingQna.getFile_name());
+            QnaDto.setNew_file_name(existingQna.getNew_file_name());
             QnaDto.setFile_path(existingQna.getFile_path());
             QnaDto.setFile_size(existingQna.getFile_size());
 
@@ -214,8 +246,8 @@ public class QnaController {
         // 기존 파일 정보 가져오기
         QnaDto existingQna = QnaService.getQnaById(Math.toIntExact(QnaDto.getQna_id()));
         String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
-        if (existingQna.getFile_name() != null) {
-            Path oldFilePath = Paths.get(uploadDir, existingQna.getFile_name());
+        if (existingQna.getNew_file_name() != null) {
+            Path oldFilePath = Paths.get(uploadDir, existingQna.getNew_file_name());
             Files.deleteIfExists(oldFilePath);
         }
 
