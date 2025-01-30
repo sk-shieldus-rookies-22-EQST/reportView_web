@@ -37,7 +37,7 @@
                         src="<%= eBook.getBook_img_path() %>"
                     />
                 </td>
-                <td align="center"> 제목 </td>
+                <td align="center" style="width: 100px"> 제목 </td>
                 <td> <%= eBook.getBook_title() %>  </td>
             </tr>
             <tr>
