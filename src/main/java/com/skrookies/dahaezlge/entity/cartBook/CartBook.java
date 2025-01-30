@@ -17,10 +17,11 @@ public class CartBook {
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_book_id")
-    private Long cart_book_id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_book_id", nullable = false)
+    private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_book_book_id", nullable = false)
     private Book book;
 
@@ -28,9 +29,9 @@ public class CartBook {
 //    @JoinColumn(name = "cart_book_cart_id", nullable = false)
 //    private Cart cart;
 
-    public CartBook(Book book, Cart cart) {
+    public CartBook(Cart cart, Book book ) {
+        this.cart = cart;
         this.book = book;
-//        this.cart = cart;
     }
 }
 
