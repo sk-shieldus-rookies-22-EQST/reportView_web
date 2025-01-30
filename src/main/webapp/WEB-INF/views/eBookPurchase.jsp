@@ -16,7 +16,7 @@
 <div class="container">
     <jsp:include page="banner.jsp" />
 
-    <div class="container" style="max-width: 1000px; border-radius: 5px; padding: 50px 20px;">
+    <div class="container" style="max-width: 1200px; border-radius: 5px; padding: 50px 20px;">
         <p class="text-start fs-1 fw-bold" style="display: flex; justify-content: center; margin-bottom: 30px; margin-top: 16px">결제 정보</p>
 
         <table class="table" style="text-align: center; border: 1px solid #dddddd">
@@ -73,7 +73,7 @@
     </div>
 --!>
 
-    <div class="container" style="max-width: 1000px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
+    <div class="container" style="max-width: 1200px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
         <table class="table" height="300px" style="text-align: left; vertical-align: middle; border: 1px solid #dddddd;">
             <tr>
                 <td align="center" style="width: 200px; background-color: #eeeeee; border-right: 1px solid #dddddd;"> 주문 상품 정보 </td>
