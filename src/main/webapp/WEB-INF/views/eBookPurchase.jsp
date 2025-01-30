@@ -99,6 +99,7 @@
                 }
             });
         --%>
+            var purchaseUrl = "${purchaseUrl}";
             document.addEventListener('DOMContentLoaded', () => {
                 const purchaseButton = document.getElementById('purchaseProc'); // 단일 버튼
                 const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
@@ -108,19 +109,31 @@
                 const goToMyPurchaseBtn = document.getElementById('goToMyPurchaseBtn');
 
                 purchaseButton.addEventListener('click', function () {
-                    var bookId = <%= (bookList != null && !bookList.isEmpty()) ? bookList.get(0).getBook_id() : 0 %>; // 첫 번째 책의 ID
+                    var bookId;
                     var totalBookPrice = <%= total_price %>; // 총 금액
 
-                    // fetch 요청
-                    fetch('/purchaseItemProc', {
+                    var requestBody;
+
+                    if (purchaseUrl === "/purchaseItemProc") {
+                    <%
+                        if (bookList != null && !bookList.isEmpty()) {
+                            BookDto book = bookList.get(0); // 첫 번째 책을 선택
+                    %>
+                            bookId = <%= book.getBook_id() %>;
+                            var requestBody = JSON.stringify({ bookId: bookId, totalBookPrice: totalBookPrice });
+                    <%
+                        }
+                    %>
+                    } else {
+                        var requestBody = JSON.stringify({ totalBookPrice: totalBookPrice });
+                    }
+
+                    fetch(purchaseUrl, { // 동적으로 URL 변경
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',  // JSON 데이터로 보냄
                         },
-                        body: JSON.stringify({
-                            bookId: bookId,  // 책 ID
-                            totalBookPrice: totalBookPrice,  // 총 금액
-                        })
+                        body: requestBody  // 선택된 데이터 전송
                     })
                     .then(response => response.json())
                     .then(data => {

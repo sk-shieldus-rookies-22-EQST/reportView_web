@@ -79,32 +79,39 @@ public class eBookPurchaseController {
     }
 
     @PostMapping("/purchaseProc")
-    public String purchaseProc(Model model, RedirectAttributes redirectAttributes,
-                               @RequestParam("total_book_price") int total_book_price, HttpSession session){
+    @ResponseBody
+    public Map<String, String> purchaseProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,
+                                                @RequestBody Map<String, Object> requestBody) {
         log.info("purchaseProc");
-        log.info("total_book_price");
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
+        int total_book_price = Integer.parseInt(requestBody.get("totalBookPrice").toString());
+
+        Map<String, String> response = new HashMap<>();
 
         if (total_book_price > user_point) {
             log.info("total_book_price > user_point");
-            return "/pointCharger";
+            response.put("status", "charge");
+            response.put("message", "충전 포인트가 부족합니다.");
         } else {
             log.info("user_point: "+ user_point);
             String purchaseResult = purchaseService.purchaseCart(user_id, total_book_price);
-            if (purchaseResult.equals("success")) {
-                log.info("purchase success");
+            if("success".equals(purchaseResult)){
+                log.info("purchaseCart success");
                 int point = userService.userPoint(user_id);
                 session.setAttribute("point", point);
-                session.removeAttribute("book_id");
-                redirectAttributes.addFlashAttribute("messageMypurchase", "결제가 완료되었습니다.");
-                return "redirect:/myPurchase";
+                response.put("status", "purchase");
+                response.put("message", "결제가 완료되었습니다.");
+            } else if ("exists".equals(purchaseResult)) {
+                response.put("status", "exists");
+                response.put("message", "이미 구매한 도서가 포함되어 있습니다.");
             } else {
                 log.info("purchase fail");
-                redirectAttributes.addFlashAttribute("messageCart", purchaseResult);
-                return "redirect:/eBookCart";
+                response.put("status", "error");
+                response.put("message", "결제 도중 오류가 발생하였습니다.");
             }
         }
+        return response;
     }
 
     @PostMapping("/purchaseItemProc")
@@ -127,14 +134,14 @@ public class eBookPurchaseController {
             Long book_id = (Long) session.getAttribute("book_id");
 
             String purchaseItemResult = purchaseService.purchaseItem(user_id, book_id, total_book_price);
-            if(purchaseItemResult.equals("success")){
+            if("success".equals(purchaseItemResult)){
                 log.info("purchaseItem success");
                 int point = userService.userPoint(user_id);
                 session.setAttribute("point", point);
                 session.removeAttribute("book_id");
                 response.put("status", "purchase");
                 response.put("message", "결제가 완료되었습니다.");
-            } else if (purchaseItemResult.equals("exists")) {
+            } else if ("exists".equals(purchaseItemResult)) {
                 response.put("status", "exists");
                 response.put("message", "이미 구매한 도서가 포함되어 있습니다.");
             } else {

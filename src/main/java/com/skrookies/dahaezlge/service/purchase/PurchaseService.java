@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,24 +35,29 @@ public class PurchaseService {
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
         if(!purchaseRepository.getDuplicateBooks(user_id,cartBookIdList).isEmpty()){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); // 강제 롤백
             return "exists";
         }
 
         if (!purchaseRepository.purchaseCart(user_id, cartBookIdList)) {
-            return "error"; // 구매 실패 시 롤백
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return "error";
         }
 
         List<Long> deletedCartBookItems = cartBookRepository.delCartBookItems(cartIdList);
         if (deletedCartBookItems == null || deletedCartBookItems.isEmpty()) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return "error"; // 삭제된 항목이 없으면 실패
         }
 
         if (!cartRepository.delCartItem(deletedCartBookItems)) {
-            return "error"; // 실패 시 롤백
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return "error";
         }
 
         if (!userPointRepository.use_point(user_id, use_point)) {
-            return "error"; // 실패 시 롤백
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return "error";
         }
 
         return "success";
@@ -67,11 +73,13 @@ public class PurchaseService {
         }
 
         if (!purchaseRepository.purchaseCart(user_id, purchaseItem)) {
-            return "error"; // 구매 실패 시 롤백
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); // 강제 롤백
+            return "error";
         }
 
         if (!userPointRepository.use_point(user_id, use_point)) {
-            return "error"; // 실패 시 롤백
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return "error";
         }
 
         return "success";
