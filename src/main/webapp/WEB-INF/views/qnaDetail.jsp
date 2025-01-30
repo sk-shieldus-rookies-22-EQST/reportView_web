@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -58,6 +59,31 @@
                     <!-- qna_body 출력 -->
                     <td colspan="2" style="min-height: 200px; text-align: Left;">${qnaDetail.qna_body}</td>
                 </tr>
+                <tr>
+                    <td>파일</td>
+                    <td colspan="2">
+                        <c:choose>
+                            <c:when test="${not empty qnaDetail.file_name}">
+                                <a href="#" class="fw-bold">${qnaDetail.file_name}</a>
+                                <span class="text-muted" style="font-size: 0.85em;">
+                                    (<c:choose>
+                                        <c:when test="${qnaDetail.file_size >= 1024 * 1024}">
+                                            <fmt:formatNumber value="${qnaDetail.file_size / (1024.0 * 1024.0)}" type="number" maxFractionDigits="2"/> MB
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:formatNumber value="${qnaDetail.file_size / 1024}" type="number" maxFractionDigits="0"/> KB
+                                        </c:otherwise>
+                                    </c:choose>)
+                                </span>
+                            </c:when>
+                            <c:otherwise>
+                                <!-- 파일이 없을 때 칸만 남기기 -->
+                                &nbsp;
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+
             </tbody>
         </table>
 

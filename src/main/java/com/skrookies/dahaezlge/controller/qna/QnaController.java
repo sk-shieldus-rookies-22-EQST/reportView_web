@@ -126,7 +126,6 @@ public class QnaController {
                 qnaDto.setFile_name(fileName);     // 파일 이름
                 qnaDto.setFile_path(filePath.toString());  // 파일 경로
                 qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
-                qnaDto.setFile_type(qnaDto.getQna_file().getContentType());  // 파일 타입
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
                 model.addAttribute("errorMessage", "파일 업로드 실패");
