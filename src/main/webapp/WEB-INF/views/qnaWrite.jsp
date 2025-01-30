@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <td><input type="file" name="qna_file" id="qna_file"></td>
-                    </tf>
+                    </tr>
                 </tbody>
             </table>
             <input type="submit" class="btn btn-primary pull-right" value="글 작성" />

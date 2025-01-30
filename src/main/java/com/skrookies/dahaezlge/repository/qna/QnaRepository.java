@@ -77,9 +77,14 @@ public class QnaRepository {
     }
 
     public int qnaUpdate(QnaDto QnaDto) {
-            //DB에 작성
-            String sql = "UPDATE qna SET qna_title = ?, qna_body = ? WHERE qna_id = ?";
-            return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getQna_id());
+        String sql = "UPDATE qna SET qna_title = ?, qna_body = ?, file_name = ?, file_path = ?, file_size = ? WHERE qna_id = ?";
+        return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(),
+                QnaDto.getFile_name(), QnaDto.getFile_path(), QnaDto.getFile_size(), QnaDto.getQna_id());
+    }
+
+    public int qnaUpdate2(QnaDto QnaDto) {
+        String sql = "UPDATE qna SET qna_title = ?, qna_body = ? WHERE qna_id = ?";
+        return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getQna_id());
     }
 
     public int countTotalQnas() {

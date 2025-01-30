@@ -35,7 +35,7 @@
                             <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
                         </tr>
                         <tr>
-                            <td><input type="file" name="file" id="file"></td>
+                            <td><input type="file" name="qna_file" id="qna_file"></td>
                         </tf>
                     </tbody>
                 </table>
