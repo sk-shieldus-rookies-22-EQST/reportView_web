@@ -50,13 +50,15 @@ public class eBookPurchaseController {
     @PostMapping("/eBookPurchaseItem")
     public String setPurchaseItem(Model model, RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
-        log.info("detail controller addcart");
+        log.info("eBookPurchaseItem controller");
         if (user_id == null){
-            log.info("detail controller user id null");
+            log.info("purchase controller user id null");
             redirectAttributes.addFlashAttribute("messageLoginForm","로그인이 필요합니다.");
             return "redirect:/loginForm";
         }
         else {
+            log.info("purchase controller show purchase item");
+
             Long book_id = (Long) session.getAttribute("book_id");
 
             BookDto book_info = bookService.getBookInfo(book_id);
