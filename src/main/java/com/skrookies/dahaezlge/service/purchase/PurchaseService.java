@@ -29,44 +29,52 @@ public class PurchaseService {
     private final UserPointRepository userPointRepository;
 
     @Transactional
-    public Boolean purchaseCart(String user_id, int use_point) {
+    public String purchaseCart(String user_id, int use_point) {
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
         if(!purchaseRepository.getDuplicateBooks(user_id,cartBookIdList).isEmpty()){
-            return false;
+            return "exists";
         }
 
         if (!purchaseRepository.purchaseCart(user_id, cartBookIdList)) {
-            return false; // 구매 실패 시 롤백
+            return "error"; // 구매 실패 시 롤백
         }
 
         List<Long> deletedCartBookItems = cartBookRepository.delCartBookItems(cartIdList);
         if (deletedCartBookItems == null || deletedCartBookItems.isEmpty()) {
-            return false; // 삭제된 항목이 없으면 실패
+            return "error"; // 삭제된 항목이 없으면 실패
         }
 
         if (!cartRepository.delCartItem(deletedCartBookItems)) {
-            return false; // 실패 시 롤백
+            return "error"; // 실패 시 롤백
         }
 
-        return userPointRepository.use_point(user_id, use_point);
+        if (!userPointRepository.use_point(user_id, use_point)) {
+            return "error"; // 실패 시 롤백
+        }
+
+        return "success";
     }
 
     @Transactional
-    public Boolean purchaseItem(String user_id, Long book_id, int use_point) {
+    public String purchaseItem(String user_id, Long book_id, int use_point) {
         List<Long> purchaseItem = new ArrayList<>();
         purchaseItem.add(book_id);
 
         if(!purchaseRepository.getDuplicateBooks(user_id, purchaseItem).isEmpty()){
-            return false;
+            return "exists";
         }
 
         if (!purchaseRepository.purchaseCart(user_id, purchaseItem)) {
-            return false; // 구매 실패 시 롤백
+            return "error"; // 구매 실패 시 롤백
         }
 
-        return userPointRepository.use_point(user_id, use_point);
+        if (!userPointRepository.use_point(user_id, use_point)) {
+            return "error"; // 실패 시 롤백
+        }
+
+        return "success";
     }
 
     public List<Long> purchaseBook_list(String user_id) {

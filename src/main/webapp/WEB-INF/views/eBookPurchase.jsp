@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Bookies Purchase</title>
 
 </head>
 <body>
@@ -23,9 +24,9 @@
         <table class="table" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                     <tr>
-                        <th style="background-color: #eeeeee; text-align: center;">도서 이미지</th>
-                        <th style="background-color: #eeeeee; text-align: center;">제목</th>
-                        <th style="background-color: #eeeeee; text-align: center;">가격</th>
+                        <th style="text-align: center;">도서 이미지</th>
+                        <th style="text-align: center;">제목</th>
+                        <th style="text-align: center;">가격</th>
                     </tr>
             </thead>
             <tbody>
@@ -65,41 +66,117 @@
         보유 포인트: <%= String.format("%,d", userPoint) %>
         - 총 금액: <%= String.format("%,d원", total_price) %>
         </div>
-        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
-            <button id="purchaseProc" type="button">결제하기</button>
+
+        <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="purchaseModalLabel">알림</h5>
+                    </div>
+                    <div class="modal-body" id="purchaseModalBody">
+                    </div>
+                    <div class="modal-footer">
+                        <a id="goToChargeBtn" class="btn btn-primary" href="/pointCharger" style="display: none;">충전 페이지로 바로가기</a>
+                        <a id="goToCartBtn" class="btn btn-primary" href="/eBookCart" style="display: none;">장바구니로 바로가기</a>
+                        <a id="goToMyPurchaseBtn" class="btn btn-primary" href="/myPurchase" style="display: none;">결제내역으로 바로가기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:50px">
+            <button class="btn btn-primary pull-right add-to-purchase-btn" id="purchaseProc" type="submit">결제하기</button>
         </div>
         <script>
-            var purchaseUrl = "${purchaseUrl}";
+        <%--
+            document.addEventListener('DOMContentLoaded', function () {
+                var purchaseButton = document.getElementById('purchaseProc');
+                var userPoint = <%= userPoint %>;
+                var totalPrice = <%= total_price %>;
 
-            document.getElementById('purchaseProc').addEventListener('click', function () {
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = purchaseUrl;
-
-                if (purchaseUrl === "/purchaseProc") {
-                <%
-                    if (bookList != null && !bookList.isEmpty()) {
-                        BookDto book = bookList.get(0); // 첫 번째 책을 선택
-                %>
-                    var bookIdInput = document.createElement('input');
-                    bookIdInput.type = 'hidden';
-                    bookIdInput.name = 'book_id';
-                    bookIdInput.value = '<%= book.getBook_id() %>';
-                    form.appendChild(bookIdInput);
-                <%
-                    }
-                %>
+                if (userPoint < totalPrice) {
+                    purchaseButton.textContent = '충전하기';
                 }
+            });
+        --%>
+            document.addEventListener('DOMContentLoaded', () => {
+                const purchaseButton = document.getElementById('purchaseProc'); // 단일 버튼
+                const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+                const purchaseModalBody = document.getElementById('purchaseModalBody');
+                const goToChargeBtn = document.getElementById('goToChargeBtn');
+                const goToCartBtn = document.getElementById('goToCartBtn');
+                const goToMyPurchaseBtn = document.getElementById('goToMyPurchaseBtn');
 
-                var total_book_price = document.createElement('input');
-                total_book_price.type = 'hidden';
-                total_book_price.name = 'total_book_price';
-                total_book_price.value = <%=total_price%>; // 보내고자 하는 데이터
+                purchaseButton.addEventListener('click', function () {
+                    var bookId = <%= (bookList != null && !bookList.isEmpty()) ? bookList.get(0).getBook_id() : 0 %>; // 첫 번째 책의 ID
+                    var totalBookPrice = <%= total_price %>; // 총 금액
 
-                form.appendChild(total_book_price);
+                    // fetch 요청
+                    fetch('/purchaseItemProc', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',  // JSON 데이터로 보냄
+                        },
+                        body: JSON.stringify({
+                            bookId: bookId,  // 책 ID
+                            totalBookPrice: totalBookPrice,  // 총 금액
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Response data:', data);
 
-                document.body.appendChild(form);
-                form.submit();
+                        // 상태에 따른 메시지 처리 및 버튼 표시
+                        switch (data.status) {
+                            case 'charge':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'inline-block';
+                                goToCartBtn.style.display = 'none';
+                                goToMyPurchaseBtn.style.display = 'none';
+                                break;
+                            case 'exists':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'inline-block';
+                                break;
+                            case 'purchase':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'inline-block';
+                                break;
+                            case 'error':
+                                purchaseModalBody.textContent = data.message;
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'none';
+                                break;
+                            default:
+                                purchaseModalBody.textContent = '알 수 없는 상태입니다.';
+                                goToChargeBtn.style.display = 'none';
+                                goToCartBtn.style.display = 'inline-block';
+                                goToMyPurchaseBtn.style.display = 'inline-block';
+                        }
+
+                        purchaseModal.show(); // 팝업 표시
+                    })
+                    .catch(error => {
+                        console.error('Fetch Error:', error);
+                        purchaseModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+                        goToChargeBtn.style.display = 'none';
+                        goToCartBtn.style.display = 'none';
+                        goToMyPurchaseBtn.style.display = 'none';
+                        purchaseModal.show();
+                    });
+                });
+
+                // 팝업 닫힐 때 버튼 초기화
+                purchaseModal.addEventListener('hidden.bs.modal', () => {
+                    goToChargeBtn.style.display = 'none';
+                    goToCartBtn.style.display = 'none';
+                    goToMyPurchaseBtn.style.display = 'none';
+                });
             });
         </script>
     </div>
