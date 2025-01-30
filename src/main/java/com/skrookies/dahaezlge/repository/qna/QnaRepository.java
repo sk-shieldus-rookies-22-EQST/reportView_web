@@ -23,8 +23,8 @@ public class QnaRepository {
     private final JdbcTemplate jdbcTemplate;
     public int qna(QnaDto QnaDto) {
         // 파일 관련 정보를 추가한 SQL 구문
-        String sql = "INSERT INTO qna (qna_id, qna_title, qna_body, qna_user_id, qna_created_at, file_name, file_path, file_size, file_type) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO qna (qna_id, qna_title, qna_body, qna_user_id, qna_created_at, file_name, file_path, file_size) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         // 파일 정보를 포함하여 INSERT 실행
         return jdbcTemplate.update(
@@ -36,8 +36,7 @@ public class QnaRepository {
                 Timestamp.valueOf(QnaDto.getQna_created_at()),  // LocalDateTime을 Timestamp로 변환
                 QnaDto.getFile_name(),  // 파일 이름
                 QnaDto.getFile_path(),  // 파일 경로
-                QnaDto.getFile_size(),  // 파일 크기
-                QnaDto.getFile_type()   // 파일 타입
+                QnaDto.getFile_size()   // 파일 크기
         );
     }
 
@@ -65,6 +64,8 @@ public class QnaRepository {
                 qna.setQna_body(rs.getString("qna_body"));
                 qna.setQna_user_id(rs.getString("qna_user_id"));
                 qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
+                qna.setFile_name(rs.getString("file_name"));
+                qna.setFile_size(rs.getLong("file_size"));
                 return qna;
             }
         });
@@ -76,9 +77,14 @@ public class QnaRepository {
     }
 
     public int qnaUpdate(QnaDto QnaDto) {
-            //DB에 작성
-            String sql = "UPDATE qna SET qna_title = ?, qna_body = ? WHERE qna_id = ?";
-            return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getQna_id());
+        String sql = "UPDATE qna SET qna_title = ?, qna_body = ?, file_name = ?, file_path = ?, file_size = ? WHERE qna_id = ?";
+        return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(),
+                QnaDto.getFile_name(), QnaDto.getFile_path(), QnaDto.getFile_size(), QnaDto.getQna_id());
+    }
+
+    public int qnaUpdate2(QnaDto QnaDto) {
+        String sql = "UPDATE qna SET qna_title = ?, qna_body = ? WHERE qna_id = ?";
+        return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getQna_id());
     }
 
     public int countTotalQnas() {
