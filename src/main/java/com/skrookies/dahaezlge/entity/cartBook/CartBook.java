@@ -16,7 +16,7 @@ import lombok.Setter;
 public class CartBook {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_book_id")
     private Long cart_book_id;
 
@@ -24,13 +24,13 @@ public class CartBook {
     @JoinColumn(name = "cart_book_book_id", nullable = false)
     private Book book;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_book_cart_id", nullable = false)
-    private Cart cart;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "cart_book_cart_id", nullable = false)
+//    private Cart cart;
 
     public CartBook(Book book, Cart cart) {
         this.book = book;
-        this.cart = cart;
+//        this.cart = cart;
     }
 }
 

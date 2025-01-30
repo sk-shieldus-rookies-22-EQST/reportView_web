@@ -72,6 +72,9 @@ dependencies {
     /** test용 mysql DB */
     implementation 'com.mysql:mysql-connector-j'
 
+    /** oracle DB Driver 의존성 */
+    implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
+
     /** Restful API Valid 어노테이션 사용을 위한 의존성 */
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
