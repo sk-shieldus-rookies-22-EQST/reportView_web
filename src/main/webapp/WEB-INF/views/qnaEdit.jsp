@@ -29,10 +29,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="50"></td>
+                            <td><input type="text" class="form-control" value="${qnaDetail.qna_title}" placeholder="${qnaDetail.qna_title}" name="qna_title" maxlength="50"></td>
                         </tr>
                         <tf>
-                            <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
+                            <td><textarea class="form-control" placeholder="${qnaDetail.qna_body}" name="qna_body" maxlength="2048" style="height: 350px;">${qnaDetail.qna_body}</textarea></td>
                         </tr>
                         <tr>
                             <td><input type="file" name="qna_file" id="qna_file"></td>
