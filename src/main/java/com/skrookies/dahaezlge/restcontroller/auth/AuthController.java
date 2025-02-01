@@ -1,9 +1,6 @@
 package com.skrookies.dahaezlge.restcontroller.auth;
 
-import com.skrookies.dahaezlge.restcontroller.auth.dto.FindIdDto;
-import com.skrookies.dahaezlge.restcontroller.auth.dto.FindPwDto;
-import com.skrookies.dahaezlge.restcontroller.auth.dto.LoginDto;
-import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
+import com.skrookies.dahaezlge.restcontroller.auth.dto.*;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.validation.Valid;
@@ -32,6 +29,18 @@ public class AuthController {
 
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<UserLevelDto> androidUserLevel(@RequestBody @Valid UserIdDto userIdDto) {
+
+        int userLevel = userService.getUserLevel(userIdDto.getUser_id());
+
+        UserLevelDto userLevelDto = new UserLevelDto(userLevel);
+
+        return ResponseEntity.ok()
+                .body(userLevelDto);
+
+    }
+
     @PostMapping("/find/id")
     public ResponseEntity<UserIdDto> androidFindID(@RequestBody @Valid FindIdDto findIdDto){
 
@@ -42,10 +51,10 @@ public class AuthController {
 
     }
 
-    @PostMapping("/find/pw")
-    public ResponseEntity<StatusDto> androidFindPW(@RequestBody @Valid FindPwDto findPwDto){
+    @PostMapping("/modify/pw")
+    public ResponseEntity<StatusDto> androidModifyPW(@RequestBody @Valid ModifyPwDto modifyPwDto){
 
-        StatusDto statusDto = new StatusDto(userService.updateUserpw(findPwDto.getUser_id(), findPwDto.getUser_new_pw()));
+        StatusDto statusDto = new StatusDto(userService.updateUserpw(modifyPwDto.getUser_id(), modifyPwDto.getNew_user_pw()));
 
         return ResponseEntity.ok()
                 .body(statusDto);
