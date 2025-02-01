@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class QnaWriteDto {
 
-    private String user_id;
     private String title;
     private String writer;
     private String content;
