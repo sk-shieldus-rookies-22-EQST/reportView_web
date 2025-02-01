@@ -3,9 +3,8 @@ package com.skrookies.dahaezlge.restcontroller.user;
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
-import com.skrookies.dahaezlge.restcontroller.user.dto.PointChargeDto;
-import com.skrookies.dahaezlge.restcontroller.user.dto.UserInfoDto;
-import com.skrookies.dahaezlge.restcontroller.user.dto.UserPointDto;
+import com.skrookies.dahaezlge.restcontroller.user.dto.*;
+import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,8 @@ public class UserController {
 
     private final UserService userService;
     private final PurchaseService purchaseService;
+    private final BookService bookService;
+
 
     /** UserId 기반 회원 정보 반환 */
     @PostMapping("/info")
@@ -45,11 +48,36 @@ public class UserController {
     }
 
 
+    /** User_id 기반 내 서재 정보 반환 */
     @PostMapping("/booklist")
-    public ResponseEntity<Map<String, Object>> getUserBookList(@RequestParam String user_id) {
-        // Replace with logic to fetch user's book list
-        List<?> bookList = List.of(); // Example response
-        return ResponseEntity.ok(Map.of("book", bookList));
+    public ResponseEntity<MyBookListCapDto> getUserBookList(@RequestBody UserIdDto userIdDto) {
+
+        MyBookListCapDto myBookListCapDto = new MyBookListCapDto();
+        myBookListCapDto.setMyBookListDtoList(null);
+
+        List<Long> books_id = purchaseService.purchaseBook_list(userIdDto.getUser_id());
+
+        log.info("Android My Book List Size: " + books_id.size());
+
+        List<MyBookListDto> myBookListDtoList = new ArrayList<>();
+        if (!books_id.isEmpty()){
+            for(int i = 0; i < books_id.size(); i++){
+                List<Map<String, Object>> book_info = bookService.getMyBooks((Long)books_id.get(i));
+                MyBookListDto myBookListDto = new MyBookListDto();
+
+                myBookListDto.setBook_id((Long) book_info.get(i).get("book_id"));
+                myBookListDto.setTitle(book_info.get(i).get("book_title").toString());
+                myBookListDto.setWriter(book_info.get(i).get("book_auth").toString());
+                myBookListDto.setBook_img_path(book_info.get(i).get("book_img_path").toString());
+
+                myBookListDtoList.add(myBookListDto);
+            }
+
+            myBookListCapDto.setMyBookListDtoList(myBookListDtoList);
+        }
+
+        return ResponseEntity.ok()
+                .body(myBookListCapDto);
     }
 
     @GetMapping("/purchase")
