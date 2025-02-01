@@ -80,14 +80,41 @@ public class UserController {
                 .body(myBookListCapDto);
     }
 
-    @GetMapping("/purchase")
-    public ResponseEntity<Map<String, Object>> getUserPurchaseHistory(@RequestParam String user_id) {
-        // Replace with logic to fetch purchase history
-        List<?> purchaseHistory = List.of(); // Example response
-        return ResponseEntity.ok(Map.of("purchase", purchaseHistory));
+
+    /** User_id 기반 구매 내역 조회 */
+    @PostMapping("/purchase")
+    public ResponseEntity<MyPurchaseCapDto> getUserPurchaseHistory(@RequestBody UserIdDto userIdDto) {
+
+        MyPurchaseCapDto myPurchaseCapDto = new MyPurchaseCapDto();
+        myPurchaseCapDto.setMyPurchaseDto(null);
+
+        List<Long> books_id = purchaseService.purchaseBook_list(userIdDto.getUser_id());
+
+        log.info("Android My Book List Size: " + books_id.size());
+
+        List<MyPurchaseDto> myPurchaseDtoList = new ArrayList<>();
+        if (!books_id.isEmpty()){
+            for(int i = 0; i < books_id.size(); i++){
+                List<Map<String, Object>> book_info = bookService.getMyBooks((Long)books_id.get(i));
+                MyPurchaseDto myPurchaseDto = new MyPurchaseDto();
+
+                myPurchaseDto.setBook_id((Long) book_info.get(i).get("book_id"));
+                myPurchaseDto.setTitle(book_info.get(i).get("book_title").toString());
+                myPurchaseDto.setWriter(book_info.get(i).get("book_auth").toString());
+                myPurchaseDto.setPrice((Integer) book_info.get(i).get("book_price"));
+
+                myPurchaseDtoList.add(myPurchaseDto);
+            }
+
+            myPurchaseCapDto.setMyPurchaseDto(myPurchaseDtoList);
+        }
+
+        return ResponseEntity.ok()
+                .body(myPurchaseCapDto);
     }
 
 
+    /** My 포인트 조회 */
     @PostMapping("/point")
     public ResponseEntity<UserPointDto> getUserPoint(@RequestBody UserIdDto userIdDto) {
 
@@ -101,6 +128,7 @@ public class UserController {
     }
 
 
+    /** My 포인트 충전 및 반환*/
     @PostMapping("/point/charge")
     public ResponseEntity<UserPointDto> userPointCharge(@RequestBody PointChargeDto pointChargeDto) {
 
