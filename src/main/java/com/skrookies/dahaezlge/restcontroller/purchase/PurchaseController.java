@@ -1,5 +1,9 @@
 package com.skrookies.dahaezlge.restcontroller.purchase;
 
+import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
+import com.skrookies.dahaezlge.restcontroller.purchase.dto.PurchaseCartCapDto;
+import com.skrookies.dahaezlge.restcontroller.purchase.dto.PurchaseCartDto;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +23,13 @@ public class PurchaseController {
     private final CartService cartService;
 
     @PostMapping("/cart")
-    public ResponseEntity<Map<String, Object>> getCartDetails(@RequestParam String user_id) {
-        List<?> bookList = cartService.setCartList(user_id);
-        int totalPrice = bookList.stream()
-                .mapToInt(book -> (int) ((Map<String, Object>) book).get("price"))
-                .sum();
+    public ResponseEntity<PurchaseCartCapDto> getCartBookList(@RequestBody UserIdDto userIdDto) {
 
-        return ResponseEntity.ok(Map.of(
-                "book_list", bookList,
-                "total_price", totalPrice
-        ));
+        PurchaseCartCapDto purchaseCartCapDto = new PurchaseCartCapDto();
+        purchaseCartCapDto.setPurchaseCartDtoList(cartService.androidPurchaseCartList(userIdDto.getUser_id()));
+        
+        return ResponseEntity.ok()
+                .body(purchaseCartCapDto);
     }
 
     @PostMapping("/process")
