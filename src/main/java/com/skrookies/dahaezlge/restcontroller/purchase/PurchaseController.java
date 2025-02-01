@@ -2,10 +2,13 @@ package com.skrookies.dahaezlge.restcontroller.purchase;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
+import com.skrookies.dahaezlge.restcontroller.purchase.dto.PurchaseAddCartDto;
 import com.skrookies.dahaezlge.restcontroller.purchase.dto.PurchaseCartCapDto;
 import com.skrookies.dahaezlge.restcontroller.purchase.dto.PurchaseCartDto;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
+import com.skrookies.dahaezlge.service.bookDetail.BookDetailService;
 import com.skrookies.dahaezlge.service.cart.CartService;
+import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +24,32 @@ import java.util.Map;
 public class PurchaseController {
 
     private final CartService cartService;
+    private final PurchaseService purchaseService;
+    private final BookDetailService bookDetailService;
 
     @PostMapping("/cart")
     public ResponseEntity<PurchaseCartCapDto> getCartBookList(@RequestBody UserIdDto userIdDto) {
 
         PurchaseCartCapDto purchaseCartCapDto = new PurchaseCartCapDto();
         purchaseCartCapDto.setPurchaseCartDtoList(cartService.androidPurchaseCartList(userIdDto.getUser_id()));
-        
+
         return ResponseEntity.ok()
                 .body(purchaseCartCapDto);
     }
+
+
+    @PostMapping("/add")
+    public ResponseEntity<StatusDto> addCart(@RequestBody PurchaseAddCartDto purchaseAddCartDto) {
+
+        Boolean result = bookDetailService.addCart(purchaseAddCartDto.getUser_id(), purchaseAddCartDto.getBook_id(), 0);
+
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(result);
+
+        return ResponseEntity.ok()
+                .body(statusDto);
+    }
+
 
     @PostMapping("/process")
     public ResponseEntity<StatusDto> processPurchase(@RequestBody Map<String, Object> purchaseData) {
