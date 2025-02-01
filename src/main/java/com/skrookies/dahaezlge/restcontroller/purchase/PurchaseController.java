@@ -27,6 +27,8 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
     private final BookDetailService bookDetailService;
 
+
+    /** 장바구니에 담긴 책 리스트 반환 */
     @PostMapping("/cart")
     public ResponseEntity<PurchaseCartCapDto> getCartBookList(@RequestBody UserIdDto userIdDto) {
 
@@ -38,6 +40,7 @@ public class PurchaseController {
     }
 
 
+    /** 장바구니에 책 담기 */
     @PostMapping("/add")
     public ResponseEntity<StatusDto> addCart(@RequestBody PurchaseAddCartDto purchaseAddCartDto) {
 
@@ -49,6 +52,22 @@ public class PurchaseController {
         return ResponseEntity.ok()
                 .body(statusDto);
     }
+
+
+    /** 장바구니에 담긴 책 삭제 */
+    @PostMapping("/delete")
+    public ResponseEntity<StatusDto> deleteCart(@RequestBody PurchaseAddCartDto purchaseAddCartDto) {
+
+        Boolean result = cartService.delCartItem(purchaseAddCartDto.getUser_id(), purchaseAddCartDto.getBook_id());
+
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(result);
+
+        return ResponseEntity.ok()
+                .body(statusDto);
+    }
+
+
 
 
     @PostMapping("/process")
