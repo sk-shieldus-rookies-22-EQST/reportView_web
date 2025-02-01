@@ -68,17 +68,27 @@ public class PurchaseController {
     }
 
 
-
-
     @PostMapping("/process")
-    public ResponseEntity<StatusDto> processPurchase(@RequestBody Map<String, Object> purchaseData) {
-        String userId = (String) purchaseData.get("user_id");
-        List<Integer> bookIds = (List<Integer>) purchaseData.get("book_id");
-        int totalPrice = (int) purchaseData.get("totalprice");
+    public ResponseEntity<StatusDto> processPurchase(@RequestBody UserIdDto userIdDto) {
 
-        // Add logic for processing the purchase here
-        boolean isSuccessful = true; // Replace with actual processing result
+        List<PurchaseCartDto> purchaseCartDtoList = cartService.androidPurchaseCartList(userIdDto.getUser_id());
 
-        return ResponseEntity.ok(new StatusDto(isSuccessful));
+        int total_price = 0;
+        for(PurchaseCartDto book_data : purchaseCartDtoList){
+            total_price += book_data.getPrice();
+        }
+
+        StatusDto statusDto = new StatusDto();
+        String purchaseResult = purchaseService.purchaseCart(userIdDto.getUser_id(), total_price);
+
+        if(purchaseResult.equals("success")){
+            statusDto.setStatus(true);
+        }
+        else{
+            statusDto.setStatus(false);
+        }
+
+        return ResponseEntity.ok()
+                .body(statusDto);
     }
 }
