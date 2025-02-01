@@ -23,18 +23,25 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid LoginDto loginDto) {
 
+        log.info("Android login 시도");
+
         StatusDto statusDto = new StatusDto(userService.login(loginDto.getUser_id(), loginDto.getUser_pw()));
+
+        log.info("Android login 결과: {}", statusDto.getStatus());
+
         return ResponseEntity.ok()
                 .body(statusDto);
 
     }
 
-    @PostMapping("/login")
+    @PostMapping("/user/level")
     public ResponseEntity<UserLevelDto> androidUserLevel(@RequestBody @Valid UserIdDto userIdDto) {
 
         int userLevel = userService.getUserLevel(userIdDto.getUser_id());
 
         UserLevelDto userLevelDto = new UserLevelDto(userLevel);
+
+        log.info(userIdDto.getUser_id() + "의 user level = {}", userLevelDto);
 
         return ResponseEntity.ok()
                 .body(userLevelDto);

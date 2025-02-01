@@ -95,13 +95,21 @@ public class ViewController {
 
     }
 
-    /** book 상세 페이지 데이터 */
+    /** book 상세 페이지 데이터
+     * @return BookDetailDto */
     @GetMapping("/bookdetail/{book_id}")
     public ResponseEntity<BookDetailDto> bookDetail(@PathVariable("book_id") String book_id){
 
         BookDto book_data = bookService.getBookInfo(Long.parseLong(book_id));
 
-        BookDetailDto bookDetailDto = new BookDetailDto(book_data.getBook_id(), book_data.getBook_title(), book_data.getBook_price(), book_data.getBook_auth(), book_data.getBook_summary(), book_data.getBook_img_path());
+        BookDetailDto bookDetailDto = new BookDetailDto();
+
+        bookDetailDto.setBook_id(book_data.getBook_id());
+        bookDetailDto.setTitle(book_data.getBook_title());
+        bookDetailDto.setPrice(book_data.getBook_price());
+        bookDetailDto.setWrite_date(book_data.getBook_reg_date());
+        bookDetailDto.setBook_img_path(book_data.getBook_img_path());
+        bookDetailDto.setBook_summary(book_data.getBook_summary());
 
         return ResponseEntity.ok()
                 .body(bookDetailDto);
