@@ -56,41 +56,79 @@ public class BoardController {
     @PostMapping("qna/modify")
     public ResponseEntity<StatusDto> modifyQna(@RequestBody QnaModifyDto qnaModifyDto){
 
+        log.info("Android Qna Modify 실행");
+        log.info("변경 파일 수령 현황: {}", qnaModifyDto.getQna_file());
+
         QnaDto existingQna = qnaService.getQnaById(Math.toIntExact(qnaModifyDto.getQna_id()));
 
-        String fileName = StringUtils.cleanPath(qnaModifyDto.getQna_file().getOriginalFilename());
-        String fileExtension = ""; // 파일 확장자 (예: .pdf)
-        String fileBaseName = fileName; // 확장자 없는 파일명
+        /** 파일 변경 시 작동 */
+        if(qnaModifyDto.getQna_file() != null) {
+            String fileName = StringUtils.cleanPath(qnaModifyDto.getQna_file().getOriginalFilename());
+            String fileExtension = ""; // 파일 확장자 (예: .pdf)
+            String fileBaseName = fileName; // 확장자 없는 파일명
 
-        // 확장자 분리
-        int dotIndex = fileName.lastIndexOf(".");
-        if (dotIndex > 0) {
-            fileBaseName = fileName.substring(0, dotIndex);
-            fileExtension = fileName.substring(dotIndex);
+            // 확장자 분리
+            int dotIndex = fileName.lastIndexOf(".");
+            if (dotIndex > 0) {
+                fileBaseName = fileName.substring(0, dotIndex);
+                fileExtension = fileName.substring(dotIndex);
+            }
+
+            // 현재 시간을 파일명에 추가
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String newFileName = fileBaseName + "_" + timestamp + fileExtension;
+
+            try {
+                // 파일 저장 경로 설정
+                String uploadDir = "src/main/webapp/uploads";
+                File dir = new File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                // 기존 파일이 있다면 삭제
+                if (existingQna.getNew_file_name() != null) {
+                    Path oldFilePath = Paths.get(uploadDir, existingQna.getNew_file_name());
+                    Files.deleteIfExists(oldFilePath);
+                }
+
+                // 새 파일 저장
+                Path filePath = Paths.get(uploadDir, newFileName);
+                qnaModifyDto.getQna_file().transferTo(filePath.toFile());
+
+                // Qna 게시글 수정 정보 설정
+                QnaDto qnaDto = new QnaDto();
+
+                qnaDto.setQna_id(qnaModifyDto.getQna_id());
+                qnaDto.setQna_title(qnaModifyDto.getTitle());
+                qnaDto.setQna_body(qnaModifyDto.getContent());
+                qnaDto.setQna_user_id(existingQna.getQna_user_id());
+                qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
+                qnaDto.setQna_file(qnaModifyDto.getQna_file());
+
+                qnaDto.setFile_name(fileName);
+                qnaDto.setNew_file_name(newFileName);
+                qnaDto.setFile_path(filePath.toString());
+                qnaDto.setFile_size(qnaDto.getQna_file().getSize());
+
+                StatusDto statusDto = new StatusDto();
+                statusDto.setStatus(qnaService.qnaUpdate(qnaDto) > 0);
+
+                return ResponseEntity.ok()
+                        .body(statusDto);
+
+            } catch (IOException e) {
+                log.error("파일 업로드 실패", e);
+
+                StatusDto statusDto = new StatusDto();
+                statusDto.setStatus(false);
+
+                return ResponseEntity.ok()
+                        .body(statusDto);
+            }
         }
-
-        // 현재 시간을 파일명에 추가
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-        String newFileName = fileBaseName + "_" + timestamp + fileExtension;
-
-        try {
-            // 파일 저장 경로 설정
-            String uploadDir = "src/main/webapp/uploads";
-            File dir = new File(uploadDir);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-
-            // 기존 파일이 있다면 삭제
-            if (existingQna.getNew_file_name() != null) {
-                Path oldFilePath = Paths.get(uploadDir, existingQna.getNew_file_name());
-                Files.deleteIfExists(oldFilePath);
-            }
-
-            // 새 파일 저장
-            Path filePath = Paths.get(uploadDir, newFileName);
-            qnaModifyDto.getQna_file().transferTo(filePath.toFile());
-
+        /** 변경할 파일이 없을 시 */
+        else{
             // Qna 게시글 수정 정보 설정
             QnaDto qnaDto = new QnaDto();
 
@@ -98,25 +136,10 @@ public class BoardController {
             qnaDto.setQna_title(qnaModifyDto.getTitle());
             qnaDto.setQna_body(qnaModifyDto.getContent());
             qnaDto.setQna_user_id(existingQna.getQna_user_id());
-            qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
-            qnaDto.setQna_file(qnaModifyDto.getQna_file());
-
-            qnaDto.setFile_name(fileName);
-            qnaDto.setNew_file_name(newFileName);
-            qnaDto.setFile_path(filePath.toString());
-            qnaDto.setFile_size(qnaDto.getQna_file().getSize());
+            qnaDto.setQna_created_at(LocalDateTime.now());
 
             StatusDto statusDto = new StatusDto();
-            statusDto.setStatus(qnaService.qnaUpdate(qnaDto) > 0);
-
-            return ResponseEntity.ok()
-                    .body(statusDto);
-
-        } catch (IOException e) {
-            log.error("파일 업로드 실패", e);
-
-            StatusDto statusDto = new StatusDto();
-            statusDto.setStatus(false);
+            statusDto.setStatus(qnaService.qnaUpdate2(qnaDto) > 0);
 
             return ResponseEntity.ok()
                     .body(statusDto);
