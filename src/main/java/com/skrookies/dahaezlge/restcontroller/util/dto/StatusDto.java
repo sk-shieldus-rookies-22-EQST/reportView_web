@@ -3,7 +3,8 @@ package com.skrookies.dahaezlge.restcontroller.util.dto;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class StatusDto {
 
