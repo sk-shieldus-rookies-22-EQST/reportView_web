@@ -146,6 +146,52 @@ public class BoardController {
         }
     }
 
+
+    @PostMapping("/qna/delete")
+    public ResponseEntity<StatusDto> deleteQna(@RequestBody QnaIDDto qnaIDDto) {
+
+        log.info("qna 게시글 삭제 시도");
+
+        QnaDto existingQna = qnaService.getQnaById(Integer.parseInt(qnaIDDto.getQna_id()));
+        String uploadDir = "src/main/webapp/uploads";
+
+        log.info("게시글에 업로드된 파일 존재 현황 {}", existingQna.getQna_file());
+
+        if (existingQna.getNew_file_name() != null) {
+            try {
+                Path oldFilePath = Paths.get(uploadDir, existingQna.getNew_file_name());
+                Files.deleteIfExists(oldFilePath);
+                qnaService.deleteQna(Integer.parseInt(qnaIDDto.getQna_id()));
+
+                log.info("qna 게시글 삭제 성공");
+
+                StatusDto statusDto = new StatusDto();
+                statusDto.setStatus(true);
+
+                return ResponseEntity.ok()
+                        .body(statusDto);
+            }
+            catch (IOException e) {
+                log.error(e.getMessage(), e);
+
+                StatusDto statusDto = new StatusDto();
+                statusDto.setStatus(false);
+
+                return ResponseEntity.ok()
+                        .body(statusDto);
+            }
+        }
+        else{
+            qnaService.deleteQna(Integer.parseInt(qnaIDDto.getQna_id()));
+
+            StatusDto statusDto = new StatusDto();
+            statusDto.setStatus(true);
+
+            return ResponseEntity.ok()
+                    .body(statusDto);
+        }
+    }
+
     @PostMapping("/qna/write")
     public ResponseEntity<StatusDto> writeQna(@RequestBody Map<String, Object> qnaData) {
         String title = (String) qnaData.get("title");
