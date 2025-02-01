@@ -1,8 +1,10 @@
 package com.skrookies.dahaezlge.restcontroller.user;
 
+import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
 import com.skrookies.dahaezlge.restcontroller.user.dto.PointChargeDto;
+import com.skrookies.dahaezlge.restcontroller.user.dto.UserInfoDto;
 import com.skrookies.dahaezlge.restcontroller.user.dto.UserPointDto;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import com.skrookies.dahaezlge.service.user.UserService;
@@ -23,13 +25,27 @@ public class UserController {
     private final UserService userService;
     private final PurchaseService purchaseService;
 
-    @GetMapping("/info")
-    public ResponseEntity<Map<String, Object>> getUserInfo(@RequestParam String user_id) {
-        List<Users> userInfo = userService.userInfo(user_id);
-        return ResponseEntity.ok(Map.of("user_info", userInfo));
+    /** UserId 기반 회원 정보 반환 */
+    @PostMapping("/info")
+    public ResponseEntity<UserInfoDto> getUserInfo(@RequestBody UserIdDto userIdDto) {
+        List<Users> userInfo = userService.userInfo(userIdDto.getUser_id());
+
+        Users user = userInfo.getFirst();
+        UserInfoDto userInfoDto = new UserInfoDto();
+
+        userInfoDto.setUser_id(user.getUser_id());
+        userInfoDto.setUser_pw(user.getUser_pw());
+        userInfoDto.setUser_phone(user.getUser_phone());
+        userInfoDto.setUser_email(user.getUser_email());
+        userInfoDto.setUser_level(user.getUser_level());
+        userInfoDto.setUser_created_at(user.getUser_created_at().toLocalDateTime());
+
+        return ResponseEntity.ok()
+                .body(userInfoDto);
     }
 
-    @GetMapping("/booklist")
+
+    @PostMapping("/booklist")
     public ResponseEntity<Map<String, Object>> getUserBookList(@RequestParam String user_id) {
         // Replace with logic to fetch user's book list
         List<?> bookList = List.of(); // Example response
