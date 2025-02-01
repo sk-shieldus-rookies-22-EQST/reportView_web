@@ -4,6 +4,7 @@ import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
 import com.skrookies.dahaezlge.restcontroller.user.dto.*;
+import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import com.skrookies.dahaezlge.service.user.UserService;
@@ -40,11 +41,23 @@ public class UserController {
         userInfoDto.setUser_pw(user.getUser_pw());
         userInfoDto.setUser_phone(user.getUser_phone());
         userInfoDto.setUser_email(user.getUser_email());
-        userInfoDto.setUser_level(user.getUser_level());
-        userInfoDto.setUser_created_at(user.getUser_created_at().toLocalDateTime());
 
         return ResponseEntity.ok()
                 .body(userInfoDto);
+    }
+
+
+    /** 회원 정보 수정 */
+    @PostMapping("/update")
+    public ResponseEntity<StatusDto> userInfoUpdate(@RequestBody UserInfoDto userInfoDto) {
+
+        Boolean result = userService.updateUserInfo(userInfoDto.getUser_id(), userInfoDto.getUser_pw(), userInfoDto.getUser_phone(), userInfoDto.getUser_email());
+
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(result);
+
+        return ResponseEntity.ok()
+                .body(statusDto);
     }
 
 

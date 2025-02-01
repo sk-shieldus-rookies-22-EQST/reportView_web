@@ -17,6 +17,4 @@ public class UserInfoDto {
     private String user_pw;
     private String user_phone;
     private String user_email;
-    private Integer user_level;
-    private LocalDateTime user_created_at;
 }
