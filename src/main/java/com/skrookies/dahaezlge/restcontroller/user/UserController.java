@@ -2,7 +2,9 @@ package com.skrookies.dahaezlge.restcontroller.user;
 
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
+import com.skrookies.dahaezlge.restcontroller.user.dto.PointChargeDto;
 import com.skrookies.dahaezlge.restcontroller.user.dto.UserPointDto;
+import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final PurchaseService purchaseService;
 
     @GetMapping("/info")
     public ResponseEntity<Map<String, Object>> getUserInfo(@RequestParam String user_id) {
@@ -42,7 +45,7 @@ public class UserController {
 
 
     @PostMapping("/point")
-    public ResponseEntity<UserPointDto> userPoint(@RequestBody UserIdDto userIdDto) {
+    public ResponseEntity<UserPointDto> getUserPoint(@RequestBody UserIdDto userIdDto) {
 
         int user_point = userService.userPoint(userIdDto.getUser_id());
 
@@ -53,5 +56,29 @@ public class UserController {
                 .body(userPointDto);
     }
 
+
+    @PostMapping("/point/charge")
+    public ResponseEntity<UserPointDto> userPointCharge(@RequestBody PointChargeDto pointChargeDto) {
+
+        boolean result = purchaseService.chargePoint(pointChargeDto.getUser_id(), pointChargeDto.getCharge_point());
+
+        if(result){
+            int user_point = userService.userPoint(pointChargeDto.getUser_id());
+
+            UserPointDto userPointDto = new UserPointDto();
+            userPointDto.setUser_point(user_point);
+
+            return ResponseEntity.ok()
+                    .body(userPointDto);
+        }
+        else{
+
+            UserPointDto userPointDto = new UserPointDto();
+            userPointDto.setUser_point(-2);
+
+            return ResponseEntity.ok()
+                    .body(userPointDto);
+        }
+    }
 
 }
