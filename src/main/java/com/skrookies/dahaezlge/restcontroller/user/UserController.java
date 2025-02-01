@@ -1,6 +1,8 @@
 package com.skrookies.dahaezlge.restcontroller.user;
 
 import com.skrookies.dahaezlge.entity.user.Users;
+import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
+import com.skrookies.dahaezlge.restcontroller.user.dto.UserPointDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,4 +39,19 @@ public class UserController {
         List<?> purchaseHistory = List.of(); // Example response
         return ResponseEntity.ok(Map.of("purchase", purchaseHistory));
     }
+
+
+    @PostMapping("/point")
+    public ResponseEntity<UserPointDto> userPoint(@RequestBody UserIdDto userIdDto) {
+
+        int user_point = userService.userPoint(userIdDto.getUser_id());
+
+        UserPointDto userPointDto = new UserPointDto();
+        userPointDto.setUser_point(user_point);
+
+        return ResponseEntity.ok()
+                .body(userPointDto);
+    }
+
+
 }
