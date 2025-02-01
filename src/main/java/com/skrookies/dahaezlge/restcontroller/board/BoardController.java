@@ -1,6 +1,7 @@
 package com.skrookies.dahaezlge.restcontroller.board;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
+import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.restcontroller.board.dto.*;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.qna.QnaService;
@@ -283,14 +284,21 @@ public class BoardController {
         }
     }
 
+
     @PostMapping("/qna/comment")
-    public ResponseEntity<StatusDto> writeComment(@RequestBody Map<String, Object> commentData) {
-        int qnaId = (int) commentData.get("qnaid");
-        String comment = (String) commentData.get("comment");
+    public ResponseEntity<StatusDto> writeComment(@RequestBody CommentWriteDto commentWriteDto) {
 
-        // Add logic to handle comment writing
-        boolean isSuccessful = true; // Replace with actual result
+        QnaReDto qnaReDto = new QnaReDto();
 
-        return ResponseEntity.ok(new StatusDto(isSuccessful));
+        qnaReDto.setQna_id(commentWriteDto.getQna_id());
+        qnaReDto.setQna_re_user_id(commentWriteDto.getWriter());
+        qnaReDto.setQna_re_body(commentWriteDto.getContent());
+        qnaReDto.setQna_re_created_at(LocalDateTime.now());
+
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(qnaService.addQnaReply(qnaReDto) > 0);
+
+        return ResponseEntity.ok()
+                .body(statusDto);
     }
 }
