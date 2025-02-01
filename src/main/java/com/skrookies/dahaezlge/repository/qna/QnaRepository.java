@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,6 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-
 public class QnaRepository {
     private final JdbcTemplate jdbcTemplate;
     public int qna(QnaDto QnaDto) {
@@ -57,6 +57,7 @@ public class QnaRepository {
         });
     }
 
+    /** qna_id 기반 게시글 상세정보 모두 반환 */
     public QnaDto QnaById(int qna_id) {
         String sql = "SELECT * from qna where qna_id= ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{qna_id}, new RowMapper<QnaDto>() {
@@ -69,6 +70,7 @@ public class QnaRepository {
                 qna.setQna_user_id(rs.getString("qna_user_id"));
                 qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
                 qna.setFile_name(rs.getString("file_name"));
+                qna.setFile_path(rs.getString("file_path"));
                 qna.setFile_size(rs.getLong("file_size"));
                 qna.setNew_file_name(rs.getString("new_file_name"));
                 return qna;

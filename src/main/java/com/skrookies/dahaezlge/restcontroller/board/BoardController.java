@@ -1,6 +1,6 @@
 package com.skrookies.dahaezlge.restcontroller.board;
 
-import com.skrookies.dahaezlge.repository.qna.QnaRepository;
+import com.skrookies.dahaezlge.restcontroller.board.dto.QnaDetailDto;
 import com.skrookies.dahaezlge.restcontroller.board.dto.QnaListCapDto;
 import com.skrookies.dahaezlge.restcontroller.board.dto.QnaListDto;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
@@ -21,8 +21,7 @@ public class BoardController {
 
     private final QnaService qnaService;
 
-    /** api 호출 시
-     * qna 게시글 전체 반환 */
+    /** qna 게시글 전체 반환 */
     @PostMapping("/qna")
     public ResponseEntity<QnaListCapDto> getQnaList() {
 
@@ -30,21 +29,19 @@ public class BoardController {
 
         QnaListCapDto qnaListCapDto = new QnaListCapDto(qnaList);
 
-        return ResponseEntity.ok().
-                body(qnaListCapDto);
+        return ResponseEntity.ok()
+                .body(qnaListCapDto);
     }
 
+    /** qna 상세 페이지 데이터 반환
+     * 댓글 정보 포함 */
+    @GetMapping("/qna/{qna_id}")
+    public ResponseEntity<QnaDetailDto> getQnaDetails(@PathVariable String qna_id) {
 
-    @GetMapping("/qna/{qnaID}")
-    public ResponseEntity<Map<String, Object>> getQnaDetails(@PathVariable int qnaID) {
-        // Replace with logic to fetch QnA details by ID
-        Map<String, Object> qnaDetails = Map.of(
-                "id", qnaID,
-                "title", "1",
-                "content", "11111",
-                "comment", "답변"
-        );
-        return ResponseEntity.ok(qnaDetails);
+        QnaDetailDto qnaDetailDto = qnaService.getQnaDetailById(Integer.parseInt(qna_id));
+
+        return ResponseEntity.ok()
+                .body(qnaDetailDto);
     }
 
     @PostMapping("/qna/write")
