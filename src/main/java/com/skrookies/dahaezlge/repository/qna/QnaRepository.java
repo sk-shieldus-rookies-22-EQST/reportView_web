@@ -24,13 +24,12 @@ public class QnaRepository {
     private final JdbcTemplate jdbcTemplate;
     public int qna(QnaDto QnaDto) {
         // 파일 관련 정보를 추가한 SQL 구문
-        String sql = "INSERT INTO qna (qna_id, qna_title, qna_body, qna_user_id, qna_created_at, file_name, file_path, file_size, new_file_name) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO qna (qna_title, qna_body, qna_user_id, qna_created_at, file_name, file_path, file_size, new_file_name) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         // 파일 정보를 포함하여 INSERT 실행
         return jdbcTemplate.update(
                 sql,
-                QnaDto.getQna_id(),
                 QnaDto.getQna_title(),
                 QnaDto.getQna_body(),
                 QnaDto.getQna_user_id(),

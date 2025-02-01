@@ -6,15 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class QnaModifyDto {
+@AllArgsConstructor
+public class QnaWriteDto {
 
-    private Long qna_id;
+    private String user_id;
     private String title;
     private String writer;
     private String content;
