@@ -1,6 +1,10 @@
 package com.skrookies.dahaezlge.restcontroller.board;
 
+import com.skrookies.dahaezlge.repository.qna.QnaRepository;
+import com.skrookies.dahaezlge.restcontroller.board.dto.QnaListCapDto;
+import com.skrookies.dahaezlge.restcontroller.board.dto.QnaListDto;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
+import com.skrookies.dahaezlge.service.qna.QnaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +19,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardController {
 
-    @GetMapping("/qna")
-    public ResponseEntity<Map<String, Object>> getQnaList() {
-        // Replace with logic to fetch QnA list
-        List<Map<String, Object>> qnaList = List.of(
-                Map.of("id", 1, "title", "1", "username", "작성자")
-        );
-        return ResponseEntity.ok(Map.of("qna", qnaList));
+    private final QnaService qnaService;
+
+    /** api 호출 시
+     * qna 게시글 전체 반환 */
+    @PostMapping("/qna")
+    public ResponseEntity<QnaListCapDto> getQnaList() {
+
+        List<QnaListDto> qnaList = qnaService.getAllQnaList();
+
+        QnaListCapDto qnaListCapDto = new QnaListCapDto(qnaList);
+
+        return ResponseEntity.ok().
+                body(qnaListCapDto);
     }
+
 
     @GetMapping("/qna/{qnaID}")
     public ResponseEntity<Map<String, Object>> getQnaDetails(@PathVariable int qnaID) {

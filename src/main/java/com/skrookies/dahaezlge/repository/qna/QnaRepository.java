@@ -42,6 +42,8 @@ public class QnaRepository {
         );
     }
 
+    /** Qna 전체 List 반환
+     * @return List<QnaDto> </> */
     public List<QnaDto> getQnaList() {
         String sql = "SELECT * FROM qna ORDER BY qna_id DESC";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {

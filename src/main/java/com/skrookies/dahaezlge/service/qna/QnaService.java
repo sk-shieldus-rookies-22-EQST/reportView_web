@@ -4,9 +4,11 @@ import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
 import com.skrookies.dahaezlge.repository.qna.QnaRepository;
+import com.skrookies.dahaezlge.restcontroller.board.dto.QnaListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,8 +21,24 @@ public class QnaService {
         return QnaRepository.qna(QnaDto);
     }
 
-    public List<QnaDto> getQnaList() {
-        return QnaRepository.getQnaList();
+    /** Qna 작성 글 전체 반환
+     * @return List<QnaListDto></> */
+    public List<QnaListDto> getAllQnaList() {
+        List<QnaDto> qna_datas = QnaRepository.getQnaList();
+
+        List<QnaListDto> qna_list = new ArrayList<>();
+        for(QnaDto qnaDto : qna_datas){
+            QnaListDto qnaListDto = new QnaListDto();
+
+            qnaListDto.setQna_id(qnaDto.getQna_id());
+            qnaListDto.setTitle(qnaDto.getQna_title());
+            qnaListDto.setUser_id(qnaDto.getQna_user_id());
+            qnaListDto.setCreated_at(qnaDto.getQna_created_at());
+
+            qna_list.add(qnaListDto);
+        }
+
+        return qna_list;
     }
 
 
