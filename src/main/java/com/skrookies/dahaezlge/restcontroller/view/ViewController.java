@@ -93,7 +93,7 @@ public class ViewController {
             bookList = bookService.findBookListByDate(bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
         }
         else{
-            bookList = bookService.findBookListByBoth(bookSearchRequestDto);
+            bookList = bookService.findBookListByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
         }
 
         BookListCapDto bookListCapDto = new BookListCapDto();

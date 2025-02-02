@@ -37,13 +37,31 @@ public class BookService {
         return bookRepository.getBooksWithKeyword(keyword, page, pageSize);
     }
 
+    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
+        return bookRepository.getBooksWithDate(sdate, edate, page, pageSize);
+    }
+
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
+        return bookRepository.getBooksWithBoth(keyword, sdate, edate, page, pageSize);
+    }
+
     public int getTotalBooks() {
-        return bookRepository.getTotalBooks();
+
+        int size = bookRepository.getTotalBooks();
+
+        System.out.println("bookListAll count: " + size);
+
+        return size;
     }
 
     // ▼ 전체 도서 목록 (Map) 가져오기
     public List<Map<String, Object>> findAllBooks() {
-        return bookRepository.findAllBooks();
+
+        List<Map<String, Object>> books = bookRepository.findAllBooks();
+
+        System.out.println("bookListAll count: " + books.size());
+
+        return books;
     }
 
     /** Keyword 기반 BookList 반환
@@ -60,7 +78,7 @@ public class BookService {
             bookListDto.setTitle((String) stringObjectMap.get("book_title"));
             bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
             bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
             bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
             returnBookList.add(bookListDto);
@@ -85,22 +103,22 @@ public class BookService {
             bookListDto.setTitle((String) stringObjectMap.get("book_title"));
             bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
             bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
             bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
             returnBookList.add(bookListDto);
         }
 
-        System.out.println("bookListFindByKeyword count: " + returnBookList.size());
+        System.out.println("bookListFindByDate count: " + returnBookList.size());
 
         return returnBookList;
     }
 
     /** Keyword & Date 기반 BookList 반환
      * @return List<BookListDto> */
-    public List<BookListDto> findBookListByBoth(BookSearchRequestDto bookSearchRequestDto){
+    public List<BookListDto> findBookListByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate){
 
-        List<Map<String, Object>> bookList = bookRepository.findByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
+        List<Map<String, Object>> bookList = bookRepository.findByBoth(keyword, sdate, edate);
         List<BookListDto> returnBookList = new ArrayList<>();
 
         for (Map<String, Object> stringObjectMap : bookList) {
@@ -110,13 +128,13 @@ public class BookService {
             bookListDto.setTitle((String) stringObjectMap.get("book_title"));
             bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
             bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
             bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
             returnBookList.add(bookListDto);
         }
 
-        System.out.println("bookListFindByKeyword count: " + returnBookList.size());
+        System.out.println("bookListFindByBoth count: " + returnBookList.size());
 
         return returnBookList;
     }
