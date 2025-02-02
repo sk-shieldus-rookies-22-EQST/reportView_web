@@ -38,19 +38,19 @@ public class CartService {
     public List<PurchaseCartDto> androidPurchaseCartList(String user_id){
 
         List<CartDto> cartIdList = cartRepository.getCartList(user_id);
-        log.info("cart Service");
+        log.info("android cart Service");
         List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
 
         List<BookDto> book_list = bookRepository.getCartBookInfo(cartBookIdList);
 
 
         List<PurchaseCartDto> purchase_cart_list = new ArrayList<>();
-        for(int i = 0; i < cartIdList.size(); i++){
+        for(int i = 0; i < book_list.size(); i++){
 
             PurchaseCartDto purchaseCartDto = new PurchaseCartDto();
 
             purchaseCartDto.setCart_id(cartIdList.get(i).getCart_id());
-            purchaseCartDto.setBook_id(cartBookIdList.get(i));
+            purchaseCartDto.setBook_id(book_list.get(i).getBook_id());
             purchaseCartDto.setTitle(book_list.get(i).getBook_title());
             purchaseCartDto.setPrice(book_list.get(i).getBook_price());
             purchaseCartDto.setBook_img_path(book_list.get(i).getBook_img_path());
