@@ -77,23 +77,45 @@
                 <ul class="pagination">
                     <c:if test="${currentPage > 1}">
                         <li class="page-item">
-                            <a class="page-link" href="/qnaList?page=${currentPage - 1}">이전</a>
+                            <c:choose>
+                                <c:when test="${not empty keyword}">
+                                    <a class="page-link" href="/qnaSearch?keyword=${keyword}&page=${currentPage - 1}">이전</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a class="page-link" href="/qnaList?page=${currentPage - 1}">이전</a>
+                                </c:otherwise>
+                            </c:choose>
                         </li>
                     </c:if>
 
                     <c:forEach begin="${startPage}" end="${endPage}" var="i">
-                        <li class="page-item <c:if test='${i == currentPage}'>active</c:if>">
-                            <a class="page-link" href="/qnaList?page=${i}">${i}</a>
+                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                            <c:choose>
+                                <c:when test="${not empty keyword}">
+                                    <a class="page-link" href="/qnaSearch?keyword=${keyword}&page=${i}">${i}</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a class="page-link" href="/qnaList?page=${i}">${i}</a>
+                                </c:otherwise>
+                            </c:choose>
                         </li>
                     </c:forEach>
 
                     <c:if test="${currentPage < totalPages}">
                         <li class="page-item">
-                            <a class="page-link" href="/qnaList?page=${currentPage + 1}">다음</a>
+                            <c:choose>
+                                <c:when test="${not empty keyword}">
+                                    <a class="page-link" href="/qnaSearch?keyword=${keyword}&page=${currentPage + 1}">다음</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a class="page-link" href="/qnaList?page=${currentPage + 1}">다음</a>
+                                </c:otherwise>
+                            </c:choose>
                         </li>
                     </c:if>
                 </ul>
             </nav>
+
             <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>
     </div>
 </div>
