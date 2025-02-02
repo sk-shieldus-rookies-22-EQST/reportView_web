@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository
@@ -46,13 +48,19 @@ public class QnaRepository {
      * @return List<QnaDto> </> */
     public List<QnaDto> getQnaList() {
         String sql = "SELECT * FROM qna ORDER BY qna_id DESC";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             QnaDto qna = new QnaDto();
             qna.setQna_id(rs.getLong("qna_id"));
             qna.setQna_title(rs.getString("qna_title"));
             qna.setQna_body(rs.getString("qna_body"));
             qna.setQna_user_id(rs.getString("qna_user_id"));
-            qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
+            Timestamp ts = rs.getTimestamp("qna_created_at");
+            if (ts != null) {
+                LocalDateTime createdAt = ts.toLocalDateTime();
+                qna.setQna_created_at(createdAt);
+                qna.setFormattedCreatedAt(createdAt.format(formatter));
+            }
             qna.setSecret(rs.getBoolean("secret"));
             return qna;
         });
@@ -60,7 +68,7 @@ public class QnaRepository {
 
     /** qna_id 기반 게시글 상세정보 모두 반환 */
     public QnaDto QnaById(int qna_id) {
-        String sql = "SELECT * from qna where qna_id= ?";
+        String sql = "SELECT * FROM qna WHERE qna_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{qna_id}, new RowMapper<QnaDto>() {
             @Override
             public QnaDto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -69,7 +77,13 @@ public class QnaRepository {
                 qna.setQna_title(rs.getString("qna_title"));
                 qna.setQna_body(rs.getString("qna_body"));
                 qna.setQna_user_id(rs.getString("qna_user_id"));
-                qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
+                Timestamp ts = rs.getTimestamp("qna_created_at");
+                if(ts != null) {
+                    LocalDateTime createdAt = ts.toLocalDateTime(); // 변환 후
+                    qna.setQna_created_at(createdAt);             // LocalDateTime 타입으로 저장
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    qna.setFormattedCreatedAt(createdAt.format(formatter));
+                }
                 qna.setFile_name(rs.getString("file_name"));
                 qna.setFile_path(rs.getString("file_path"));
                 qna.setFile_size(rs.getLong("file_size"));
@@ -103,13 +117,19 @@ public class QnaRepository {
 
     public List<QnaDto> findQnasByPage(int offset, int pageSize) {
         String sql = "SELECT * FROM qna ORDER BY qna_created_at DESC LIMIT ? OFFSET ?";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return jdbcTemplate.query(sql, new Object[]{pageSize, offset}, (rs, rowNum) -> {
             QnaDto qna = new QnaDto();
             qna.setQna_id(rs.getLong("qna_id"));
             qna.setQna_title(rs.getString("qna_title"));
             qna.setQna_body(rs.getString("qna_body"));
             qna.setQna_user_id(rs.getString("qna_user_id"));
-            qna.setQna_created_at(rs.getTimestamp("qna_created_at").toLocalDateTime());
+            Timestamp ts = rs.getTimestamp("qna_created_at");
+            if (ts != null) {
+                LocalDateTime createdAt = ts.toLocalDateTime();
+                qna.setQna_created_at(createdAt);
+                qna.setFormattedCreatedAt(createdAt.format(formatter));
+            }
             qna.setSecret(rs.getBoolean("secret"));
             return qna;
         });
@@ -117,8 +137,24 @@ public class QnaRepository {
 
     public List<QnaDto> findByKeyword(String keyword, int offset, int pageSize) {
         String sql = "SELECT qna_id, qna_title, qna_user_id, qna_created_at, secret FROM qna WHERE qna_title LIKE ? ORDER BY qna_id DESC LIMIT ? OFFSET ? ";
-        return jdbcTemplate.query(sql, new Object[]{"%" + keyword + "%", pageSize, offset},
-                new BeanPropertyRowMapper<>(QnaDto.class));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return jdbcTemplate.query(sql, new Object[]{"%" + keyword + "%", pageSize, offset}, new RowMapper<QnaDto>() {
+            @Override
+            public QnaDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                QnaDto qna = new QnaDto();
+                qna.setQna_id(rs.getLong("qna_id"));
+                qna.setQna_title(rs.getString("qna_title"));
+                qna.setQna_user_id(rs.getString("qna_user_id"));
+                Timestamp ts = rs.getTimestamp("qna_created_at");
+                if (ts != null) {
+                    LocalDateTime createdAt = ts.toLocalDateTime();
+                    qna.setQna_created_at(createdAt);
+                    qna.setFormattedCreatedAt(createdAt.format(formatter));
+                }
+                qna.setSecret(rs.getBoolean("secret"));
+                return qna;
+            }
+        });
     }
 
     public int qnaReply(QnaReDto qnaReDto) {

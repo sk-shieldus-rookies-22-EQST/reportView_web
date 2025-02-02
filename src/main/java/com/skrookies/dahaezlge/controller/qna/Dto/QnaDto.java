@@ -25,5 +25,5 @@ public class QnaDto {
     private String new_file_name;        // 날짜 추가된 파일 이름
 
     private Boolean secret;         //비밀글 표시
-
+    private String formattedCreatedAt;
 }

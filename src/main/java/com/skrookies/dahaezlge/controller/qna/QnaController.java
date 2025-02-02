@@ -136,7 +136,10 @@ public class QnaController {
 
         // 사용자 ID와 작성 시간 설정
         qnaDto.setQna_user_id(userId);
-        qnaDto.setQna_created_at(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        qnaDto.setQna_created_at(now);
+        qnaDto.setFormattedCreatedAt(now.format(formatter));
 
         // 파일 처리
         if (qnaDto.getQna_file() != null && !qnaDto.getQna_file().isEmpty()) {
@@ -211,7 +214,10 @@ public class QnaController {
             return "qnaWrite";
         }
 
-        QnaDto.setQna_created_at(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        QnaDto.setQna_created_at(now);
+        QnaDto.setFormattedCreatedAt(now.format(formatter));
 
         // 기존 파일 정보 가져오기
         QnaDto existingQna = QnaService.getQnaById(Math.toIntExact(QnaDto.getQna_id()));
@@ -396,7 +402,10 @@ public class QnaController {
         QnaReDto qnaReDto = new QnaReDto();
         qnaReDto.setQna_re_user_id(userId);
         qnaReDto.setQna_re_body(qna_re_body);
-        qnaReDto.setQna_re_created_at(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        qnaReDto.setQna_re_created_at(now);
+        qnaReDto.setFormattedCreatedAt(now.format(formatter));
         qnaReDto.setQna_id((long) qna_id);
 
         // 서비스 호출하여 답글 추가

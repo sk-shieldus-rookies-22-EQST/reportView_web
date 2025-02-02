@@ -15,4 +15,6 @@ public class QnaReDto {
     private String qna_re_user_id;
     private String qna_re_body;
     private LocalDateTime qna_re_created_at;
+
+    private String formattedCreatedAt;
 }

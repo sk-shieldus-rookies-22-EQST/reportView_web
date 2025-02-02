@@ -62,7 +62,7 @@
                                 </c:choose>
                             </td>
                             <td>${qna.qna_user_id}</td>
-                            <td>${qna.qna_created_at}</td>
+                            <td>${qna.formattedCreatedAt}</td>
                         </tr>
                     </c:forEach>
 

@@ -60,8 +60,7 @@
                 </tr>
                 <tr>
                     <td>작성일자</td>
-                    <!-- qna_created_at 출력 -->
-                    <td colspan="2" style="text-align: center;">${qnaDetail.qna_created_at}</td>
+                    <td colspan="2" style="text-align: center;">${qnaDetail.formattedCreatedAt}</td>
                 </tr>
                 <tr>
                     <td>내용</td>
