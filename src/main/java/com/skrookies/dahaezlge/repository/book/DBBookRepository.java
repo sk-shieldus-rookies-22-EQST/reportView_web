@@ -94,7 +94,7 @@ public class DBBookRepository implements BookRepository {
     public List<Map<String, Object>> findAllBooks() {
         String sql = """
             SELECT book_id, book_title, book_auth, book_path,
-                   book_summary, book_reg_date, book_img_path, book_price
+                   book_summary, book_reg_date, book_img_path, book_price 
             FROM book
         """;
         // queryForList: 컬럼명=Key, 값=Value 형태로 Map을 만듦

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +24,12 @@ public class ViewController {
 
     private final BookService bookService;
 
-    @PostMapping("/booklist")
+    @PostMapping(value = "/booklist", produces = "application/json")
     public ResponseEntity<BookListCapDto> bookList(){
 
         List<Map<String, Object>> bookList = bookService.findAllBooks();
+
+        log.info("Android api Book DB에 저장된 bookList size: {}", bookList.size());
 
         List<BookListDto> bookListDtoList = new ArrayList<>();
         for (Map<String, Object> stringObjectMap : bookList) {
@@ -36,13 +39,18 @@ public class ViewController {
             bookListDto.setTitle((String) stringObjectMap.get("book_title"));
             bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
             bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
             bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
             bookListDtoList.add(bookListDto);
         }
 
-        BookListCapDto bookListCapDto = new BookListCapDto(bookListDtoList);
+        log.info("Android api 반환값으로 변환된 bookList size: {}", bookListDtoList.size());
+
+        BookListCapDto bookListCapDto = new BookListCapDto();
+        bookListCapDto.setBook_list(bookListDtoList);
+
+        log.info("List Cap 할당 여부: {}", !bookListCapDto.getBook_list().isEmpty());
 
         return ResponseEntity.ok()
                 .body(bookListCapDto);
@@ -70,7 +78,7 @@ public class ViewController {
                 bookListDto.setTitle((String) stringObjectMap.get("book_title"));
                 bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
                 bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-                bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
                 bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
                 bookList.add(bookListDto);
@@ -88,10 +96,11 @@ public class ViewController {
             bookList = bookService.findBookListByBoth(bookSearchRequestDto);
         }
 
-        BookListCapDto BookListCapDto = new BookListCapDto(bookList);
+        BookListCapDto bookListCapDto = new BookListCapDto();
+        bookListCapDto.setBook_list(bookList);
 
         return ResponseEntity.ok()
-                .body(BookListCapDto);
+                .body(bookListCapDto);
 
     }
 

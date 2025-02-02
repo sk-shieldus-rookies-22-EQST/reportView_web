@@ -1,13 +1,12 @@
 package com.skrookies.dahaezlge.restcontroller.view.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class BookListCapDto {
 
