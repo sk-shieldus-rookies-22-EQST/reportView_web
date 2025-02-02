@@ -113,18 +113,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="reply" items="${qnaReplies}">
-                            <tr>
-                                <td style="align-content:center;">관리자</td>
-                                <td style="align-content:center;">${reply.qna_re_body}</td>
-                                <td style="align-content:center;">${reply.qna_re_created_at}</td>
-                                <c:if test="${sessionScope.user_level == 123}">
-                                    <td style="align-content:center;">
-                                        <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>
-                                    </td>
-                                </c:if>
-                            </tr>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${not empty qnaReplies}">
+                                <c:forEach var="reply" items="${qnaReplies}">
+                                    <tr>
+                                        <td style="align-content:center;">관리자</td>
+                                        <td style="align-content:center;">${reply.qna_re_body}</td>
+                                        <td style="align-content:center;">${reply.qna_re_created_at}</td>
+                                        <c:if test="${sessionScope.user_level == 123}">
+                                            <td style="align-content:center;">
+                                                <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>
+                                            </td>
+                                        </c:if>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="4" style="text-align:center;">아직 등록된 답글이 없습니다.</td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
                     </tbody>
                 </table>
 
