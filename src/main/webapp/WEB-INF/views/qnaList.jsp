@@ -44,33 +44,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <%
-                        // request에서 qnaList를 받아와 처리
-                        List<QnaDto> qnaList = (List<QnaDto>) request.getAttribute("qnaList");
-                        if (qnaList != null) {
-                            for (QnaDto qna : qnaList) {
-                    %>
-                            <tr style="cursor:pointer;" onclick="window.location.href='/qnaDetail?qna_id=<%= qna.getQna_id() %>';">
-                                <td><%= qna.getQna_id() %></td>
-                                <td style="width:500px; text-align: center; vertical-align: middle;">
-                                    <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">
-                                        <%= qna.getQna_title() %>
-                                    </p>
-                                </td>
-                                <td><%= qna.getQna_user_id() %></td>
-                                <td><%= qna.getQna_created_at() %></td>
-                            </tr>
+                    <c:forEach var="qna" items="${qnaList}">
+                        <tr style="cursor:pointer;" onclick="window.location.href='/qnaDetail?qna_id=${qna.qna_id}';">
+                            <td>${qna.qna_id}</td>
+                            <td style="width:500px; text-align: center; vertical-align: middle;">
+                                <c:choose>
+                                    <c:when test="${qna.secret == true}">
+                                        <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">
+                                            🔒${qna.qna_title}
+                                        </p>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">
+                                            ${qna.qna_title}
+                                        </p>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>${qna.qna_user_id}</td>
+                            <td>${qna.qna_created_at}</td>
+                        </tr>
+                    </c:forEach>
 
-                    <%
-                            }
-                        } else {
-                    %>
-                            <tr>
-                                <td colspan="4">데이터가 없습니다.</td>
-                            </tr>
-                    <%
-                        }
-                    %>
+                    <c:if test="${empty qnaList}">
+                        <tr>
+                            <td colspan="4">데이터가 없습니다.</td>
+                        </tr>
+                    </c:if>
                 </tbody>
             </table>
             <nav class="mt-4" style="display: flex; justify-content: center;">

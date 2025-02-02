@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -72,7 +73,10 @@ public class QnaController {
     public String QnaDetail_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
         // 세션에서 user_id를 가져옵니다.
         String userId = (String) session.getAttribute("user_id");
-
+        Integer userLevel = (Integer) session.getAttribute("user_level");
+        if (userLevel == null) {
+            userLevel = 0;  // 기본값으로 0을 설정 (혹은 세션에 값을 아예 넣지 않도록 설정할 수 있음)
+        }
         // qna_user_id는 세션에서 가져온 userId로 설정합니다.
         QnaDto qnaDto = new QnaDto();
         qnaDto.setQna_user_id(userId); // 세션에서 가져온 user_id를 설정
@@ -80,6 +84,11 @@ public class QnaController {
         // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
         List<QnaRe> qnaReplies = QnaService.getRepliesByQnaId(qna_id);
+
+        if(qnaDetail.getSecret() && (userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+
+            return "redirect:/qnaList";
+        }
 
         model.addAttribute("qnaDetail", qnaDetail);
         model.addAttribute("qnaReplies", qnaReplies);

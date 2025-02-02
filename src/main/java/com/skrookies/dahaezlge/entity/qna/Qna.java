@@ -47,7 +47,10 @@ public class Qna {
     @Column(name = "new_file_name")
     private String new_file_name;  // 파일 이름
 
-    public Qna(Users users, String qna_title, String qna_body, Timestamp qna_created_at, String file_name, String file_path, Long file_size, String new_file_name) {
+    @Column(name = "secret")
+    private boolean secret;  // 파일 이름
+
+    public Qna(Users users, String qna_title, String qna_body, Timestamp qna_created_at, String file_name, String file_path, Long file_size, String new_file_name, Boolean secret) {
         this.users = users;
         this.qna_title = qna_title;
         this.qna_body = qna_body;
@@ -56,6 +59,7 @@ public class Qna {
         this.file_path = file_path;
         this.file_size = file_size;
         this.new_file_name = new_file_name;
+        this.secret = secret;
     }
 }
 

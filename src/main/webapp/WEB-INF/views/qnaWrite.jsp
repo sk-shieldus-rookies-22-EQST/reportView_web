@@ -40,6 +40,11 @@
                     <tr>
                         <td><input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="50"></td>
                     </tr>
+                    <label>
+                        <input type="checkbox" name="secret" value="1"> 비밀글 설정
+                    </label>
+                    <!-- 비밀글 체크박스를 선택하지 않으면 자동으로 '0'으로 설정 -->
+                        <input type="hidden" name="secret" value="0">
                     <tr>
                         <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
                     </tr>

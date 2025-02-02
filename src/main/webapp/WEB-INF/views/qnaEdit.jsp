@@ -31,6 +31,11 @@
                         <tr>
                             <td><input type="text" class="form-control" value="${qnaDetail.qna_title}" placeholder="${qnaDetail.qna_title}" name="qna_title" maxlength="50"></td>
                         </tr>
+                        <label>
+                            <input type="checkbox" name="secret" value="1" ${qnaDetail.secret == true ? 'checked' : ''}> 비밀글 설정
+                        </label>
+                        <!-- 체크박스가 해제되면 hidden 값을 전송하여 0으로 처리 -->
+                        <input type="hidden" name="secret" value="0">
                         <tf>
                             <td><textarea class="form-control" placeholder="${qnaDetail.qna_body}" name="qna_body" maxlength="2048" style="height: 350px;">${qnaDetail.qna_body}</textarea></td>
                         </tr>
