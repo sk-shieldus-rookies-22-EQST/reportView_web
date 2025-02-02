@@ -89,7 +89,15 @@ public class QnaController {
     }
 
     @GetMapping("/qnaEdit")
-    public String qnaEdit_form(@RequestParam("qna_id") int qna_id, Model model) {
+    public String qnaEdit_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
+
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null || userId.isEmpty()) {
+            // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
+            return "redirect:/loginForm";
+        }
+
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
         model.addAttribute("qnaDetail", qnaDetail);
         log.info("page_move: qnaEdit.jsp");
@@ -104,6 +112,17 @@ public class QnaController {
         if (userId == null || userId.isEmpty()) {
             // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
             return "redirect:/loginForm";
+        }
+
+        // 제목과 내용이 비어 있는 경우 예외 처리
+        if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
+            model.addAttribute("message", "제목을 적어주세요");
+            return "qnaWrite"; // 다시 작성 페이지로 이동
+        }
+
+        if (qnaDto.getQna_body() == null || qnaDto.getQna_body().trim().isEmpty()) {
+            model.addAttribute("message", "내용을 적어주세요");
+            return "qnaWrite";
         }
 
         // 사용자 ID와 작성 시간 설정
@@ -166,6 +185,23 @@ public class QnaController {
 
     @PostMapping("/qnaUpdateProcess")
     public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto, HttpSession session) {
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null || userId.isEmpty()) {
+            return "redirect:/loginForm"; // 로그인 필요
+        }
+
+        // 제목과 내용이 비어 있는 경우 예외 처리
+        if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
+            model.addAttribute("message", "제목을 적어주세요");
+            return "qnaWrite"; // 다시 작성 페이지로 이동
+        }
+
+        if (QnaDto.getQna_body() == null || QnaDto.getQna_body().trim().isEmpty()) {
+            model.addAttribute("message", "내용을 적어주세요");
+            return "qnaWrite";
+        }
+
         QnaDto.setQna_created_at(LocalDateTime.now());
 
         // 기존 파일 정보 가져오기
