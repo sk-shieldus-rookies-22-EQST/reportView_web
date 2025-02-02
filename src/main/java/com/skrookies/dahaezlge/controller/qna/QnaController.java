@@ -344,11 +344,27 @@ public class QnaController {
     }
 
     @GetMapping("/qnaSearch")
-    public String searchQnaList(@RequestParam("keyword") String keyword, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+    public String searchQnaList(@RequestParam("keyword") String keyword,
+                                @RequestParam(value = "page", defaultValue = "1") int page,
+                                Model model) {
+        int pageSize = 10;
         List<QnaDto> qnaList = QnaService.searchQnaByKeyword(keyword, page);
+
+        // 검색된 게시글 수 (필터링된 결과의 총 개수)
+        int totalSearchResults = QnaService.getTotalQnasByKeyword(keyword);
+        int totalPages = (int) Math.ceil((double) totalSearchResults / pageSize);
+
+        // 페이지 네비게이션에 필요한 정보 추가
+        int startPage = Math.max(1, page - 2);
+        int endPage = Math.min(totalPages, page + 2);
+
         model.addAttribute("qnaList", qnaList);
         model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("keyword", keyword);
+
         return "qnaList";
     }
 

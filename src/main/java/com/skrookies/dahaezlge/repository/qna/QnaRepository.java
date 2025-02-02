@@ -116,7 +116,7 @@ public class QnaRepository {
     }
 
     public List<QnaDto> findByKeyword(String keyword, int offset, int pageSize) {
-        String sql = "SELECT qna_id, qna_title, qna_user_id, qna_created_at, secret FROM qna WHERE qna_title LIKE ? LIMIT ? OFFSET ? ";
+        String sql = "SELECT qna_id, qna_title, qna_user_id, qna_created_at, secret FROM qna WHERE qna_title LIKE ? ORDER BY qna_id DESC LIMIT ? OFFSET ? ";
         return jdbcTemplate.query(sql, new Object[]{"%" + keyword + "%", pageSize, offset},
                 new BeanPropertyRowMapper<>(QnaDto.class));
     }
@@ -152,4 +152,9 @@ public class QnaRepository {
             return null; // 해당 파일이 없을 경우 null 반환
         }
     }
+    public int countTotalQnasByKeyword(String keyword) {
+        String sql = "SELECT COUNT(*) FROM qna WHERE qna_title LIKE ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{"%" + keyword + "%"}, Integer.class);
+    }
+
 }

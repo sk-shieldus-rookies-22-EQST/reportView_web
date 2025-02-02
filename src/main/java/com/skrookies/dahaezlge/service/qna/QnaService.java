@@ -132,4 +132,9 @@ public class QnaService {
     public QnaDto getQnaByFileName(String fileName) {
         return qnaRepository.findByFileName(fileName);
     }
+
+    public int getTotalQnasByKeyword(String keyword) {
+        return qnaRepository.countTotalQnasByKeyword(keyword);
+    }
+
 }
