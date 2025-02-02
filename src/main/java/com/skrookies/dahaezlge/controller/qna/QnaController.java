@@ -83,7 +83,7 @@ public class QnaController {
 
         // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
-        List<QnaRe> qnaReplies = QnaService.getRepliesByQnaId(qna_id);
+        List<QnaReDto> qnaReplies = QnaService.getRepliesByQnaId(Long.valueOf(qna_id));
 
         if(qnaDetail.getSecret() && (userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
 

@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-    	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
+    	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QnA 게시판</p>
         <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                 <tr>
@@ -127,7 +127,7 @@
                                     <tr>
                                         <td style="align-content:center;">관리자</td>
                                         <td style="align-content:center;">${reply.qna_re_body}</td>
-                                        <td style="align-content:center;">${reply.qna_re_created_at}</td>
+                                        <td style="align-content:center;">${reply.formattedCreatedAt}</td>
                                         <c:if test="${sessionScope.user_level == 123}">
                                             <td style="align-content:center;">
                                                 <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>

@@ -17,7 +17,7 @@
 		<%@ include file="banner.jsp" %>
 	</div>
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
+		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QnA 게시판</p>
 
             <form method="post" action="qnaUpdateProcess" enctype="multipart/form-data">
             <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
