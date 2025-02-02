@@ -39,7 +39,7 @@ public class RegistuserController {
             return "redirect:/registerForm";
         }else {
             if (user_agree != null) {
-                if (userService.registerUser(user_id, user_pw,user_phone,user_email)) {
+                if (userService.registerUser(user_id, user_pw, user_phone, user_email)) {
                     // 회원가입 직후 자동 로그인
                     int point = userService.userPoint(user_id);
                     session.setAttribute("user_id", user_id);

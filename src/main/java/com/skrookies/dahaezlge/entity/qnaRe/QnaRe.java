@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -34,9 +35,9 @@ public class QnaRe {
     private String qna_re_body;
 
     @Column(name = "qna_re_created_at")
-    private Timestamp qna_re_created_at;
+    private LocalDateTime qna_re_created_at;
 
-    public QnaRe(Users users, Qna qna, String qna_re_body, Timestamp qna_re_created_at) {
+    public QnaRe(Users users, Qna qna, String qna_re_body, LocalDateTime qna_re_created_at) {
         this.users = users;
         this.qna = qna;
         this.qna_re_body = qna_re_body;

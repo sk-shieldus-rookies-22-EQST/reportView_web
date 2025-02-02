@@ -13,11 +13,11 @@ public interface UserRepository {
     Boolean login(String user_id, String user_pw);
     String findUserid(String user_phone, String user_email);
     List<Users> userinfo_list(String user_id);
-    Boolean updateUserpw(String userId, String userPw);
+    Boolean updateUserpw(String user_id, String user_pw);
     Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email);
 
-    Boolean updateUserInfo(String userId, String userPw, String userPhone, String userEmail);
+    Boolean updateUserInfo(String user_id, String user_pw, String user_phone, String user_email);
 
-    Boolean checkId(String userId);
+    Boolean checkId(String user_id);
     Integer getUserLevel(String userId);
 }

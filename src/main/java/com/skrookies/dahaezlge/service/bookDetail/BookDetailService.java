@@ -21,9 +21,10 @@ public class BookDetailService {
     private final BookRepository bookRepository;
     private final JdbcTemplate jdbcTemplate;
 
+    /** 장바구니에 책 담기 */
     public Boolean addCart(String user_id, Long book_id, int book_price){
         BookDto book_info = bookRepository.getBookInfo(book_id);
-        Long cart_id = cartRepository.addCart(user_id, book_id, book_price);
+        Long cart_id = cartRepository.addCart(user_id, book_id, book_info.getBook_price());
         return cartBookRepository.addCartBook(cart_id, book_id);
     }
 
