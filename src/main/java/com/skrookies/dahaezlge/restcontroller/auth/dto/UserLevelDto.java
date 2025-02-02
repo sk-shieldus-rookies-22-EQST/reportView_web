@@ -1,14 +1,14 @@
-package com.skrookies.dahaezlge.restcontroller.view.dto;
+package com.skrookies.dahaezlge.restcontroller.auth.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class BookSearchCapDto {
+public class UserLevelDto {
 
-    List<BookSearchDto> book_search;
+    private int user_level;
 }

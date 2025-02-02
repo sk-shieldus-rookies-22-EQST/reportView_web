@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.service.book;
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.entity.book.Book;
 import com.skrookies.dahaezlge.repository.book.BookRepository;
+import com.skrookies.dahaezlge.restcontroller.view.dto.BookListDto;
 import com.skrookies.dahaezlge.restcontroller.view.dto.BookSearchRequestDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -46,25 +47,23 @@ public class BookService {
     }
 
     /** Keyword 기반 BookList 반환
-     * @return List<Book> */
-    public List<BookDto> findBookListByKeyword(String keyword){
+     * @return List<BookListDto> */
+    public List<BookListDto> findBookListByKeyword(String keyword){
 
         List<Map<String, Object>> bookList = bookRepository.findByKeyword(keyword);
-        List<BookDto> returnBookList = new ArrayList<>();
+        List<BookListDto> returnBookList = new ArrayList<>();
 
-        for(int i = 0; i < bookList.size(); i++){
-            BookDto bookDto = new BookDto(
-                    (Long) bookList.get(i).get("book_id"),
-                    (String) bookList.get(i).get("book_title"),
-                    (String) bookList.get(i).get("book_auth"),
-                    (String) bookList.get(i).get("book_path"),
-                    (String) bookList.get(i).get("book_summary"),
-                    ((Timestamp) bookList.get(i).get("book_reg_date")).toLocalDateTime(),
-                    (String) bookList.get(i).get("book_img_path"),
-                    (Integer) bookList.get(i).get("book_price")
-            );
+        for (Map<String, Object> stringObjectMap : bookList) {
 
-            returnBookList.add(bookDto);
+            BookListDto bookListDto = new BookListDto();
+            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
+            bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
+            bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+            bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+            bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
+
+            returnBookList.add(bookListDto);
         }
 
         System.out.println("bookListFindByKeyword count: " + returnBookList.size());
@@ -73,25 +72,23 @@ public class BookService {
     }
 
     /** Date 기반 BookList 반환
-     * @return List<Book> */
-    public List<BookDto> findBookListByDate(LocalDateTime sdate, LocalDateTime edate){
+     * @return List<BookListDto> */
+    public List<BookListDto> findBookListByDate(LocalDateTime sdate, LocalDateTime edate){
 
         List<Map<String, Object>> bookList = bookRepository.findByDate(sdate, edate);
-        List<BookDto> returnBookList = new ArrayList<>();
+        List<BookListDto> returnBookList = new ArrayList<>();
 
-        for(int i = 0; i < bookList.size(); i++){
-            BookDto bookDto = new BookDto(
-                    (Long) bookList.get(i).get("book_id"),
-                    (String) bookList.get(i).get("book_title"),
-                    (String) bookList.get(i).get("book_auth"),
-                    (String) bookList.get(i).get("book_path"),
-                    (String) bookList.get(i).get("book_summary"),
-                    (LocalDateTime) bookList.get(i).get("book_reg_date"),
-                    (String) bookList.get(i).get("book_img_path"),
-                    (Integer) bookList.get(i).get("book_price")
-            );
+        for (Map<String, Object> stringObjectMap : bookList) {
 
-            returnBookList.add(bookDto);
+            BookListDto bookListDto = new BookListDto();
+            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
+            bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
+            bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+            bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+            bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
+
+            returnBookList.add(bookListDto);
         }
 
         System.out.println("bookListFindByKeyword count: " + returnBookList.size());
@@ -100,25 +97,23 @@ public class BookService {
     }
 
     /** Keyword & Date 기반 BookList 반환
-     * @return List<Book> */
-    public List<BookDto> findBookListByBoth(BookSearchRequestDto bookSearchRequestDto){
+     * @return List<BookListDto> */
+    public List<BookListDto> findBookListByBoth(BookSearchRequestDto bookSearchRequestDto){
 
         List<Map<String, Object>> bookList = bookRepository.findByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
-        List<BookDto> returnBookList = new ArrayList<>();
+        List<BookListDto> returnBookList = new ArrayList<>();
 
-        for(int i = 0; i < bookList.size(); i++){
-            BookDto bookDto = new BookDto(
-                    (Long) bookList.get(i).get("book_id"),
-                    (String) bookList.get(i).get("book_title"),
-                    (String) bookList.get(i).get("book_auth"),
-                    (String) bookList.get(i).get("book_path"),
-                    (String) bookList.get(i).get("book_summary"),
-                    (LocalDateTime) bookList.get(i).get("book_reg_date"),
-                    (String) bookList.get(i).get("book_img_path"),
-                    (Integer) bookList.get(i).get("book_price")
-            );
+        for (Map<String, Object> stringObjectMap : bookList) {
 
-            returnBookList.add(bookDto);
+            BookListDto bookListDto = new BookListDto();
+            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
+            bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
+            bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+            bookListDto.setWrite_date((LocalDateTime) stringObjectMap.get("book_reg_date"));
+            bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
+
+            returnBookList.add(bookListDto);
         }
 
         System.out.println("bookListFindByKeyword count: " + returnBookList.size());

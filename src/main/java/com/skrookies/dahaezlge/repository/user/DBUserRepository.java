@@ -61,7 +61,7 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
-
+    @Override
     public Boolean updateUserpw(String user_id, String user_pw) {
         log.info("updateUserpw user_id: " + user_id);
         log.info("updateUserpw user_pw: " + user_pw);
@@ -81,6 +81,7 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
+    @Override
     public Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email) {
 
 
@@ -158,7 +159,7 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
-
+    @Override
     public List<Users> userinfo_list(String user_id) {
         // SQL 쿼리 작성
         String sql = "SELECT * FROM users WHERE user_id = ?";
