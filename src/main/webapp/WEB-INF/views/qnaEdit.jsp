@@ -74,9 +74,12 @@
                         </tf>
                     </tbody>
                 </table>
-                    <input type="submit" class="btn btn-primary pull-right" value="글 수정"></a>
+                <div style="float:right;">
+                    <a href="/qnaDetail?qna_id=${qnaDetail.qna_id}" class="btn btn-secondary pull-right">취소</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="글 수정" />
+                </div>
             </form>
-                    <a href="qnaList" class="btn btn-primary pull-right">취소</a>
+
     </div>
 </div>
 </body>

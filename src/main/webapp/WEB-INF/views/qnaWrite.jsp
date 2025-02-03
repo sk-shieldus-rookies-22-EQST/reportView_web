@@ -82,9 +82,12 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="submit" class="btn btn-primary pull-right" value="글 작성" />
+            <div style="float:right;">
+                <a href="qnaList" class="btn btn-secondary pull-right">취소</a>
+                <input type="submit" class="btn btn-primary pull-right" value="글 작성" />
+            </div>
         </form>
-        <a href="qnaList" class="btn btn-primary pull-right">취소</a>
+
     </div>
 </div>
 </body>

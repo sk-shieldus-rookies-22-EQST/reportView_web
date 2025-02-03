@@ -111,8 +111,9 @@
                 </div>
                 <div class="modal-footer">
                     <% String previousPage = request.getHeader("referer"); %>
-                    <a id="goToChargeBtn" class="btn btn-primary" href="/pointCharger" style="display: none;">충전 페이지로 바로가기</a>
+
                     <a id="goToPreviousBtn" class="btn btn-primary" href="<%= previousPage %>" style="display: none;">장바구니로 바로가기</a>
+                    <a id="goToChargeBtn" class="btn btn-primary" href="/pointCharger" style="display: none;">충전 페이지로 바로가기</a>
                     <a id="goToMainBtn" class="btn btn-primary" href="/index" style="display: none;">메인화면으로 가기</a>
                     <a id="goToMyPurchaseBtn" class="btn btn-primary" href="/myPurchase" style="display: none;">결제내역으로 바로가기</a>
                 </div>
@@ -197,10 +198,26 @@
                             break;
                         case 'charge':
                             purchaseModalBody.textContent = data.message;
+                            goToPreviousBtnText = '취소';
+                            goToPreviousBtnHref = '/eBookPurchase'
+                            goToPreviousBtn.textContent = goToPreviousBtnText;
+                            goToPreviousBtn.href = goToPreviousBtnHref;
+                            goToPreviousBtn.style.display = 'inline-block';
                             goToChargeBtn.style.display = 'inline-block';
                             goToMainBtn.style.display = 'none';
-                            goToPreviousBtn.style.display = 'none';
                             goToMyPurchaseBtn.style.display = 'none';
+                            goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
+
+
+                            // hover 효과를 위한 이벤트 리스너 추가
+                            goToPreviousBtn.addEventListener('mouseenter', function () {
+                                goToPreviousBtn.setAttribute('style', 'background-color: #5c636a !important;border-color:#5c636a !important; ');
+                            });
+
+                            goToPreviousBtn.addEventListener('mouseleave', function () {
+                                goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;'); // 기본 배경색으로 돌아가기
+                            });
+
                             break;
                         case 'exists':
                             purchaseModalBody.textContent = data.message;

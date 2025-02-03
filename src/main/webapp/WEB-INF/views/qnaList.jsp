@@ -144,9 +144,9 @@
                     </c:if>
                 </ul>
             </nav>
-
+<div style="float:right;">
             <a href="qnaWrite" class="btn btn-primary pull-right">글 쓰기</a>
-    </div>
+    </div></div>
 </div>
 </body>
 </html>
