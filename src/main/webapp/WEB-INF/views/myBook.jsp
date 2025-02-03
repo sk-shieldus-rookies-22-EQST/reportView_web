@@ -28,7 +28,31 @@
 	<div class="container text-center">
         <div class="row  row-cols-5" style="width=100%">
                 <c:forEach var="book" items="${books_info}">
-                    <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%" onclick="window.location.href='BookiesDRM://run?user_id=<%=user_id%>&book_id=${book["book_id"]}'">
+
+                <script>
+                    var isPopupAppeared = false;
+
+                    // 클릭 시 실행될 함수 정의
+                    function BookiesDRM() {
+                        window.addEventListener("blur", function () {
+                            isPopupAppeared = true;
+                        });
+                        setTimeout(function () {
+                            if (!isPopupAppeared) {
+                                window.location.href = 'https://example.com/설치페이지';
+                            } else {
+                                window.location.href = 'BookiesDRM://run?user_id=<%=user_id%>&book_id=${book["book_id"]}';
+                            }
+                        }, 2000);
+                    }
+
+
+                    // div 요소에 클릭 이벤트 추가
+                    document.getElementById("BookiesDRM${book['book_id']}").onclick = BookiesDRM();
+
+
+                </script>
+                    <div id="BookiesDRM${book['book_id']}" style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%">
 
                         <div style="border:1px solid; margin: 0% 10%;width:184px;">
                             <img src="/images/test.jpg" style="position: relative;width: 100%;overflow: hidden;">
