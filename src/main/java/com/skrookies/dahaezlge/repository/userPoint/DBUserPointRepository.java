@@ -20,7 +20,7 @@ public class DBUserPointRepository implements UserPointRepository{
     public int selectUserPoint(String user_id) {
 
         try {
-            String sql = "select point from user_point where point_user_id = '" + user_id + "';";
+            String sql = "select point from user_point where point_user_id = '" + user_id + "'";
 
             return jdbcTemplate.queryForObject(sql, Integer.class);
         }catch (Exception e){

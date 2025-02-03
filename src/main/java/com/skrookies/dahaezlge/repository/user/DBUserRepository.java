@@ -23,7 +23,7 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean login(String user_id, String user_pw) {
 
-        String sql = "Select count(*) from users where user_id = ? and user_pw = ?;";
+        String sql = "Select count(*) from users where user_id = ? and user_pw = ?";
         try {
             Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id, user_pw);
             if ( count != null && count > 0 ){
@@ -43,7 +43,7 @@ public class DBUserRepository implements UserRepository{
     @Override
     public String findUserid(String user_phone, String user_email) {
 
-        String sql = "Select user_id from users where user_phone = ? and user_email = ?;";
+        String sql = "Select user_id from users where user_phone = ? and user_email = ?";
         try {
             if (jdbcTemplate.queryForObject(sql, String.class, user_phone, user_email)!= null) {
                 String user_id = (String) jdbcTemplate.queryForObject(sql, String.class, user_phone, user_email);
@@ -142,7 +142,7 @@ public class DBUserRepository implements UserRepository{
 
     @Override
     public Boolean checkId(String user_id) {
-        String sql = "Select count(*) from users where user_id = ? ;";
+        String sql = "Select count(*) from users where user_id = ?";
         try {
             Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
             if ( count != null && count > 0){

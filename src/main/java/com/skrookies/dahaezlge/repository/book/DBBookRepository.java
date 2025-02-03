@@ -66,7 +66,7 @@ public class DBBookRepository implements BookRepository {
         String sql = """
         SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price
         FROM book
-        ORDER BY book_reg_date DESC;
+        ORDER BY book_reg_date DESC
     """;
         return jdbcTemplate.queryForList(sql);
     }
@@ -76,7 +76,7 @@ public class DBBookRepository implements BookRepository {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE book_title like '%" + keyword + "%' " +
-                "ORDER BY book_reg_date DESC ;";
+                "ORDER BY book_reg_date DESC";
 
         return jdbcTemplate.queryForList(sql);
     }
@@ -86,7 +86,7 @@ public class DBBookRepository implements BookRepository {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE (book_reg_date between '" + sdate + "' and '" + edate + "') " +
-                "ORDER BY book_reg_date DESC ;";
+                "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
     }
@@ -97,7 +97,7 @@ public class DBBookRepository implements BookRepository {
                 "FROM book " +
                 "WHERE book_title like '%" + keyword + "%' " +
                 "and (book_reg_date between '" + sdate + "' and '" + edate + "') " +
-                "ORDER BY book_reg_date DESC ;";
+                "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
     }
