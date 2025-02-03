@@ -224,6 +224,10 @@
 
                     // 상태에 따른 메시지 처리 및 버튼 표시
                     switch (data.status) {
+                        case 'purchased':
+                            cartModalBody.textContent = data.message; // 이미 존재
+                            goToCartBtn.style.display = 'inline-block'; // 버튼 표시
+                            break;
                         case 'exists':
                             cartModalBody.textContent = data.message; // 이미 존재
                             goToCartBtn.style.display = 'inline-block'; // 버튼 표시

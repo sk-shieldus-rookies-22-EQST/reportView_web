@@ -14,10 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -31,35 +29,36 @@ public class PurchaseService {
 
     @Transactional
     public String purchaseCart(String user_id, int use_point) {
-        List<CartDto> cartIdList = cartRepository.getCartList(user_id);
-        List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartIdList);
-
-        if(!purchaseRepository.getDuplicateBooks(user_id,cartBookIdList).isEmpty()){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); // 강제 롤백
+        List<CartDto> cartList = cartRepository.getCartList(user_id);
+        List<Long> cartBookIdList = cartBookRepository.getCartBookList(cartList);
+        log.info("User {} cart book ids: {}", user_id, cartBookIdList);
+        List<Long> duplicateBooks = purchaseRepository.getDuplicateBooks(user_id, cartBookIdList);
+        if (!duplicateBooks.isEmpty()){
+            log.info("User {} has already purchased books: {}", user_id, duplicateBooks);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return "exists";
         }
-
         if (!purchaseRepository.purchaseCart(user_id, cartBookIdList)) {
+            log.error("Failed to process purchase for user {} with cart items: {}", user_id, cartBookIdList);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return "error";
         }
-
-        List<Long> deletedCartBookItems = cartBookRepository.delCartBookItems(cartIdList);
+        List<Long> deletedCartBookItems = cartBookRepository.delCartBookItems(cartList);
         if (deletedCartBookItems == null || deletedCartBookItems.isEmpty()) {
+            log.error("No cart book items were deleted for user {}. Cart list: {}", user_id, cartList);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return "error"; // 삭제된 항목이 없으면 실패
+            return "error";
         }
-
         if (!cartRepository.delCartItem(deletedCartBookItems)) {
+            log.error("Failed to delete cart items for user {}. Deleted cart ids: {}", user_id, deletedCartBookItems);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return "error";
         }
-
         if (!userPointRepository.use_point(user_id, use_point)) {
+            log.error("Failed to deduct points for user {}. Points to use: {}", user_id, use_point);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return "error";
         }
-
         return "success";
     }
 
@@ -67,22 +66,30 @@ public class PurchaseService {
     public String purchaseItem(String user_id, Long book_id, int use_point) {
         List<Long> purchaseItem = new ArrayList<>();
         purchaseItem.add(book_id);
-
-        if(!purchaseRepository.getDuplicateBooks(user_id, purchaseItem).isEmpty()){
+        log.info("User {} attempting to purchase book: {}", user_id, book_id);
+        List<Long> duplicateBooks = purchaseRepository.getDuplicateBooks(user_id, purchaseItem);
+        if (!duplicateBooks.isEmpty()){
+            log.info("User {} already purchased book(s): {}", user_id, duplicateBooks);
             return "exists";
         }
-
         if (!purchaseRepository.purchaseCart(user_id, purchaseItem)) {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); // 강제 롤백
-            return "error";
-        }
-
-        if (!userPointRepository.use_point(user_id, use_point)) {
+            log.error("Failed to process purchase for user {} with book: {}", user_id, book_id);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return "error";
         }
-
+        if (!userPointRepository.use_point(user_id, use_point)) {
+            log.error("Failed to deduct points for user {}. Points to use: {}", user_id, use_point);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return "error";
+        }
         return "success";
+    }
+
+    public boolean isBookPurchased(String user_id, Long book_id) {
+        List<Long> purchaseItem = new ArrayList<>();
+        purchaseItem.add(book_id);
+        List<Long> duplicateBooks = purchaseRepository.getDuplicateBooks(user_id, purchaseItem);
+        return !duplicateBooks.isEmpty();
     }
 
     public List<Long> purchaseBook_list(String user_id) {

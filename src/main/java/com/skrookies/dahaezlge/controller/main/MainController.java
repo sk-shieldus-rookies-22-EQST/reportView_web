@@ -24,10 +24,12 @@ public class MainController {
     private final UserService userService;
     private final BookService bookService;
 
+    /** session에서 user_id 획득 */
     public String login_id(HttpSession session) {
         return (String) session.getAttribute("user_id");
     }
 
+    /** 기본 페이지 전체 책 조회 */
     @GetMapping("/")
     public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, Model model ) {
 
@@ -70,6 +72,9 @@ public class MainController {
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
 
+
+    /** 기본 페이지 검색한 책 조회
+     * 검색어 기준, 날짜 기준 */
     @GetMapping("/index")
     public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, Model model ) {
 
@@ -113,13 +118,8 @@ public class MainController {
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
 
-    @GetMapping("/banner")
-    public String banner_form(){
 
-        log.info("page_move: banner.jsp");
-        return "banner";
-    }
-
+    /** 책 상세 정보 조회 */
     @GetMapping("/eBookDetail")
     public String setBookInfo(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
         BookDto bookInfo = bookService.getBookInfo(book_id);
