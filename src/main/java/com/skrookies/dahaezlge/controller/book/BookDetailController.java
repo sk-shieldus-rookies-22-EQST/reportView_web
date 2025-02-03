@@ -27,6 +27,8 @@ public class BookDetailController {
     private final PurchaseService purchaseService;
     private final BookService bookService;
 
+
+    /** 장바구니 물품 추가 */
     @PostMapping("/addCart")
     @ResponseBody
     public Map<String, String> addCart(HttpSession session, @RequestBody Map<String, Object> requestBody) {
