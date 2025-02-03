@@ -49,7 +49,12 @@ public class BookDetailController {
             // 이미 장바구니에 존재하는지 확인
             boolean isAlreadyInCart = bookDetailService.isBookInCart(user_id, book_id);
             log.info("isBOokInCart 통과: " + isAlreadyInCart);
-            if (isAlreadyInCart) {
+            if (purchaseService.isBookPurchased(user_id, book_id)) {
+                response.put("status", "purchased");
+                response.put("message", "이미 구매한 상품입니다.");
+                return response;
+            }
+            else if (isAlreadyInCart) {
                 response.put("status", "exists");
                 response.put("message", "이미 장바구니에 담겨 있습니다.");
             } else {

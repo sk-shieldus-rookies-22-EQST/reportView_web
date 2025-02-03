@@ -40,6 +40,16 @@ public class DBCartRepository implements CartRepository {
     public Long addCart(String user_id, Long book_id, int book_price) {
         log.info(String.valueOf(book_id));
         try {
+            String purchaseCheckSql = "SELECT COUNT(*) FROM purchase WHERE purchase_user_id = ? AND purchase_book_id = ?";
+            Integer purchaseCount = jdbcTemplate.queryForObject(
+                    purchaseCheckSql,
+                    new Object[]{user_id, book_id},
+                    Integer.class
+            );
+            if (purchaseCount != null && purchaseCount > 0) {
+                throw new IllegalStateException("이미 구매한 상품입니다.");
+            }
+
             // 동일한 책이 이미 장바구니에 있는지 확인
             String checkSql = "SELECT COUNT(*) FROM cart_book cb " +
                     "JOIN cart c ON cb.cart_book_id = c.cart_id " +
