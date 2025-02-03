@@ -48,7 +48,7 @@ public class Qna {
     private String new_file_name;  // 파일 이름
 
     @Column(name = "secret")
-    private boolean secret;  // 파일 이름
+    private Boolean secret;  // 비밀 글
 
     public Qna(Users users, String qna_title, String qna_body, Timestamp qna_created_at, String file_name, String file_path, Long file_size, String new_file_name, Boolean secret) {
         this.users = users;

@@ -18,7 +18,9 @@ public class QnaDetailDto {
     private Long qna_id;
     private String title;
     private String writer;
+    private Boolean secret;
     private LocalDateTime created_at;
+
     private String content;
     private String file_name;
     private String file_path;

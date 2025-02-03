@@ -46,7 +46,7 @@
             </tr>
             <tr>
                 <td align="center"> 등록일 </td>
-                <td> <%= eBook.getBook_reg_date() %>  </td>
+                <td> ${formattedDate} </td>
             </tr>
             <tr>
                 <td align="center"> 가격 </td>
@@ -93,7 +93,7 @@
             </div>
             <% String previousPage = request.getHeader("referer"); %>
             <button class="btn btn-outline-primary" type="button"
-                onclick="location.href='<%= previousPage %>'" style="padding:20px;">목록으로</button>
+                onclick="location.href='/index'" style="padding:20px;">목록으로</button>
         </div>
 
     </div>
@@ -125,7 +125,7 @@
                     switch (data.status) {
                         case 'purchased':
                             cartModalBody.textContent = data.message; // 이미 존재
-                            goToCartBtn.style.display = 'inline-block'; // 버튼 표시
+                            goToCartBtn.style.display = 'none'; // 버튼 표시
                             break;
                         case 'exists':
                             cartModalBody.textContent = data.message; // 이미 존재

@@ -1,4 +1,4 @@
-package com.skrookies.dahaezlge.restcontroller.signup.dto;
+package com.skrookies.dahaezlge.restcontroller.sign.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class SignDto {
+public class SignupDto {
 
     private String user_id;
     private String user_pw;

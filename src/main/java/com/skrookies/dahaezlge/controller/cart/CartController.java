@@ -50,17 +50,16 @@ public class CartController {
         log.info(String.valueOf(book_id));
         String user_id = (String) session.getAttribute("user_id");
         if (user_id == null){
-            redirectAttributes.addFlashAttribute("messageLoginForm","로그인이 필요합니다.");
             return "redirect:/loginForm";
         }
         else {
             log.info("cart Controller delCartItem");
             if(cartService.delCartItem(user_id, book_id)){
-                model.addAttribute("messageCart", "장바구니 삭제가 완료되었습니다!");
+                session.setAttribute("messageCartDeleted", "장바구니에서 삭제되었습니다.");
             } else {
-                model.addAttribute("messageCart", "장바구니 삭제에 실패했습니다.");
+                session.setAttribute("messageCartDeletedFailed", "삭제에 실패했습니다.");
             }
-            return "forward:/eBookCart";
+            return "redirect:/eBookCart";
         }
     }
 }

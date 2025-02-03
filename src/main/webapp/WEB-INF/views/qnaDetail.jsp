@@ -25,6 +25,35 @@
 		<%@ include file="banner.jsp" %>
 	</div>
 
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">오류</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="errorMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:if test="${not empty sessionScope.errorMessage}">
+        <script type="text/javascript">
+            // 모달에 메시지 설정
+            document.getElementById("errorMessage").innerText = "${sessionScope.errorMessage}";
+
+            // Bootstrap 5에서 모달 띄우기
+            var myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            myModal.show(); // 모달을 띄운다.
+
+            // 세션에서 메시지 제거
+            <c:remove var="errorMessage" scope="session" />
+        </script>
+    </c:if>
+
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
     	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QnA 게시판</p>
         <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
@@ -42,7 +71,7 @@
                                 <span>🔒</span>
                             </c:when>
                             <c:otherwise>
-                                <span>&nbsp;</span>
+
                             </c:otherwise>
                         </c:choose>
                         ${qnaDetail.qna_title}
@@ -65,14 +94,27 @@
                 <tr>
                     <td>내용</td>
                     <!-- qna_body 출력 -->
-                    <td colspan="2" style="min-height: 200px; text-align: Left;">${qnaDetail.qna_body}</td>
+                    <td colspan="2" style="min-height: 200px; text-align: Left;" >${qnaDetail.qna_body}</td>
                 </tr>
                 <tr>
                     <td>파일</td>
                     <td colspan="2" style="text-align: center;">
                         <c:choose>
                             <c:when test="${not empty qnaDetail.file_name}">
-                                <a href="/download?file_name=${qnaDetail.new_file_name}" class="fw-bold">${qnaDetail.file_name}</a>
+                                <a href="javascript:void(0);" onclick="downloadFile('${qnaDetail.file_name}', '${qnaDetail.file_path}')" class="fw-bold">
+                                    ${qnaDetail.file_name}
+                                </a>
+
+                                <script>
+                                function downloadFile(fileName, filePath) {
+                                    // 파일 경로의 백슬래시를 슬래시로 변환
+                                    var normalizedPath = filePath.replace(/\\/g, '/');
+                                    // URL 인코딩
+                                    var encodedPath = encodeURIComponent(normalizedPath);
+                                    var encodedName = encodeURIComponent(fileName);
+                                    window.location.href = '/download?file_name=' + encodedName + '&file_path=' + encodedPath;
+                                }
+                                </script>
                                 <span class="text-muted" style="font-size: 0.85em;">
                                     (<c:choose>
                                         <c:when test="${qnaDetail.file_size >= 1024 * 1024}">
@@ -94,14 +136,15 @@
 
             </tbody>
         </table>
+        <div style="float:right;">
+            <a href="qnaList" class="btn btn-primary pull-right">목록</a>
 
-        <a href="qnaList" class="btn btn-primary pull-right">목록</a>
-
-        <!-- 세션에서 user_id와 qna_user_id가 일치하면 수정/삭제 버튼을 표시 -->
-        <c:if test="${sessionScope.user_id == qnaDetail.qna_user_id or sessionScope.user_level == 123}">
-            <a href="qnaEdit?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">수정</a>
-            <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
-        </c:if>
+            <!-- 세션에서 user_id와 qna_user_id가 일치하면 수정/삭제 버튼을 표시 -->
+            <c:if test="${sessionScope.user_id == qnaDetail.qna_user_id or sessionScope.user_level == 123}">
+                <a href="qnaEdit?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">수정</a>
+                <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
+            </c:if>
+        </div>
 
     </div>
 

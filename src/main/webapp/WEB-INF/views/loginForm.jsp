@@ -16,6 +16,7 @@
     text-decoration-color: #EA002C!important;
 }
 </style>
+
 </head>
 <body>
 <div class="container">
@@ -35,6 +36,7 @@
 			  <input type="text" class="form-control" id="user_pw" aria-describedby="emailHelp" name="user_pw">
 			  <input type="hidden" id="encrypted_pw" name="encrypted_pw">
 			</div>
+
 
 			<div class="d-grid gap-2 col-6 mx-auto">
 			  <button class="btn btn-primary" type="submit">로그인</button>

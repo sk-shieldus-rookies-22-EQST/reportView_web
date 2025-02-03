@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.controller.qna;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +30,7 @@ import java.util.Objects;
 @Slf4j
 public class QnaController {
     private final QnaService QnaService;
+    private final XssFilterService xssFilterService;
 
     /**qna 게시판 글 목록 */
     @GetMapping("/qnaList")
@@ -89,7 +91,7 @@ public class QnaController {
         List<QnaReDto> qnaReplies = QnaService.getRepliesByQnaId((long) qna_id);
 
         if(qnaDetail.getSecret() && (userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
-
+            session.setAttribute("errorMessage", "관리자 권한이 없는 사용자입니다.");
             return "redirect:/qnaList";
         }
 
@@ -130,12 +132,37 @@ public class QnaController {
 
         // 제목과 내용이 비어 있는 경우 예외 처리
         if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
-            model.addAttribute("message", "제목을 적어주세요");
+            session.setAttribute("errorMessage", "제목을 적어주세요.");
             return "qnaWrite"; // 다시 작성 페이지로 이동
         }
 
         if (qnaDto.getQna_body() == null || qnaDto.getQna_body().trim().isEmpty()) {
-            model.addAttribute("message", "내용을 적어주세요");
+            session.setAttribute("errorMessage", "내용을 적어주세요.");
+            return "qnaWrite";
+        }
+
+        // 제목 길이 제한 (20자 이상일 경우 예외 처리)
+        if (qnaDto.getQna_title().length() > 20) {
+            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 20자).");
+            return "qnaWrite";
+        }
+
+        // 내용 길이 제한 (500자 이상일 경우 예외 처리)
+        if (qnaDto.getQna_body().length() > 500) {
+            session.setAttribute("errorMessage", "내용이 너무 많습니다! (최대 500자).");
+            return "qnaWrite";
+        }
+
+        // XSS 필터링 적용
+        qnaDto.setQna_title(xssFilterService.filter(qnaDto.getQna_title()));
+        qnaDto.setQna_body(xssFilterService.filter1(qnaDto.getQna_body()));
+
+        // 제목과 내용이 비어 있는 경우 예외 처리
+        if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
+            return "qnaWrite"; // 다시 작성 페이지로 이동
+        }
+
+        if (qnaDto.getQna_body() == null || qnaDto.getQna_body().trim().isEmpty()) {
             return "qnaWrite";
         }
 
@@ -168,21 +195,24 @@ public class QnaController {
                 String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
-                    dir.mkdirs(); // 디렉토리가 없으면 생성
+                    dir.mkdirs();
                 }
 
-                // 파일 저장 경로 설정
+// 파일 저장 경로 설정
                 Path filePath = Paths.get(uploadDir, newFileName);
                 qnaDto.getQna_file().transferTo(filePath.toFile());
+
+// 상대 경로 예시: "/uploads/dog_20250203_205142.jpg"
+                String relativeFilePath = "/uploads/" + newFileName;
 
                 // 파일 정보 설정
                 qnaDto.setFile_name(fileName);     // 파일 이름
                 qnaDto.setNew_file_name(newFileName);     // 날짜 추가된 파일 이름
-                qnaDto.setFile_path(filePath.toString());  // 파일 경로
+                qnaDto.setFile_path(relativeFilePath);  // 파일 경로
                 qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
-                model.addAttribute("errorMessage", "파일 업로드 실패");
+                session.setAttribute("errorMessage", "파일 업로드 실패.");
                 return "qnaWrite"; // 파일 업로드 실패 시 다시 페이지로 돌아감
             }
         } else {
@@ -195,7 +225,7 @@ public class QnaController {
         if (qnaResult > 0) {
             return "redirect:/qnaList"; // 성공 시 목록 페이지로 이동
         } else {
-            model.addAttribute("errorMessage", "글 작성에 실패했습니다.");
+            session.setAttribute("errorMessage", "글 작성에 실패했습니다.");
             return "qnaWrite"; // 실패 시 작성 페이지로 이동
         }
     }
@@ -211,13 +241,38 @@ public class QnaController {
 
         // 제목과 내용이 비어 있는 경우 예외 처리
         if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
-            model.addAttribute("message", "제목을 적어주세요");
+            session.setAttribute("errorMessage", "제목을 적어주세요.");
             return "qnaWrite"; // 다시 작성 페이지로 이동
         }
 
         if (QnaDto.getQna_body() == null || QnaDto.getQna_body().trim().isEmpty()) {
-            model.addAttribute("message", "내용을 적어주세요");
+            session.setAttribute("errorMessage", "내용을 적어주세요.");
             return "qnaWrite";
+        }
+
+        // 제목 길이 제한 (20자 이상일 경우 예외 처리)
+        if (QnaDto.getQna_title().length() > 20) {
+            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 20자).");
+            return "qnaWrite";
+        }
+
+        // 내용 길이 제한 (500자 이상일 경우 예외 처리)
+        if (QnaDto.getQna_body().length() > 500) {
+            session.setAttribute("errorMessage", "내용이 너무 많습니다! (최대 500자).");
+            return "qnaWrite";
+        }
+
+        // XSS 필터링 적용
+        QnaDto.setQna_title(xssFilterService.filter(QnaDto.getQna_title()));
+        QnaDto.setQna_body(xssFilterService.filter1(QnaDto.getQna_body()));
+
+        // 필터링 되어 제목과 내용이 비어 있는 경우 예외 처리
+        if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
+            return "redirect:/qnaList";
+        }
+
+        if (QnaDto.getQna_body() == null || QnaDto.getQna_body().trim().isEmpty()) {
+            return "redirect:/qnaList";
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -278,7 +333,7 @@ public class QnaController {
 
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
-                model.addAttribute("errorMessage", "파일 업로드 실패");
+                session.setAttribute("errorMessage", "파일 업로드 실패");
                 return "qnaEdit";
             }
         } else {
@@ -316,31 +371,22 @@ public class QnaController {
 
     /**qna 게시판 파일 다운로드 */
     @GetMapping("/download")
-    public void downloadFile(@RequestParam("file_name") String fileName, HttpServletResponse response, HttpSession session) {
+    public void downloadFile(@RequestParam("file_name") String fileName,
+                             @RequestParam("file_path") String filePath,
+                             HttpServletResponse response, HttpSession session) {
         try {
-            // 사용자가 요청한 원본 파일명을 기반으로 실제 저장된 파일명 조회
-            QnaDto qnaDto = QnaService.getQnaByFileName(fileName);
-            if (qnaDto == null || qnaDto.getNew_file_name() == null) {
-                throw new FileNotFoundException("파일을 찾을 수 없습니다.");
-            }
-
-            // DB에서 조회한 실제 저장된 파일명 (new_file_name)
-            String newFileName = qnaDto.getNew_file_name();
-
-            // 실제 저장된 파일의 경로를 올바르게 설정
-            String uploadDir = session.getServletContext().getRealPath("/uploads");
-            File file = new File(uploadDir, newFileName);
+            // file_path는 이미 상대경로로 저장되어 있다고 가정 (예: "/uploads/dog_20250203_205142.jpg")
+            String uploadDir = session.getServletContext().getRealPath("/");
+            File file = new File(uploadDir + filePath);  // 예: /uploads/dog_20250203_205142.jpg
 
             if (!file.exists()) {
                 throw new FileNotFoundException("파일이 존재하지 않습니다.");
             }
 
-            // 다운로드 응답 헤더 설정
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(qnaDto.getFile_name(), "UTF-8") + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
             response.setContentLengthLong(file.length());
 
-            // 파일 전송
             try (InputStream inputStream = new FileInputStream(file);
                  OutputStream outputStream = response.getOutputStream()) {
                 byte[] buffer = new byte[1024];
@@ -362,6 +408,8 @@ public class QnaController {
     public String searchQnaList(@RequestParam("keyword") String keyword,
                                 @RequestParam(value = "page", defaultValue = "1") int page,
                                 Model model) {
+        keyword = xssFilterService.filter(keyword);
+
         int pageSize = 10;
         List<QnaDto> qnaList = QnaService.searchQnaByKeyword(keyword, page);
 
@@ -400,7 +448,7 @@ public class QnaController {
 
     /**qna 게시판 댓글 작성 프로세스 */
     @PostMapping("/qnaReplyProcess")
-    public String qnaReplyProcess(HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
+    public String qnaReplyProcess(Model model,HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
         // 세션에서 user_id 확인
         String userId = (String) session.getAttribute("user_id");
 
@@ -409,10 +457,24 @@ public class QnaController {
             return "redirect:/loginForm";
         }
 
+        // 댓글 내용이 비어 있는지 먼저 확인
+        if (qna_re_body == null || qna_re_body.trim().isEmpty()) {
+            session.setAttribute("errorMessage", "댓글을 작성해주세요.");
+            return "redirect:/qnaDetail?qna_id=" + qna_id; // 다시 작성 페이지로 이동
+        }
+
+        // XSS 필터링 적용
+        String filteredBody = xssFilterService.filter1(qna_re_body);
+
+        // 필터링 후에도 비어 있으면 처리
+        if (filteredBody == null || filteredBody.trim().isEmpty()) {
+            return "redirect:/qnaDetail?qna_id=" + qna_id; // 필터링 후 내용이 없다면 다시 작성 페이지로 이동
+        }
+
         // 답글 DTO 생성
         QnaReDto qnaReDto = new QnaReDto();
         qnaReDto.setQna_re_user_id(userId);
-        qnaReDto.setQna_re_body(qna_re_body);
+        qnaReDto.setQna_re_body(filteredBody);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         qnaReDto.setQna_re_created_at(now);
