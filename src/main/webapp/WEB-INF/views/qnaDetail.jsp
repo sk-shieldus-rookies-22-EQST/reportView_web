@@ -71,7 +71,7 @@
                                 <span>🔒</span>
                             </c:when>
                             <c:otherwise>
-                                <span>&nbsp;</span>
+
                             </c:otherwise>
                         </c:choose>
                         ${qnaDetail.qna_title}
@@ -123,14 +123,15 @@
 
             </tbody>
         </table>
+        <div style="float:right;">
+            <a href="qnaList" class="btn btn-primary pull-right">목록</a>
 
-        <a href="qnaList" class="btn btn-primary pull-right">목록</a>
-
-        <!-- 세션에서 user_id와 qna_user_id가 일치하면 수정/삭제 버튼을 표시 -->
-        <c:if test="${sessionScope.user_id == qnaDetail.qna_user_id or sessionScope.user_level == 123}">
-            <a href="qnaEdit?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">수정</a>
-            <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
-        </c:if>
+            <!-- 세션에서 user_id와 qna_user_id가 일치하면 수정/삭제 버튼을 표시 -->
+            <c:if test="${sessionScope.user_id == qnaDetail.qna_user_id or sessionScope.user_level == 123}">
+                <a href="qnaEdit?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">수정</a>
+                <a href="qnaDelete?qna_id=${qnaDetail.qna_id}" class="btn btn-primary pull-right">삭제</a>
+            </c:if>
+        </div>
 
     </div>
 
