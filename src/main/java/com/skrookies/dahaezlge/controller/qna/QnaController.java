@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.controller.qna;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +30,7 @@ import java.util.Objects;
 @Slf4j
 public class QnaController {
     private final QnaService QnaService;
+    private final XssFilterService xssFilterService;
 
     /**qna 게시판 글 목록 */
     @GetMapping("/qnaList")
@@ -151,6 +153,19 @@ public class QnaController {
             return "qnaWrite";
         }
 
+        // XSS 필터링 적용
+        qnaDto.setQna_title(xssFilterService.filter(qnaDto.getQna_title()));
+        qnaDto.setQna_body(xssFilterService.filter(qnaDto.getQna_body()));
+
+        // 제목과 내용이 비어 있는 경우 예외 처리
+        if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
+            return "qnaWrite"; // 다시 작성 페이지로 이동
+        }
+
+        if (qnaDto.getQna_body() == null || qnaDto.getQna_body().trim().isEmpty()) {
+            return "qnaWrite";
+        }
+
         // 사용자 ID와 작성 시간 설정
         qnaDto.setQna_user_id(userId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -242,6 +257,19 @@ public class QnaController {
         if (QnaDto.getQna_body().length() > 500) {
             model.addAttribute("message", "내용이 너무 많습니다! (최대 500자)");
             return "qnaWrite";
+        }
+
+        // XSS 필터링 적용
+        QnaDto.setQna_title(xssFilterService.filter(QnaDto.getQna_title()));
+        QnaDto.setQna_body(xssFilterService.filter(QnaDto.getQna_body()));
+
+        // 필터링 되어 제목과 내용이 비어 있는 경우 예외 처리
+        if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
+            return "redirect:/qnaList";
+        }
+
+        if (QnaDto.getQna_body() == null || QnaDto.getQna_body().trim().isEmpty()) {
+            return "redirect:/qnaList";
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -424,7 +452,7 @@ public class QnaController {
 
     /**qna 게시판 댓글 작성 프로세스 */
     @PostMapping("/qnaReplyProcess")
-    public String qnaReplyProcess(HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
+    public String qnaReplyProcess(Model model,HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
         // 세션에서 user_id 확인
         String userId = (String) session.getAttribute("user_id");
 
@@ -433,10 +461,23 @@ public class QnaController {
             return "redirect:/loginForm";
         }
 
+        // 댓글 내용이 비어 있는지 먼저 확인
+        if (qna_re_body == null || qna_re_body.trim().isEmpty()) {
+            return "redirect:/qnaDetail?qna_id=" + qna_id; // 다시 작성 페이지로 이동
+        }
+
+        // XSS 필터링 적용
+        String filteredBody = xssFilterService.filter(qna_re_body);
+
+        // 필터링 후에도 비어 있으면 처리
+        if (filteredBody == null || filteredBody.trim().isEmpty()) {
+            return "redirect:/qnaDetail?qna_id=" + qna_id; // 필터링 후 내용이 없다면 다시 작성 페이지로 이동
+        }
+
         // 답글 DTO 생성
         QnaReDto qnaReDto = new QnaReDto();
         qnaReDto.setQna_re_user_id(userId);
-        qnaReDto.setQna_re_body(qna_re_body);
+        qnaReDto.setQna_re_body(filteredBody);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         qnaReDto.setQna_re_created_at(now);
