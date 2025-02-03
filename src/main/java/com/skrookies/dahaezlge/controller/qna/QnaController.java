@@ -194,17 +194,20 @@ public class QnaController {
                 String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
-                    dir.mkdirs(); // 디렉토리가 없으면 생성
+                    dir.mkdirs();
                 }
 
-                // 파일 저장 경로 설정
+// 파일 저장 경로 설정
                 Path filePath = Paths.get(uploadDir, newFileName);
                 qnaDto.getQna_file().transferTo(filePath.toFile());
+
+// 상대 경로 예시: "/uploads/dog_20250203_205142.jpg"
+                String relativeFilePath = "/uploads/" + newFileName;
 
                 // 파일 정보 설정
                 qnaDto.setFile_name(fileName);     // 파일 이름
                 qnaDto.setNew_file_name(newFileName);     // 날짜 추가된 파일 이름
-                qnaDto.setFile_path(filePath.toString());  // 파일 경로
+                qnaDto.setFile_path(relativeFilePath);  // 파일 경로
                 qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
@@ -374,31 +377,22 @@ public class QnaController {
 
     /**qna 게시판 파일 다운로드 */
     @GetMapping("/download")
-    public void downloadFile(@RequestParam("file_name") String fileName, HttpServletResponse response, HttpSession session) {
+    public void downloadFile(@RequestParam("file_name") String fileName,
+                             @RequestParam("file_path") String filePath,
+                             HttpServletResponse response, HttpSession session) {
         try {
-            // 사용자가 요청한 원본 파일명을 기반으로 실제 저장된 파일명 조회
-            QnaDto qnaDto = QnaService.getQnaByFileName(fileName);
-            if (qnaDto == null || qnaDto.getNew_file_name() == null) {
-                throw new FileNotFoundException("파일을 찾을 수 없습니다.");
-            }
-
-            // DB에서 조회한 실제 저장된 파일명 (new_file_name)
-            String newFileName = qnaDto.getNew_file_name();
-
-            // 실제 저장된 파일의 경로를 올바르게 설정
-            String uploadDir = session.getServletContext().getRealPath("/uploads");
-            File file = new File(uploadDir, newFileName);
+            // file_path는 이미 상대경로로 저장되어 있다고 가정 (예: "/uploads/dog_20250203_205142.jpg")
+            String uploadDir = session.getServletContext().getRealPath("/");
+            File file = new File(uploadDir + filePath);  // 예: /uploads/dog_20250203_205142.jpg
 
             if (!file.exists()) {
                 throw new FileNotFoundException("파일이 존재하지 않습니다.");
             }
 
-            // 다운로드 응답 헤더 설정
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(qnaDto.getFile_name(), "UTF-8") + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
             response.setContentLengthLong(file.length());
 
-            // 파일 전송
             try (InputStream inputStream = new FileInputStream(file);
                  OutputStream outputStream = response.getOutputStream()) {
                 byte[] buffer = new byte[1024];

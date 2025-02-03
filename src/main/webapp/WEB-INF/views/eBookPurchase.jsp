@@ -43,7 +43,7 @@
                 <td> <img src="<%= book.getBook_img_path() %>"</td>
                 <td style="width:500px; text-align: center; vertical-align: middle;"> <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;">
                 <%= book.getBook_title() %> </p></td>
-                <td style=" text-align: center; vertical-align: middle;"> <%= String.format("%,d원", book.getBook_price()) %> </td>
+                <td style=" text-align: center; vertical-align: middle;"> <%= String.format("%,d pt", book.getBook_price()) %> </td>
             </tr>
         <%
                 }
@@ -65,7 +65,7 @@
         int userPoint = (int) session.getAttribute("point");
     %>
     보유 포인트: <%= String.format("%,d", userPoint) %>
-    - 총 금액: <%= String.format("%,d원", total_price) %>
+    - 총 금액: <%= String.format("%,d pt", total_price) %>
     </div>
 
     <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:50px">
@@ -77,14 +77,14 @@
         <table class="table" height="300px" style="text-align: left; vertical-align: middle; border: 1px solid #dddddd;">
             <tr>
                 <td align="center" style="width: 200px; background-color: #eeeeee; border-right: 1px solid #dddddd;"> 주문 상품 정보 </td>
-                <td style="padding: 0px 20px"> 총 <%= bookList.size() %>권, <%= String.format("%,d원", total_price) %>  </td>
+                <td style="padding: 0px 20px"> 총 <%= bookList.size() %>권, <%= String.format("%,d pt", total_price) %>  </td>
                 <td  align="center" width="25%" rowspan="3">
                     <button class="btn btn-primary pull-right add-to-purchase-btn" id="purchaseProc" type="submit" style="width: 100%; height: 100%;">
                         <span style="font-size: 25px; font-weight: bold;">
                             결제하기
                         </span>
                         <span style="font-size: 20px;">
-                            <br>(<%= String.format("%,d원", total_price) %>)
+                            <br>(<%= String.format("%,d pt", total_price) %>)
                         </span>
                     </button>
                 </td>

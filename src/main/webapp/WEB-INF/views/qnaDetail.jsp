@@ -105,7 +105,20 @@
                     <td colspan="2" style="text-align: center;">
                         <c:choose>
                             <c:when test="${not empty qnaDetail.file_name}">
-                                <a href="/download?file_name=${qnaDetail.new_file_name}" class="fw-bold">${qnaDetail.file_name}</a>
+                                <a href="javascript:void(0);" onclick="downloadFile('${qnaDetail.file_name}', '${qnaDetail.file_path}')" class="fw-bold">
+                                    ${qnaDetail.file_name}
+                                </a>
+
+                                <script>
+                                function downloadFile(fileName, filePath) {
+                                    // 파일 경로의 백슬래시를 슬래시로 변환
+                                    var normalizedPath = filePath.replace(/\\/g, '/');
+                                    // URL 인코딩
+                                    var encodedPath = encodeURIComponent(normalizedPath);
+                                    var encodedName = encodeURIComponent(fileName);
+                                    window.location.href = '/download?file_name=' + encodedName + '&file_path=' + encodedPath;
+                                }
+                                </script>
                                 <span class="text-muted" style="font-size: 0.85em;">
                                     (<c:choose>
                                         <c:when test="${qnaDetail.file_size >= 1024 * 1024}">
