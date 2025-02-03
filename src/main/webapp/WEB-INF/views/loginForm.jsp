@@ -33,7 +33,7 @@
 
 			<div class="mb-3" style="margin-bottom : 50px!important;">
 			  <label for="user_pw" class="form-label fw-bold fs-4">비밀번호</label>
-			  <input type="text" class="form-control" id="user_pw" aria-describedby="emailHelp" name="user_pw">
+			  <input type="password" class="form-control" id="user_pw" aria-describedby="emailHelp" name="user_pw">
 			  <input type="hidden" id="encrypted_pw" name="encrypted_pw">
 			</div>
 
