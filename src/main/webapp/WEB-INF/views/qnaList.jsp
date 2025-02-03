@@ -16,6 +16,38 @@
     <title>BOOKIES</title>
 </head>
 <body>
+
+
+<div class="modal fade" id="deleteQnsModal" tabindex="-1" aria-labelledby="deleteQnsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteQnsModalLabel">알림</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="deleteQns"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:if test="${not empty sessionScope.deleteQns}">
+        <script type="text/javascript">
+            // 모달에 메시지 설정
+            document.getElementById("deleteQns").innerText = "${sessionScope.deleteQns}";
+
+            // Bootstrap 5에서 모달 띄우기
+            var myModal = new bootstrap.Modal(document.getElementById('deleteQnsModal'));
+            myModal.show(); // 모달을 띄운다.
+
+            // 세션에서 메시지 제거
+            <c:remove var="deleteQns" scope="session" />
+        </script>
+    </c:if>
+
+
 <div class="container">
 <%@ include file="banner.jsp" %>
 
