@@ -60,22 +60,22 @@
             <form action="/registerProc" method="post" style="display: flex;height: 80%;flex-direction: column; justify-content: space-evenly;">
                 <div class="mb-3">
                   <label for="user_id" class="form-label fw-bold fs-4">아이디</label>
-                  <input type="text" class="form-control" id="user_id" name="user_id" required>
+                  <input type="text" class="form-control" id="user_id" name="user_id" >
                 </div>
 
                 <div class="mb-3">
                   <label for="user_pw" class="form-label fw-bold fs-4">비밀번호</label>
-                  <input type="text" class="form-control" id="user_pw" name="user_pw" required>
+                  <input type="text" class="form-control" id="user_pw" name="user_pw" >
                 </div>
 
                 <div class="mb-3">
                   <label for="user_email" class="form-label fw-bold fs-4">이메일</label>
-                  <input type="text" class="form-control" id="user_email" name="user_email" placeholder="someone@example.com">
+                  <input type="text" class="form-control" id="user_email" name="user_email" placeholder="someone@example.com" >
                 </div>
 
                 <div class="mb-3">
                   <label for="user_phone" class="form-label fw-bold fs-4">전화번호</label>
-                  <input type="text" class="form-control" maxlength="13" id="user_phone" name="user_phone" placeholder="숫자만 입력하세요.">
+                  <input type="text" class="form-control" maxlength="13" id="user_phone" name="user_phone" placeholder="숫자만 입력하세요." >
                 </div>
 
                 <script type="text/javascript">
