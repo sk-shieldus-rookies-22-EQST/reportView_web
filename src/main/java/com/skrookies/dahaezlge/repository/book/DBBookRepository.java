@@ -23,7 +23,7 @@ public class DBBookRepository implements BookRepository {
 
     @Override
     public BookDto getBookInfo(Long book_id){
-        String sql = "Select * from book where book_id = "+ book_id +" limit 1";
+        String sql = "Select * from book where book_id = "+ book_id +" FETCH FIRST 1 ROWS ONLY";
 
         return jdbcTemplate.queryForObject(
                 sql,

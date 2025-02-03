@@ -116,7 +116,7 @@ public class QnaRepository {
     }
 
     public List<QnaDto> findQnasByPage(int offset, int pageSize) {
-        String sql = "SELECT * FROM qna ORDER BY qna_created_at DESC LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM qna ORDER BY qna_created_at DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return jdbcTemplate.query(sql, new Object[]{pageSize, offset}, (rs, rowNum) -> {
             QnaDto qna = new QnaDto();
@@ -136,7 +136,7 @@ public class QnaRepository {
     }
 
     public List<QnaDto> findByKeyword(String keyword, int offset, int pageSize) {
-        String sql = "SELECT qna_id, qna_title, qna_user_id, qna_created_at, secret FROM qna WHERE qna_title LIKE ? ORDER BY qna_id DESC LIMIT ? OFFSET ? ";
+        String sql = "SELECT qna_id, qna_title, qna_user_id, qna_created_at, secret FROM qna WHERE qna_title LIKE ? ORDER BY qna_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return jdbcTemplate.query(sql, new Object[]{"%" + keyword + "%", pageSize, offset}, new RowMapper<QnaDto>() {
             @Override
