@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.controller.main;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.service.book.BookService;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class MainController {
 
     private final UserService userService;
     private final BookService bookService;
+    private final XssFilterService xssFilterService;
 
     /** session에서 user_id 획득 */
     public String login_id(HttpSession session) {
@@ -78,6 +80,11 @@ public class MainController {
     @GetMapping("/index")
     public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, Model model ) {
 
+        // XSS 필터링 적용
+        keyword = xssFilterService.filter(keyword); // keyword 필터링
+        sdate = xssFilterService.filter(sdate); // sdate 필터링
+        edate = xssFilterService.filter(edate); // edate 필터링
+
         int totalBooks = 0;
 
         List<Map<String, Object>> books;
@@ -123,8 +130,14 @@ public class MainController {
     @GetMapping("/eBookDetail")
     public String setBookInfo(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
         BookDto bookInfo = bookService.getBookInfo(book_id);
+
+        // LocalDateTime → String 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = bookInfo.getBook_reg_date().format(formatter);
+
         session.setAttribute("book_id", book_id);
         model.addAttribute("bookInfo", bookInfo);
+        model.addAttribute("formattedDate", formattedDate);  // 포맷된 날짜 추가
         log.info("page_move: eBookDetail.jsp");
         return "eBookDetail";
     }
