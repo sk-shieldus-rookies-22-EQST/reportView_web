@@ -120,7 +120,7 @@ public class UserController {
                     myPurchaseDto.setBook_id(((BigDecimal) book_info.get("book_id")).longValue());
                     myPurchaseDto.setTitle(book_info.get("book_title").toString());
                     myPurchaseDto.setWriter(book_info.get("book_auth").toString());
-                    myPurchaseDto.setPrice((Integer) book_info.get("book_price"));
+                    myPurchaseDto.setPrice(((BigDecimal) book_info.get("book_price")).intValue());
 
                     myPurchaseDtoList.add(myPurchaseDto);
                 }
