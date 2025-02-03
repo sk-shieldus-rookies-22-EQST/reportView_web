@@ -13,7 +13,7 @@ public class XssFilterService {
             "onbeforeeditfocus", "ondatasetchanged", "onbeforepaste", "onbeforeuload",
             "ondragover", "onmouseleave", "onbeforepaste", "ondatasetcomplete", "onbeforeprint",
             "onbeforeunload", "ondragstart", "onmousemove", "onstart", "ondbclick", "embed",
-            "onbeforeupdate", "ondrop", "onmouseout", "onstop", "ondblclick", "onerror",
+            "onbeforeupdate", "ondrop", "onmouseout", "onstop", "ondblclick", "script",
             "onblur", "onmouseover", "onsubmit", "ondeactivate", "onabort", "onbounce",
             "onerrorupdate", "onmouseup", "onundo", "ondrag", "onactivate", "oncellchange",
             "onfilterchage", "onmousewheel", "onunload", "ondragend", "onactive", "onchange",
@@ -44,10 +44,9 @@ public class XssFilterService {
         String output = input;
 
         // 1. <script>, <s, script, </ 를 공백으로 치환 (정규표현식 사용, 대소문자 무시)
-        //output = output.replaceAll("(?i)<script>", "");
-        //output = output.replaceAll("(?i)<s", "");
-        output = output.replaceAll("(?i)script", "");
-        //output = output.replaceAll("(?i)</", "");
+        output = output.replaceAll("(?i)onerror", "");
+        output = output.replaceAll("(?i)r=", "");
+
 
         // 2. 지정된 토큰들을 token + "-1"로 치환 (대소문자 구분 없이)
         for (String token : REPLACE_TOKENS) {
