@@ -128,7 +128,6 @@
         <div class="container text-center">
                 <div class="row row-cols-5" style="width=100%;">
                     <c:forEach var="book" items="${books}">
-                        <!-- 각 col은 고정된 width로 5개가 들어감 -->
                         <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;">
 
                             <div style="margin: 0% 10%;width:184px;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
@@ -167,11 +166,6 @@
 
                             </div>
                         </div>
-
-                        <!-- 5개마다 새로운 row를 시작 -->
-                        <c:if test="${(status.index + 1) % 4 == 0}">
-                            </div><div class="row">
-                        </c:if>
                     </c:forEach>
                 </div>
             </div>
