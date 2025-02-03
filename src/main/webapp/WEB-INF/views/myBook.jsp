@@ -26,11 +26,11 @@
 	    //List<BookDto> books_info = request.getAttribute("books_info");
 	%>
 	<div class="container text-center">
-        <div class="row" style="width=100%">
+        <div class="row  row-cols-5" style="width=100%">
             <c:forEach var="bookList" items="${books_info}">
                 <c:forEach var="book" items="${bookList}" varStatus="status">
                     <!-- 각 col은 고정된 width로 5개가 들어감 -->
-                    <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;width: 184px; margin:0 2%" onclick="window.location.href='BookiesDRM://run?user_id=<%=user_id%>&book_id=${book["book_id"]}'">
+                    <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%" onclick="window.location.href='BookiesDRM://run?user_id=<%=user_id%>&book_id=${book["book_id"]}'">
 
                         <div style="border:1px solid; margin: 0% 10%;width:184px;">
                             <!--<img src="${book['book_img_path']}">-->
@@ -38,12 +38,12 @@
 
                         </div>
                         <div style="margin-bottom:16px">
-                        <div style=" height:100px;display: flex; flex-direction: column; justify-content: space-between;">
+                            <div style=" height:100px">
 
-                            <p class="fs-4 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
+                                <p class="fs-5 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
-                            <p class="text-secondary fs-6" style="margin:0;">${book['book_auth']}</p>
-                        </div>
+                                <p class="text-secondary fs-6" style="margin:0;">${book['book_auth']}</p>
+                            </div>
                         </div>
                     </div>
 

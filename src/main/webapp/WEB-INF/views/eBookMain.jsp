@@ -12,6 +12,10 @@
 
     <title>BOOKIES</title>
     <style>
+        #nav-bar {
+            position: relative;
+            z-index: 1050!important;  /* 높은 값을 설정하여 다른 요소들 위에 위치하도록 */
+          }
         .add-to-cart-btn {
             width: 100%;
             height: 40px; /* 버튼 높이 설정 */
@@ -27,11 +31,13 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="nav-bar">
     <jsp:include page="banner.jsp" />
+    </div><div class="container">
 
-    <div class="container" style="max-width: 1200px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
-        <p class="text-start fs-1 fw-bold" style="display: flex; justify-content: center; margin-bottom: 30px; margin-top: 16px">전체 도서 목록</p>
+    <div class="container sticky-top" style="border-radius: 5px;padding: 50px 20px 10px 20px; background-color:white;">
+        <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">전체 도서 목록</p>
+
 
         <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
             <form method="get" action="/index" style="display: flex; align-items: center; gap: 10px;">
@@ -85,27 +91,27 @@
                 </div>
             </form>
         </div>
-
+</div><div class="container">
         <div class="container text-center">
-                <div class="row" style="width=100%">
+                <div class="row row-cols-5" style="width=100%;">
                     <c:forEach var="book" items="${books}">
                         <!-- 각 col은 고정된 width로 5개가 들어감 -->
-                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;width: 184px; margin:0 2%; margin-bottom: 5%;">
+                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;">
 
                             <div style="margin: 0% 10%;width:184px;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                                 <!--<img class="image_container" src="${book['book_img_path']}" style="border:1px solid; position: relative;width: 100%;overflow: hidden;">-->
                                 <img class="image_container" src="/images/test.jpg" style="border:1px solid;position: relative;width: 100%;overflow: hidden;">
 
                             </div>
-                            <div style="margin-bottom:16px">
+                            <div style="margin-bottom:16px;display: flex;height: 170px;flex-direction: column;justify-content: space-between;">
                                 <div style=" display: flex; flex-direction: column; justify-content: flex-start;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
 
-                                    <p class="fs-6 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
+                                    <p class="fw-semibold" style="font-size: 1.2rem;margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
-                                    <p class="text-secondary fs-8" style="margin:0;">${book['book_auth']}</p>
-                                    <p class="col" style="padding: 0;">${book['book_price']}원</p>
+                                    <p class="text-secondary" style="margin:0;font-size: 0.8rem;">${book['book_auth']}</p>
+                                    <p class="col" style="padding: 0;margin:0;">${book['book_price']}원</p>
                                    </div>
-                                    <form class="col" id="addToCartForm" method="post" action="/addCart" style="display: inline-block; width:100%">
+                                    <form class="col" id="addToCartForm" method="post" action="/addCart" style="display: inline-block; width:100%;align-content: end;">
                                         <button type="button" class="btn btn-outline-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}"></button>
                                     </form>
 
@@ -136,65 +142,6 @@
                     </c:forEach>
                 </div>
             </div>
-
-        <table class="table table-hover" style="text-align: center; border: 1px solid #dddddd">
-            <thead>
-            <tr>
-                <th style="text-align: center;">도서 이미지</th>
-                <th style="text-align: center;">제목</th>
-                <th style="text-align: center;">작가</th>
-                <th style="text-align: center;">가격</th>
-                <th style="text-align: center;">장바구니</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="book" items="${books}">
-                <tr style="cursor:pointer;">
-                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
-                        <c:choose>
-                            <c:when test="${book['book_img_path'] != null}">
-                                <img src="${book['book_img_path']}" alt="Book Image" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
-                            </c:when>
-                            <c:otherwise>
-                                <img src="/images/no-image.png" alt="No Image Available" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="width:500px; text-align: center; vertical-align: middle;">
-                        <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;text-align:left;">
-                                ${book['book_title']}
-                        </p>
-                    </td>
-
-                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_auth']}</td>
-                    <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_price']}원</td>
-                    <td>
-                        <form id="addToCartForm" method="post" action="/addCart" style="display: inline-block;">
-                            <button type="button" class="btn btn-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}">장바구니</button>
-                        </form>
-
-                        <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="cartModalLabel">알림</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body" id="cartModalBody">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        <a id="goToCartBtn" class="btn btn-primary" href="/eBookCart" style="display: none;">장바구니로 바로가기</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
     </div>
 </div>
 </body>
