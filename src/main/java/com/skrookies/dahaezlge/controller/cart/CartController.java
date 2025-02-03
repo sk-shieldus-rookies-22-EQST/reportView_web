@@ -22,6 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
+
+
+    /** 장바구니 요소 조회 */
     @RequestMapping("/eBookCart")
     public String setCartList(Model model, RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
@@ -38,6 +41,8 @@ public class CartController {
         }
     }
 
+
+    /** 장바구니 물품 삭제 */
     @PostMapping("/deleteCart")
     public String delCartItem(Model model, RedirectAttributes redirectAttributes,
                               @RequestParam("book_id") Long book_id, HttpSession session){
@@ -59,6 +64,8 @@ public class CartController {
         }
     }
 
+
+    /** 장바구니에서 물품 구매 */
     @PostMapping("/Purchase")
     public String purchase(Model model, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
