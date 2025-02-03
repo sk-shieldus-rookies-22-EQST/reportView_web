@@ -65,7 +65,7 @@
                 <tr>
                     <td>내용</td>
                     <!-- qna_body 출력 -->
-                    <td colspan="2" style="min-height: 200px; text-align: Left;">${qnaDetail.qna_body}</td>
+                    <td colspan="2" style="min-height: 200px; text-align: Left;" >${qnaDetail.qna_body}</td>
                 </tr>
                 <tr>
                     <td>파일</td>
