@@ -1,12 +1,13 @@
 package com.skrookies.dahaezlge.controller.user;
 
 
-import com.skrookies.dahaezlge.controller.user.Dto.LoginDto;
-import com.skrookies.dahaezlge.controller.user.Dto.SessionDto;
+import com.skrookies.dahaezlge.security.SecurityController;
+import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     private final UserService userService;
+    private final AESService aesService;
+
 
     /** 로그인 폼 */
     @GetMapping("/loginForm")
@@ -28,35 +31,54 @@ public class LoginController {
 
     /** 로그인 프로세스 */
     @PostMapping("/loginProc")
-    public String loginProc_form(Model model, @ModelAttribute LoginDto loginDto, HttpSession session){
-        String user_id = loginDto.getUser_id();
-        log.info("Login Id: " + user_id);
-        log.info("Login Password: " + loginDto.getUser_pw());
+    public String loginProc_form(Model model, @RequestParam String encrypted_pw, HttpSession session){
+//        String user_id = loginDto.getUser_id();
+//        log.info("Login Id: " + user_id);
+//        log.info("Login Password: " + loginDto.getUser_pw());
+        log.info("loginProc");
+        try {
+            log.info("login try encrypted: "+ encrypted_pw);
+            String decryptedPassword = aesService.decrypt(encrypted_pw);
+            log.info("login try decrypted: "+ decryptedPassword);
 
-        if(userService.login(loginDto.getUser_id(), loginDto.getUser_pw())){
-            log.info("user_id = " + user_id);
+            String[] passwordParts = decryptedPassword.split("&&&&");
 
-            session.setAttribute("user_id", user_id);
-            log.info("sessionId = " + session.getAttribute("user_id"));
+            // 예시: 분리된 값들로 추가 작업
+            log.info("ID: " + passwordParts[0]);
+            log.info("PW: " + passwordParts[1]);
 
-            /** user_level 가져오기 */
-            int userLevel = userService.getUserLevel(user_id); // user_level 조회 메서드
-            session.setAttribute("user_level", userLevel);
-            log.info("user_level = " + userLevel);
+            String user_id = passwordParts[0];
+            String user_pw = passwordParts[1];
 
-            /** point select 메소드 */
-            int point = userService.userPoint(user_id);
-            session.setAttribute("point", point);
-            log.info("point = " + point);
-            log.info("user_id = " + user_id);
-            return "redirect:/index";
+            if(userService.login(user_id, user_pw)){
+                log.info("user_id = " + user_id);
+
+                session.setAttribute("user_id", user_id);
+                log.info("sessionId = " + session.getAttribute("user_id"));
+
+                /** user_level 가져오기 */
+                int userLevel = userService.getUserLevel(user_id); // user_level 조회 메서드
+                session.setAttribute("user_level", userLevel);
+                log.info("user_level = " + userLevel);
+
+                /** point select 메소드 */
+                int point = userService.userPoint(user_id);
+                session.setAttribute("point", point);
+                log.info("point = " + point);
+                log.info("user_id = " + user_id);
+                return "redirect:/index";
+            }
+            else{
+                log.info("없는 아이디");
+
+                model.addAttribute("warn", "1");
+                return "loginForm";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        else{
-            log.info("없는 아이디");
 
-            model.addAttribute("warn", "1");
-            return "loginForm";
-        }
+
     }
 
     /** 로그아웃 프로세스 */

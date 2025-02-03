@@ -53,7 +53,7 @@
                         <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">${book['book_title']}</p>
                     </td>
                     <td>${book['book_auth']}</td>
-                    <td><fmt:formatNumber value="${book['book_price']}" type="number" groupingUsed="true" />원</td>
+                    <td><fmt:formatNumber value="${book['book_price']}" type="number" groupingUsed="true" /> pt</td>
                 </tr>
                 </c:forEach>
             </c:forEach>
