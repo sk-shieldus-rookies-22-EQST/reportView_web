@@ -90,22 +90,22 @@
                 <div class="row" style="width=100%">
                     <c:forEach var="book" items="${books}">
                         <!-- 각 col은 고정된 width로 5개가 들어감 -->
-                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;width: 184px; margin:0 2%; margin-bottom: 5%;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;width: 184px; margin:0 2%; margin-bottom: 5%;">
 
-                            <div style="margin: 0% 10%;width:184px;">
+                            <div style="margin: 0% 10%;width:184px;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                                 <!--<img class="image_container" src="${book['book_img_path']}" style="border:1px solid; position: relative;width: 100%;overflow: hidden;">-->
                                 <img class="image_container" src="/images/test.jpg" style="border:1px solid;position: relative;width: 100%;overflow: hidden;">
 
                             </div>
                             <div style="margin-bottom:16px">
-                                <div style=" display: flex; flex-direction: column; justify-content: flex-start;">
+                                <div style=" display: flex; flex-direction: column; justify-content: flex-start;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
 
                                     <p class="fs-6 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
                                     <p class="text-secondary fs-8" style="margin:0;">${book['book_auth']}</p>
                                     <p class="col" style="padding: 0;">${book['book_price']}원</p>
-
-                                    <form class="col" id="addToCartForm" method="post" action="/addCart" style="display: inline-block;">
+                                   </div>
+                                    <form class="col" id="addToCartForm" method="post" action="/addCart" style="display: inline-block; width:100%">
                                         <button type="button" class="btn btn-outline-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}"></button>
                                     </form>
 
@@ -125,7 +125,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
                             </div>
                         </div>

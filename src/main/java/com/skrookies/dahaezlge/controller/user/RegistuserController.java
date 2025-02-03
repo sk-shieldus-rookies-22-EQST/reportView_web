@@ -18,6 +18,7 @@ public class RegistuserController {
 
     private final UserService userService;
 
+    /** 결제 페이지 */
     @GetMapping("/registerForm")
     public String registerForm_form(){
 
@@ -25,6 +26,7 @@ public class RegistuserController {
         return "registerForm";
     }
 
+    /** 결제 프로세스 */
     @PostMapping("/registerProc")
     public String registerProc_form(Model model, @ModelAttribute UserDto userDto, HttpSession session){
         String user_id = userDto.getUser_id();

@@ -18,6 +18,7 @@ public class LoginController {
 
     private final UserService userService;
 
+    /** 로그인 폼 */
     @GetMapping("/loginForm")
     public String loginForm_form(){
 
@@ -25,6 +26,7 @@ public class LoginController {
         return "loginForm";
     }
 
+    /** 로그인 프로세스 */
     @PostMapping("/loginProc")
     public String loginProc_form(Model model, @ModelAttribute LoginDto loginDto, HttpSession session){
         String user_id = loginDto.getUser_id();
@@ -57,6 +59,7 @@ public class LoginController {
         }
     }
 
+    /** 로그아웃 프로세스 */
     @GetMapping("/logout")
     public String logout(Model model, HttpSession session) {
         // 세션을 무효화하여 모든 정보를 삭제

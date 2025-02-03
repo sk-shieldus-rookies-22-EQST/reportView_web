@@ -20,6 +20,7 @@ import java.util.List;
 public class MyinfoController {
     private final UserService userService;
 
+    /** 회원 정보 페이지 */
     @GetMapping("/myInfo")
     public String myInfo_form(Model model, HttpSession session){
 
@@ -50,6 +51,7 @@ public class MyinfoController {
             }
         }
     }
+    /** 회원 정보 수정 페이지 */
     @GetMapping("/myInfoModify")
     public String myInfoModify_form(Model model, UserDto userDto, HttpSession session){
 
@@ -74,7 +76,7 @@ public class MyinfoController {
             }
         }
     }
-
+    /** 수정된 회원 정보 저장 */
     @PostMapping("/myInfoSave")
     public String myInfoSave_form(Model model, UserDto userDto, HttpSession session){
         log.info("myInfoSave");

@@ -23,6 +23,7 @@ public class MyPurchaseController {
     private final BookService bookService;
     private final PurchaseService purchaseService;
 
+    /** 구매 내역 페이지 */
     @GetMapping("/myPurchase")
     public String myPurchaseList(Model model, HttpSession session){
         log.info("page_move: myPurchase.jsp");
