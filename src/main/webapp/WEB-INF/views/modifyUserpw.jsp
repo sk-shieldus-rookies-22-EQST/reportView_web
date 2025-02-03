@@ -10,7 +10,7 @@
 
 	<link rel="icon" type="image/png" href="images/favicon.png">
 
-	<title>아이디 찾기</title>
+	<title>BOOKIES</title>
 <style type="text/css">
 </style>
 </head>

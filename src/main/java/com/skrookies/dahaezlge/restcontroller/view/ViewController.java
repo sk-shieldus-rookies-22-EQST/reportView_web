@@ -24,7 +24,7 @@ public class ViewController {
 
     private final BookService bookService;
 
-    @PostMapping(value = "/booklist", produces = "application/json")
+    @PostMapping(value = "/booklist")
     public ResponseEntity<BookListCapDto> bookList(){
 
         List<Map<String, Object>> bookList = bookService.findAllBooks();
@@ -93,7 +93,7 @@ public class ViewController {
             bookList = bookService.findBookListByDate(bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
         }
         else{
-            bookList = bookService.findBookListByBoth(bookSearchRequestDto);
+            bookList = bookService.findBookListByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
         }
 
         BookListCapDto bookListCapDto = new BookListCapDto();
@@ -115,6 +115,7 @@ public class ViewController {
 
         bookDetailDto.setBook_id(book_data.getBook_id());
         bookDetailDto.setTitle(book_data.getBook_title());
+        bookDetailDto.setWriter(book_data.getBook_auth());
         bookDetailDto.setPrice(book_data.getBook_price());
         bookDetailDto.setWrite_date(book_data.getBook_reg_date());
         bookDetailDto.setBook_img_path(book_data.getBook_img_path());

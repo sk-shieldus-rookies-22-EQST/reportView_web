@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -121,8 +122,12 @@ public class QnaService {
         return commentList;
     }
 
-    public List<QnaRe> getRepliesByQnaId(int qna_id) {
-        return qnaRepository.findRepliesByQnaId((long) qna_id);
+    public List<QnaReDto> getRepliesByQnaId(Long qna_id) {
+        List<QnaRe> qnaReplies = qnaRepository.findRepliesByQnaId(qna_id);
+        // 엔티티를 DTO로 변환
+        return qnaReplies.stream()
+                .map(qnaRe -> new QnaReDto(qnaRe))  // QnaReDto의 생성자를 사용하여 변환
+                .collect(Collectors.toList());
     }
 
     public void deleteById(Long qna_re_id) {
@@ -132,4 +137,9 @@ public class QnaService {
     public QnaDto getQnaByFileName(String fileName) {
         return qnaRepository.findByFileName(fileName);
     }
+
+    public int getTotalQnasByKeyword(String keyword) {
+        return qnaRepository.countTotalQnasByKeyword(keyword);
+    }
+
 }

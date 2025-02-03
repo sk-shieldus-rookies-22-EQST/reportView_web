@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -72,14 +73,22 @@ public class QnaController {
     public String QnaDetail_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
         // 세션에서 user_id를 가져옵니다.
         String userId = (String) session.getAttribute("user_id");
-
+        Integer userLevel = (Integer) session.getAttribute("user_level");
+        if (userLevel == null) {
+            userLevel = 0;  // 기본값으로 0을 설정 (혹은 세션에 값을 아예 넣지 않도록 설정할 수 있음)
+        }
         // qna_user_id는 세션에서 가져온 userId로 설정합니다.
         QnaDto qnaDto = new QnaDto();
         qnaDto.setQna_user_id(userId); // 세션에서 가져온 user_id를 설정
 
         // QnaService에서 qna 정보를 가져옵니다.
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
-        List<QnaRe> qnaReplies = QnaService.getRepliesByQnaId(qna_id);
+        List<QnaReDto> qnaReplies = QnaService.getRepliesByQnaId(Long.valueOf(qna_id));
+
+        if(qnaDetail.getSecret() && (userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+
+            return "redirect:/qnaList";
+        }
 
         model.addAttribute("qnaDetail", qnaDetail);
         model.addAttribute("qnaReplies", qnaReplies);
@@ -89,7 +98,15 @@ public class QnaController {
     }
 
     @GetMapping("/qnaEdit")
-    public String qnaEdit_form(@RequestParam("qna_id") int qna_id, Model model) {
+    public String qnaEdit_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
+
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null || userId.isEmpty()) {
+            // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
+            return "redirect:/loginForm";
+        }
+
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
         model.addAttribute("qnaDetail", qnaDetail);
         log.info("page_move: qnaEdit.jsp");
@@ -106,9 +123,23 @@ public class QnaController {
             return "redirect:/loginForm";
         }
 
+        // 제목과 내용이 비어 있는 경우 예외 처리
+        if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
+            model.addAttribute("message", "제목을 적어주세요");
+            return "qnaWrite"; // 다시 작성 페이지로 이동
+        }
+
+        if (qnaDto.getQna_body() == null || qnaDto.getQna_body().trim().isEmpty()) {
+            model.addAttribute("message", "내용을 적어주세요");
+            return "qnaWrite";
+        }
+
         // 사용자 ID와 작성 시간 설정
         qnaDto.setQna_user_id(userId);
-        qnaDto.setQna_created_at(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        qnaDto.setQna_created_at(now);
+        qnaDto.setFormattedCreatedAt(now.format(formatter));
 
         // 파일 처리
         if (qnaDto.getQna_file() != null && !qnaDto.getQna_file().isEmpty()) {
@@ -166,7 +197,27 @@ public class QnaController {
 
     @PostMapping("/qnaUpdateProcess")
     public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto, HttpSession session) {
-        QnaDto.setQna_created_at(LocalDateTime.now());
+        String userId = (String) session.getAttribute("user_id");
+
+        if (userId == null || userId.isEmpty()) {
+            return "redirect:/loginForm"; // 로그인 필요
+        }
+
+        // 제목과 내용이 비어 있는 경우 예외 처리
+        if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
+            model.addAttribute("message", "제목을 적어주세요");
+            return "qnaWrite"; // 다시 작성 페이지로 이동
+        }
+
+        if (QnaDto.getQna_body() == null || QnaDto.getQna_body().trim().isEmpty()) {
+            model.addAttribute("message", "내용을 적어주세요");
+            return "qnaWrite";
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        QnaDto.setQna_created_at(now);
+        QnaDto.setFormattedCreatedAt(now.format(formatter));
 
         // 기존 파일 정보 가져오기
         QnaDto existingQna = QnaService.getQnaById(Math.toIntExact(QnaDto.getQna_id()));
@@ -299,11 +350,27 @@ public class QnaController {
     }
 
     @GetMapping("/qnaSearch")
-    public String searchQnaList(@RequestParam("keyword") String keyword, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+    public String searchQnaList(@RequestParam("keyword") String keyword,
+                                @RequestParam(value = "page", defaultValue = "1") int page,
+                                Model model) {
+        int pageSize = 10;
         List<QnaDto> qnaList = QnaService.searchQnaByKeyword(keyword, page);
+
+        // 검색된 게시글 수 (필터링된 결과의 총 개수)
+        int totalSearchResults = QnaService.getTotalQnasByKeyword(keyword);
+        int totalPages = (int) Math.ceil((double) totalSearchResults / pageSize);
+
+        // 페이지 네비게이션에 필요한 정보 추가
+        int startPage = Math.max(1, page - 2);
+        int endPage = Math.min(totalPages, page + 2);
+
         model.addAttribute("qnaList", qnaList);
         model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("keyword", keyword);
+
         return "qnaList";
     }
 
@@ -335,7 +402,10 @@ public class QnaController {
         QnaReDto qnaReDto = new QnaReDto();
         qnaReDto.setQna_re_user_id(userId);
         qnaReDto.setQna_re_body(qna_re_body);
-        qnaReDto.setQna_re_created_at(LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        qnaReDto.setQna_re_created_at(now);
+        qnaReDto.setFormattedCreatedAt(now.format(formatter));
         qnaReDto.setQna_id((long) qna_id);
 
         // 서비스 호출하여 답글 추가

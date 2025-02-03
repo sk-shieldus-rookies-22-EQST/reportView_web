@@ -12,7 +12,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <link rel="icon" type="image/png" href="images/favicon.png">
-<title>게시글 상세</title>
+<title>BOOKIES</title>
 <style>
 .form-control:focus {
     box-shadow: none!important;
@@ -26,7 +26,7 @@
 	</div>
 
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-    	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
+    	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QnA 게시판</p>
         <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                 <tr>
@@ -35,24 +35,32 @@
             </thead>
             <tbody>
                 <tr>
-                    <td style="width: 20%">글 제목</td>
-                    <!-- qnaDetail에서 qna_title을 출력 -->
-                    <td colspan="2">${qnaDetail.qna_title}</td>
+                    <td style="width: 20%; text-align: center;">글 제목</td>
+                    <td colspan="2" style="text-align: center;">
+                        <c:choose>
+                            <c:when test="${qnaDetail.secret == true}">
+                                <span>🔒</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span>&nbsp;</span>
+                            </c:otherwise>
+                        </c:choose>
+                        ${qnaDetail.qna_title}
+                    </td>
                 </tr>
                 <tr>
                     <td>글 번호</td>
                     <!-- qna_id 출력 -->
-                    <td colspan="2">${qnaDetail.qna_id}</td>
+                    <td colspan="2" style="text-align: center;">${qnaDetail.qna_id}</td>
                 </tr>
                 <tr>
                     <td>작성자</td>
                     <!-- qna_user_id 출력 -->
-                    <td colspan="2">${qnaDetail.qna_user_id}</td>
+                    <td colspan="2" style="text-align: center;">${qnaDetail.qna_user_id}</td>
                 </tr>
                 <tr>
                     <td>작성일자</td>
-                    <!-- qna_created_at 출력 -->
-                    <td colspan="2">${qnaDetail.qna_created_at}</td>
+                    <td colspan="2" style="text-align: center;">${qnaDetail.formattedCreatedAt}</td>
                 </tr>
                 <tr>
                     <td>내용</td>
@@ -61,7 +69,7 @@
                 </tr>
                 <tr>
                     <td>파일</td>
-                    <td colspan="2">
+                    <td colspan="2" style="text-align: center;">
                         <c:choose>
                             <c:when test="${not empty qnaDetail.file_name}">
                                 <a href="/download?file_name=${qnaDetail.new_file_name}" class="fw-bold">${qnaDetail.file_name}</a>
@@ -113,18 +121,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="reply" items="${qnaReplies}">
-                            <tr>
-                                <td style="align-content:center;">관리자</td>
-                                <td style="align-content:center;">${reply.qna_re_body}</td>
-                                <td style="align-content:center;">${reply.qna_re_created_at}</td>
-                                <c:if test="${sessionScope.user_level == 123}">
-                                    <td style="align-content:center;">
-                                        <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>
-                                    </td>
-                                </c:if>
-                            </tr>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${not empty qnaReplies}">
+                                <c:forEach var="reply" items="${qnaReplies}">
+                                    <tr>
+                                        <td style="align-content:center;">관리자</td>
+                                        <td style="align-content:center;">${reply.qna_re_body}</td>
+                                        <td style="align-content:center;">${reply.formattedCreatedAt}</td>
+                                        <c:if test="${sessionScope.user_level == 123}">
+                                            <td style="align-content:center;">
+                                                <a href="qnaReplyDelete?qna_re_id=${reply.qna_re_id}&qna_id=${qnaDetail.qna_id}" class="text-danger" style="font-size: 20px;text-decoration:none;">X</a>
+                                            </td>
+                                        </c:if>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <td colspan="4" style="text-align:center;">아직 등록된 답글이 없습니다.</td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
                     </tbody>
                 </table>
 

@@ -78,7 +78,7 @@
             }
 
 		</style>
-		<title>Insert title here</title>
+		<title>BOOKIES</title>
 	</head>
 
 	<body>

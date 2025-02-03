@@ -13,7 +13,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <title>QnA 작성</title>
+    <title>BOOKIES</title>
 </head>
 <body>
 <div class="container">
@@ -25,7 +25,7 @@
         </script>
     </c:if>
     <div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-        <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
+        <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QnA 게시판</p>
 
         <form method="post" action="qnaWriteProcess" enctype="multipart/form-data">
             <!-- 세션에서 user_id 값을 바로 사용 -->
@@ -40,6 +40,11 @@
                     <tr>
                         <td><input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="50"></td>
                     </tr>
+                    <label>
+                        <input type="checkbox" name="secret" value="1"> 비밀글 설정
+                    </label>
+                    <!-- 비밀글 체크박스를 선택하지 않으면 자동으로 '0'으로 설정 -->
+                        <input type="hidden" name="secret" value="0">
                     <tr>
                         <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
                     </tr>

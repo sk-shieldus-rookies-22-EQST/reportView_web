@@ -13,10 +13,18 @@ public interface BookRepository {
 
     List<BookDto> getCartBookInfo(List<Long> bookIdList);
 
-    // 페이지별로 책 리스트 가져오기
+    /** 페이지별로 책 리스트 가져오기 */
     List<Map<String, Object>> getBooks(int page, int pageSize);
 
+    /** 검색어 별 책 리스트 가져오기 */
     List<Map<String, Object>> getBooksWithKeyword(String keyword, int page, int pageSize);
+
+    /** 게시 날짜 별 책 리스트 가져오기 */
+    List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate, int page, int pageSize);
+
+    /** 검색어 및 게시 날짜 별 책 리스트 가져오기 */
+    List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate, int page, int pageSize);
+
 
     // 전체 책 개수
     int getTotalBooks();
