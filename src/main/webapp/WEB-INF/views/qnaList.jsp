@@ -13,7 +13,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <title>QnA 게시판</title>
+    <title>BOOKIES</title>
 </head>
 <body>
 <div class="container">

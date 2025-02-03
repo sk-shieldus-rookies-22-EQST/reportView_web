@@ -9,7 +9,7 @@
 
 	<link rel="icon" type="image/png" href="images/favicon.png">
 
-	<title>Insert title here</title>
+	<title>BOOKIES</title>
 <style type="text/css">
 .link-offset-3:hover {
     color: #EA002C!important;

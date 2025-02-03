@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/board")
+@RequestMapping(value = "/board", produces = "application/json")
 @RequiredArgsConstructor
 public class BoardController {
 

@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/purchase")
+@RequestMapping(value = "/api/purchase", produces = "application/json")
 @RequiredArgsConstructor
 public class PurchaseController {
 
