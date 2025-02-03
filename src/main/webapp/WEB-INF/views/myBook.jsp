@@ -27,14 +27,12 @@
 	%>
 	<div class="container text-center">
         <div class="row  row-cols-5" style="width=100%">
-            <c:forEach var="bookList" items="${books_info}">
-                <c:forEach var="book" items="${bookList}" varStatus="status">
-                    <!-- 각 col은 고정된 width로 5개가 들어감 -->
+                <c:forEach var="book" items="${books_info}">
                     <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%" onclick="window.location.href='BookiesDRM://run?user_id=<%=user_id%>&book_id=${book["book_id"]}'">
 
                         <div style="border:1px solid; margin: 0% 10%;width:184px;">
-                            <!--<img src="${book['book_img_path']}">-->
-                            <img class="image_container" src="${book['book_img_path']}" style="position: relative;width: 100%;overflow: hidden;">
+                            <img src="/images/test.jpg" style="position: relative;width: 100%;overflow: hidden;">
+                            <!--<img class="image_container" src="${book['book_img_path']}" style="position: relative;width: 100%;overflow: hidden;">-->
 
                         </div>
                         <div style="margin-bottom:16px">
@@ -46,13 +44,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 5개마다 새로운 row를 시작 -->
-                    <c:if test="${(status.index + 1) % 4 == 0}">
-                        </div><div class="row">
-                    </c:if>
                 </c:forEach>
-            </c:forEach>
         </div>
     </div>
 </div>

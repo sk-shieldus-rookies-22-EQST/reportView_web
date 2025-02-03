@@ -37,6 +37,7 @@ public class QnaService {
             qnaListDto.setQna_id(qnaDto.getQna_id());
             qnaListDto.setTitle(qnaDto.getQna_title());
             qnaListDto.setUser_id(qnaDto.getQna_user_id());
+            qnaListDto.setSecret(qnaDto.getSecret());
             qnaListDto.setCreated_at(qnaDto.getQna_created_at());
 
             qna_list.add(qnaListDto);
@@ -57,6 +58,7 @@ public class QnaService {
         qnaDetailDto.setQna_id(qnaDto.getQna_id());
         qnaDetailDto.setTitle(qnaDto.getQna_title());
         qnaDetailDto.setWriter(qnaDto.getQna_user_id());
+        qnaDetailDto.setSecret(qnaDto.getSecret());
         qnaDetailDto.setCreated_at(qnaDto.getQna_created_at());
         qnaDetailDto.setContent(qnaDto.getQna_body());
         qnaDetailDto.setFile_name(qnaDto.getFile_name());

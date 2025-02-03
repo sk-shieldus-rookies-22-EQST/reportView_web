@@ -14,6 +14,7 @@ public class QnaWriteDto {
 
     private String title;
     private String writer;
+    private Boolean secret;
     private String content;
 
     private MultipartFile qna_file;

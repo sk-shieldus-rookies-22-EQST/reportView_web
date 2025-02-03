@@ -103,6 +103,7 @@ public class BoardController {
                 qnaDto.setQna_id(qnaModifyDto.getQna_id());
                 qnaDto.setQna_title(qnaModifyDto.getTitle());
                 qnaDto.setQna_body(qnaModifyDto.getContent());
+                qnaDto.setSecret(qnaModifyDto.getSecret());
                 qnaDto.setQna_user_id(existingQna.getQna_user_id());
                 qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
                 qnaDto.setQna_file(qnaModifyDto.getQna_file());
@@ -136,6 +137,7 @@ public class BoardController {
             qnaDto.setQna_id(qnaModifyDto.getQna_id());
             qnaDto.setQna_title(qnaModifyDto.getTitle());
             qnaDto.setQna_body(qnaModifyDto.getContent());
+            qnaDto.setSecret(qnaModifyDto.getSecret());
             qnaDto.setQna_user_id(existingQna.getQna_user_id());
             qnaDto.setQna_created_at(LocalDateTime.now());
 
@@ -235,6 +237,7 @@ public class BoardController {
                 qnaDto.setQna_title(qnaWriteDto.getTitle());
                 qnaDto.setQna_body(qnaWriteDto.getContent());
                 qnaDto.setQna_user_id(qnaWriteDto.getWriter());
+                qnaDto.setSecret(qnaWriteDto.getSecret());
                 qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
                 qnaDto.setQna_file(qnaWriteDto.getQna_file());
 
@@ -267,6 +270,7 @@ public class BoardController {
             qnaDto.setQna_title(qnaWriteDto.getTitle());
             qnaDto.setQna_body(qnaWriteDto.getContent());
             qnaDto.setQna_user_id(qnaWriteDto.getWriter());
+            qnaDto.setSecret(qnaWriteDto.getSecret());
             qnaDto.setQna_created_at(LocalDateTime.now());
             qnaDto.setQna_file(qnaWriteDto.getQna_file());
 
