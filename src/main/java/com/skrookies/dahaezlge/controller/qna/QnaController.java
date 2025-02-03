@@ -155,7 +155,7 @@ public class QnaController {
 
         // XSS 필터링 적용
         qnaDto.setQna_title(xssFilterService.filter(qnaDto.getQna_title()));
-        qnaDto.setQna_body(xssFilterService.filter(qnaDto.getQna_body()));
+        qnaDto.setQna_body(xssFilterService.filter1(qnaDto.getQna_body()));
 
         // 제목과 내용이 비어 있는 경우 예외 처리
         if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
@@ -261,7 +261,7 @@ public class QnaController {
 
         // XSS 필터링 적용
         QnaDto.setQna_title(xssFilterService.filter(QnaDto.getQna_title()));
-        QnaDto.setQna_body(xssFilterService.filter(QnaDto.getQna_body()));
+        QnaDto.setQna_body(xssFilterService.filter1(QnaDto.getQna_body()));
 
         // 필터링 되어 제목과 내용이 비어 있는 경우 예외 처리
         if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
@@ -414,6 +414,8 @@ public class QnaController {
     public String searchQnaList(@RequestParam("keyword") String keyword,
                                 @RequestParam(value = "page", defaultValue = "1") int page,
                                 Model model) {
+        keyword = xssFilterService.filter(keyword);
+
         int pageSize = 10;
         List<QnaDto> qnaList = QnaService.searchQnaByKeyword(keyword, page);
 
@@ -467,7 +469,7 @@ public class QnaController {
         }
 
         // XSS 필터링 적용
-        String filteredBody = xssFilterService.filter(qna_re_body);
+        String filteredBody = xssFilterService.filter1(qna_re_body);
 
         // 필터링 후에도 비어 있으면 처리
         if (filteredBody == null || filteredBody.trim().isEmpty()) {
