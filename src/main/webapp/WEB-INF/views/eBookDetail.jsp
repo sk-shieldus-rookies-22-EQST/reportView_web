@@ -46,7 +46,7 @@
             </tr>
             <tr>
                 <td align="center"> 등록일 </td>
-                <td> <%= eBook.getBook_reg_date() %>  </td>
+                <td> ${formattedDate} </td>
             </tr>
             <tr>
                 <td align="center"> 가격 </td>

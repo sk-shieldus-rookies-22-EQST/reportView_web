@@ -130,8 +130,14 @@ public class MainController {
     @GetMapping("/eBookDetail")
     public String setBookInfo(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
         BookDto bookInfo = bookService.getBookInfo(book_id);
+
+        // LocalDateTime → String 변환
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = bookInfo.getBook_reg_date().format(formatter);
+
         session.setAttribute("book_id", book_id);
         model.addAttribute("bookInfo", bookInfo);
+        model.addAttribute("formattedDate", formattedDate);  // 포맷된 날짜 추가
         log.info("page_move: eBookDetail.jsp");
         return "eBookDetail";
     }
