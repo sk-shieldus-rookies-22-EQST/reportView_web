@@ -30,6 +30,7 @@ import java.util.Objects;
 public class QnaController {
     private final QnaService QnaService;
 
+    /**qna 게시판 글 목록 */
     @GetMapping("/qnaList")
     public String qnaList_form(@RequestParam(defaultValue = "1") int page, Model model) {
         int pageSize = 10; // 한 페이지에 표시할 게시글 수
@@ -55,6 +56,7 @@ public class QnaController {
         return "qnaList";
     }
 
+    /**qna 게시판 글 작성 */
     @GetMapping("/qnaWrite")
     public String qnaWrite_form(HttpSession session) {
         // 세션에서 user_id 확인
@@ -69,6 +71,7 @@ public class QnaController {
         return "qnaWrite";
     }
 
+    /**qna 게시판 글 상세 페이지 */
     @GetMapping("/qnaDetail")
     public String QnaDetail_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
         // 세션에서 user_id를 가져옵니다.
@@ -97,6 +100,7 @@ public class QnaController {
         return "qnaDetail";
     }
 
+    /**qna 게시판 글 수정 */
     @GetMapping("/qnaEdit")
     public String qnaEdit_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
 
@@ -113,6 +117,7 @@ public class QnaController {
         return "qnaEdit";
     }
 
+    /**qna 게시판 글 작성 프로세스 */
     @PostMapping("/qnaWriteProcess")
     public String qnaWrite(HttpSession session, Model model, @ModelAttribute QnaDto qnaDto) {
         // 세션에서 사용자 ID 가져오기
@@ -195,6 +200,7 @@ public class QnaController {
         }
     }
 
+    /**qna 게시판 글 수정 프로세스 */
     @PostMapping("/qnaUpdateProcess")
     public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto, HttpSession session) {
         String userId = (String) session.getAttribute("user_id");
@@ -293,6 +299,7 @@ public class QnaController {
 
     }
 
+    /**qna 게시판 글 삭제 */
     @GetMapping("/qnaDelete")
     public String qnaDelete_form(@RequestParam("qna_id") int qna_id, @ModelAttribute QnaDto QnaDto, HttpSession session) throws IOException {
         // 기존 파일 정보 가져오기
@@ -307,6 +314,7 @@ public class QnaController {
         return "redirect:/qnaList";
     }
 
+    /**qna 게시판 파일 다운로드 */
     @GetMapping("/download")
     public void downloadFile(@RequestParam("file_name") String fileName, HttpServletResponse response, HttpSession session) {
         try {
@@ -349,6 +357,7 @@ public class QnaController {
         }
     }
 
+    /**qna 게시판 글 검색*/
     @GetMapping("/qnaSearch")
     public String searchQnaList(@RequestParam("keyword") String keyword,
                                 @RequestParam(value = "page", defaultValue = "1") int page,
@@ -374,6 +383,7 @@ public class QnaController {
         return "qnaList";
     }
 
+    /**qna 게시판 댓글 삭제 */
     @RequestMapping("/qnaReplyDelete")
     public String qnaReplyDelete(@RequestParam("qna_re_id") Long qna_re_id, @RequestParam("qna_id") Long qna_id) {
         try {
@@ -388,6 +398,7 @@ public class QnaController {
         return "redirect:/qnaDetail?qna_id=" + qna_id;
     }
 
+    /**qna 게시판 댓글 작성 프로세스 */
     @PostMapping("/qnaReplyProcess")
     public String qnaReplyProcess(HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
         // 세션에서 user_id 확인
