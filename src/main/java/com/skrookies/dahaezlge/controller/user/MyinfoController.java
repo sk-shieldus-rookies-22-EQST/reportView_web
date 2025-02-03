@@ -4,6 +4,7 @@ package com.skrookies.dahaezlge.controller.user;
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.service.user.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -100,7 +101,7 @@ public class MyinfoController {
     }
 
     @PostMapping("/delUser")
-    public String delUser_form(@RequestParam("password") String password, Model model, UserDto userDto, HttpSession session){
+    public String delUser_form(@RequestParam("password") String password, Model model, UserDto userDto, HttpSession session, HttpServletRequest request){
         log.info("delUser");
         String user_id = (String)session.getAttribute("user_id");
         if(user_id != null){
@@ -111,6 +112,8 @@ public class MyinfoController {
                 if (deleted_user){
                     log.info("deluser: user_delete");
                     session.invalidate();
+                    HttpSession newSession = request.getSession(true); // 새로운 세션을 생성
+                    newSession.setAttribute("deletedMessage", "탈퇴가 완료되었습니다.");
                     return "redirect:/index";
                 }
             } else {
