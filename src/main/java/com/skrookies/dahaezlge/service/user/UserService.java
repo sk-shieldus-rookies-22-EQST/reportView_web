@@ -54,7 +54,10 @@ public class UserService {
         return  userRepository.checkId(user_id);
     }
 
+    /** UserLevel 조회 실패 시 -1 반환 */
     public int getUserLevel(String userId) {
-        return userRepository.getUserLevel(userId);
+        Integer user_level = userRepository.getUserLevel(userId);
+
+        return user_level != null ? user_level : -1;
     }
 }

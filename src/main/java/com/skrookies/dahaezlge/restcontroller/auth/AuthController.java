@@ -1,9 +1,6 @@
 package com.skrookies.dahaezlge.restcontroller.auth;
 
-import com.skrookies.dahaezlge.restcontroller.auth.dto.FindIdDto;
-import com.skrookies.dahaezlge.restcontroller.auth.dto.FindPwDto;
-import com.skrookies.dahaezlge.restcontroller.auth.dto.LoginDto;
-import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
+import com.skrookies.dahaezlge.restcontroller.auth.dto.*;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.validation.Valid;
@@ -17,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth", produces = "application/json")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -26,9 +23,28 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid LoginDto loginDto) {
 
+        log.info("Android login 시도");
+
         StatusDto statusDto = new StatusDto(userService.login(loginDto.getUser_id(), loginDto.getUser_pw()));
+
+        log.info("Android login 결과: {}", statusDto.getStatus());
+
         return ResponseEntity.ok()
                 .body(statusDto);
+
+    }
+
+    @PostMapping("/user/level")
+    public ResponseEntity<UserLevelDto> androidUserLevel(@RequestBody @Valid UserIdDto userIdDto) {
+
+        int userLevel = userService.getUserLevel(userIdDto.getUser_id());
+
+        UserLevelDto userLevelDto = new UserLevelDto(userLevel);
+
+        log.info(userIdDto.getUser_id() + "의 user level = {}", userLevelDto);
+
+        return ResponseEntity.ok()
+                .body(userLevelDto);
 
     }
 
@@ -42,10 +58,10 @@ public class AuthController {
 
     }
 
-    @PostMapping("/find/pw")
-    public ResponseEntity<StatusDto> androidFindPW(@RequestBody @Valid FindPwDto findPwDto){
+    @PostMapping("/modify/pw")
+    public ResponseEntity<StatusDto> androidModifyPW(@RequestBody @Valid ModifyPwDto modifyPwDto){
 
-        StatusDto statusDto = new StatusDto(userService.updateUserpw(findPwDto.getUser_id(), findPwDto.getUser_new_pw()));
+        StatusDto statusDto = new StatusDto(userService.updateUserpw(modifyPwDto.getUser_id(), modifyPwDto.getNew_user_pw()));
 
         return ResponseEntity.ok()
                 .body(statusDto);

@@ -22,6 +22,8 @@ public class QnaDto {
     private String file_name;        // 파일 이름
     private String file_path;        // 파일 경로
     private Long file_size;          // 파일 크기
-    private String file_type;        // 파일 타입
+    private String new_file_name;        // 날짜 추가된 파일 이름
 
+    private Boolean secret;         //비밀글 표시
+    private String formattedCreatedAt;
 }

@@ -23,10 +23,54 @@
         <p class="text-start fs-1 fw-bold" style="display: flex; justify-content: center; margin-bottom: 30px; margin-top: 16px">전체 도서 목록</p>
 
         <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
-            <form method="get" action="/index?page=${1}&keyword=${name}" style="display: flex; align-items: center; gap: 10px;">
+            <form method="get" action="/index" style="display: flex; align-items: center; gap: 10px;">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="제목 입력" name="keyword" value="${keyword}" style="width: 200px;box-shadow:none;" aria-describedby="button-addon2" onfocus="this.style.backgroundColor='#f9f9f9';" onblur="this.style.backgroundColor='';">
-                    <button type="submit" class="btn btn-primary" id="button-addon2">검색</button>
+                    <!-- 제목 입력 -->
+                    <input
+                            type="text"
+                            class="form-control"
+                            placeholder="제목 입력"
+                            name="keyword"
+                            value="${keyword}"
+                            style="width: 200px;box-shadow:none;"
+                            aria-describedby="button-addon2"
+                            onfocus="this.style.backgroundColor='#f9f9f9';"
+                            onblur="this.style.backgroundColor='';"
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <!-- 시작 날짜 입력 -->
+                    <input
+                            type="date"
+                            class="form-control"
+                            name="sdate"
+                            value="${sdate}"
+                            style="width: 150px;box-shadow:none;"
+                            onfocus="this.style.backgroundColor='#f9f9f9';"
+                            onblur="this.style.backgroundColor='';"
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <!-- 종료 날짜 입력 -->
+                    <input
+                            type="date"
+                            class="form-control"
+                            name="edate"
+                            value="${edate}"
+                            style="width: 150px;box-shadow:none;"
+                            onfocus="this.style.backgroundColor='#f9f9f9';"
+                            onblur="this.style.backgroundColor='';"
+                    >
+                </div>
+                <div class="input-group mb-3">
+                    <!-- 검색 버튼 -->
+                    <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="button-addon2"
+                    >
+                        검색
+                    </button>
                 </div>
             </form>
         </div>
@@ -98,19 +142,19 @@
             <ul class="pagination">
                 <c:if test="${currentPage > 1}">
                     <li class="page-item">
-                        <a class="page-link" href="/index?page=${currentPage - 1}&keyword=${keyword}">이전</a>
+                        <a class="page-link" href="/index?page=${currentPage - 1}&keyword=${keyword}&sdate=${sdate}&edate=${edate}">이전</a>
                     </li>
                 </c:if>
 
                 <c:forEach begin="${startPage}" end="${endPage}" var="i">
                     <li class="page-item <c:if test='${i == currentPage}'>active</c:if>">
-                        <a class="page-link" href="/index?page=${i}&keyword=${keyword}">${i}</a>
+                        <a class="page-link" href="/index?page=${i}&keyword=${keyword}&sdate=${sdate}&edate=${edate}">${i}</a>
                     </li>
                 </c:forEach>
 
                 <c:if test="${currentPage < totalPages}">
                     <li class="page-item">
-                        <a class="page-link" href="/index?page=${currentPage + 1}&keyword=${keyword}">다음</a>
+                        <a class="page-link" href="/index?page=${currentPage + 1}&keyword=${keyword}&sdate=${sdate}&edate=${edate}">다음</a>
                     </li>
                 </c:if>
             </ul>

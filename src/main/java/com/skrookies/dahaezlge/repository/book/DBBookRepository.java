@@ -8,7 +8,9 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +86,31 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
+    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
+                "FROM book " +
+                "WHERE (book_reg_date between '" + sdate + "' and '" + edate + "') " +
+                "ORDER BY book_reg_date DESC " +
+                "LIMIT " + pageSize + " OFFSET " + offset + ";";
+
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    @Override
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
+                "FROM book " +
+                "WHERE book_title like '%" + keyword + "%' " +
+                "and (book_reg_date between '" + sdate + "' and '" + edate + "') " +
+                "ORDER BY book_reg_date DESC " +
+                "LIMIT " + pageSize + " OFFSET " + offset + ";";
+
+        return jdbcTemplate.queryForList(sql);
+    }
+
+    @Override
     public int getTotalBooks() {
         String sql = "SELECT COUNT(*) FROM book";
         return jdbcTemplate.queryForObject(sql, Integer.class);
@@ -94,7 +121,7 @@ public class DBBookRepository implements BookRepository {
     public List<Map<String, Object>> findAllBooks() {
         String sql = """
             SELECT book_id, book_title, book_auth, book_path,
-                   book_summary, book_reg_date, book_img_path, book_price
+                   book_summary, book_reg_date, book_img_path, book_price 
             FROM book
         """;
         // queryForList: 컬럼명=Key, 값=Value 형태로 Map을 만듦
@@ -122,7 +149,7 @@ public class DBBookRepository implements BookRepository {
     @Override
     public List<Map<String, Object>> findByDate(LocalDateTime sdate, LocalDateTime edate) {
 
-        String sql = "select * from book where book_reg_data between sdate and edate";
+        String sql = "select * from book where (book_reg_date between '" + sdate + "' and '" + edate + "') ";
 
         try {
             log.info("findByDate try");
@@ -138,7 +165,8 @@ public class DBBookRepository implements BookRepository {
     @Override
     public List<Map<String, Object>> findByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
 
-        String sql = "select * from book where book_title like '%" + keyword + "%' and (book_reg_data between sdate and edate)";
+        String sql = "select * from book where book_title like '%" + keyword + "%' " +
+                "and (book_reg_date between '" + sdate + "' and '" + edate + "')";
 
         try {
             log.info("findByBoth try");
@@ -162,5 +190,12 @@ public class DBBookRepository implements BookRepository {
         return jdbcTemplate.queryForList(sql, bookId);
     }
 
+    /** LocalDateTime을 다시 String 형식으로 변환(나노초 제거용) */
+    private String dateFormatter(LocalDateTime date){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        return date.format(formatter);
+    }
 
 }

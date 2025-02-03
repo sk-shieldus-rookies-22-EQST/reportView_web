@@ -17,7 +17,7 @@
 		<%@ include file="banner.jsp" %>
 	</div>
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
-		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QNA 게시판</p>
+		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QnA 게시판</p>
 
             <form method="post" action="qnaUpdateProcess" enctype="multipart/form-data">
             <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
@@ -29,13 +29,18 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="50"></td>
+                            <td><input type="text" class="form-control" value="${qnaDetail.qna_title}" placeholder="${qnaDetail.qna_title}" name="qna_title" maxlength="50"></td>
                         </tr>
+                        <label>
+                            <input type="checkbox" name="secret" value="1" ${qnaDetail.secret == true ? 'checked' : ''}> 비밀글 설정
+                        </label>
+                        <!-- 체크박스가 해제되면 hidden 값을 전송하여 0으로 처리 -->
+                        <input type="hidden" name="secret" value="0">
                         <tf>
-                            <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
+                            <td><textarea class="form-control" placeholder="${qnaDetail.qna_body}" name="qna_body" maxlength="2048" style="height: 350px;">${qnaDetail.qna_body}</textarea></td>
                         </tr>
                         <tr>
-                            <td><input type="file" name="file" id="file"></td>
+                            <td><input type="file" name="qna_file" id="qna_file"></td>
                         </tf>
                     </tbody>
                 </table>

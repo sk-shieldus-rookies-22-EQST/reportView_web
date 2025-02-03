@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,25 +24,33 @@ public class ViewController {
 
     private final BookService bookService;
 
-    @PostMapping("/booklist")
+    @PostMapping(value = "/booklist")
     public ResponseEntity<BookListCapDto> bookList(){
 
         List<Map<String, Object>> bookList = bookService.findAllBooks();
 
-        List<BookListDto> bookListDtoList = new ArrayList<>();
-        for(int i = 0; i < bookList.size(); i++){
+        log.info("Android api Book DB에 저장된 bookList size: {}", bookList.size());
 
-            BookListDto bookListDto = new BookListDto(
-                    (Long) bookList.get(i).get("book_id"),
-                    (String) bookList.get(i).get("book_title"),
-                    (Integer) bookList.get(i).get("book_price"),
-                    (String) bookList.get(i).get("book_auth")
-            );
+        List<BookListDto> bookListDtoList = new ArrayList<>();
+        for (Map<String, Object> stringObjectMap : bookList) {
+
+            BookListDto bookListDto = new BookListDto();
+            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
+            bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
+            bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+            bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
             bookListDtoList.add(bookListDto);
         }
 
-        BookListCapDto bookListCapDto = new BookListCapDto(bookListDtoList);
+        log.info("Android api 반환값으로 변환된 bookList size: {}", bookListDtoList.size());
+
+        BookListCapDto bookListCapDto = new BookListCapDto();
+        bookListCapDto.setBook_list(bookListDtoList);
+
+        log.info("List Cap 할당 여부: {}", !bookListCapDto.getBook_list().isEmpty());
 
         return ResponseEntity.ok()
                 .body(bookListCapDto);
@@ -51,69 +60,66 @@ public class ViewController {
 
     /** book 검색 데이터 */
     @PostMapping("/search")
-    public ResponseEntity<BookSearchCapDto> bookSearch(@RequestBody @Valid BookSearchRequestDto bookSearchRequestDto){
+    public ResponseEntity<BookListCapDto> bookSearch(@RequestBody @Valid BookSearchRequestDto bookSearchRequestDto){
 
-        List<BookDto> returnBookList = new ArrayList<>();
+        List<BookListDto> bookList = new ArrayList<>();
 
-        if(bookSearchRequestDto.getKeyword() == null || bookSearchRequestDto.getSdate() == null || bookSearchRequestDto.getEdate() == null){
+        /** service의 findAllBooks() 메소드 중복 사용을 방지하고자
+         * 그대로 가져와 Controller에서 BookListDto로 변환 후 return
+         * 그 외 검색어 기반 데이터 출력은 Service에서 처리 후 return */
+        if(bookSearchRequestDto.getKeyword() == null && bookSearchRequestDto.getSdate() == null && bookSearchRequestDto.getEdate() == null){
 
-            List<Map<String, Object>> bookList = bookService.findAllBooks();
+            List<Map<String, Object>> bookData = bookService.findAllBooks();
 
-            for(int i = 0; i < bookList.size(); i++){
+            for (Map<String, Object> stringObjectMap : bookData) {
 
-                BookDto bookDto = new BookDto(
-                        (Long) bookList.get(i).get("book_id"),
-                        (String) bookList.get(i).get("book_title"),
-                        (String) bookList.get(i).get("book_auth"),
-                        (String) bookList.get(i).get("book_path"),
-                        (String) bookList.get(i).get("book_summary"),
-                        (LocalDateTime) bookList.get(i).get("book_reg_date"),
-                        (String) bookList.get(i).get("book_img_path"),
-                        (Integer) bookList.get(i).get("book_price")
-                );
+                BookListDto bookListDto = new BookListDto();
+                bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
+                bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+                bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
+                bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
-                returnBookList.add(bookDto);
+                bookList.add(bookListDto);
             }
         }
         else if(bookSearchRequestDto.getSdate() == null || bookSearchRequestDto.getEdate() == null){
 
-            returnBookList = bookService.findBookListByKeyword(bookSearchRequestDto.getKeyword());
+            bookList = bookService.findBookListByKeyword(bookSearchRequestDto.getKeyword());
         }
         else if(bookSearchRequestDto.getKeyword() == null){
 
-            returnBookList = bookService.findBookListByDate(bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
+            bookList = bookService.findBookListByDate(bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
         }
         else{
-            returnBookList = bookService.findBookListByBoth(bookSearchRequestDto);
+            bookList = bookService.findBookListByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
         }
 
-        List<BookSearchDto> bookSearchDtoList = new ArrayList<>();
-        for(int i = 0; i < returnBookList.size(); i++){
-            BookSearchDto bookSearchDto = new BookSearchDto(
-                    (Long) returnBookList.get(i).getBook_id(),
-                    (String) returnBookList.get(i).getBook_title(),
-                    (Integer) returnBookList.get(i).getBook_price(),
-                    (String) returnBookList.get(i).getBook_auth(),
-                    (LocalDateTime) returnBookList.get(i).getBook_reg_date(),
-                    (String) returnBookList.get(i).getBook_img_path()
-            );
-            bookSearchDtoList.add(bookSearchDto);
-        }
-
-        BookSearchCapDto bookSearchCapDto = new BookSearchCapDto(bookSearchDtoList);
+        BookListCapDto bookListCapDto = new BookListCapDto();
+        bookListCapDto.setBook_list(bookList);
 
         return ResponseEntity.ok()
-                .body(bookSearchCapDto);
+                .body(bookListCapDto);
 
     }
 
-    /** book 상세 페이지 데이터 */
+    /** book 상세 페이지 데이터
+     * @return BookDetailDto */
     @GetMapping("/bookdetail/{book_id}")
     public ResponseEntity<BookDetailDto> bookDetail(@PathVariable("book_id") String book_id){
 
         BookDto book_data = bookService.getBookInfo(Long.parseLong(book_id));
 
-        BookDetailDto bookDetailDto = new BookDetailDto(book_data.getBook_id(), book_data.getBook_title(), book_data.getBook_price(), book_data.getBook_auth(), book_data.getBook_summary(), book_data.getBook_img_path());
+        BookDetailDto bookDetailDto = new BookDetailDto();
+
+        bookDetailDto.setBook_id(book_data.getBook_id());
+        bookDetailDto.setTitle(book_data.getBook_title());
+        bookDetailDto.setWriter(book_data.getBook_auth());
+        bookDetailDto.setPrice(book_data.getBook_price());
+        bookDetailDto.setWrite_date(book_data.getBook_reg_date());
+        bookDetailDto.setBook_img_path(book_data.getBook_img_path());
+        bookDetailDto.setBook_summary(book_data.getBook_summary());
 
         return ResponseEntity.ok()
                 .body(bookDetailDto);

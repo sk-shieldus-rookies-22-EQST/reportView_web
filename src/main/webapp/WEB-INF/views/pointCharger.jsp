@@ -53,6 +53,8 @@
 			</div>
 
 			<div class="d-grid gap-2 col-6 mx-auto">
+			  <% String previousPage = request.getHeader("referer"); %>
+			  <input type="hidden" id="referer" name="referer" value="<%= previousPage %>" />
 			  <button class="btn btn-primary" type="submit">충전하기</button>
 			  <button class="btn btn-outline-primary" type="button" onclick="history.back()">취소하기</button>
 			</div>
