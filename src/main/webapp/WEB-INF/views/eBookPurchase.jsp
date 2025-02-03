@@ -184,6 +184,12 @@
 
                     // 상태에 따른 메시지 처리 및 버튼 표시
                     switch (data.status) {
+                        case 'purchased':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'inline-block';
+                            break;
                         case 'charge':
                             purchaseModalBody.textContent = data.message;
                             goToChargeBtn.style.display = 'inline-block';
