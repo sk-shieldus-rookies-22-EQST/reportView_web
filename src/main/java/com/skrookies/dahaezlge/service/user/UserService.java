@@ -60,4 +60,8 @@ public class UserService {
 
         return user_level != null ? user_level : -1;
     }
+
+    public Boolean deleteUser(String user_id) {
+        return  userRepository.deleteUser(user_id);
+    }
 }

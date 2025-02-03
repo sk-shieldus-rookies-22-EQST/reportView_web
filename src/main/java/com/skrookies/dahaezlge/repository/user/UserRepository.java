@@ -20,4 +20,6 @@ public interface UserRepository {
 
     Boolean checkId(String user_id);
     Integer getUserLevel(String userId);
+
+    Boolean deleteUser(String userId);
 }

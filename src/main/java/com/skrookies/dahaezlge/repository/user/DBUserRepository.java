@@ -86,7 +86,7 @@ public class DBUserRepository implements UserRepository{
 
 
         String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, 1, ?)";
-        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 1000000)";
+        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 0)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
         log.info("user_phone: "+ user_phone);
@@ -195,6 +195,26 @@ public class DBUserRepository implements UserRepository{
         } catch (Exception e) {
             log.info("getUserLevel error for user: " + userId);
             return null; // 혹은 기본값 설정
+        }
+    }
+
+    @Override
+    public Boolean deleteUser(String user_id) {
+        String sql = "delete from users where user_id = ?";
+        try {
+            log.info("del - try");
+            int count = jdbcTemplate.update(sql, user_id);
+            if ( count > 0 ){
+                log.info("delete user");
+                return true;
+            } else {
+                log.info("no delete");
+                return false;
+            }
+
+        } catch (Exception e) {
+            log.info("del - catch");
+            return false;
         }
     }
 
