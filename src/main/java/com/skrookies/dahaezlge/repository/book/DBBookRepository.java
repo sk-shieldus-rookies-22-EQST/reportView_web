@@ -85,7 +85,7 @@ public class DBBookRepository implements BookRepository {
     public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
-                "WHERE (book_reg_date between '" + sdate + "' and '" + edate + "') " +
+                "WHERE (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS')) " +
                 "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
@@ -96,7 +96,7 @@ public class DBBookRepository implements BookRepository {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between '" + sdate + "' and '" + edate + "') " +
+                "and (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS')) " +
                 "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
@@ -141,7 +141,7 @@ public class DBBookRepository implements BookRepository {
     @Override
     public List<Map<String, Object>> findByDate(LocalDateTime sdate, LocalDateTime edate) {
 
-        String sql = "select * from book where (book_reg_date between '" + sdate + "' and '" + edate + "') ";
+        String sql = "select * from book where (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS')) ";
 
         try {
             log.info("findByDate try");
@@ -158,7 +158,7 @@ public class DBBookRepository implements BookRepository {
     public List<Map<String, Object>> findByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
 
         String sql = "select * from book where book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between '" + sdate + "' and '" + edate + "')";
+                "and (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS'))";
 
         try {
             log.info("findByBoth try");

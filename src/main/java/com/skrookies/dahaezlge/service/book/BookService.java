@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -69,19 +70,20 @@ public class BookService {
         List<Map<String, Object>> bookList = bookRepository.findByKeyword(keyword);
         List<BookListDto> returnBookList = new ArrayList<>();
 
-        for (Map<String, Object> stringObjectMap : bookList) {
+        if(bookList != null) {
+            for (Map<String, Object> stringObjectMap : bookList) {
 
-            BookListDto bookListDto = new BookListDto();
-            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
-            bookListDto.setTitle((String) stringObjectMap.get("book_title"));
-            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
-            bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
-            bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
+                BookListDto bookListDto = new BookListDto();
+                bookListDto.setBook_id(((BigDecimal) stringObjectMap.get("book_id")).longValue());
+                bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+                bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
+                bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
-            returnBookList.add(bookListDto);
+                returnBookList.add(bookListDto);
+            }
         }
-
         System.out.println("bookListFindByKeyword count: " + returnBookList.size());
 
         return returnBookList;
@@ -94,17 +96,19 @@ public class BookService {
         List<Map<String, Object>> bookList = bookRepository.findByDate(sdate, edate);
         List<BookListDto> returnBookList = new ArrayList<>();
 
-        for (Map<String, Object> stringObjectMap : bookList) {
+        if(bookList != null) {
+            for (Map<String, Object> stringObjectMap : bookList) {
 
-            BookListDto bookListDto = new BookListDto();
-            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
-            bookListDto.setTitle((String) stringObjectMap.get("book_title"));
-            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
-            bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
-            bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
+                BookListDto bookListDto = new BookListDto();
+                bookListDto.setBook_id(((BigDecimal) stringObjectMap.get("book_id")).longValue());
+                bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+                bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
+                bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
-            returnBookList.add(bookListDto);
+                returnBookList.add(bookListDto);
+            }
         }
 
         System.out.println("bookListFindByDate count: " + returnBookList.size());
@@ -119,19 +123,20 @@ public class BookService {
         List<Map<String, Object>> bookList = bookRepository.findByBoth(keyword, sdate, edate);
         List<BookListDto> returnBookList = new ArrayList<>();
 
-        for (Map<String, Object> stringObjectMap : bookList) {
+        if(bookList != null) {
+            for (Map<String, Object> stringObjectMap : bookList) {
 
-            BookListDto bookListDto = new BookListDto();
-            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
-            bookListDto.setTitle((String) stringObjectMap.get("book_title"));
-            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
-            bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
-            bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
+                BookListDto bookListDto = new BookListDto();
+                bookListDto.setBook_id(((BigDecimal) stringObjectMap.get("book_id")).longValue());
+                bookListDto.setTitle((String) stringObjectMap.get("book_title"));
+                bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
+                bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
-            returnBookList.add(bookListDto);
+                returnBookList.add(bookListDto);
+            }
         }
-
         System.out.println("bookListFindByBoth count: " + returnBookList.size());
 
         return returnBookList;
