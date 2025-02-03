@@ -75,15 +75,18 @@ public class UserController {
         List<MyBookListDto> myBookListDtoList = new ArrayList<>();
         if (!books_id.isEmpty()){
             for(int i = 0; i < books_id.size(); i++){
-                List<Map<String, Object>> book_info = bookService.getMyBooks((Long)books_id.get(i));
-                MyBookListDto myBookListDto = new MyBookListDto();
+                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i));
 
-                myBookListDto.setBook_id((Long) book_info.get(i).get("book_id"));
-                myBookListDto.setTitle(book_info.get(i).get("book_title").toString());
-                myBookListDto.setWriter(book_info.get(i).get("book_auth").toString());
-                myBookListDto.setBook_img_path(book_info.get(i).get("book_img_path").toString());
+                for(Map<String, Object> book_info : books_info) {
+                    MyBookListDto myBookListDto = new MyBookListDto();
 
-                myBookListDtoList.add(myBookListDto);
+                    myBookListDto.setBook_id((Long) book_info.get("book_id"));
+                    myBookListDto.setTitle(book_info.get("book_title").toString());
+                    myBookListDto.setWriter(book_info.get("book_auth").toString());
+                    myBookListDto.setBook_img_path(book_info.get("book_img_path").toString());
+
+                    myBookListDtoList.add(myBookListDto);
+                }
             }
 
             myBookListCapDto.setMyBookListDtoList(myBookListDtoList);
@@ -108,15 +111,18 @@ public class UserController {
         List<MyPurchaseDto> myPurchaseDtoList = new ArrayList<>();
         if (!books_id.isEmpty()){
             for(int i = 0; i < books_id.size(); i++){
-                List<Map<String, Object>> book_info = bookService.getMyBooks((Long)books_id.get(i));
-                MyPurchaseDto myPurchaseDto = new MyPurchaseDto();
+                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i));
 
-                myPurchaseDto.setBook_id((Long) book_info.get(i).get("book_id"));
-                myPurchaseDto.setTitle(book_info.get(i).get("book_title").toString());
-                myPurchaseDto.setWriter(book_info.get(i).get("book_auth").toString());
-                myPurchaseDto.setPrice((Integer) book_info.get(i).get("book_price"));
+                for(Map<String, Object> book_info : books_info) {
+                    MyPurchaseDto myPurchaseDto = new MyPurchaseDto();
 
-                myPurchaseDtoList.add(myPurchaseDto);
+                    myPurchaseDto.setBook_id((Long) book_info.get("book_id"));
+                    myPurchaseDto.setTitle(book_info.get("book_title").toString());
+                    myPurchaseDto.setWriter(book_info.get("book_auth").toString());
+                    myPurchaseDto.setPrice((Integer) book_info.get("book_price"));
+
+                    myPurchaseDtoList.add(myPurchaseDto);
+                }
             }
 
             myPurchaseCapDto.setMyPurchaseDto(myPurchaseDtoList);
