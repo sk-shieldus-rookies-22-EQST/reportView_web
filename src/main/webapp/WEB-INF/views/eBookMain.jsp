@@ -127,6 +127,7 @@
 </div><div class="container">
         <div class="container text-center">
                 <div class="row row-cols-5" style="width=100%;">
+                <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     <c:forEach var="book" items="${books}">
                         <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;">
 
@@ -141,7 +142,7 @@
                                     <p class="fw-semibold" style="font-size: 1.2rem;margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
                                     <p class="text-secondary" style="margin:0;font-size: 0.8rem;">${book['book_auth']}</p>
-                                    <p class="col" style="padding: 0;margin:0;">${book['book_price']}원</p>
+                                    <p class="col" style="padding: 0;margin:0;"><fmt:formatNumber value="${book['book_price']}" type="number" groupingUsed="true" />원</p>
                                    </div>
                                     <form class="col" id="addToCartForm" method="post" action="/addCart" style="display: inline-block; width:100%;align-content: end;">
                                         <button type="button" class="btn btn-outline-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}"></button>
@@ -199,7 +200,7 @@
                     switch (data.status) {
                         case 'purchased':
                             cartModalBody.textContent = data.message; // 이미 존재
-                            goToCartBtn.style.display = 'inline-block'; // 버튼 표시
+                            goToCartBtn.style.display = 'none'; // 버튼 표시
                             break;
                         case 'exists':
                             cartModalBody.textContent = data.message; // 이미 존재
