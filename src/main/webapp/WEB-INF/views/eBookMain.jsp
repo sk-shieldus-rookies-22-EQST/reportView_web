@@ -12,7 +12,18 @@
 
     <title>BOOKIES</title>
     <style>
+        .add-to-cart-btn {
+            width: 100%;
+            height: 40px; /* 버튼 높이 설정 */
+            background-image: url('/images/cart_icon.svg');
+            border: none;
+            background-repeat: no-repeat;
+                background-position: center;
+        }
 
+        .add-to-cart-btn:hover {
+            background-image: url('/images/cart_icon_white.svg'); /* hover시 다른 이미지 */
+        }
     </style>
 </head>
 <body>
@@ -75,6 +86,58 @@
             </form>
         </div>
 
+        <div class="container text-center">
+                <div class="row" style="width=100%">
+                    <c:forEach var="book" items="${books}">
+                        <!-- 각 col은 고정된 width로 5개가 들어감 -->
+                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;width: 184px; margin:0 2%; margin-bottom: 5%;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+
+                            <div style="margin: 0% 10%;width:184px;">
+                                <!--<img class="image_container" src="${book['book_img_path']}" style="border:1px solid; position: relative;width: 100%;overflow: hidden;">-->
+                                <img class="image_container" src="/images/test.jpg" style="border:1px solid;position: relative;width: 100%;overflow: hidden;">
+
+                            </div>
+                            <div style="margin-bottom:16px">
+                                <div style=" display: flex; flex-direction: column; justify-content: flex-start;">
+
+                                    <p class="fs-6 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
+
+                                    <p class="text-secondary fs-8" style="margin:0;">${book['book_auth']}</p>
+                                    <p class="col" style="padding: 0;">${book['book_price']}원</p>
+
+                                    <form class="col" id="addToCartForm" method="post" action="/addCart" style="display: inline-block;">
+                                        <button type="button" class="btn btn-outline-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}"></button>
+                                    </form>
+
+                                    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="cartModalLabel">알림</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body" id="cartModalBody">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                    <a id="goToCartBtn" class="btn btn-primary" href="/eBookCart" style="display: none;">장바구니로 바로가기</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- 5개마다 새로운 row를 시작 -->
+                        <c:if test="${(status.index + 1) % 4 == 0}">
+                            </div><div class="row">
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
+
         <table class="table table-hover" style="text-align: center; border: 1px solid #dddddd">
             <thead>
             <tr>
@@ -107,10 +170,6 @@
                     <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_auth']}</td>
                     <td onclick="location.href='/eBookDetail?book_id=${book['book_id']}'" style="text-align: center; vertical-align: middle;">${book['book_price']}원</td>
                     <td>
-<%--                        <form method="post" action="/addCart">--%>
-<%--                            <input type="hidden" name="book_id" value="${book['book_id']}">--%>
-<%--                            <button type="submit" class="btn btn-primary" >장바구니</button>--%>
-<%--                        </form>--%>
                         <form id="addToCartForm" method="post" action="/addCart" style="display: inline-block;">
                             <button type="button" class="btn btn-primary add-to-cart-btn" data-book-id="${book['book_id']}" data-book-price="${book['book_price']}">장바구니</button>
                         </form>
@@ -137,28 +196,6 @@
             </c:forEach>
             </tbody>
         </table>
-
-        <nav class="mt-4" style="display: flex; justify-content: center;">
-            <ul class="pagination">
-                <c:if test="${currentPage > 1}">
-                    <li class="page-item">
-                        <a class="page-link" href="/index?page=${currentPage - 1}&keyword=${keyword}&sdate=${sdate}&edate=${edate}">이전</a>
-                    </li>
-                </c:if>
-
-                <c:forEach begin="${startPage}" end="${endPage}" var="i">
-                    <li class="page-item <c:if test='${i == currentPage}'>active</c:if>">
-                        <a class="page-link" href="/index?page=${i}&keyword=${keyword}&sdate=${sdate}&edate=${edate}">${i}</a>
-                    </li>
-                </c:forEach>
-
-                <c:if test="${currentPage < totalPages}">
-                    <li class="page-item">
-                        <a class="page-link" href="/index?page=${currentPage + 1}&keyword=${keyword}&sdate=${sdate}&edate=${edate}">다음</a>
-                    </li>
-                </c:if>
-            </ul>
-        </nav>
     </div>
 </div>
 </body>

@@ -1,10 +1,8 @@
 package com.skrookies.dahaezlge.service.book;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
-import com.skrookies.dahaezlge.entity.book.Book;
 import com.skrookies.dahaezlge.repository.book.BookRepository;
 import com.skrookies.dahaezlge.restcontroller.view.dto.BookListDto;
-import com.skrookies.dahaezlge.restcontroller.view.dto.BookSearchRequestDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,23 +24,23 @@ public class BookService {
         return bookRepository.getBookInfo(book_id);
     }
 
-    public List<Map<String, Object>> getBooks(int page, int pageSize) {
-        return bookRepository.getBooks(page, pageSize);
+    public List<Map<String, Object>> getBooks() {
+        return bookRepository.getBooks();
     }
     public List<Map<String, Object>> getMyBooks(Long book_id) {
         return bookRepository.getMyBooks(book_id);
     }
 
-    public List<Map<String, Object>> getBooksWithKeyword(String keyword, int page, int pageSize) {
-        return bookRepository.getBooksWithKeyword(keyword, page, pageSize);
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword) {
+        return bookRepository.getBooksWithKeyword(keyword);
     }
 
-    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
-        return bookRepository.getBooksWithDate(sdate, edate, page, pageSize);
+    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate) {
+        return bookRepository.getBooksWithDate(sdate, edate);
     }
 
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
-        return bookRepository.getBooksWithBoth(keyword, sdate, edate, page, pageSize);
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
+        return bookRepository.getBooksWithBoth(keyword, sdate, edate);
     }
 
     public int getTotalBooks() {

@@ -62,50 +62,42 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> getBooks(int page, int pageSize) {
-        int offset = (page - 1) * pageSize;
+    public List<Map<String, Object>> getBooks() {
         String sql = """
         SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price
         FROM book
-        ORDER BY book_reg_date DESC
-        LIMIT ? OFFSET ?
+        ORDER BY book_reg_date DESC;
     """;
-        return jdbcTemplate.queryForList(sql, pageSize, offset);
+        return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithKeyword(String keyword, int page, int pageSize) {
-        int offset = (page - 1) * pageSize;
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE book_title like '%" + keyword + "%' " +
-                "ORDER BY book_reg_date DESC " +
-                "LIMIT " + pageSize + " OFFSET " + offset + ";";
+                "ORDER BY book_reg_date DESC ;";
 
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
-        int offset = (page - 1) * pageSize;
+    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE (book_reg_date between '" + sdate + "' and '" + edate + "') " +
-                "ORDER BY book_reg_date DESC " +
-                "LIMIT " + pageSize + " OFFSET " + offset + ";";
+                "ORDER BY book_reg_date DESC ;";
 
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate, int page, int pageSize) {
-        int offset = (page - 1) * pageSize;
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE book_title like '%" + keyword + "%' " +
                 "and (book_reg_date between '" + sdate + "' and '" + edate + "') " +
-                "ORDER BY book_reg_date DESC " +
-                "LIMIT " + pageSize + " OFFSET " + offset + ";";
+                "ORDER BY book_reg_date DESC ;";
 
         return jdbcTemplate.queryForList(sql);
     }
