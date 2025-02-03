@@ -17,6 +17,7 @@ public class FinduseridController {
 
     private final UserService userService;
 
+    /** 아이디, 비밀번호 찾기 페이지 이동*/
     @GetMapping("/findUseridpw")
     public String findUseridpw_form(){
 
@@ -24,6 +25,7 @@ public class FinduseridController {
         return "findUseridpw";
     }
 
+    /** 아이디 찾기 프로세스*/
     @PostMapping("/findUserProc")
     public String findUseridpw_form(HttpSession session, @ModelAttribute FinduseridDto finduseridDto, @RequestParam("whatFind") Integer whatFind){
         String user_phone = finduseridDto.getUser_phone();
@@ -61,6 +63,7 @@ public class FinduseridController {
         }
     }
 
+    /** 비밀번호 수정 페이지 */
     @GetMapping("/modifyUserpwForm")
     public String modifyUserpwForm_form(Model model, HttpSession session){
         String find_pw_userid = (String) session.getAttribute("find_pw_userid");
@@ -69,6 +72,7 @@ public class FinduseridController {
         return "/modifyUserpw";
     }
 
+    /** 비밀번호 수정 프로세스 */
     @PostMapping("/modifyUserpw")
     public String modifyUserpw_form(Model model, @ModelAttribute FinduseridDto finduseridDto, HttpSession session){
         String new_user_pw = (String) finduseridDto.getNew_user_pw();
