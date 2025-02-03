@@ -129,7 +129,10 @@
 							</ul>
 							<ul class="nav justify-content-end">
 							    <li style="color:white;display: flex;align-items: center;margin-right:20px">
-                                            <%=point %> pt
+							        <a class="link-offset-3 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style="text-align:center;color:white;text-decoration:none;" href="/pointCharger">
+                                        <%=point %> pt
+                                      </a>
+
                                 </li>
 
 								<li style="color:white; display: flex; align-items: center; margin-right: 20px;">

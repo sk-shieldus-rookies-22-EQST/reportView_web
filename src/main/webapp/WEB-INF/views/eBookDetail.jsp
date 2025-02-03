@@ -93,7 +93,7 @@
             </div>
             <% String previousPage = request.getHeader("referer"); %>
             <button class="btn btn-outline-primary" type="button"
-                onclick="location.href='<%= previousPage %>'" style="padding:20px;">목록으로</button>
+                onclick="location.href='/index'" style="padding:20px;">목록으로</button>
         </div>
 
     </div>

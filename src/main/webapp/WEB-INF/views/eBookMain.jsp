@@ -14,7 +14,7 @@
     <style>
         #nav-bar {
             position: relative;
-            z-index: 2000!important;  /* 높은 값을 설정하여 다른 요소들 위에 위치하도록 */
+            z-index: 1050!important;  /* 높은 값을 설정하여 다른 요소들 위에 위치하도록 */
           }
         .add-to-cart-btn {
             width: 100%;

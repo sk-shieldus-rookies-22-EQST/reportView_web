@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.text.AttributedString;
 
 
 @Slf4j
@@ -25,7 +26,7 @@ public class MyPointController {
 
     /** 포인트 충전 페이지 */
     @GetMapping("/pointCharger")
-    public String pointCharger(HttpSession session) {
+    public String pointCharger(HttpSession session ) {
         log.info("pointCharger");
         return "pointCharger";
     }
@@ -49,11 +50,13 @@ public class MyPointController {
             int after_charge_point = charge_point+point;
             log.info("충전 후 잔액 : " + after_charge_point);
 
-            if(purchaseService.chargePoint((String)session.getAttribute("user_id"), charge_point)){
+            if(purchaseService.chargePoint((String)session.getAttribute("user_id"), charge_point)) {
                 session.setAttribute("point", after_charge_point);
                 if (referer != null && referer.contains("PurchaseItem")) {
                     return "forward:/eBookPurchaseItem";
-                } else  {
+                } else if (referer != null && referer.contains("index")) {
+                    return "redirect:/index";
+                }else  {
                     return "forward:/eBookPurchase";
                 }
             } else {

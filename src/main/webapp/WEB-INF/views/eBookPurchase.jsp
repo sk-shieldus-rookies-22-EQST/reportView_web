@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <link rel="icon" type="image/png" href="images/favicon.png">
-    <title>Bookies Purchase</title>
+    <title>BOOKIES</title>
 
 </head>
 <body>
@@ -113,6 +113,7 @@
                     <% String previousPage = request.getHeader("referer"); %>
                     <a id="goToChargeBtn" class="btn btn-primary" href="/pointCharger" style="display: none;">충전 페이지로 바로가기</a>
                     <a id="goToPreviousBtn" class="btn btn-primary" href="<%= previousPage %>" style="display: none;">장바구니로 바로가기</a>
+                    <a id="goToMainBtn" class="btn btn-primary" href="/index" style="display: none;">메인화면으로 가기</a>
                     <a id="goToMyPurchaseBtn" class="btn btn-primary" href="/myPurchase" style="display: none;">결제내역으로 바로가기</a>
                 </div>
             </div>
@@ -120,22 +121,12 @@
     </div>
 
     <script>
-    <%--
-        document.addEventListener('DOMContentLoaded', function () {
-            var purchaseButton = document.getElementById('purchaseProc');
-            var userPoint = <%= userPoint %>;
-            var totalPrice = <%= total_price %>;
-
-            if (userPoint < totalPrice) {
-                purchaseButton.textContent = '충전하기';
-            }
-        });
-    --%>
         document.addEventListener('DOMContentLoaded', () => {
             const purchaseButton = document.getElementById('purchaseProc'); // 단일 버튼
             const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
             const purchaseModalBody = document.getElementById('purchaseModalBody');
             const goToChargeBtn = document.getElementById('goToChargeBtn');
+            const goToMainBtn = document.getElementById('goToMainBtn');
             const goToPreviousBtn = document.getElementById('goToPreviousBtn');
             const goToMyPurchaseBtn = document.getElementById('goToMyPurchaseBtn');
 
@@ -159,6 +150,17 @@
 
                         goToPreviousBtnText = '이전 페이지로 가기';
                         goToPreviousBtnHref = '/eBookDetail?book_id='+bookId;
+                        goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
+
+                        // hover 효과를 위한 이벤트 리스너 추가
+                        goToPreviousBtn.addEventListener('mouseenter', function () {
+                            goToPreviousBtn.setAttribute('style', 'background-color: #5c636a !important;border-color:#5c636a !important; ');
+                        });
+
+                        goToPreviousBtn.addEventListener('mouseleave', function () {
+                            goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;'); // 기본 배경색으로 돌아가기
+                        });
+
                 <%
                     }
                 %>
@@ -166,6 +168,7 @@
                     requestBody = JSON.stringify({ totalBookPrice: totalBookPrice });
                     goToPreviousBtnText = '장바구니로 가기';
                     goToPreviousBtnHref = '/eBookCart';
+
                 }
 
                 goToPreviousBtn.textContent = goToPreviousBtnText;
@@ -187,36 +190,54 @@
                         case 'purchased':
                             purchaseModalBody.textContent = data.message;
                             goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
                             goToPreviousBtn.style.display = 'inline-block';
-                            goToMyPurchaseBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
+
                             break;
                         case 'charge':
                             purchaseModalBody.textContent = data.message;
                             goToChargeBtn.style.display = 'inline-block';
+                            goToMainBtn.style.display = 'none';
                             goToPreviousBtn.style.display = 'none';
                             goToMyPurchaseBtn.style.display = 'none';
                             break;
                         case 'exists':
                             purchaseModalBody.textContent = data.message;
                             goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
                             goToPreviousBtn.style.display = 'inline-block';
                             goToMyPurchaseBtn.style.display = 'inline-block';
                             break;
                         case 'purchase':
                             purchaseModalBody.textContent = data.message;
                             goToChargeBtn.style.display = 'none';
-                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMainBtn.style.display = 'inline-block';
+                            goToPreviousBtn.style.display = 'none';
                             goToMyPurchaseBtn.style.display = 'inline-block';
+                            goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
+
+                            // hover 효과를 위한 이벤트 리스너 추가
+                            goToMainBtn.addEventListener('mouseenter', function () {
+                                goToMainBtn.setAttribute('style', 'background-color: #5c636a !important;border-color:#5c636a !important; ');
+                            });
+
+                            goToMainBtn.addEventListener('mouseleave', function () {
+                                goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;'); // 기본 배경색으로 돌아가기
+                            });
+
                             break;
                         case 'error':
                             purchaseModalBody.textContent = data.message;
                             goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
                             goToPreviousBtn.style.display = 'inline-block';
                             goToMyPurchaseBtn.style.display = 'none';
                             break;
                         default:
                             purchaseModalBody.textContent = '알 수 없는 상태입니다.';
                             goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
                             goToPreviousBtn.style.display = 'inline-block';
                             goToMyPurchaseBtn.style.display = 'inline-block';
                     }
