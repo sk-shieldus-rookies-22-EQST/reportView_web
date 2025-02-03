@@ -40,6 +40,13 @@ public class XssFilterService {
         }
         String output = input;
 
+        // HTML 특수 문자를 이스케이프 처리
+        output = output.replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll("&", "&amp;")
+                .replaceAll("\"", "&quot;")
+                .replaceAll("'", "&apos;");
+
         // 지정된 토큰들을 token + "-1"로 치환 (대소문자 구분 없이)
         for (String token : REPLACE_TOKENS) {
             // (?i) 옵션을 사용하여 대소문자 무시
@@ -71,7 +78,7 @@ public class XssFilterService {
 
         String output = input;
 
-        // 1. <script>, <s, script, </ 를 공백으로 치환 (정규표현식 사용, 대소문자 무시)
+        // 1. onerror, r= 을 공백으로 치환 (정규표현식 사용, 대소문자 무시)
         output = output.replaceAll("(?i)onerror", "");
         output = output.replaceAll("(?i)r=", "");
 

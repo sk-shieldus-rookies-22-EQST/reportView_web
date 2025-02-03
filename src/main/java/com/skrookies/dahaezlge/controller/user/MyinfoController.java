@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.controller.user;
 
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class MyinfoController {
     private final UserService userService;
+    private final XssFilterService xssFilterService;
 
     /** 회원 정보 페이지 */
     @GetMapping("/myInfo")
@@ -69,9 +71,15 @@ public class MyinfoController {
                 return "redirect:/loginForm";  // 예시로 에러 페이지로 리다이렉트
             } else {
                 Users user = user_info.get(0);
-                model.addAttribute("user_pw", user.getUser_pw());
-                model.addAttribute("user_phone", user.getUser_phone());
-                model.addAttribute("user_email", user.getUser_email());
+
+                // XSS 필터링 적용
+                String filteredPw = xssFilterService.filter(user.getUser_pw());
+                String filteredPhone = xssFilterService.filter(user.getUser_phone());
+                String filteredEmail = xssFilterService.filter(user.getUser_email());
+
+                model.addAttribute("user_pw", filteredPw);
+                model.addAttribute("user_phone", filteredPhone);
+                model.addAttribute("user_email", filteredEmail);
                 model.addAttribute("myInfoModifyForm", "1");
                 return "/myInfo";
             }
