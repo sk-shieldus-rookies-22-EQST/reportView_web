@@ -21,18 +21,16 @@
 </style>
 </head>
 <body>
-	<div class="container" style="margin-bottom: 30px;">
-		<%@ include file="banner.jsp" %>
-	</div>
 
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+
+<div class="modal fade" id="messagedeleteReplyModal" tabindex="-1" aria-labelledby="messagedeleteReplyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">오류</h5>
+                    <h5 class="modal-title" id="messagedeleteReplyModalLabel">알림</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="errorMessage"></div>
+                <div class="modal-body" id="messagedeleteReply"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
@@ -40,19 +38,25 @@
         </div>
     </div>
 
-    <c:if test="${not empty sessionScope.errorMessage}">
+    <c:if test="${not empty sessionScope.messagedeleteReply}">
         <script type="text/javascript">
             // 모달에 메시지 설정
-            document.getElementById("errorMessage").innerText = "${sessionScope.errorMessage}";
+            document.getElementById("messagedeleteReply").innerText = "${sessionScope.messagedeleteReply}";
 
             // Bootstrap 5에서 모달 띄우기
-            var myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            var myModal = new bootstrap.Modal(document.getElementById('messagedeleteReplyModal'));
             myModal.show(); // 모달을 띄운다.
 
             // 세션에서 메시지 제거
-            <c:remove var="errorMessage" scope="session" />
+            <c:remove var="messagedeleteReply" scope="session" />
         </script>
     </c:if>
+
+	<div class="container" style="margin-bottom: 30px;">
+		<%@ include file="banner.jsp" %>
+	</div>
+
+
 
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
     	<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">QnA 게시판</p>
