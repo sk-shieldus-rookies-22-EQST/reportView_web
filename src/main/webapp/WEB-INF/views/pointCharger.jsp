@@ -9,7 +9,7 @@
 
 	<link rel="icon" type="image/png" href="images/favicon.png">
 
-	<title>Insert title here</title>
+	<title>BOOKIES</title>
 
 <style>
     /* Chrome, Safari, Edge에서 숫자 화살표 숨기기 */

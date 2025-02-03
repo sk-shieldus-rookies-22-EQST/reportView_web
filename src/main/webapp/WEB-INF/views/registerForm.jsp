@@ -10,7 +10,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <title>회원가입</title>
+    <title>BOOKIES</title>
     <style type="text/css">
         .form-control:focus {
             box-shadow: none!important;

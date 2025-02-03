@@ -9,7 +9,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <title>eBookCart</title>
+    <title>BOOKIES</title>
 
 <script>
     // Flash Attribute를 사용하여 메시지 가져오기

@@ -10,7 +10,7 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
 
-    <title>eBookMain</title>
+    <title>BOOKIES</title>
     <style>
 
     </style>

@@ -10,7 +10,7 @@
 
 	<link rel="icon" type="image/png" href="images/favicon.png">
 
-	<title>Insert title here</title>
+	<title>BOOKIES</title>
 </head>
 <body>
 	<div class="container" style="margin-bottom: 30px;">
