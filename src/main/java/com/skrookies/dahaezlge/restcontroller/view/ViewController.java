@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class ViewController {
         for (Map<String, Object> stringObjectMap : bookList) {
 
             BookListDto bookListDto = new BookListDto();
-            bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
+            bookListDto.setBook_id(((BigDecimal) stringObjectMap.get("book_id")).longValue());
             bookListDto.setTitle((String) stringObjectMap.get("book_title"));
-            bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
+            bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
             bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
             bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
             bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
@@ -74,9 +75,9 @@ public class ViewController {
             for (Map<String, Object> stringObjectMap : bookData) {
 
                 BookListDto bookListDto = new BookListDto();
-                bookListDto.setBook_id((Long) stringObjectMap.get("book_id"));
+                bookListDto.setBook_id(((BigDecimal) stringObjectMap.get("book_id")).longValue());
                 bookListDto.setTitle((String) stringObjectMap.get("book_title"));
-                bookListDto.setPrice((Integer) stringObjectMap.get("book_price"));
+                bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
                 bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
                 bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
                 bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
