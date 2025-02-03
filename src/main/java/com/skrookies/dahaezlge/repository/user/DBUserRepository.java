@@ -31,7 +31,7 @@ public class DBUserRepository implements UserRepository{
                 log.info("not_null");
                 return true;
             } else {
-                log.info("null");
+                log.info("no user");
                 return false;
             }
 
@@ -94,6 +94,10 @@ public class DBUserRepository implements UserRepository{
         log.info("user_email: "+ user_email);
 
         try {
+            if (user_pw.isEmpty() |user_email.isEmpty() | user_phone.isEmpty()) {
+                return false;
+            }
+
             // JdbcTemplate을 사용하여 INSERT 실행
             LocalDateTime now = LocalDateTime.now();
             Timestamp formatedNow = Timestamp.valueOf(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));

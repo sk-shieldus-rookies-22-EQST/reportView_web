@@ -18,7 +18,7 @@ public class RegistuserController {
 
     private final UserService userService;
 
-    /** 결제 페이지 */
+    /** 회원가입 페이지 */
     @GetMapping("/registerForm")
     public String registerForm_form(){
 
@@ -26,7 +26,7 @@ public class RegistuserController {
         return "registerForm";
     }
 
-    /** 결제 프로세스 */
+    /** 회원가입 프로세스 */
     @PostMapping("/registerProc")
     public String registerProc_form(Model model, @ModelAttribute UserDto userDto, HttpSession session){
         String user_id = userDto.getUser_id();
@@ -39,7 +39,7 @@ public class RegistuserController {
             log.info("이미 있는 아이디");
             session.setAttribute("status", "1");
             return "redirect:/registerForm";
-        }else {
+        } else {
             if (user_agree != null) {
                 if (userService.registerUser(user_id, user_pw, user_phone, user_email)) {
                     // 회원가입 직후 자동 로그인
