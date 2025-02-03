@@ -19,6 +19,35 @@
 <div class="container">
 <%@ include file="banner.jsp" %>
 
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">오류</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="errorMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:if test="${not empty sessionScope.errorMessage}">
+        <script type="text/javascript">
+            // 모달에 메시지 설정
+            document.getElementById("errorMessage").innerText = "${sessionScope.errorMessage}";
+
+            // Bootstrap 5에서 모달 띄우기
+            var myModal = new bootstrap.Modal(document.getElementById('errorModal'));
+            myModal.show(); // 모달을 띄운다.
+
+            // 세션에서 메시지 제거
+            <c:remove var="errorMessage" scope="session" />
+        </script>
+    </c:if>
+
     <c:if test="${not empty message}">
         <script>
             alert("${message}");  // 경고창 띄우기

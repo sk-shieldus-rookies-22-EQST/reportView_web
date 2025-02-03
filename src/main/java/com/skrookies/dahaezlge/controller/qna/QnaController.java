@@ -91,7 +91,7 @@ public class QnaController {
         List<QnaReDto> qnaReplies = QnaService.getRepliesByQnaId((long) qna_id);
 
         if(qnaDetail.getSecret() && (userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
-
+            session.setAttribute("errorMessage", "관리자 권한이 없는 사용자입니다.");
             return "redirect:/qnaList";
         }
 
@@ -132,24 +132,24 @@ public class QnaController {
 
         // 제목과 내용이 비어 있는 경우 예외 처리
         if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
-            model.addAttribute("message", "제목을 적어주세요");
+            session.setAttribute("errorMessage", "제목을 적어주세요.");
             return "qnaWrite"; // 다시 작성 페이지로 이동
         }
 
         if (qnaDto.getQna_body() == null || qnaDto.getQna_body().trim().isEmpty()) {
-            model.addAttribute("message", "내용을 적어주세요");
+            session.setAttribute("errorMessage", "내용을 적어주세요.");
             return "qnaWrite";
         }
 
         // 제목 길이 제한 (20자 이상일 경우 예외 처리)
         if (qnaDto.getQna_title().length() > 20) {
-            model.addAttribute("message", "제목이 너무 깁니다! (최대 20자)");
+            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 20자).");
             return "qnaWrite";
         }
 
         // 내용 길이 제한 (500자 이상일 경우 예외 처리)
         if (qnaDto.getQna_body().length() > 500) {
-            model.addAttribute("message", "내용이 너무 많습니다! (최대 500자)");
+            session.setAttribute("errorMessage", "내용이 너무 많습니다! (최대 500자).");
             return "qnaWrite";
         }
 
@@ -209,7 +209,7 @@ public class QnaController {
                 qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
-                model.addAttribute("errorMessage", "파일 업로드 실패");
+                session.setAttribute("errorMessage", "파일 업로드 실패.");
                 return "qnaWrite"; // 파일 업로드 실패 시 다시 페이지로 돌아감
             }
         } else {
@@ -222,7 +222,7 @@ public class QnaController {
         if (qnaResult > 0) {
             return "redirect:/qnaList"; // 성공 시 목록 페이지로 이동
         } else {
-            model.addAttribute("errorMessage", "글 작성에 실패했습니다.");
+            session.setAttribute("errorMessage", "글 작성에 실패했습니다.");
             return "qnaWrite"; // 실패 시 작성 페이지로 이동
         }
     }
@@ -238,24 +238,24 @@ public class QnaController {
 
         // 제목과 내용이 비어 있는 경우 예외 처리
         if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
-            model.addAttribute("message", "제목을 적어주세요");
+            session.setAttribute("errorMessage", "제목을 적어주세요.");
             return "qnaWrite"; // 다시 작성 페이지로 이동
         }
 
         if (QnaDto.getQna_body() == null || QnaDto.getQna_body().trim().isEmpty()) {
-            model.addAttribute("message", "내용을 적어주세요");
+            session.setAttribute("errorMessage", "내용을 적어주세요.");
             return "qnaWrite";
         }
 
         // 제목 길이 제한 (20자 이상일 경우 예외 처리)
         if (QnaDto.getQna_title().length() > 20) {
-            model.addAttribute("message", "제목이 너무 깁니다! (최대 20자)");
+            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 20자).");
             return "qnaWrite";
         }
 
         // 내용 길이 제한 (500자 이상일 경우 예외 처리)
         if (QnaDto.getQna_body().length() > 500) {
-            model.addAttribute("message", "내용이 너무 많습니다! (최대 500자)");
+            session.setAttribute("errorMessage", "내용이 너무 많습니다! (최대 500자).");
             return "qnaWrite";
         }
 
@@ -330,7 +330,7 @@ public class QnaController {
 
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
-                model.addAttribute("errorMessage", "파일 업로드 실패");
+                session.setAttribute("errorMessage", "파일 업로드 실패");
                 return "qnaEdit";
             }
         } else {
@@ -465,6 +465,7 @@ public class QnaController {
 
         // 댓글 내용이 비어 있는지 먼저 확인
         if (qna_re_body == null || qna_re_body.trim().isEmpty()) {
+            session.setAttribute("errorMessage", "댓글을 작성해주세요.");
             return "redirect:/qnaDetail?qna_id=" + qna_id; // 다시 작성 페이지로 이동
         }
 
