@@ -2,7 +2,6 @@ package com.skrookies.dahaezlge.controller.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
-import com.skrookies.dahaezlge.entity.qnaRe.QnaRe;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -239,6 +238,7 @@ public class QnaController {
     /**qna 게시판 글 수정 프로세스 */
     @PostMapping("/qnaUpdateProcess")
     public String qnaUpdate_form(Model model, @ModelAttribute QnaDto QnaDto, HttpSession session) {
+
         String userId = (String) session.getAttribute("user_id");
 
         if (userId == null || userId.isEmpty()) {
@@ -341,7 +341,8 @@ public class QnaController {
 
                 int qnaResult = QnaService.qnaUpdate(QnaDto);
                 if (qnaResult > 0) {
-                    return "redirect:/qnaList";
+
+                    return "redirect:/qnaDetail?qnd_id=" + Math.toIntExact(QnaDto.getQna_id());
                 } else {
                     return "qnaEdit";
                 }
@@ -358,8 +359,12 @@ public class QnaController {
             QnaDto.setFile_size(existingQna.getFile_size());
 
             int qnaResult2 = QnaService.qnaUpdate2(QnaDto);
+
             if (qnaResult2 > 0) {
-                return "redirect:/qnaList";
+                log.info("qnaUpdateProcess");
+                log.info(QnaDto.getQna_id().toString());
+                String qnd_id = QnaDto.getQna_id().toString();
+                return "redirect:/qnaDetail?qna_id=" + qnd_id;
             } else {
                 return "qnaEdit";
             }
@@ -378,6 +383,7 @@ public class QnaController {
         }
 
         QnaService.deleteQna(qna_id);
+        session.setAttribute("deleteQns", "글이 삭제되었습니다.");
         return "redirect:/qnaList";
     }
 
@@ -445,10 +451,11 @@ public class QnaController {
 
     /**qna 게시판 댓글 삭제 */
     @RequestMapping("/qnaReplyDelete")
-    public String qnaReplyDelete(@RequestParam("qna_re_id") Long qna_re_id, @RequestParam("qna_id") Long qna_id) {
+    public String qnaReplyDelete(@RequestParam("qna_re_id") Long qna_re_id, @RequestParam("qna_id") Long qna_id, HttpSession session) {
         try {
             // 해당 답글을 삭제
             QnaService.deleteById(qna_re_id);
+            session.setAttribute("messagedeleteReply", "댓글이 삭제되었습니다.");
         } catch (Exception e) {
             // 예외 처리 (삭제 실패 시)
             e.printStackTrace();
