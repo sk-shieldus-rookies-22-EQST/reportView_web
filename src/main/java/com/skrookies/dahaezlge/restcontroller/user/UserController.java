@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +81,7 @@ public class UserController {
                 for(Map<String, Object> book_info : books_info) {
                     MyBookListDto myBookListDto = new MyBookListDto();
 
-                    myBookListDto.setBook_id((Long) book_info.get("book_id"));
+                    myBookListDto.setBook_id(((BigDecimal) book_info.get("book_id")).longValue());
                     myBookListDto.setTitle(book_info.get("book_title").toString());
                     myBookListDto.setWriter(book_info.get("book_auth").toString());
                     myBookListDto.setBook_img_path(book_info.get("book_img_path").toString());
@@ -116,7 +117,7 @@ public class UserController {
                 for(Map<String, Object> book_info : books_info) {
                     MyPurchaseDto myPurchaseDto = new MyPurchaseDto();
 
-                    myPurchaseDto.setBook_id((Long) book_info.get("book_id"));
+                    myPurchaseDto.setBook_id(((BigDecimal) book_info.get("book_id")).longValue());
                     myPurchaseDto.setTitle(book_info.get("book_title").toString());
                     myPurchaseDto.setWriter(book_info.get("book_auth").toString());
                     myPurchaseDto.setPrice((Integer) book_info.get("book_price"));
