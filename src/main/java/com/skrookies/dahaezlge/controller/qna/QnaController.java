@@ -176,7 +176,7 @@ public class QnaController {
         // 파일 처리
         if (qnaDto.getQna_file() != null && !qnaDto.getQna_file().isEmpty()) {
             String fileName = StringUtils.cleanPath(qnaDto.getQna_file().getOriginalFilename());
-            String fileExtension = ""; // 파일 확장자 (예: .pdf)
+            String fileExtension = ""; // 파일 확장자 (예: .jpg, .png 등)
             String fileBaseName = fileName; // 확장자 없는 파일명
 
             // 확장자 분리
@@ -186,7 +186,13 @@ public class QnaController {
                 fileExtension = fileName.substring(dotIndex);
             }
 
-            // 현재 시간을 파일명에 추가
+            // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png만 허용
+            if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
+                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
+                return "qnaWrite";
+            }
+
+            // 현재 시간을 파일명에 추가 (예: dog_20250203_205142.jpg)
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
             String newFileName = fileBaseName + "_" + timestamp + fileExtension;
 
@@ -198,22 +204,22 @@ public class QnaController {
                     dir.mkdirs();
                 }
 
-// 파일 저장 경로 설정
+                // 파일 저장 경로 설정
                 Path filePath = Paths.get(uploadDir, newFileName);
                 qnaDto.getQna_file().transferTo(filePath.toFile());
 
-// 상대 경로 예시: "/uploads/dog_20250203_205142.jpg"
+                // 상대 경로 예시: "/uploads/dog_20250203_205142.jpg"
                 String relativeFilePath = "/uploads/" + newFileName;
 
                 // 파일 정보 설정
-                qnaDto.setFile_name(fileName);     // 파일 이름
-                qnaDto.setNew_file_name(newFileName);     // 날짜 추가된 파일 이름
-                qnaDto.setFile_path(relativeFilePath);  // 파일 경로
-                qnaDto.setFile_size(qnaDto.getQna_file().getSize());  // 파일 크기
+                qnaDto.setFile_name(fileName);         // 원본 파일명
+                qnaDto.setNew_file_name(newFileName);    // 새 파일명 (타임스탬프 포함)
+                qnaDto.setFile_path(relativeFilePath);   // 상대 경로 저장
+                qnaDto.setFile_size(qnaDto.getQna_file().getSize());
             } catch (IOException e) {
                 log.error("파일 업로드 실패", e);
                 session.setAttribute("errorMessage", "파일 업로드 실패.");
-                return "qnaWrite"; // 파일 업로드 실패 시 다시 페이지로 돌아감
+                return "qnaWrite"; // 파일 업로드 실패 시 다시 작성 페이지로 이동
             }
         } else {
             log.info("업로드된 파일이 없음");
