@@ -50,7 +50,7 @@
             </tr>
             <tr>
                 <td align="center"> 가격 </td>
-                <td> <%= String.format("%,d원", eBook.getBook_price()) %>  </td>
+                <td> <%= String.format("%,d pt", eBook.getBook_price()) %>  </td>
             </tr>
         </table>
 
