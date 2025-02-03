@@ -63,15 +63,4 @@ public class CartController {
             return "forward:/eBookCart";
         }
     }
-
-
-    /** 장바구니에서 물품 구매 */
-    @PostMapping("/Purchase")
-    public String purchase(Model model, HttpSession session){
-        String user_id = (String) session.getAttribute("user_id");
-        List<BookDto> cartList = cartService.setCartList(user_id);
-        model.addAttribute("cartList", cartList);
-        return "PurchaseList";
-    }
-
 }
