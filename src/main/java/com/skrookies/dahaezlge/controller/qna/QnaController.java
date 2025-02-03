@@ -139,6 +139,18 @@ public class QnaController {
             return "qnaWrite";
         }
 
+        // 제목 길이 제한 (20자 이상일 경우 예외 처리)
+        if (qnaDto.getQna_title().length() > 20) {
+            model.addAttribute("message", "제목이 너무 깁니다! (최대 20자)");
+            return "qnaWrite";
+        }
+
+        // 내용 길이 제한 (500자 이상일 경우 예외 처리)
+        if (qnaDto.getQna_body().length() > 500) {
+            model.addAttribute("message", "내용이 너무 많습니다! (최대 500자)");
+            return "qnaWrite";
+        }
+
         // 사용자 ID와 작성 시간 설정
         qnaDto.setQna_user_id(userId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -217,6 +229,18 @@ public class QnaController {
 
         if (QnaDto.getQna_body() == null || QnaDto.getQna_body().trim().isEmpty()) {
             model.addAttribute("message", "내용을 적어주세요");
+            return "qnaWrite";
+        }
+
+        // 제목 길이 제한 (20자 이상일 경우 예외 처리)
+        if (QnaDto.getQna_title().length() > 20) {
+            model.addAttribute("message", "제목이 너무 깁니다! (최대 20자)");
+            return "qnaWrite";
+        }
+
+        // 내용 길이 제한 (500자 이상일 경우 예외 처리)
+        if (QnaDto.getQna_body().length() > 500) {
+            model.addAttribute("message", "내용이 너무 많습니다! (최대 500자)");
             return "qnaWrite";
         }
 

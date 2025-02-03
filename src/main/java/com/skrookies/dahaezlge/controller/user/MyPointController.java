@@ -23,12 +23,14 @@ import java.io.IOException;
 public class MyPointController {
     private final PurchaseService purchaseService;
 
+    /** 포인트 충전 페이지 */
     @GetMapping("/pointCharger")
     public String pointCharger(HttpSession session) {
         log.info("pointCharger");
         return "pointCharger";
     }
 
+    /** 포인트 충전 프로세스 */
     @PostMapping("/pointChargeProc")
     public String pointChargeProc(Model model, RedirectAttributes redirectAttributes,
                                   HttpServletRequest request, HttpServletResponse response,

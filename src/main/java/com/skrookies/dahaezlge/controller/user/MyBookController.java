@@ -34,6 +34,7 @@ public class MyBookController {
     private final PurchaseService purchaseService;
     private final BookService bookService;
 
+    /** 내 서재 페이지 */
     @GetMapping("/myBook")
     public String myBook_form(Model model, HttpSession session){
         log.info("page_move: myBook.jsp");

@@ -285,6 +285,7 @@ public class BoardController {
     }
 
 
+    /** qna 댓글 작성 */
     @PostMapping("/qna/comment")
     public ResponseEntity<StatusDto> writeComment(@RequestBody CommentWriteDto commentWriteDto) {
 
