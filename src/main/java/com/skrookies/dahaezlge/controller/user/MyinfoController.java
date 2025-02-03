@@ -33,7 +33,7 @@ public class MyinfoController {
             return "redirect:/loginForm";  // 로그인 페이지로 리다이렉트
         } else {
             // 사용자 정보를 가져오기
-            log.info("mtinfocontroller - else문 입장!");
+            log.info("myinfocontroller - else문 입장!");
             List<Users> user_info = userService.userInfo(user_id);
 
             if (user_info == null || user_info.isEmpty()) {
@@ -41,7 +41,7 @@ public class MyinfoController {
                 return "redirect:/loginForm";  // 예시로 에러 페이지로 리다이렉트
             } else {
                 Users user = user_info.get(0);
-                log.info(user.getUser_phone());
+                log.info(user.getUser_pw());
                 //model.addAttribute("user_id", user.getUser_id());
                 model.addAttribute("user_pw", user.getUser_pw());
                 model.addAttribute("user_phone", user.getUser_phone());
@@ -76,6 +76,7 @@ public class MyinfoController {
             }
         }
     }
+
     /** 수정된 회원 정보 저장 */
     @PostMapping("/myInfoSave")
     public String myInfoSave_form(Model model, UserDto userDto, HttpSession session){
@@ -96,5 +97,32 @@ public class MyinfoController {
         }
 
         return "/myInfo";
+    }
+
+    @PostMapping("/delUser")
+    public String delUser_form(@RequestParam("password") String password, Model model, UserDto userDto, HttpSession session){
+        log.info("delUser");
+        String user_id = (String)session.getAttribute("user_id");
+        if(user_id != null){
+            log.info("탈퇴할 user_id: "+ user_id);
+            Boolean user_check = userService.login(user_id,password);
+            if (user_check){
+                Boolean deleted_user = userService.deleteUser(user_id);
+                if (deleted_user){
+                    log.info("deluser: user_delete");
+                    session.invalidate();
+                    return "redirect:/index";
+                }
+            } else {
+                log.info("Wrong Password");
+                session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+                return "redirect:/myInfo";
+            }
+        } else {
+            log.info("탈퇴할 user_id가 null입니다. 로그인 필요.");
+            return "redirect:/loginForm";
+        }
+
+        return "redirect:/myInfo";
     }
 }

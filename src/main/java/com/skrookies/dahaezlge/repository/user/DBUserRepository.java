@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +24,7 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean login(String user_id, String user_pw) {
 
-        String sql = "Select count(*) from users where user_id = ? and user_pw =?;";
+        String sql = "Select count(*) from users where user_id = ? and user_pw = ?";
         try {
             Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id, user_pw);
             if ( count != null && count > 0 ){
@@ -43,7 +44,7 @@ public class DBUserRepository implements UserRepository{
     @Override
     public String findUserid(String user_phone, String user_email) {
 
-        String sql = "Select user_id from users where user_phone = ? and user_email = ?;";
+        String sql = "Select user_id from users where user_phone = ? and user_email = ?";
         try {
             if (jdbcTemplate.queryForObject(sql, String.class, user_phone, user_email)!= null) {
                 String user_id = (String) jdbcTemplate.queryForObject(sql, String.class, user_phone, user_email);
@@ -86,7 +87,7 @@ public class DBUserRepository implements UserRepository{
 
 
         String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, 1, ?)";
-        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 1000000)";
+        String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 0)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
         log.info("user_phone: "+ user_phone);
@@ -142,7 +143,7 @@ public class DBUserRepository implements UserRepository{
 
     @Override
     public Boolean checkId(String user_id) {
-        String sql = "Select count(*) from users where user_id = ? ;";
+        String sql = "Select count(*) from users where user_id = ?";
         try {
             Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id);
             if ( count != null && count > 0){
@@ -173,7 +174,7 @@ public class DBUserRepository implements UserRepository{
 
             // Map을 Users 객체로 변환하여 리스트에 추가
             for (Map<String, Object> row : results) {
-                Users user = new Users((String) row.get("user_id"),(String) row.get("user_pw"), (String) row.get("user_phone"),(String) row.get("user_email"), (Integer) row.get("user_level"),(Timestamp) row.get("user_created_at"));
+                Users user = new Users((String) row.get("user_id"),(String) row.get("user_pw"), (String) row.get("user_phone"),(String) row.get("user_email"), ((BigDecimal) row.get("user_level")).intValue(),(Timestamp) row.get("user_created_at"));
                 // 추가적인 필드가 있으면 여기에 세팅
                 user_info.add(user);
             }
@@ -181,6 +182,7 @@ public class DBUserRepository implements UserRepository{
             // 변환된 Users 객체 리스트 반환
             return user_info;
         } catch (Exception e) {
+            e.printStackTrace();
             List<Users> user_test = new ArrayList<>();
             return user_test;
         }
@@ -195,6 +197,26 @@ public class DBUserRepository implements UserRepository{
         } catch (Exception e) {
             log.info("getUserLevel error for user: " + userId);
             return null; // 혹은 기본값 설정
+        }
+    }
+
+    @Override
+    public Boolean deleteUser(String user_id) {
+        String sql = "delete from users where user_id = ?";
+        try {
+            log.info("del - try");
+            int count = jdbcTemplate.update(sql, user_id);
+            if ( count > 0 ){
+                log.info("delete user");
+                return true;
+            } else {
+                log.info("no delete");
+                return false;
+            }
+
+        } catch (Exception e) {
+            log.info("del - catch");
+            return false;
         }
     }
 
