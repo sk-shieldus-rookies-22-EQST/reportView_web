@@ -31,6 +31,8 @@ public class eBookPurchaseController {
     private final PurchaseService purchaseService;
     private final BookService bookService;
 
+
+    /** 장바구니에 담긴 물품 결제 정보 조회 */
     @RequestMapping("/eBookPurchase")
     public String setPurchaseList(Model model, HttpSession session) {
         String user_id = (String) session.getAttribute("user_id");
@@ -47,6 +49,8 @@ public class eBookPurchaseController {
         return "eBookPurchase";
     }
 
+
+    /** 바로 구매하는 물품 결제 정보 조회 */
     @PostMapping("/eBookPurchaseItem")
     public String setPurchaseItem(Model model, RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
@@ -80,6 +84,8 @@ public class eBookPurchaseController {
         }
     }
 
+
+    /** 장바구니 물품 결제 프로세스 */
     @PostMapping("/purchaseProc")
     @ResponseBody
     public Map<String, String> purchaseProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,
@@ -116,6 +122,8 @@ public class eBookPurchaseController {
         return response;
     }
 
+
+    /** 바로 구매하는 물품 결제 프로세스 */
     @PostMapping("/purchaseItemProc")
     @ResponseBody
     public Map<String, String> purchaseItemProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,
