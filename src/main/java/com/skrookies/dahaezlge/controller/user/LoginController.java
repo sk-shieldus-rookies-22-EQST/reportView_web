@@ -31,24 +31,23 @@ public class LoginController {
 
     /** 로그인 프로세스 */
     @PostMapping("/loginProc")
-    public String loginProc_form(Model model, @RequestParam String encrypted_pw, HttpSession session){
+    public String loginProc_form(Model model, @RequestParam String encrypted_data, HttpSession session){
 //        String user_id = loginDto.getUser_id();
 //        log.info("Login Id: " + user_id);
 //        log.info("Login Password: " + loginDto.getUser_pw());
         log.info("loginProc");
         try {
-            log.info("login try encrypted: "+ encrypted_pw);
-            String decryptedPassword = aesService.decrypt(encrypted_pw);
+            log.info("login try encrypted: "+ encrypted_data);
+            String decryptedPassword = aesService.decrypt(encrypted_data);
             log.info("login try decrypted: "+ decryptedPassword);
 
-            String[] passwordParts = decryptedPassword.split("&&&&");
+            String[] LoginInfoParts = decryptedPassword.split("&&&&");
 
-            // 예시: 분리된 값들로 추가 작업
-            log.info("ID: " + passwordParts[0]);
-            log.info("PW: " + passwordParts[1]);
+            log.info("ID: " + LoginInfoParts[0]);
+            log.info("PW: " + LoginInfoParts[1]);
 
-            String user_id = passwordParts[0];
-            String user_pw = passwordParts[1];
+            String user_id = LoginInfoParts[0];
+            String user_pw = LoginInfoParts[1];
 
             if(userService.login(user_id, user_pw)){
                 log.info("user_id = " + user_id);
