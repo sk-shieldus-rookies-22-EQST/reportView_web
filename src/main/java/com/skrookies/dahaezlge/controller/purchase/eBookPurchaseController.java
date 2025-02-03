@@ -57,7 +57,6 @@ public class eBookPurchaseController {
         log.info("eBookPurchaseItem controller");
         if (user_id == null){
             log.info("purchase controller user id null");
-            redirectAttributes.addFlashAttribute("messageLoginForm","로그인이 필요합니다.");
             return "redirect:/loginForm";
         }
         else {

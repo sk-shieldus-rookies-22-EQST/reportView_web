@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +22,67 @@
 </script>
 </head>
 <body>
+
+<div class="modal fade" id="messageCartDeletedModal" tabindex="-1" aria-labelledby="messageCartDeletedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageCartDeletedModalLabel">삭제</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="messageCartDeleted"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:if test="${not empty sessionScope.messageCartDeleted}">
+        <script type="text/javascript">
+            // 모달에 메시지 설정
+            document.getElementById("messageCartDeleted").innerText = "${sessionScope.messageCartDeleted}";
+
+            // Bootstrap 5에서 모달 띄우기
+            var myModal = new bootstrap.Modal(document.getElementById('messageCartDeletedModal'));
+            myModal.show(); // 모달을 띄운다.
+
+            // 세션에서 메시지 제거
+            <c:remove var="messageCartDeleted" scope="session" />
+        </script>
+    </c:if>
+
+
+<div class="modal fade" id="CartDeletedFailedModal" tabindex="-1" aria-labelledby="CartDeletedFailedModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="CartDeletedFailedModalLabel">삭제</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="messageCartDeletedFailed"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:if test="${not empty sessionScope.messageCartDeletedFailed}">
+        <script type="text/javascript">
+            // 모달에 메시지 설정
+            document.getElementById("messageCartDeletedFailed").innerText = "${sessionScope.messageCartDeletedFailed}";
+
+            // Bootstrap 5에서 모달 띄우기
+            var myModal = new bootstrap.Modal(document.getElementById('CartDeletedFailedModal'));
+            myModal.show(); // 모달을 띄운다.
+
+            // 세션에서 메시지 제거
+            <c:remove var="messageCartDeletedFailed" scope="session" />
+        </script>
+    </c:if>
+
+
 <div class="container">
     <jsp:include page="banner.jsp" />
 
