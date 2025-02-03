@@ -38,15 +38,9 @@ public class XssFilterService {
         if (input == null) {
             return null;
         }
-
         String output = input;
 
-        // 1. <script>, <s, script, </ 를 공백으로 치환 (정규표현식 사용, 대소문자 무시)
-        output = output.replaceAll("(?i)onerror", "");
-        output = output.replaceAll("(?i)r=", "");
-
-
-        // 2. 지정된 토큰들을 token + "-1"로 치환 (대소문자 구분 없이)
+        // 지정된 토큰들을 token + "-1"로 치환 (대소문자 구분 없이)
         for (String token : REPLACE_TOKENS) {
             // (?i) 옵션을 사용하여 대소문자 무시
             // 단순 치환: 토큰이 나타나는 모든 곳을 token + "-1"로 대체합니다.

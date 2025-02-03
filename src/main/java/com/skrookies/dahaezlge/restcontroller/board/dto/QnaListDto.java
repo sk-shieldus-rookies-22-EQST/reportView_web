@@ -16,5 +16,6 @@ public class QnaListDto {
     private Long qna_id;
     private String title;
     private String user_id;
+    private Boolean secret;
     private LocalDateTime created_at;
 }
