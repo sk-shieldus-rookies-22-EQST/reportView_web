@@ -13,10 +13,6 @@
     <title>BOOKIES</title>
 
     <script>
-        var message = "${messageMypurchase}";
-        if (message) {
-            window.alert(message);
-        }
 
         document.addEventListener('DOMContentLoaded', function () {
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
