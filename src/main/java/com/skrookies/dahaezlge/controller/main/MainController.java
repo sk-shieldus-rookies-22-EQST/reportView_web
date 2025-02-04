@@ -83,8 +83,8 @@ public class MainController {
     public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, Model model ) {
 
         // XSS 필터링 적용
-        keyword = xssFilterService.filter(keyword); // keyword 필터링
-        keyword = sqlFilterService.filter(keyword);
+        keyword = xssFilterService.filter2(keyword); // keyword 필터링
+        keyword = sqlFilterService.filter3(keyword);
 
         sdate = xssFilterService.filter2(sdate); // sdate 필터링 (sql 공격 허용)
         sdate = sqlFilterService.filter3(sdate); //
