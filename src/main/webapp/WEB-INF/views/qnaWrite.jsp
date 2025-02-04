@@ -14,6 +14,41 @@
     <link rel="icon" type="image/png" href="images/favicon.png">
 
     <title>BOOKIES</title>
+    <style>
+        .secret {
+            display: flex;
+            align-items: center;
+            margin:0!important;
+            background: none!important;
+            border: none!important;
+            padding:0!important;
+        }
+        .secret:after {display:block; clear:both; content:"";}
+        .secret input[type="checkbox"] {
+            display: none;
+        }
+        .secret input[type="checkbox"] + label {
+            background: #fff;
+            border: 1px solid #ff7a00;
+            color: #ff7a00;
+            cursor: pointer;
+            border-radius: 3px;
+            float: left;
+            display: flex;
+            align-items: center;
+            margin: 0 5px;
+            padding: 2px 5px;
+        }
+        .secret input[type="checkbox"]:checked + label {
+            background: #FF7A00;
+            border-color: #white;
+            color: white;
+            float: left
+        }
+        .secret input[type="checkbox"] + label span {
+            font-size: 1rem;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -66,14 +101,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="50"></td>
+                    <tr><td>
+                        <div class="input-group">
+                              <input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="30" >
+                              <div class="secret form-label input-group-text">
+                                  <input class="form-check-input mt-0" id="secret" type="checkbox" name="secret" value="1">
+                                  <label for="secret"><span>비밀글 설정</span></label>
+                              </div>
+                              <!-- 비밀글 체크박스를 선택하지 않으면 자동으로 '0'으로 설정 -->
+                              <input type="hidden" name="secret" value="0">
+                        </div>
+                        </td>
                     </tr>
-                    <label>
-                        <input type="checkbox" name="secret" value="1"> 비밀글 설정
-                    </label>
-                    <!-- 비밀글 체크박스를 선택하지 않으면 자동으로 '0'으로 설정 -->
-                        <input type="hidden" name="secret" value="0">
+
                     <tr>
                         <td><textarea class="form-control" placeholder="글 내용" name="qna_body" maxlength="2048" style="height: 350px;"></textarea></td>
                     </tr>
