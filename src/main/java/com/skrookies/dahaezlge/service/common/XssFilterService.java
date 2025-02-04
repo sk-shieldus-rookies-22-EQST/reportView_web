@@ -9,7 +9,7 @@ import java.util.List;
 public class XssFilterService {
     // 필터링할 단어 목록
     private static final String[] REPLACE_TOKENS = {
-            "oncontent", "onweb", "alert", "onerror", "title", "xml", "body", "svg", "lowsrc",
+            "textarea","oncontent", "onweb", "alert", "onerror", "title", "xml", "body", "svg", "lowsrc",
             "dynsrc", "url", "marquee", "cookie", "document", "msgbox", "vbscript", "refresh",
             "escape", "string", "expression", "eval", "void", "bind", "create", "confirm",
             "prompt", "location", "fromCharCode", "append", "onbeforeprint", "ondragleave",
@@ -41,7 +41,6 @@ public class XssFilterService {
     /**
      * ✅ 모든 특수문자 필터링 (filter)
      * - < > ' " ( ) ; # & { } → HTML 엔티티로 변환
-     * - 지정된 토큰 → token-1 로 치환
      */
     public String filter(String input) {
         if (input == null) return null;
@@ -60,9 +59,7 @@ public class XssFilterService {
         return output;
     }
 
-    /**
-     * ✅ < > ' " ( ) ;는 허용, 나머지 특수문자는 필터링 (filter1)
-     */
+    //xss만 허용, sql 필터링
     public String filter1(String input) {
         if (input == null) return null;
         String output = input;
@@ -91,9 +88,7 @@ public class XssFilterService {
         return output;
     }
 
-    /**
-     * ✅ < > ' " ( ) ;는 허용, 나머지 특수문자는 필터링 (filter2)
-     */
+    //sql 공격 허용, xss만 필터링
     public String filter2(String input) {
         if (input == null) return null;
         String output = input;
@@ -113,4 +108,6 @@ public class XssFilterService {
 
         return output;
     }
+
+    
 }

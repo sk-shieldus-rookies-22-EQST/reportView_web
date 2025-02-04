@@ -75,12 +75,12 @@ public class MyinfoController {
                 Users user = user_info.get(0);
 
                 // XSS 필터링 적용
-                String filteredPw = sqlFilterService.filter(user.getUser_pw());
-                filteredPw = xssFilterService.filter(filteredPw);
-                String filteredPhone = sqlFilterService.filter(user.getUser_phone());
-                filteredPhone = xssFilterService.filter(filteredPhone);
-                String filteredEmail = sqlFilterService.filter(user.getUser_email());
-                filteredEmail = xssFilterService.filter(filteredEmail);
+                String filteredPw = xssFilterService.filter(user.getUser_pw());
+                filteredPw = sqlFilterService.filter(filteredPw);
+                String filteredPhone = xssFilterService.filter(user.getUser_phone());
+                filteredPhone = sqlFilterService.filter2(filteredPhone);
+                String filteredEmail = xssFilterService.filter(user.getUser_email());
+                filteredEmail = sqlFilterService.filter(filteredEmail);
 
                 model.addAttribute("user_pw", filteredPw);
                 model.addAttribute("user_phone", filteredPhone);
@@ -96,9 +96,13 @@ public class MyinfoController {
     public String myInfoSave_form(Model model, UserDto userDto, HttpSession session){
         log.info("myInfoSave");
         String user_id = (String)session.getAttribute("user_id");
-        String user_pw = userDto.getUser_pw();
-        String user_phone = userDto.getUser_phone();
-        String user_email = userDto.getUser_email();
+
+        String user_pw = xssFilterService.filter(userDto.getUser_pw());
+        user_pw = sqlFilterService.filter(user_pw);
+        String user_phone = xssFilterService.filter(userDto.getUser_phone());
+        user_phone = sqlFilterService.filter2(user_phone);
+        String user_email = xssFilterService.filter(userDto.getUser_email());
+        user_email = sqlFilterService.filter(user_email);
         if(user_pw != null && user_phone != null && user_email != null){
             log.info("입력한 모든 값이 not null입니다.");
             Boolean update_result = userService.updateUserInfo(user_id, user_pw,user_phone,user_email);
