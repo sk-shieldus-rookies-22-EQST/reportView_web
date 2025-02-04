@@ -40,7 +40,7 @@ public class ViewController {
             bookListDto.setTitle((String) stringObjectMap.get("book_title"));
             bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
             bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+            bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")));
             bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
             bookListDtoList.add(bookListDto);
@@ -79,7 +79,7 @@ public class ViewController {
                 bookListDto.setTitle((String) stringObjectMap.get("book_title"));
                 bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
                 bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")));
                 bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
                 bookList.add(bookListDto);

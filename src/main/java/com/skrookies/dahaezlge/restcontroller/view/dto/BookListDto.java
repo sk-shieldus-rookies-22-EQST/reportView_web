@@ -15,6 +15,6 @@ public class BookListDto {
     private String title;
     private Integer price;
     private String writer;
-    private LocalDateTime write_date;
+    private Timestamp write_date;
     private String book_img_path;
 }
