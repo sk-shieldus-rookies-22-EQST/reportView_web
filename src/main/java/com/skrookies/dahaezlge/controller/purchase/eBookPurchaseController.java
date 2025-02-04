@@ -122,7 +122,7 @@ public class eBookPurchaseController {
     }
 
 
-    /** 바로 구매하는 물품 결제 프로세스 */
+    /** 결제 정보에서 결제버튼 누를 때 바로 구매하는 물품 결제 프로세스 */
     @PostMapping("/purchaseItemProc")
     @ResponseBody
     public Map<String, String> purchaseItemProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,

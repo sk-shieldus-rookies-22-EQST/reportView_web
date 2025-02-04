@@ -199,7 +199,7 @@
                         case 'charge':
                             purchaseModalBody.textContent = data.message;
                             goToPreviousBtnText = '취소';
-                            goToPreviousBtnHref = '/eBookPurchase'
+                            goToPreviousBtnHref = '/eBookDetail?book_id='+bookId ;
                             goToPreviousBtn.textContent = goToPreviousBtnText;
                             goToPreviousBtn.href = goToPreviousBtnHref;
                             goToPreviousBtn.style.display = 'inline-block';
