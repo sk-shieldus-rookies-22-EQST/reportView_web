@@ -121,7 +121,7 @@
                 <div class="row row-cols-5" style="width=100%;">
                 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     <c:forEach var="book" items="${books}">
-                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;">
+                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;justify-content: flex-end;">
 
                             <div style="margin: 0% 10%;width:184px;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                                 <!--<img class="image_container" src="${book['book_img_path']}" style="border:1px solid; position: relative;width: 100%;overflow: hidden;">-->
