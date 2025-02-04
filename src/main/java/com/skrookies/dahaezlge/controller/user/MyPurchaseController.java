@@ -42,13 +42,11 @@ public class MyPurchaseController {
                 }
                 model.addAttribute("books", books_info);
                 return "myPurchase";
-            }else {
+            } else {
                 return "myPurchase";
             }
-
         } else {
             return "redirect:/loginForm";
         }
-
     }
 }

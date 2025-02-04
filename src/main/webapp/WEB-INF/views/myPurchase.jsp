@@ -40,6 +40,7 @@
                 <th style="text-align: center;">제목</th>
                 <th style="text-align: center;">작가</th>
                 <th style="text-align: center;">가격</th>
+                <th style="text-align: center;">구매 날짜</th>
             </tr>
             </thead>
             <tbody>
