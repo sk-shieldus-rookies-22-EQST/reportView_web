@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -54,17 +56,17 @@ public class MainController {
         }
         else if (keyword.isEmpty()) {
 
-            totalBooks = bookService.findBookListByDate(dateFormatter(sdate), dateFormatter(edate)).size(); // 날짜 검색 책 개수
+            totalBooks = bookService.findBookListByDate(sdate, edate).size(); // 날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithDate(dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithDate(sdate, edate);
         }
         else{
 
-            totalBooks = bookService.findBookListByBoth(keyword, dateFormatter(sdate), dateFormatter(edate)).size(); // 키워드&날짜 검색 책 개수
+            totalBooks = bookService.findBookListByBoth(keyword, sdate, edate).size(); // 키워드&날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithBoth(keyword, dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithBoth(keyword, sdate, edate);
         }
 
         // JSP로 데이터 전달
@@ -108,17 +110,17 @@ public class MainController {
         }
         else if (keyword.isEmpty()) {
 
-            totalBooks = bookService.findBookListByDate(dateFormatter(sdate), dateFormatter(edate)).size(); // 날짜 검색 책 개수
+            totalBooks = bookService.findBookListByDate(sdate, edate).size(); // 날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithDate(dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithDate(sdate, edate);
         }
         else{
 
-            totalBooks = bookService.findBookListByBoth(keyword, dateFormatter(sdate), dateFormatter(edate)).size(); // 키워드&날짜 검색 책 개수
+            totalBooks = bookService.findBookListByBoth(keyword, (sdate), (edate)).size(); // 키워드&날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithBoth(keyword, dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithBoth(keyword, sdate, edate);
         }
 
         // JSP로 데이터 전달
@@ -137,9 +139,15 @@ public class MainController {
     public String setBookInfo(Model model, @RequestParam("book_id") Long book_id, HttpSession session){
         BookDto bookInfo = bookService.getBookInfo(book_id);
 
-        // LocalDateTime → String 변환
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = bookInfo.getBook_reg_date().format(formatter);
+        // Timestamp를 LocalDateTime으로 변환
+        LocalDateTime localDateTime = bookInfo.getBook_reg_date().toLocalDateTime();
+
+        // 날짜 및 시간 형식 지정 (나노초는 제거)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // LocalDateTime을 String으로 변환
+        String formattedDate = localDateTime.format(formatter);
+
 
         session.setAttribute("book_id", book_id);
         model.addAttribute("bookInfo", bookInfo);
@@ -148,15 +156,21 @@ public class MainController {
         return "eBookDetail";
     }
 
-    /** String 타입의 date 변수를 LocalDateTime 형식으로 변경 */
-    private LocalDateTime dateFormatter(String date){
+    /** String 타입의 date 변수를 Timestamp 형식으로 변경 (시간 설정 안 함) */
+    private Timestamp timestamp (String date) {
+        if (date == null || date.isEmpty()) {
+            return null;
+        }
 
-        String formattedDate = date + " 00:00:00";
+        // 날짜 형식에 맞는 DateTimeFormatter 생성
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime localDateTime = LocalDateTime.parse(formattedDate, formatter);
+        // String을 LocalDate로 변환 (시간 설정 없음)
+        LocalDate localDate = LocalDate.parse(date, formatter);
 
-        return localDateTime;
+        // LocalDate를 Timestamp로 변환 (시간은 00:00:00으로 설정됨)
+        return Timestamp.valueOf(localDate.atStartOfDay());  // 시간은 00:00:00으로 설정
     }
+
 
 }
