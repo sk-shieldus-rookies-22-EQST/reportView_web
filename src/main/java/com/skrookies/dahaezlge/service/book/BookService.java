@@ -36,11 +36,11 @@ public class BookService {
         return bookRepository.getBooksWithKeyword(keyword);
     }
 
-    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate) {
+    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate) {
         return bookRepository.getBooksWithDate(sdate, edate);
     }
 
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate) {
         return bookRepository.getBooksWithBoth(keyword, sdate, edate);
     }
 
@@ -78,7 +78,7 @@ public class BookService {
                 bookListDto.setTitle((String) stringObjectMap.get("book_title"));
                 bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
                 bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")));
                 bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
                 returnBookList.add(bookListDto);
@@ -91,7 +91,7 @@ public class BookService {
 
     /** Date 기반 BookList 반환
      * @return List<BookListDto> */
-    public List<BookListDto> findBookListByDate(LocalDateTime sdate, LocalDateTime edate){
+    public List<BookListDto> findBookListByDate(String sdate, String edate){
 
         List<Map<String, Object>> bookList = bookRepository.findByDate(sdate, edate);
         List<BookListDto> returnBookList = new ArrayList<>();
@@ -104,7 +104,7 @@ public class BookService {
                 bookListDto.setTitle((String) stringObjectMap.get("book_title"));
                 bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
                 bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")));
                 bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
                 returnBookList.add(bookListDto);
@@ -118,7 +118,7 @@ public class BookService {
 
     /** Keyword & Date 기반 BookList 반환
      * @return List<BookListDto> */
-    public List<BookListDto> findBookListByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate){
+    public List<BookListDto> findBookListByBoth(String keyword, String sdate, String edate){
 
         List<Map<String, Object>> bookList = bookRepository.findByBoth(keyword, sdate, edate);
         List<BookListDto> returnBookList = new ArrayList<>();
@@ -131,7 +131,7 @@ public class BookService {
                 bookListDto.setTitle((String) stringObjectMap.get("book_title"));
                 bookListDto.setPrice(((BigDecimal) stringObjectMap.get("book_price")).intValue());
                 bookListDto.setWriter((String) stringObjectMap.get("book_auth"));
-                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")).toLocalDateTime());
+                bookListDto.setWrite_date(((Timestamp) stringObjectMap.get("book_reg_date")));
                 bookListDto.setBook_img_path((String) stringObjectMap.get("book_img_path"));
 
                 returnBookList.add(bookListDto);

@@ -4,6 +4,7 @@ import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.entity.book.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.net.resolver.TimeUnitSuffixUtility;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -34,7 +35,7 @@ public class DBBookRepository implements BookRepository {
                             rs.getString("book_auth"),
                             rs.getString("book_path"),
                             rs.getString("book_summary"),
-                            rs.getTimestamp("book_reg_date").toLocalDateTime(),
+                            rs.getTimestamp("book_reg_date"),
                             rs.getString("book_img_path"),
                             rs.getInt("book_price"));
                     return book;
@@ -82,21 +83,21 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithDate(LocalDateTime sdate, LocalDateTime edate) {
+    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
-                "WHERE (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS')) " +
+                "WHERE (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) " +
                 "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS')) " +
+                "and (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) " +
                 "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
@@ -139,9 +140,9 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> findByDate(LocalDateTime sdate, LocalDateTime edate) {
+    public List<Map<String, Object>> findByDate(String sdate, String edate) {
 
-        String sql = "select * from book where (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS')) ";
+        String sql = "select * from book where (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) ";
 
         try {
             log.info("findByDate try");
@@ -155,10 +156,10 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> findByBoth(String keyword, LocalDateTime sdate, LocalDateTime edate) {
+    public List<Map<String, Object>> findByBoth(String keyword, String sdate, String edate) {
 
         String sql = "select * from book where book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD HH24:MI:SS') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD HH24:MI:SS'))";
+                "and (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD'))";
 
         try {
             log.info("findByBoth try");
@@ -182,12 +183,21 @@ public class DBBookRepository implements BookRepository {
         return jdbcTemplate.queryForList(sql, bookId);
     }
 
-    /** LocalDateTime을 다시 String 형식으로 변환(나노초 제거용) */
-    private String dateFormatter(LocalDateTime date){
+    /** Timestamp를 String 형식으로 변환 (나노초 제거) */
+    private String dateFormatter(Timestamp timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // Timestamp를 LocalDateTime으로 변환
+        LocalDateTime localDateTime = timestamp.toLocalDateTime();
 
-        return date.format(formatter);
+        // 날짜 및 시간 형식 지정 (나노초는 제거)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // LocalDateTime을 String으로 변환
+        return localDateTime.format(formatter);
     }
+
 
 }

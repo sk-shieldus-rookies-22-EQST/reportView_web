@@ -14,6 +14,6 @@ import java.time.LocalDateTime;
 public class BookSearchRequestDto {
 
     private String keyword;
-    private LocalDateTime sdate;
-    private LocalDateTime edate;
+    private Timestamp sdate;
+    private Timestamp edate;
 }
