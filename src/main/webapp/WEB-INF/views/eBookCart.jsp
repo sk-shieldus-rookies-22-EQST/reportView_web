@@ -149,7 +149,7 @@
                 <td align="center" style="width: 200px; background-color: #eeeeee; border-right: 1px solid #dddddd;"> 총 상품 금액 </td>
                 <td style="padding: 0px 20px"> <%= String.format("%,d pt", total_price) %>  </td>
                 <td  align="center" width="50%" rowspan="3">
-                    <button disabled=false class="btn btn-primary pull-right add-to-purchase-btn" id="purchaseButton" type="submit" style="width: 100%; height: 100%;">
+                    <button disabled class="btn btn-primary pull-right add-to-purchase-btn" id="purchaseButton" type="submit" style="width: 100%; height: 100%;">
                         <span style="font-size: 25px; font-weight: bold;">
                             주문하기
                         </span>
@@ -158,7 +158,13 @@
             </tr>
         </table>
         <%
-        if (bookList.isEmpty()) {
+        if (!bookList.isEmpty()) {
+        %>
+        <script>
+            document.getElementById("purchaseButton").disabled = false;
+        </script>
+        <%
+        } else {
         %>
         <script>
             document.getElementById("purchaseButton").disabled = true;
