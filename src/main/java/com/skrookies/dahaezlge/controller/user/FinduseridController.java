@@ -69,7 +69,7 @@ public class FinduseridController {
         String find_pw_userid = (String) session.getAttribute("find_pw_userid");
         log.info("page_move: find_pw_userid = " + find_pw_userid);
         log.info("page_move: modifyUserpwForm.jsp");
-        return "/modifyUserpw";
+        return "modifyUserpw";
     }
 
     /** 비밀번호 수정 프로세스 */
