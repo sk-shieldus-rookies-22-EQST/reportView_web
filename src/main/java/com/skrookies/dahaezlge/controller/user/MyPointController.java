@@ -35,9 +35,13 @@ public class MyPointController {
     @PostMapping("/pointChargeProc")
     public String pointChargeProc(Model model, RedirectAttributes redirectAttributes,
                                   HttpServletRequest request, HttpServletResponse response,
-                                  @RequestParam("charge_point") int charge_point,
+                                  @RequestParam("charge_point") String input_point,
                                   HttpSession session) throws ServletException, IOException {
         log.info("pointChargeProc");
+        int charge_point = 0;
+        if (!input_point.equals("")) {
+            charge_point = Integer.parseInt(input_point);
+        }
 
         String referer = (String) session.getAttribute("referer");
         log.info("Previous Page URL: " + referer);
@@ -54,14 +58,19 @@ public class MyPointController {
             if(purchaseService.chargePoint((String)session.getAttribute("user_id"), charge_point)) {
                 session.setAttribute("point", after_charge_point);
                 log.info(referer);
-                if (referer != null && referer.contains("PurchaseItem")) {
-                    return "forward:/eBookPurchaseItem";
-                } else if (referer != null && referer.contains("Purchase")) {
-                    return "forward:/eBookPurchase";
-                } else if (referer != null && referer.contains("index")) {
+                try {
+                    if (referer != null && referer.contains("PurchaseItem")) {
+                        return "forward:/eBookPurchaseItem";
+                    } else if (referer != null && referer.contains("Purchase")) {
+                        return "forward:/eBookPurchase";
+                    } else {
+                        // 마지막 '/' 이후의 부분 추출 (history 기능)
+                        String lastElement = referer.substring(referer.lastIndexOf('/') + 1);
+                        log.info(lastElement);
+                        return "redirect:/" + lastElement;
+                    }
+                } catch (Exception e) {
                     return "redirect:/index";
-                } else {
-                    return "forward:/eBookPurchase";
                 }
             } else {
                 return "false";

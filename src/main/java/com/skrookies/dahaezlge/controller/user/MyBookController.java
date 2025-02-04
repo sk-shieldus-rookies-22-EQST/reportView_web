@@ -38,7 +38,7 @@ public class MyBookController {
         log.info("page_move: myBook.jsp");
         String user_id = (String) session.getAttribute("user_id");
         if (user_id != null) {
-            List<Long> books_id = purchaseService.purchaseBook_list(user_id);
+            List<List> books_id = purchaseService.purchaseBook_list(user_id);
             log.info("books_id: "+ Arrays.toString(books_id.toArray()));
             log.info(books_id.toString());
             List<Map<String, Object>> books_info = new ArrayList<>();
@@ -48,7 +48,7 @@ public class MyBookController {
                     // 로그 출력: 책 ID 확인
                     log.info("id" + books_id.get(i));  // String.valueOf는 필요 없음
 
-                    List<Map<String, Object>> book_info = bookService.getMyBooks((Long) books_id.get(i));
+                    List<Map<String, Object>> book_info = bookService.getMyBooks((Long) books_id.get(i).get(0));
 
                     // 첫 번째 책 정보만 가져와서 books_info에 추가
                     if (!book_info.isEmpty()) {

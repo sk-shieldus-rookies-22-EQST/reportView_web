@@ -56,9 +56,7 @@
 			<div class="d-grid gap-2 col-6 mx-auto">
 			  <%
 			  String referer = request.getHeader("referer");
-			  if (session.getAttribute("referer") == null) {
-			    session.setAttribute("referer", referer);
-              }
+			  session.setAttribute("referer", referer);
 			  %>
 			  <button class="btn btn-primary" type="submit">충전하기</button>
 			  <%
