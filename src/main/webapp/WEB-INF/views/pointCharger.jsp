@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.logging.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,7 +57,20 @@
 			  <% String previousPage = request.getHeader("referer"); %>
 			  <input type="hidden" id="referer" name="referer" value="<%= previousPage %>" />
 			  <button class="btn btn-primary" type="submit">충전하기</button>
-			  <button class="btn btn-outline-primary" type="button" onclick="history.back()">취소하기</button>
+			  <%
+                  // HttpServletRequest 객체는 이미 JSP에서 제공되므로, 그냥 'request'를 사용
+                  String referer = request.getHeader("Referer");
+
+                  // 마지막 '/' 이후의 부분 추출
+                  String lastElement = referer.substring(referer.lastIndexOf('/') + 1);
+
+                  // Referer가 존재하면 로그에 출력
+                  if (lastElement.contains("eBookPurchaseItem")) {%>
+                      <button class="btn btn-outline-primary" type="button"
+                              onclick="window.location.href='/eBookDetail?book_id=<%= String.valueOf(session.getAttribute("book_id")) %>'">취소하기</button>
+                  <%} else {%>
+                      <button class="btn btn-outline-primary" type="button" onclick="history.back()">취소하기</button>
+                  <%}%>
 			</div>
 		</form>
 
