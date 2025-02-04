@@ -169,6 +169,16 @@
                     requestBody = JSON.stringify({ totalBookPrice: totalBookPrice });
                     goToPreviousBtnText = '장바구니로 가기';
                     goToPreviousBtnHref = '/eBookCart';
+                    goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
+
+                    // hover 효과를 위한 이벤트 리스너 추가
+                    goToPreviousBtn.addEventListener('mouseenter', function () {
+                        goToPreviousBtn.setAttribute('style', 'background-color: #5c636a !important;border-color:#5c636a !important; ');
+                    });
+
+                    goToPreviousBtn.addEventListener('mouseleave', function () {
+                        goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;'); // 기본 배경색으로 돌아가기
+                    });
 
                 }
 

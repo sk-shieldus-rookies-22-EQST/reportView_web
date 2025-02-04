@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.logging.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +61,20 @@
               }
 			  %>
 			  <button class="btn btn-primary" type="submit">충전하기</button>
-			  <button class="btn btn-outline-primary" type="button" onclick="history.back()">취소하기</button>
+			  <%
+                  // 마지막 '/' 이후의 부분 추출
+                  String lastElement = referer.substring(referer.lastIndexOf('/') + 1);
+
+                  // Referer가 존재하면 로그에 출력
+                  if (lastElement != null && lastElement.contains("eBookPurchaseItem")) {%>
+                      <button class="btn btn-outline-primary" type="button"
+                              onclick="window.location.href='/eBookDetail?book_id=<%= String.valueOf(session.getAttribute("book_id")) %>'">취소하기</button>
+                  <%} else if (lastElement != null && lastElement.contains("eBookPurchase")) {%>
+                     <button class="btn btn-outline-primary" type="button"
+                             onclick="window.location.href='/eBookCart'">취소하기</button>
+                 <%} else {%>
+                      <button class="btn btn-outline-primary" type="button" onclick="history.back()">취소하기</button>
+                  <%}%>
 			</div>
 		</form>
 
