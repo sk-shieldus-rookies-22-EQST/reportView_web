@@ -13,7 +13,6 @@
     <title>BOOKIES</title>
     <style>
         #nav-bar {
-            position: relative;
             z-index: 1044!important;  /* 높은 값을 설정하여 다른 요소들 위에 위치하도록 */
           }
         .add-to-cart-btn {
@@ -64,67 +63,61 @@
 
 
 
-<div class="container" id="nav-bar">
+<div class="container fixed-top" id="nav-bar">
     <jsp:include page="banner.jsp" />
     </div><div class="container">
 
-    <div class="container sticky-top" style="border-radius: 5px;padding: 50px 20px 10px 20px; background-color:white;">
-        <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">전체 도서 목록</p>
-
-
-        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
-            <form method="get" action="/index" style="display: flex; align-items: center; gap: 10px;">
-                <div class="input-group mb-3">
+    <div class="container sticky-top" style="padding: 80px 20px 20px 20px; background-color:white;">
+        <div class="justify-content-center" style="margin-top: 20px;display:flex;">
+            <form class="row justify-content-center" method="get" action="/index" style="align-items: center;width: 80%; display: flex;">
+                <div class="input-group" style="padding: 0; width: 100%; display: flex;">
                     <!-- 제목 입력 -->
                     <input
-                            type="text"
-                            class="form-control"
-                            placeholder="제목 입력"
-                            name="keyword"
-                            value="${keyword}"
-                            style="width: 200px;box-shadow:none;"
-                            aria-describedby="button-addon2"
-                            onfocus="this.style.backgroundColor='#f9f9f9';"
-                            onblur="this.style.backgroundColor='';"
+                        type="text"
+                        class="form-control"
+                        placeholder="제목 입력"
+                        name="keyword"
+                        value="${keyword}"
+                        style="box-shadow:none; flex: 4;"
+                        aria-describedby="button-addon2"
+                        onfocus="this.style.backgroundColor='#f9f9f9';"
+                        onblur="this.style.backgroundColor='';"
                     >
-                </div>
-                <div class="input-group mb-3">
                     <!-- 시작 날짜 입력 -->
                     <input
-                            type="date"
-                            class="form-control"
-                            name="sdate"
-                            value="${sdate}"
-                            style="width: 150px;box-shadow:none;"
-                            onfocus="this.style.backgroundColor='#f9f9f9';"
-                            onblur="this.style.backgroundColor='';"
+                        type="date"
+                        class="form-control"
+                        name="sdate"
+                        value="${sdate}"
+                        style="box-shadow:none; flex: 2;"
+                        onfocus="this.style.backgroundColor='#f9f9f9';"
+                        onblur="this.style.backgroundColor='';"
                     >
-                </div>
-                <div class="input-group mb-3">
                     <!-- 종료 날짜 입력 -->
                     <input
-                            type="date"
-                            class="form-control"
-                            name="edate"
-                            value="${edate}"
-                            style="width: 150px;box-shadow:none;"
-                            onfocus="this.style.backgroundColor='#f9f9f9';"
-                            onblur="this.style.backgroundColor='';"
+                        type="date"
+                        class="form-control"
+                        name="edate"
+                        value="${edate}"
+                        style="box-shadow:none; flex: 2;"
+                        onfocus="this.style.backgroundColor='#f9f9f9';"
+                        onblur="this.style.backgroundColor='';"
                     >
-                </div>
-                <div class="input-group mb-3">
                     <!-- 검색 버튼 -->
                     <button
-                            type="submit"
-                            class="btn btn-primary"
-                            id="button-addon2"
+                        type="submit"
+                        class="btn btn-primary"
+                        style="flex:0.5;"
+                        id="button-addon2"
                     >
                         검색
                     </button>
                 </div>
             </form>
+
         </div>
-</div><div class="container">
+</div>
+<div class="container">
         <div class="container text-center">
                 <div class="row row-cols-5" style="width=100%;">
                 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
