@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.controller.user;
 
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.userPoint.UserPoint;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ public class RegistuserController {
 
     private final UserService userService;
     private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** 회원가입 페이지 */
     @GetMapping("/registerForm")
@@ -31,11 +33,16 @@ public class RegistuserController {
     /** 회원가입 프로세스 */
     @PostMapping("/registerProc")
     public String registerProc_form(Model model, @ModelAttribute UserDto userDto, HttpSession session){
-        // XSS 필터 적용
+        // SQL, XSS 필터 적용
         String user_id = xssFilterService.filter(userDto.getUser_id());
+        user_id = sqlFilterService.filter(user_id);
         String user_pw = xssFilterService.filter(userDto.getUser_pw());
+        user_pw = sqlFilterService.filter(user_pw);
         String user_phone = xssFilterService.filter(userDto.getUser_phone());
+        user_phone = sqlFilterService.filter(user_phone);
         String user_email = xssFilterService.filter(userDto.getUser_email());
+        user_email = sqlFilterService.filter(user_email);
+
         String user_agree = userDto.getUser_agree();
         log.info("agree: " + user_agree);
         if(userService.checkId(user_id)) {

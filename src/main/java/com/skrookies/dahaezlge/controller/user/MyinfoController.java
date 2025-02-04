@@ -74,17 +74,9 @@ public class MyinfoController {
             } else {
                 Users user = user_info.get(0);
 
-                // XSS 필터링 적용
-                String filteredPw = xssFilterService.filter(user.getUser_pw());
-                filteredPw = sqlFilterService.filter(filteredPw);
-                String filteredPhone = xssFilterService.filter(user.getUser_phone());
-                filteredPhone = sqlFilterService.filter2(filteredPhone);
-                String filteredEmail = xssFilterService.filter(user.getUser_email());
-                filteredEmail = sqlFilterService.filter(filteredEmail);
-
-                model.addAttribute("user_pw", filteredPw);
-                model.addAttribute("user_phone", filteredPhone);
-                model.addAttribute("user_email", filteredEmail);
+                model.addAttribute("user_pw", user.getUser_pw());
+                model.addAttribute("user_phone", user.getUser_phone());
+                model.addAttribute("user_email", user.getUser_email());
                 model.addAttribute("myInfoModifyForm", "1");
                 return "myInfo";
             }
