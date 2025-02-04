@@ -13,7 +13,6 @@
     <title>BOOKIES</title>
     <style>
         #nav-bar {
-            position: relative;
             z-index: 1044!important;  /* 높은 값을 설정하여 다른 요소들 위에 위치하도록 */
           }
         .add-to-cart-btn {
@@ -31,105 +30,98 @@
     </style>
 </head>
 <body>
+<div class="container fixed-top" id="nav-bar">
+    <jsp:include page="banner.jsp" />
+</div>
+
 
 <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="delModalLabel">완료</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="deletedMessage"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delModalLabel">완료</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="deletedMessage"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
+</div>
 
-    <c:if test="${not empty sessionScope.deletedMessage}">
-        <script type="text/javascript">
-            // 모달에 메시지 설정
-            document.getElementById("deletedMessage").innerText = "${sessionScope.deletedMessage}";
+<c:if test="${not empty sessionScope.deletedMessage}">
+    <script type="text/javascript">
+        // 모달에 메시지 설정
+        document.getElementById("deletedMessage").innerText = "${sessionScope.deletedMessage}";
 
-            // Bootstrap 5에서 모달 띄우기
-            var myModal = new bootstrap.Modal(document.getElementById('delModal'));
-            myModal.show(); // 모달을 띄운다.
+        // Bootstrap 5에서 모달 띄우기
+        var myModal = new bootstrap.Modal(document.getElementById('delModal'));
+        myModal.show(); // 모달을 띄운다.
 
-            // 세션에서 메시지 제거
-            <c:remove var="deletedMessage" scope="session" />
-        </script>
-    </c:if>
+        // 세션에서 메시지 제거
+        <c:remove var="deletedMessage" scope="session" />
+    </script>
+</c:if>
 
+    <div class="container">
 
-
-
-<div class="container" id="nav-bar">
-    <jsp:include page="banner.jsp" />
-    </div><div class="container">
-
-    <div class="container sticky-top" style="border-radius: 5px;padding: 50px 20px 10px 20px; background-color:white;">
-        <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">전체 도서 목록</p>
-
-
-        <div style="margin-top: 20px; display: flex; justify-content: flex-end;">
-            <form method="get" action="/index" style="display: flex; align-items: center; gap: 10px;">
-                <div class="input-group mb-3">
+    <div class="container sticky-top" style="padding: 80px 20px 40px 20px; background-color:white;">
+        <div class="justify-content-center" style="margin-top: 20px;display:flex;">
+            <form class="row justify-content-center" method="get" action="/index" style="align-items: center;width: 80%; display: flex;">
+                <div style="padding: 0; width: 100%; display: flex;gap:10px">
                     <!-- 제목 입력 -->
                     <input
-                            type="text"
-                            class="form-control"
-                            placeholder="제목 입력"
-                            name="keyword"
-                            value="${keyword}"
-                            style="width: 200px;box-shadow:none;"
-                            aria-describedby="button-addon2"
-                            onfocus="this.style.backgroundColor='#f9f9f9';"
-                            onblur="this.style.backgroundColor='';"
+                        type="text"
+                        class="form-control"
+                        placeholder="제목 입력"
+                        name="keyword"
+                        value="${keyword}"
+                        style="box-shadow:none; flex: 4;"
+                        aria-describedby="button-addon2"
+                        onfocus="this.style.backgroundColor='#f9f9f9';"
+                        onblur="this.style.backgroundColor='';"
                     >
-                </div>
-                <div class="input-group mb-3">
                     <!-- 시작 날짜 입력 -->
                     <input
-                            type="date"
-                            class="form-control"
-                            name="sdate"
-                            value="${sdate}"
-                            style="width: 150px;box-shadow:none;"
-                            onfocus="this.style.backgroundColor='#f9f9f9';"
-                            onblur="this.style.backgroundColor='';"
+                        type="date"
+                        class="form-control"
+                        name="sdate"
+                        value="${sdate}"
+                        style="box-shadow:none; flex: 2;"
+                        onfocus="this.style.backgroundColor='#f9f9f9';"
+                        onblur="this.style.backgroundColor='';"
                     >
-                </div>
-                <div class="input-group mb-3">
                     <!-- 종료 날짜 입력 -->
                     <input
-                            type="date"
-                            class="form-control"
-                            name="edate"
-                            value="${edate}"
-                            style="width: 150px;box-shadow:none;"
-                            onfocus="this.style.backgroundColor='#f9f9f9';"
-                            onblur="this.style.backgroundColor='';"
+                        type="date"
+                        class="form-control"
+                        name="edate"
+                        value="${edate}"
+                        style="box-shadow:none; flex: 2;"
+                        onfocus="this.style.backgroundColor='#f9f9f9';"
+                        onblur="this.style.backgroundColor='';"
                     >
-                </div>
-                <div class="input-group mb-3">
                     <!-- 검색 버튼 -->
                     <button
-                            type="submit"
-                            class="btn btn-primary"
-                            id="button-addon2"
+                        type="submit"
+                        class="btn btn-primary"
+                        style="flex:0.5;"
+                        id="button-addon2"
                     >
                         검색
                     </button>
                 </div>
             </form>
+
         </div>
-</div><div class="container">
+</div>
+<div class="container">
         <div class="container text-center">
                 <div class="row row-cols-5" style="width=100%;">
                 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
                     <c:forEach var="book" items="${books}">
-                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;">
+                        <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;justify-content: flex-end;">
 
                             <div style="margin: 0% 10%;width:184px;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                                 <!--<img class="image_container" src="${book['book_img_path']}" style="border:1px solid; position: relative;width: 100%;overflow: hidden;">-->
