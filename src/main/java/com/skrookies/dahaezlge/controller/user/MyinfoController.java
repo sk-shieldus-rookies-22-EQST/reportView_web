@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.controller.user;
 
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 public class MyinfoController {
     private final UserService userService;
     private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** 회원 정보 페이지 */
     @GetMapping("/myInfo")
@@ -73,9 +75,12 @@ public class MyinfoController {
                 Users user = user_info.get(0);
 
                 // XSS 필터링 적용
-                String filteredPw = xssFilterService.filter(user.getUser_pw());
-                String filteredPhone = xssFilterService.filter(user.getUser_phone());
-                String filteredEmail = xssFilterService.filter(user.getUser_email());
+                String filteredPw = sqlFilterService.filter(user.getUser_pw());
+                filteredPw = xssFilterService.filter(filteredPw);
+                String filteredPhone = sqlFilterService.filter(user.getUser_phone());
+                filteredPhone = xssFilterService.filter(filteredPhone);
+                String filteredEmail = sqlFilterService.filter(user.getUser_email());
+                filteredEmail = xssFilterService.filter(filteredEmail);
 
                 model.addAttribute("user_pw", filteredPw);
                 model.addAttribute("user_phone", filteredPhone);

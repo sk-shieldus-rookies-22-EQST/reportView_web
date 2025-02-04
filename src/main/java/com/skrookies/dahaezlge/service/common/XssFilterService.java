@@ -35,8 +35,7 @@ public class XssFilterService {
     // 필터링할 특수문자 목록
     private static final String[][] SPECIAL_CHARACTERS = {
             {"<", "&lt;"}, {">", "&gt;"},
-            {"#", "&#35;"},
-            {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
+            {"{", "&#123;"}, {"}", "&#125;"}
     };
 
     /**
@@ -55,7 +54,7 @@ public class XssFilterService {
 
         // 2. 지정된 토큰 치환 (대소문자 무시)
         for (String token : REPLACE_TOKENS) {
-            output = output.replaceAll("(?i)" + token, token + "-1");
+            output = output.replaceAll("(?i)" + token, " ");
         }
 
         return output;
@@ -70,8 +69,7 @@ public class XssFilterService {
 
         // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"#", "&#35;"},
-                {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
+                {"{", "&#123;"}, {"}", "&#125;"}
         };
         for (String[] special : limitedSpecialCharacters) {
             output = output.replace(special[0], special[1]);
@@ -87,7 +85,7 @@ public class XssFilterService {
         output = output.replaceAll("(?i)r=", "");
 
         for (String token : modifiedTokens) {
-            output = output.replaceAll("(?i)" + token, token + "-1");
+            output = output.replaceAll("(?i)" + token, " ");
         }
 
         return output;
@@ -102,8 +100,7 @@ public class XssFilterService {
 
         // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"#", "&#35;"},
-                {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
+                {"{", "&#123;"}, {"}", "&#125;"}
         };
         for (String[] special : limitedSpecialCharacters) {
             output = output.replace(special[0], special[1]);
@@ -111,7 +108,7 @@ public class XssFilterService {
 
         // 지정된 토큰 치환 (대소문자 무시)
         for (String token : REPLACE_TOKENS) {
-            output = output.replaceAll("(?i)" + token, token + "-1");
+            output = output.replaceAll("(?i)" + token, " ");
         }
 
         return output;

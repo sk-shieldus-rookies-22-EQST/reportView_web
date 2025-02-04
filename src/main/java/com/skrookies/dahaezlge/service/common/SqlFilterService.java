@@ -27,7 +27,8 @@ public class SqlFilterService {
             {"%", "&#37;"},
             {"+", "&#43;"},
             {"-", "&#45;"},
-            {"/", "&#47;"}
+            {"/", "&#47;"},
+            {"&", "&amp;"}
     };
 
     public String filter(String input) {
@@ -37,7 +38,7 @@ public class SqlFilterService {
 
         // SQL 키워드 차단
         for (String keyword : SQL_KEYWORDS) {
-            input = input.replaceAll("(?i)\\b" + keyword + "\\b", ""); // 대소문자 구분 없이 제거
+            input = input.replaceAll("(?i)\\b" + keyword + "\\b", " "); // 대소문자 구분 없이 제거
         }
 
         // 특수문자 이스케이프 처리
