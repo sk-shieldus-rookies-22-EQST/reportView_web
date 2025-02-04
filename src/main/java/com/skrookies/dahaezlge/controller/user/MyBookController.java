@@ -48,7 +48,7 @@ public class MyBookController {
                     // 로그 출력: 책 ID 확인
                     log.info("id" + books_id.get(i));  // String.valueOf는 필요 없음
 
-                    List<Map<String, Object>> book_info = bookService.getMyBooks((Long) books_id.get(i).get(0));
+                    List<Map<String, Object>> book_info = bookService.getMyBooks(Long.parseLong(books_id.get(i).get(0).toString()));
 
                     // 첫 번째 책 정보만 가져와서 books_info에 추가
                     if (!book_info.isEmpty()) {
