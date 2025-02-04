@@ -45,7 +45,7 @@
                 <c:forEach var="book" items="${books_info}">
 
 
-                    <div id="BookiesDRM${book['book_id']}" style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%" onclick="BookiesDRM(${book['book_id']})">
+                    <div id="BookiesDRM${book['book_id']}" style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%;justify-content: flex-end" onclick="BookiesDRM(${book['book_id']})">
 
                         <div style="border:1px solid; margin: 0% 10%;width:184px;">
                             <img src="/images/test.jpg" style="position: relative;width: 100%;overflow: hidden;">

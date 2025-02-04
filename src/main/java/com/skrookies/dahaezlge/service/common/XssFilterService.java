@@ -9,7 +9,7 @@ import java.util.List;
 public class XssFilterService {
     // 필터링할 단어 목록
     private static final String[] REPLACE_TOKENS = {
-            "oncontent", "onweb", "alert", "onerror", "title", "xml", "body", "svg", "lowsrc",
+            "textarea","oncontent", "onweb", "alert", "onerror", "title", "xml", "body", "svg", "lowsrc",
             "dynsrc", "url", "marquee", "cookie", "document", "msgbox", "vbscript", "refresh",
             "escape", "string", "expression", "eval", "void", "bind", "create", "confirm",
             "prompt", "location", "fromCharCode", "append", "onbeforeprint", "ondragleave",
@@ -35,15 +35,10 @@ public class XssFilterService {
     // 필터링할 특수문자 목록
     private static final String[][] SPECIAL_CHARACTERS = {
             {"<", "&lt;"}, {">", "&gt;"},
-            {"#", "&#35;"},
-            {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
+            {"{", "&#123;"}, {"}", "&#125;"}
     };
 
-    /**
-     * ✅ 모든 특수문자 필터링 (filter)
-     * - < > ' " ( ) ; # & { } → HTML 엔티티로 변환
-     * - 지정된 토큰 → token-1 로 치환
-     */
+    /** XSS 필터링 */
     public String filter(String input) {
         if (input == null) return null;
         String output = input;
@@ -55,23 +50,20 @@ public class XssFilterService {
 
         // 2. 지정된 토큰 치환 (대소문자 무시)
         for (String token : REPLACE_TOKENS) {
-            output = output.replaceAll("(?i)" + token, token + "-1");
+            output = output.replaceAll("(?i)" + token, " ");
         }
 
         return output;
     }
 
-    /**
-     * ✅ < > ' " ( ) ;는 허용, 나머지 특수문자는 필터링 (filter1)
-     */
+    /** xss 허용 (게시판 내용, 댓글) */
     public String filter1(String input) {
         if (input == null) return null;
         String output = input;
 
         // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"#", "&#35;"},
-                {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
+                {"{", "&#123;"}, {"}", "&#125;"}
         };
         for (String[] special : limitedSpecialCharacters) {
             output = output.replace(special[0], special[1]);
@@ -87,23 +79,20 @@ public class XssFilterService {
         output = output.replaceAll("(?i)r=", "");
 
         for (String token : modifiedTokens) {
-            output = output.replaceAll("(?i)" + token, token + "-1");
+            output = output.replaceAll("(?i)" + token, " ");
         }
 
         return output;
     }
 
-    /**
-     * ✅ < > ' " ( ) ;는 허용, 나머지 특수문자는 필터링 (filter2)
-     */
+    /** xss 필터링 (sql 공격 허용) */
     public String filter2(String input) {
         if (input == null) return null;
         String output = input;
 
         // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"#", "&#35;"},
-                {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
+                {"{", "&#123;"}, {"}", "&#125;"}
         };
         for (String[] special : limitedSpecialCharacters) {
             output = output.replace(special[0], special[1]);
@@ -111,9 +100,11 @@ public class XssFilterService {
 
         // 지정된 토큰 치환 (대소문자 무시)
         for (String token : REPLACE_TOKENS) {
-            output = output.replaceAll("(?i)" + token, token + "-1");
+            output = output.replaceAll("(?i)" + token, " ");
         }
 
         return output;
     }
+
+    
 }

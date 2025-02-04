@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.controller.qna;
 
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ import java.util.Objects;
 public class QnaController {
     private final QnaService QnaService;
     private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /**qna 게시판 글 목록 */
     @GetMapping("/qnaList")
@@ -427,6 +429,8 @@ public class QnaController {
                                 @RequestParam(value = "page", defaultValue = "1") int page,
                                 Model model) {
         keyword = xssFilterService.filter(keyword);
+        keyword = sqlFilterService.filter(keyword);
+
 
         int pageSize = 10;
         List<QnaDto> qnaList = QnaService.searchQnaByKeyword(keyword, page);

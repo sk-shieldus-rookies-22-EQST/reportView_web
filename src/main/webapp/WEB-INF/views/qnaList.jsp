@@ -88,7 +88,7 @@
             <form method="get" action="/qnaSearch" style="display: flex; align-items: center; gap: 10px;">
 
                 <div class="input-group mb-3">
-                    <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요" value="${keyword}" style="width: 200px;box-shadow:none;" aria-describedby="button-addon2" onfocus="this.style.backgroundColor='#f9f9f9';" onblur="this.style.backgroundColor='';">
+                    <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요" style="width: 200px;box-shadow:none;" aria-describedby="button-addon2" onfocus="this.style.backgroundColor='#f9f9f9';" onblur="this.style.backgroundColor='';" value="${keyword}">
                   <button type="submit" class="btn btn-primary" id="button-addon2">검색</button>
                 </div>
 
