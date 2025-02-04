@@ -140,9 +140,9 @@ public class QnaController {
             return "qnaWrite";
         }
 
-        // 제목 길이 제한 (20자 이상일 경우 예외 처리)
-        if (qnaDto.getQna_title().length() > 20) {
-            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 20자).");
+        // 제목 길이 제한 (30자 이상일 경우 예외 처리)
+        if (qnaDto.getQna_title().length() > 30) {
+            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 30자).");
             return "qnaWrite";
         }
 
@@ -256,9 +256,9 @@ public class QnaController {
             return "qnaWrite";
         }
 
-        // 제목 길이 제한 (20자 이상일 경우 예외 처리)
-        if (QnaDto.getQna_title().length() > 20) {
-            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 20자).");
+        // 제목 길이 제한 (30자 이상일 경우 예외 처리)
+        if (QnaDto.getQna_title().length() > 30) {
+            session.setAttribute("errorMessage", "제목이 너무 깁니다! (최대 30자).");
             return "qnaWrite";
         }
 
