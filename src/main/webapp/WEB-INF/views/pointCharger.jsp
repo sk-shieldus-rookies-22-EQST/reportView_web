@@ -62,9 +62,6 @@
 			  %>
 			  <button class="btn btn-primary" type="submit">충전하기</button>
 			  <%
-                  // HttpServletRequest 객체는 이미 JSP에서 제공되므로, 그냥 'request'를 사용
-                  String referer = request.getHeader("Referer");
-
                   // 마지막 '/' 이후의 부분 추출
                   String lastElement = referer.substring(referer.lastIndexOf('/') + 1);
 
