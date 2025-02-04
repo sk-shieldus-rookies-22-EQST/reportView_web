@@ -39,7 +39,7 @@
 		<form action="/pointChargeProc" method="post">
 			<div class="mb-3" style="margin-bottom : 50px!important;display: flex;justify-content: space-between;">
 			  <div class="form-label fw-bold fs-4">보유 포인트</div>
-			  <div> <%= point %> </div>
+			  <div> <%= String.format("%,d pt", point) %> </div>
 			</div>
 
 			<div class="mb-3" style="margin-bottom : 50px!important;display: flex;justify-content: space-between;">
@@ -50,7 +50,7 @@
 
 			<div class="mb-3" style="margin-bottom : 50px!important;display: flex;justify-content: space-between;">
 			  <div class="form-label fw-bold fs-4">충전 후 포인트</div>
-			  <div id="updated_point"> <%= point %> </div>
+			  <div id="updated_point"> <%= String.format("%,d pt", point) %> </div>
 			</div>
 
 			<div class="d-grid gap-2 col-6 mx-auto">
@@ -104,8 +104,11 @@
                 // 새로운 포인트 계산 (보유 포인트 + 충전 포인트)
                 let updatedPoint = currentPoint + chargePoint;
 
+                // 포인트를 쉼표로 구분하여 표시
+                let updatedPointString = updatedPoint.toLocaleString() + " pt";  // 숫자 포맷팅
+
                 // 결과를 화면에 업데이트
-                updatedPointDiv.textContent = updatedPoint;
+                updatedPointDiv.textContent = updatedPointString;
             });
         </script>
 

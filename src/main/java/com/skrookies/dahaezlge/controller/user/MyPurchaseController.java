@@ -52,13 +52,11 @@ public class MyPurchaseController {
                 log.info (String.valueOf(books_info));
                 model.addAttribute("books", books_info);
                 return "myPurchase";
-            }else {
+            } else {
                 return "myPurchase";
             }
-
         } else {
             return "redirect:/loginForm";
         }
-
     }
 }
