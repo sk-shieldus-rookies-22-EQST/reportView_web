@@ -30,47 +30,46 @@
     </style>
 </head>
 <body>
+<div class="container fixed-top" id="nav-bar">
+    <jsp:include page="banner.jsp" />
+</div>
+
 
 <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="delModalLabel">완료</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="deletedMessage"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delModalLabel">완료</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="deletedMessage"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
+</div>
 
-    <c:if test="${not empty sessionScope.deletedMessage}">
-        <script type="text/javascript">
-            // 모달에 메시지 설정
-            document.getElementById("deletedMessage").innerText = "${sessionScope.deletedMessage}";
+<c:if test="${not empty sessionScope.deletedMessage}">
+    <script type="text/javascript">
+        // 모달에 메시지 설정
+        document.getElementById("deletedMessage").innerText = "${sessionScope.deletedMessage}";
 
-            // Bootstrap 5에서 모달 띄우기
-            var myModal = new bootstrap.Modal(document.getElementById('delModal'));
-            myModal.show(); // 모달을 띄운다.
+        // Bootstrap 5에서 모달 띄우기
+        var myModal = new bootstrap.Modal(document.getElementById('delModal'));
+        myModal.show(); // 모달을 띄운다.
 
-            // 세션에서 메시지 제거
-            <c:remove var="deletedMessage" scope="session" />
-        </script>
-    </c:if>
+        // 세션에서 메시지 제거
+        <c:remove var="deletedMessage" scope="session" />
+    </script>
+</c:if>
 
+    <div class="container">
 
-
-
-<div class="container fixed-top" id="nav-bar">
-    <jsp:include page="banner.jsp" />
-    </div><div class="container">
-
-    <div class="container sticky-top" style="padding: 80px 20px 20px 20px; background-color:white;">
+    <div class="container sticky-top" style="padding: 80px 20px 40px 20px; background-color:white;">
         <div class="justify-content-center" style="margin-top: 20px;display:flex;">
             <form class="row justify-content-center" method="get" action="/index" style="align-items: center;width: 80%; display: flex;">
-                <div class="input-group" style="padding: 0; width: 100%; display: flex;">
+                <div style="padding: 0; width: 100%; display: flex;gap:10px">
                     <!-- 제목 입력 -->
                     <input
                         type="text"
