@@ -45,8 +45,7 @@
             <tbody>
             <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-            <c:forEach var="bookList" items="${books}">
-                <c:forEach var="book" items="${bookList}" varStatus="status">
+                <c:forEach var="book" items="${books}" varStatus="status">
                 <tr data-bs-toggle="tooltip" data-bs-placement="left" title="도서 상세보기"
                 style="cursor:pointer;" onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
                     <td style="width:700px; text-align: center; vertical-align: middle;">
@@ -55,7 +54,6 @@
                     <td>${book['book_auth']}</td>
                     <td><fmt:formatNumber value="${book['book_price']}" type="number" groupingUsed="true" /> pt</td>
                 </tr>
-                </c:forEach>
             </c:forEach>
             </tbody>
         </table>

@@ -69,14 +69,14 @@ public class UserController {
         MyBookListCapDto myBookListCapDto = new MyBookListCapDto();
         myBookListCapDto.setMyBookListDtoList(null);
 
-        List<Long> books_id = purchaseService.purchaseBook_list(userIdDto.getUser_id());
+        List<List> books_id = purchaseService.purchaseBook_list(userIdDto.getUser_id());
 
         log.info("Android My Book List Size: " + books_id.size());
 
         List<MyBookListDto> myBookListDtoList = new ArrayList<>();
         if (!books_id.isEmpty()){
             for(int i = 0; i < books_id.size(); i++){
-                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i));
+                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i).get(0));
 
                 for(Map<String, Object> book_info : books_info) {
                     MyBookListDto myBookListDto = new MyBookListDto();
@@ -105,14 +105,14 @@ public class UserController {
         MyPurchaseCapDto myPurchaseCapDto = new MyPurchaseCapDto();
         myPurchaseCapDto.setMyPurchaseDto(null);
 
-        List<Long> books_id = purchaseService.purchaseBook_list(userIdDto.getUser_id());
+        List<List> books_id = purchaseService.purchaseBook_list(userIdDto.getUser_id());
 
         log.info("Android My Book List Size: " + books_id.size());
 
         List<MyPurchaseDto> myPurchaseDtoList = new ArrayList<>();
         if (!books_id.isEmpty()){
             for(int i = 0; i < books_id.size(); i++){
-                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i));
+                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i).get(0));
 
                 for(Map<String, Object> book_info : books_info) {
                     MyPurchaseDto myPurchaseDto = new MyPurchaseDto();

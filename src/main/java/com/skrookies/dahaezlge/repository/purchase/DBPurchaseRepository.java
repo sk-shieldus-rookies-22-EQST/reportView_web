@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +58,8 @@ public class DBPurchaseRepository implements PurchaseRepository {
     }
 
     @Override
-    public List<Long> purchaseBook_list(String user_id) {
-        String sql = "SELECT purchase_book_id FROM purchase WHERE purchase_user_id = ?";
+    public List<List> purchaseBook_list(String user_id) {
+        String sql = "SELECT purchase_book_id,purchase_date FROM purchase WHERE purchase_user_id = ?";
 
         // queryForList로 데이터를 가져옴
         try {
@@ -66,12 +67,20 @@ public class DBPurchaseRepository implements PurchaseRepository {
             log.info("PurchaseRepository: Got purchase_book_id List");
 
             // 반환할 book_id 리스트 초기화
-            List<Long> purchase_books_id = new ArrayList<>();
+            List<List> purchase_books_id = new ArrayList<>();
 
             // Map에서 book_id 값을 추출하여 리스트에 추가
             for (Map<String, Object> row : results) {
-                Long book_id = ((BigDecimal) row.get("purchase_book_id")).longValue();
-                purchase_books_id.add(book_id);
+                List<String> purchase_book = new ArrayList<>();
+                String book_id = ((BigDecimal) row.get("purchase_book_id")).toString();
+                log.info("BigDecimal 성공");
+                log.info("book_id: " + book_id);
+
+                Timestamp book_date = (Timestamp) row.get("purchase_date");
+                log.info("date: " + book_date);
+                purchase_book.add(book_id);
+                purchase_book.add(book_date.toString());
+                purchase_books_id.add(purchase_book);
             }
 
             // 변환된 book_id 리스트 반환

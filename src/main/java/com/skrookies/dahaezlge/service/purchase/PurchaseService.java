@@ -92,7 +92,7 @@ public class PurchaseService {
         return !duplicateBooks.isEmpty();
     }
 
-    public List<Long> purchaseBook_list(String user_id) {
+    public List<List> purchaseBook_list(String user_id) {
         return purchaseRepository.purchaseBook_list(user_id);
     }
 
