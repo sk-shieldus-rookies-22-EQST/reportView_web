@@ -148,6 +148,7 @@ public class eBookPurchaseController {
                 int point = userService.userPoint(user_id);
                 session.setAttribute("point", point);
                 session.removeAttribute("book_id");
+                session.removeAttribute("referer");
                 response.put("status", "purchase");
                 response.put("message", "결제가 완료되었습니다.");
             } else if ("exists".equals(purchaseItemResult)) {
