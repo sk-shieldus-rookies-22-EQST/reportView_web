@@ -52,7 +52,7 @@ public class MyinfoController {
                 model.addAttribute("user_phone", user.getUser_phone());
                 model.addAttribute("user_email", user.getUser_email());
                 model.addAttribute("myInfoModifyForm", "0");
-                return "/myInfo";
+                return "myInfo";
             }
         }
     }
@@ -86,7 +86,7 @@ public class MyinfoController {
                 model.addAttribute("user_phone", filteredPhone);
                 model.addAttribute("user_email", filteredEmail);
                 model.addAttribute("myInfoModifyForm", "1");
-                return "/myInfo";
+                return "myInfo";
             }
         }
     }
@@ -107,10 +107,10 @@ public class MyinfoController {
             }
         } else {
             log.info("입력한 모든 값 중 null이 있습니다.");
-            return "/myInfo";
+            return "myInfo";
         }
 
-        return "/myInfo";
+        return "myInfo";
     }
 
     @PostMapping("/delUser")
