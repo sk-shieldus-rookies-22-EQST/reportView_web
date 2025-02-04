@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.controller.main;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.service.book.BookService;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +26,7 @@ public class MainController {
     private final UserService userService;
     private final BookService bookService;
     private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** session에서 user_id 획득 */
     public String login_id(HttpSession session) {
@@ -82,6 +84,7 @@ public class MainController {
 
         // XSS 필터링 적용
         keyword = xssFilterService.filter(keyword); // keyword 필터링
+        keyword = sqlFilterService.filter(keyword);
         sdate = xssFilterService.filter2(sdate); // sdate 필터링
         edate = xssFilterService.filter2(edate); // edate 필터링
 
