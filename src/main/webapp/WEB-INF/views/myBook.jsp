@@ -27,11 +27,10 @@
                 window.addEventListener("blur", function () {
                     isPopupAppeared = true;
                 });
+                window.location.href = 'BookiesDRM://run?user_id=<%=user_id%>&book_id='+ book_id;
                 setTimeout(function () {
                     if (!isPopupAppeared) {
                         window.location.href = 'https://example.com/설치페이지';
-                    } else {
-                        window.location.href = 'BookiesDRM://run?user_id=<%=user_id%>&book_id='+ book_id;
                     }
                 }, 2000);
             }
