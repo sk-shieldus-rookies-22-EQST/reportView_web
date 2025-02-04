@@ -9,13 +9,6 @@
 
     <link rel="icon" type="image/png" href="images/favicon.png">
     <title>Bookies eBook Detail</title>
-
-    <script>
-    var message = "${messageDetail}";
-    if (message) {
-        alert(message);
-    }
-</script>
 </head>
 <body>
 <div class="container">

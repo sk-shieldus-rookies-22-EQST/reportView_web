@@ -32,9 +32,6 @@ public class LoginController {
     /** 로그인 프로세스 */
     @PostMapping("/loginProc")
     public String loginProc_form(Model model, @RequestParam String encrypted_data, HttpSession session){
-//        String user_id = loginDto.getUser_id();
-//        log.info("Login Id: " + user_id);
-//        log.info("Login Password: " + loginDto.getUser_pw());
         log.info("loginProc");
         try {
             log.info("login try encrypted: "+ encrypted_data);

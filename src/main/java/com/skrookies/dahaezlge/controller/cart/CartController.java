@@ -30,7 +30,6 @@ public class CartController {
         String user_id = (String) session.getAttribute("user_id");
         if (user_id == null){
             log.info("cart controller user_id null");
-            redirectAttributes.addFlashAttribute("messageLoginForm","로그인이 필요합니다.");
             return "redirect:/loginForm";
         }
         else {

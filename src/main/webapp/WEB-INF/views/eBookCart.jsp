@@ -13,13 +13,6 @@
 
     <title>BOOKIES</title>
 
-<script>
-    // Flash Attribute를 사용하여 메시지 가져오기
-    var message = "${messageCart}";
-    if (message) {
-        window.alert(message);
-    }
-</script>
 </head>
 <body>
 
@@ -134,15 +127,6 @@
         </table>
 
     </div>
-<!--
-        <div align="center" style="font-weight:bold; font-size:25px;">
-        장바구니에 담긴 총 금액: <%= String.format("%,d pt", total_price) %>
-        </div>
-        <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:50px">
-            <button id="purchaseButton" class="btn btn-primary pull-right" type="button">결제하기</button>
-        </div>
- --!>
-
     <div class="container" style="max-width: 1200px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
         <table class="table" height="100px" style="text-align: left; vertical-align: middle; border: 1px solid #dddddd;">
             <tr>
