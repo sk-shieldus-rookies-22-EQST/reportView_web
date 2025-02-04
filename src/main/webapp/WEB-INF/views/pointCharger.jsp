@@ -66,10 +66,10 @@
                   String lastElement = referer.substring(referer.lastIndexOf('/') + 1);
 
                   // Referer가 존재하면 로그에 출력
-                  if (lastElement.contains("eBookPurchaseItem")) {%>
+                  if (lastElement != null && lastElement.contains("eBookPurchaseItem")) {%>
                       <button class="btn btn-outline-primary" type="button"
                               onclick="window.location.href='/eBookDetail?book_id=<%= String.valueOf(session.getAttribute("book_id")) %>'">취소하기</button>
-                  <%} else if (lastElement.contains("eBookPurchase")) {%>
+                  <%} else if (lastElement != null && lastElement.contains("eBookPurchase")) {%>
                      <button class="btn btn-outline-primary" type="button"
                              onclick="window.location.href='/eBookCart'">취소하기</button>
                  <%} else {%>
