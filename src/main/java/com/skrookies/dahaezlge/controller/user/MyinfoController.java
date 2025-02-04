@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.controller.user;
 
 import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 public class MyinfoController {
     private final UserService userService;
     private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** 회원 정보 페이지 */
     @GetMapping("/myInfo")
@@ -74,8 +76,11 @@ public class MyinfoController {
 
                 // XSS 필터링 적용
                 String filteredPw = xssFilterService.filter(user.getUser_pw());
+                filteredPw = sqlFilterService.filter(filteredPw);
                 String filteredPhone = xssFilterService.filter(user.getUser_phone());
+                filteredPhone = sqlFilterService.filter2(filteredPhone);
                 String filteredEmail = xssFilterService.filter(user.getUser_email());
+                filteredEmail = sqlFilterService.filter(filteredEmail);
 
                 model.addAttribute("user_pw", filteredPw);
                 model.addAttribute("user_phone", filteredPhone);
@@ -91,9 +96,13 @@ public class MyinfoController {
     public String myInfoSave_form(Model model, UserDto userDto, HttpSession session){
         log.info("myInfoSave");
         String user_id = (String)session.getAttribute("user_id");
-        String user_pw = userDto.getUser_pw();
-        String user_phone = userDto.getUser_phone();
-        String user_email = userDto.getUser_email();
+
+        String user_pw = xssFilterService.filter(userDto.getUser_pw());
+        user_pw = sqlFilterService.filter(user_pw);
+        String user_phone = xssFilterService.filter(userDto.getUser_phone());
+        user_phone = sqlFilterService.filter2(user_phone);
+        String user_email = xssFilterService.filter(userDto.getUser_email());
+        user_email = sqlFilterService.filter(user_email);
         if(user_pw != null && user_phone != null && user_email != null){
             log.info("입력한 모든 값이 not null입니다.");
             Boolean update_result = userService.updateUserInfo(user_id, user_pw,user_phone,user_email);
