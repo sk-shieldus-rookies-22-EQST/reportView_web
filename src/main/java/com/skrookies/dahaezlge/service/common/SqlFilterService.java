@@ -16,9 +16,6 @@ public class SqlFilterService {
 
     // 차단할 특수문자
     private static final String[][] SPECIAL_CHARACTERS = {
-            {"<", "&lt;"},
-            {">", "&gt;"},
-            {"&", "&amp;"},
             {"\"", "&quot;"},
             {"'", "&apos;"},
             {"=", "&#61;"},

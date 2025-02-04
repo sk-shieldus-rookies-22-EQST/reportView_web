@@ -34,8 +34,8 @@ public class XssFilterService {
 
     // 필터링할 특수문자 목록
     private static final String[][] SPECIAL_CHARACTERS = {
-            {"<", "&lt;"}, {">", "&gt;"}, {"'", "&apos;"}, {"\"", "&quot;"},
-            {"(", "&#40;"}, {")", "&#41;"}, {";", "&#59;"}, {"#", "&#35;"},
+            {"<", "&lt;"}, {">", "&gt;"},
+            {"#", "&#35;"},
             {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
     };
 
@@ -62,15 +62,15 @@ public class XssFilterService {
     }
 
     /**
-     * ✅ < > ' " 는 허용, 나머지 특수문자는 필터링 (filter1)
+     * ✅ < > ' " ( ) ;는 허용, 나머지 특수문자는 필터링 (filter1)
      */
     public String filter1(String input) {
         if (input == null) return null;
         String output = input;
 
-        // `< > ' "`를 제외한 특수문자 필터링
+        // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"(", "&#40;"}, {")", "&#41;"}, {";", "&#59;"}, {"#", "&#35;"},
+                {"#", "&#35;"},
                 {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
         };
         for (String[] special : limitedSpecialCharacters) {
@@ -94,15 +94,15 @@ public class XssFilterService {
     }
 
     /**
-     * ✅ < > ' " 는 허용, 나머지 특수문자는 필터링 (filter2)
+     * ✅ < > ' " ( ) ;는 허용, 나머지 특수문자는 필터링 (filter2)
      */
     public String filter2(String input) {
         if (input == null) return null;
         String output = input;
 
-        // `< > ' "`를 제외한 특수문자 필터링
+        // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"(", "&#40;"}, {")", "&#41;"}, {";", "&#59;"}, {"#", "&#35;"},
+                {"#", "&#35;"},
                 {"&", "&amp;"}, {"{", "&#123;"}, {"}", "&#125;"}
         };
         for (String[] special : limitedSpecialCharacters) {
