@@ -59,7 +59,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input type="text" class="form-control" value="${qnaDetail.qna_title}"  name="qna_title" maxlength="50"></td>
+                            <td><input type="text" class="form-control" value="${qnaDetail.qna_title}"  name="qna_title" maxlength="30"></td>
                         </tr>
                         <label>
                             <input type="checkbox" name="secret" value="1" ${qnaDetail.secret == true ? 'checked' : ''}> 비밀글 설정

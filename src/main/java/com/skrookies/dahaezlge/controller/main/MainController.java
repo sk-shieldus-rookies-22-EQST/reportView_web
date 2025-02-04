@@ -82,8 +82,8 @@ public class MainController {
 
         // XSS 필터링 적용
         keyword = xssFilterService.filter(keyword); // keyword 필터링
-        sdate = xssFilterService.filter(sdate); // sdate 필터링
-        edate = xssFilterService.filter(edate); // edate 필터링
+        sdate = xssFilterService.filter2(sdate); // sdate 필터링
+        edate = xssFilterService.filter2(edate); // edate 필터링
 
         int totalBooks = 0;
 

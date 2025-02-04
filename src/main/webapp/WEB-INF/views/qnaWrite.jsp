@@ -67,7 +67,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="50"></td>
+                        <td><input type="text" class="form-control" placeholder="글 제목" name="qna_title" maxlength="30"></td>
                     </tr>
                     <label>
                         <input type="checkbox" name="secret" value="1"> 비밀글 설정

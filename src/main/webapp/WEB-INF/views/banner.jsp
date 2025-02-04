@@ -70,6 +70,11 @@
                 border-color: #ff7a00!important;
                 box-shadow: none!important;
             }
+            textarea:focus {
+                resize: none;
+                border-color: #ff7a00!important;
+                box-shadow: none!important;
+            }
 
             /* 드롭다운 항목 선택 시 색상 변경 */
             .nav-item .dropdown-menu .dropdown-item:focus {
