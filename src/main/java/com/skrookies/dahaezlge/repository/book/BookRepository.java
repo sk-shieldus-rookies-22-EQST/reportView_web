@@ -20,10 +20,10 @@ public interface BookRepository {
     List<Map<String, Object>> getBooksWithKeyword(String keyword);
 
     /** 게시 날짜 별 책 리스트 가져오기 */
-    List<Map<String, Object>> getBooksWithDate(Timestamp sdate, Timestamp edate);
+    List<Map<String, Object>> getBooksWithDate(String sdate, String edate);
 
     /** 검색어 및 게시 날짜 별 책 리스트 가져오기 */
-    List<Map<String, Object>> getBooksWithBoth(String keyword, Timestamp sdate, Timestamp edate);
+    List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate);
 
 
     // 전체 책 개수
@@ -39,11 +39,11 @@ public interface BookRepository {
 
     /** Date 기반 book list 출력
      * @return List<Map<String, Object>> */
-    List<Map<String, Object>> findByDate(Timestamp sdate, Timestamp edate);
+    List<Map<String, Object>> findByDate(String sdate, String edate);
 
     /** keyword & Date 기반 book list 출력
      * @return List<Map<String, Object>> */
-    List<Map<String, Object>> findByBoth(String keyword, Timestamp sdate, Timestamp edate);
+    List<Map<String, Object>> findByBoth(String keyword, String sdate, String edate);
 
     List<Map<String, Object>> getMyBooks(Long bookId);
 }

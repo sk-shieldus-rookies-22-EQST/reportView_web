@@ -36,11 +36,11 @@ public class BookService {
         return bookRepository.getBooksWithKeyword(keyword);
     }
 
-    public List<Map<String, Object>> getBooksWithDate(Timestamp sdate, Timestamp edate) {
+    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate) {
         return bookRepository.getBooksWithDate(sdate, edate);
     }
 
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, Timestamp sdate, Timestamp edate) {
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate) {
         return bookRepository.getBooksWithBoth(keyword, sdate, edate);
     }
 
@@ -91,7 +91,7 @@ public class BookService {
 
     /** Date 기반 BookList 반환
      * @return List<BookListDto> */
-    public List<BookListDto> findBookListByDate(Timestamp sdate, Timestamp edate){
+    public List<BookListDto> findBookListByDate(String sdate, String edate){
 
         List<Map<String, Object>> bookList = bookRepository.findByDate(sdate, edate);
         List<BookListDto> returnBookList = new ArrayList<>();
@@ -118,7 +118,7 @@ public class BookService {
 
     /** Keyword & Date 기반 BookList 반환
      * @return List<BookListDto> */
-    public List<BookListDto> findBookListByBoth(String keyword, Timestamp sdate, Timestamp edate){
+    public List<BookListDto> findBookListByBoth(String keyword, String sdate, String edate){
 
         List<Map<String, Object>> bookList = bookRepository.findByBoth(keyword, sdate, edate);
         List<BookListDto> returnBookList = new ArrayList<>();

@@ -91,10 +91,10 @@ public class ViewController {
         }
         else if(bookSearchRequestDto.getKeyword() == null){
 
-            bookList = bookService.findBookListByDate(bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
+            bookList = bookService.findBookListByDate(bookSearchRequestDto.getSdate().toString(), bookSearchRequestDto.getEdate().toString());
         }
         else{
-            bookList = bookService.findBookListByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate(), bookSearchRequestDto.getEdate());
+            bookList = bookService.findBookListByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate().toString(), bookSearchRequestDto.getEdate().toString());
         }
 
         BookListCapDto bookListCapDto = new BookListCapDto();

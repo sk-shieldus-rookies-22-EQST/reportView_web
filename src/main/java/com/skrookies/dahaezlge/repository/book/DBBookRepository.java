@@ -4,6 +4,7 @@ import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.entity.book.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.net.resolver.TimeUnitSuffixUtility;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -82,21 +83,21 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithDate(Timestamp sdate, Timestamp edate) {
+    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
-                "WHERE (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD')) " +
+                "WHERE (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) " +
                 "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, Timestamp sdate, Timestamp edate) {
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate) {
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
                 "FROM book " +
                 "WHERE book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD')) " +
+                "and (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) " +
                 "ORDER BY book_reg_date DESC ";
 
         return jdbcTemplate.queryForList(sql);
@@ -139,9 +140,9 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> findByDate(Timestamp sdate, Timestamp edate) {
+    public List<Map<String, Object>> findByDate(String sdate, String edate) {
 
-        String sql = "select * from book where (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD')) ";
+        String sql = "select * from book where (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) ";
 
         try {
             log.info("findByDate try");
@@ -155,10 +156,10 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> findByBoth(String keyword, Timestamp sdate, Timestamp edate) {
+    public List<Map<String, Object>> findByBoth(String keyword, String sdate, String edate) {
 
         String sql = "select * from book where book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between TO_DATE('" + dateFormatter(sdate) + "', 'YYYY-MM-DD') and TO_DATE('" + dateFormatter(edate) + "', 'YYYY-MM-DD'))";
+                "and (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD'))";
 
         try {
             log.info("findByBoth try");

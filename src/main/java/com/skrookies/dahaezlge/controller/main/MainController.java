@@ -56,17 +56,17 @@ public class MainController {
         }
         else if (keyword.isEmpty()) {
 
-            totalBooks = bookService.findBookListByDate(dateFormatter(sdate), dateFormatter(edate)).size(); // 날짜 검색 책 개수
+            totalBooks = bookService.findBookListByDate(sdate, edate).size(); // 날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithDate(dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithDate(sdate, edate);
         }
         else{
 
-            totalBooks = bookService.findBookListByBoth(keyword, dateFormatter(sdate), dateFormatter(edate)).size(); // 키워드&날짜 검색 책 개수
+            totalBooks = bookService.findBookListByBoth(keyword, sdate, edate).size(); // 키워드&날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithBoth(keyword, dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithBoth(keyword, sdate, edate);
         }
 
         // JSP로 데이터 전달
@@ -110,17 +110,17 @@ public class MainController {
         }
         else if (keyword.isEmpty()) {
 
-            totalBooks = bookService.findBookListByDate(dateFormatter(sdate), dateFormatter(edate)).size(); // 날짜 검색 책 개수
+            totalBooks = bookService.findBookListByDate(sdate, edate).size(); // 날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithDate(dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithDate(sdate, edate);
         }
         else{
 
-            totalBooks = bookService.findBookListByBoth(keyword, dateFormatter(sdate), dateFormatter(edate)).size(); // 키워드&날짜 검색 책 개수
+            totalBooks = bookService.findBookListByBoth(keyword, (sdate), (edate)).size(); // 키워드&날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithBoth(keyword, dateFormatter(sdate), dateFormatter(edate));
+            books = bookService.getBooksWithBoth(keyword, sdate, edate);
         }
 
         // JSP로 데이터 전달
@@ -157,7 +157,7 @@ public class MainController {
     }
 
     /** String 타입의 date 변수를 Timestamp 형식으로 변경 (시간 설정 안 함) */
-    private Timestamp dateFormatter(String date) {
+    private Timestamp timestamp (String date) {
         if (date == null || date.isEmpty()) {
             return null;
         }
