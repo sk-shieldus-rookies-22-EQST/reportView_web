@@ -53,6 +53,7 @@ public class MyPointController {
 
             if(purchaseService.chargePoint((String)session.getAttribute("user_id"), charge_point)) {
                 session.setAttribute("point", after_charge_point);
+                log.info(referer);
                 if (referer != null && referer.contains("PurchaseItem")) {
                     return "forward:/eBookPurchaseItem";
                 } else if (referer != null && referer.contains("Purchase")) {

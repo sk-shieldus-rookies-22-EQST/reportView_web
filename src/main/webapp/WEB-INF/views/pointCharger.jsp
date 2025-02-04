@@ -69,7 +69,10 @@
                   if (lastElement.contains("eBookPurchaseItem")) {%>
                       <button class="btn btn-outline-primary" type="button"
                               onclick="window.location.href='/eBookDetail?book_id=<%= String.valueOf(session.getAttribute("book_id")) %>'">취소하기</button>
-                  <%} else {%>
+                  <%} else if (lastElement.contains("eBookPurchase")) {%>
+                     <button class="btn btn-outline-primary" type="button"
+                             onclick="window.location.href='/eBookCart'">취소하기</button>
+                 <%} else {%>
                       <button class="btn btn-outline-primary" type="button" onclick="history.back()">취소하기</button>
                   <%}%>
 			</div>
