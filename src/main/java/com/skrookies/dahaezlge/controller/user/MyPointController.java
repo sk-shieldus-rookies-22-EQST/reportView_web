@@ -35,10 +35,11 @@ public class MyPointController {
     @PostMapping("/pointChargeProc")
     public String pointChargeProc(Model model, RedirectAttributes redirectAttributes,
                                   HttpServletRequest request, HttpServletResponse response,
-                                  @RequestParam("charge_point") int charge_point, @RequestParam("referer") String referer,
+                                  @RequestParam("charge_point") int charge_point,
                                   HttpSession session) throws ServletException, IOException {
         log.info("pointChargeProc");
 
+        String referer = (String) session.getAttribute("referer");
         log.info("Previous Page URL: " + referer);
 
         if(session.getAttribute("user_id") != null) {
@@ -54,9 +55,11 @@ public class MyPointController {
                 session.setAttribute("point", after_charge_point);
                 if (referer != null && referer.contains("PurchaseItem")) {
                     return "forward:/eBookPurchaseItem";
+                } else if (referer != null && referer.contains("Purchase")) {
+                    return "forward:/eBookPurchase";
                 } else if (referer != null && referer.contains("index")) {
                     return "redirect:/index";
-                }else  {
+                } else {
                     return "forward:/eBookPurchase";
                 }
             } else {

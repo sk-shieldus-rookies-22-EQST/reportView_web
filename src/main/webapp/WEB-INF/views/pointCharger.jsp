@@ -54,8 +54,12 @@
 			</div>
 
 			<div class="d-grid gap-2 col-6 mx-auto">
-			  <% String previousPage = request.getHeader("referer"); %>
-			  <input type="hidden" id="referer" name="referer" value="<%= previousPage %>" />
+			  <%
+			  String referer = request.getHeader("referer");
+			  if (session.getAttribute("referer") == null) {
+			    session.setAttribute("referer", referer);
+              }
+			  %>
 			  <button class="btn btn-primary" type="submit">충전하기</button>
 			  <%
                   // HttpServletRequest 객체는 이미 JSP에서 제공되므로, 그냥 'request'를 사용
