@@ -93,17 +93,22 @@
 		 <%
                  // JSP Scriptlet: EL 표현식 값을 Java 변수에 할당
                  String warn = (String) request.getAttribute("warn");
-                 if(warn != null) {
+                 if(warn == "1") {
          %>
-            <div class="alert alert-danger d-flex align-it ems-center" role="alert" style="max-width: 600px; margin-top: 30px;">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-            <div> 아이디 또는 비밀번호를 잘못 입력하셨습니다. </div>
-            			</div>
-
-
-            			<%
-            		}
-            	%>
+                    <div class="alert alert-danger d-flex align-it ems-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div> 아이디 또는 비밀번호를 잘못 입력하셨습니다. </div>
+                    </div>
+        <%
+            	} else if(warn == "2") {
+       %>
+                      <div class="alert alert-danger d-flex align-it ems-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                          <div> 아이디 또는 비밀번호를 입력해주세요. </div>
+                      </div>
+        <%
+                }
+        %>
 
 
 </div></div>

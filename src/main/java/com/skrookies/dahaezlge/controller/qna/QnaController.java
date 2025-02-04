@@ -4,6 +4,7 @@ import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
+import com.skrookies.dahaezlge.service.common.DownFilterService;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +33,7 @@ public class QnaController {
     private final QnaService QnaService;
     private final XssFilterService xssFilterService;
     private final SqlFilterService sqlFilterService;
+    private final DownFilterService downFilterService;
 
     /**qna 게시판 글 목록 */
     @GetMapping("/qnaList")
@@ -401,22 +403,28 @@ public class QnaController {
 
     /**qna 게시판 파일 다운로드 */
     @GetMapping("/download")
-    public void downloadFile(@RequestParam("file_name") String fileName,
-                             @RequestParam("file_path") String filePath,
-                             HttpServletResponse response, HttpSession session) {
+    public String downloadFile(@RequestParam("file_name") String fileName,
+                               @RequestParam("file_path") String filePath,
+                               HttpServletResponse response, HttpSession session) {
         try {
-            // file_path는 이미 상대경로로 저장되어 있다고 가정 (예: "/uploads/dog_20250203_205142.jpg")
+            // 파일 경로 필터링
+            filePath = downFilterService.filter(filePath);
+            // 파일이 저장된 절대 경로 (예: /uploads/dog_20250203_205142.jpg)
             String uploadDir = session.getServletContext().getRealPath("/");
-            File file = new File(uploadDir + filePath);  // 예: /uploads/dog_20250203_205142.jpg
+            File file = new File(uploadDir + filePath);
 
             if (!file.exists()) {
-                throw new FileNotFoundException("파일이 존재하지 않습니다.");
+                session.setAttribute("errorMessage", "파일 다운 실패.");
+                // 파일이 존재하지 않으면 리다이렉트
+                return "redirect:/qnaList";
             }
 
+            // 다운로드 응답 헤더 설정
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
             response.setContentLengthLong(file.length());
 
+            // 파일 스트림 전송
             try (InputStream inputStream = new FileInputStream(file);
                  OutputStream outputStream = response.getOutputStream()) {
                 byte[] buffer = new byte[1024];
@@ -426,12 +434,15 @@ public class QnaController {
                 }
                 outputStream.flush();
             }
-
+            // 다운로드가 완료되었으므로 추가 뷰 반환은 필요 없음
+            return null;
         } catch (Exception e) {
             log.error("파일 다운로드 실패: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return null;
         }
     }
+
 
     /**qna 게시판 글 검색*/
     @GetMapping("/qnaSearch")
