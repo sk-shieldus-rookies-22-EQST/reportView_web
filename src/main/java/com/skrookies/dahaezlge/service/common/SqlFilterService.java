@@ -35,7 +35,7 @@ public class SqlFilterService {
             {"&", "&amp;"}
     };
 
-    //sql 필터링
+    /** sql injection 필터링 */
     public String filter(String input) {
         if (input == null || input.trim().isEmpty()) {
             return input;
@@ -54,7 +54,7 @@ public class SqlFilterService {
         return input;
     }
 
-    //전화번호에 사용하기 위해 - 필터링 해제
+    /**전화번호에 사용하기 위해 - 필터링 해제*/
     public String filter1(String input) {
         if (input == null || input.trim().isEmpty()) {
             return input;
@@ -88,7 +88,7 @@ public class SqlFilterService {
         return input;
     }
 
-    //xss 허용, sql 필터링
+    /** sql 필터링 (xss 허용) */
     public String filter2(String input) {
         if (input == null || input.trim().isEmpty()) {
             return input;
@@ -116,7 +116,7 @@ public class SqlFilterService {
         return input;
     }
 
-    //xss 필터링, sql 공격 허용
+    /** sql 공격 허용 (xss 필터링) */
     public String filter3(String input) {
         if (input == null || input.trim().isEmpty()) {
             return input;

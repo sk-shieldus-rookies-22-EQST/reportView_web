@@ -38,10 +38,7 @@ public class XssFilterService {
             {"{", "&#123;"}, {"}", "&#125;"}
     };
 
-    /**
-     * ✅ 모든 특수문자 필터링 (filter)
-     * - < > ' " ( ) ; # & { } → HTML 엔티티로 변환
-     */
+    /** XSS 필터링 */
     public String filter(String input) {
         if (input == null) return null;
         String output = input;
@@ -59,7 +56,7 @@ public class XssFilterService {
         return output;
     }
 
-    //xss만 허용, sql 필터링
+    /** xss 허용 (게시판 내용, 댓글) */
     public String filter1(String input) {
         if (input == null) return null;
         String output = input;
@@ -88,7 +85,7 @@ public class XssFilterService {
         return output;
     }
 
-    //sql 공격 허용, xss만 필터링
+    /** xss 필터링 (sql 공격 허용) */
     public String filter2(String input) {
         if (input == null) return null;
         String output = input;
