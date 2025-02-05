@@ -434,6 +434,8 @@ public class QnaController {
             String uploadDir = "src/main/webapp";
             File file = new File(uploadDir + filePath);
 
+            log.info(Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString());
+
             if (!file.exists()) {
                 session.setAttribute("errorMessage", "파일 다운 실패.");
                 // 파일이 존재하지 않으면 리다이렉트
