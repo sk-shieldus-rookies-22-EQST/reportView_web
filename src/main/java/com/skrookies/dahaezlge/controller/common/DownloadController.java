@@ -20,22 +20,25 @@ public class DownloadController {
     @GetMapping("/download/drm")
     public String downloadFile(HttpServletResponse response, HttpSession session) {
         try {
-            // 고정 파일 경로 설정 (BookiesDRM_Setup.exe 파일만 다운로드)
-            String filePathStr = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "drm").toString();
-            File file = new File(filePathStr);
+            // 파일 경로 필터링
+            String filePath = "src/main/webapp/drm/BookiesDRM_Setup.exe";
+            // 파일이 저장된 절대 경로 (예: /uploads/dog_20250203_205142.jpg)
+            File file = new File(filePath);
 
             if (!file.exists()) {
-                session.setAttribute("errorMessage", "파일 다운로드 실패.");
-                return "redirect:/myBook";
+                log.info("drm 다운 실패");
+                session.setAttribute("errorMessage", "파일 다운 실패.");
+                // 파일이 존재하지 않으면 리다이렉트
+                return "redirect:/qnaList";
             }
 
-            // 고정 파일명
             String fileName = "BookiesDRM_Setup.exe";
 
             // 다운로드 응답 헤더 설정
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment; filename=\""
                     + URLEncoder.encode(fileName, "UTF-8").replace("+", "%20") + "\"");
+
             response.setContentLengthLong(file.length());
 
             // 파일 스트림 전송
