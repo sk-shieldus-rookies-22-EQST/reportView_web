@@ -18,14 +18,14 @@
         .add-to-cart-btn {
             width: 100%;
             height: 40px; /* 버튼 높이 설정 */
-            background-image: url('/images/cart_icon.svg');
+            background-image: url('/images/icon_img/cart_icon.svg');
             border: none;
             background-repeat: no-repeat;
                 background-position: center;
         }
 
         .add-to-cart-btn:hover {
-            background-image: url('/images/cart_icon_white.svg'); /* hover시 다른 이미지 */
+            background-image: url('/images/icon_img/cart_icon_white.svg'); /* hover시 다른 이미지 */
         }
     </style>
 </head>
