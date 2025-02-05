@@ -368,7 +368,7 @@ public class QnaController {
                 int qnaResult = QnaService.qnaUpdate(QnaDto);
                 if (qnaResult > 0) {
 
-                    return "redirect:/qnaDetail?qnd_id=" + Math.toIntExact(QnaDto.getQna_id());
+                    return "redirect:/qnaDetail?qna_id=" + Math.toIntExact(QnaDto.getQna_id());
                 } else {
                     return "qnaEdit";
                 }
