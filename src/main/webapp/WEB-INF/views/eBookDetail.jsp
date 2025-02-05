@@ -26,8 +26,8 @@
         %>
 
             <tr>
-                <td align="center" width="250px" rowspan="4">
-                    <img
+                <td align="center"  rowspan="4">
+                    <img width="250px"
                         src="<%= eBook.getBook_img_path() %>"
                     />
                 </td>

@@ -104,7 +104,7 @@
                     total_price += book.getBook_price();
         %>
             <tr align="center">
-                <td width="250px"> <img src="<%=book.getBook_img_path()%>"/> </td>
+                <td> <img width="200px" src="<%=book.getBook_img_path()%>"/> </td>
                 <td style="width:500px; text-align: center; vertical-align: middle;">
                 <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;"><%= book.getBook_title() %> </p></td>
                 <td style=" text-align: center; vertical-align: middle;"> <%= String.format("%,d pt", book.getBook_price()) %> </td>
