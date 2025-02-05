@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="icon" type="image/png" href="images/icon_img/favicon.png">
 
     <title>BOOKIES</title>
     <style>
@@ -18,14 +18,14 @@
         .add-to-cart-btn {
             width: 100%;
             height: 40px; /* 버튼 높이 설정 */
-            background-image: url('/images/cart_icon.svg');
+            background-image: url('/images/icon_img/cart_icon.svg');
             border: none;
             background-repeat: no-repeat;
                 background-position: center;
         }
 
         .add-to-cart-btn:hover {
-            background-image: url('/images/cart_icon_white.svg'); /* hover시 다른 이미지 */
+            background-image: url('/images/icon_img/cart_icon_white.svg'); /* hover시 다른 이미지 */
         }
     </style>
 </head>

@@ -195,11 +195,11 @@ public class QnaController {
                 fileExtension = fileName.substring(dotIndex);
             }
 
-            // **추가 검사: fileBaseName에 추가 '.'가 포함되어 있다면 이중 확장자로 판단**
-            if (fileBaseName.contains(".")) {
-                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
-                return "qnaWrite";
-            }
+//            // **추가 검사: fileBaseName에 추가 '.'가 포함되어 있다면 이중 확장자로 판단**
+//            if (fileBaseName.contains(".")) {
+//                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
+//                return "qnaWrite";
+//            }
 
             // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png만 허용
             if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
@@ -209,11 +209,15 @@ public class QnaController {
 
             // 현재 시간을 파일명에 추가 (예: dog_20250203_205142.jpg)
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String newFileName = fileBaseName + "_" + timestamp + fileExtension;
+            //파일 업로드 취약점 이중 확장자 허용
+            String newFileName = timestamp + "_" + fileBaseName + fileExtension;
+            // 정상 코드
+            //String newFileName = fileBaseName + "_" + timestamp + fileExtension;
 
             try {
-                // 파일 저장 경로 설정 (WebApp의 루트 경로 기준으로 상대경로 사용)
-                String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
+                // 파일 저장 경로 설정 (REST 컨트롤러와 동일하게 고정 경로 사용)
+                String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString();
+
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -239,6 +243,7 @@ public class QnaController {
         } else {
             log.info("업로드된 파일이 없음");
         }
+
 
         // QnA 저장 처리
         int qnaResult = QnaService.qna(qnaDto);
@@ -322,11 +327,11 @@ public class QnaController {
                 fileExtension = fileName.substring(dotIndex);
             }
 
-            // **추가 검사: fileBaseName에 추가 '.'가 포함되어 있다면 이중 확장자로 판단**
-            if (fileBaseName.contains(".")) {
-                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
-                return "qnaWrite";
-            }
+//            // **추가 검사: fileBaseName에 추가 '.'가 포함되어 있다면 이중 확장자로 판단**
+//            if (fileBaseName.contains(".")) {
+//                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
+//                return "qnaWrite";
+//            }
 
             // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png 만 허용
             if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
@@ -336,11 +341,15 @@ public class QnaController {
 
             // 현재 시간을 파일명에 추가 (예: dog_20250203_205142.jpg)
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String newFileName = fileBaseName + "_" + timestamp + fileExtension;
+            // 파일 업로드 취약점 이중 확장자 허용
+            String newFileName = timestamp + "_" + fileBaseName + fileExtension;
+            // 정상 코드
+            //String newFileName = fileBaseName + "_" + timestamp + fileExtension;
 
             try {
                 // 파일 저장 경로 설정 (WebApp의 루트 경로 기준, 상대경로 사용)
-                String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
+                String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString();
+
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -422,7 +431,7 @@ public class QnaController {
             // 파일 경로 필터링
             filePath = downFilterService.filter(filePath);
             // 파일이 저장된 절대 경로 (예: /uploads/dog_20250203_205142.jpg)
-            String uploadDir = session.getServletContext().getRealPath("/");
+            String uploadDir = "src/main/webapp";
             File file = new File(uploadDir + filePath);
 
             if (!file.exists()) {
