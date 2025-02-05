@@ -195,6 +195,12 @@ public class QnaController {
                 fileExtension = fileName.substring(dotIndex);
             }
 
+            // **추가 검사: fileBaseName에 추가 '.'가 포함되어 있다면 이중 확장자로 판단**
+            if (fileBaseName.contains(".")) {
+                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
+                return "qnaWrite";
+            }
+
             // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png만 허용
             if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
                 session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
@@ -316,6 +322,12 @@ public class QnaController {
                 fileExtension = fileName.substring(dotIndex);
             }
 
+            // **추가 검사: fileBaseName에 추가 '.'가 포함되어 있다면 이중 확장자로 판단**
+            if (fileBaseName.contains(".")) {
+                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
+                return "qnaWrite";
+            }
+
             // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png 만 허용
             if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
                 session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
@@ -356,7 +368,7 @@ public class QnaController {
                 int qnaResult = QnaService.qnaUpdate(QnaDto);
                 if (qnaResult > 0) {
 
-                    return "redirect:/qnaDetail?qnd_id=" + Math.toIntExact(QnaDto.getQna_id());
+                    return "redirect:/qnaDetail?qna_id=" + Math.toIntExact(QnaDto.getQna_id());
                 } else {
                     return "qnaEdit";
                 }
@@ -421,7 +433,9 @@ public class QnaController {
 
             // 다운로드 응답 헤더 설정
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\""
+                    + URLEncoder.encode(fileName, "UTF-8").replace("+", "%20") + "\"");
+
             response.setContentLengthLong(file.length());
 
             // 파일 스트림 전송

@@ -124,8 +124,7 @@
                         <div style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom: 5%;justify-content: flex-end;">
 
                             <div style="margin: 0% 10%;width:184px;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
-                                <!--<img class="image_container" src="${book['book_img_path']}" style="border:1px solid; position: relative;width: 100%;overflow: hidden;">-->
-                                <img class="image_container" src="/images/test.jpg" style="border:1px solid;position: relative;width: 100%;overflow: hidden;">
+                                <img class="image_container" src="${book['book_img_path']}" style="border:1px solid; position: relative;width: 100%;overflow: hidden;">
 
                             </div>
                             <div style="margin-bottom:16px;display: flex;height: 170px;flex-direction: column;justify-content: space-between;">

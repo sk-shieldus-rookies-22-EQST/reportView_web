@@ -76,7 +76,7 @@ public class UserController {
         List<MyBookListDto> myBookListDtoList = new ArrayList<>();
         if (!books_id.isEmpty()){
             for(int i = 0; i < books_id.size(); i++){
-                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i).get(0));
+                List<Map<String, Object>> books_info = bookService.getMyBooks(Long.parseLong(books_id.get(i).get(0).toString()));
 
                 for(Map<String, Object> book_info : books_info) {
                     MyBookListDto myBookListDto = new MyBookListDto();
@@ -112,7 +112,7 @@ public class UserController {
         List<MyPurchaseDto> myPurchaseDtoList = new ArrayList<>();
         if (!books_id.isEmpty()){
             for(int i = 0; i < books_id.size(); i++){
-                List<Map<String, Object>> books_info = bookService.getMyBooks((Long)books_id.get(i).get(0));
+                List<Map<String, Object>> books_info = bookService.getMyBooks(Long.parseLong(books_id.get(i).get(0).toString()));
 
                 for(Map<String, Object> book_info : books_info) {
                     MyPurchaseDto myPurchaseDto = new MyPurchaseDto();
