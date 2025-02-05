@@ -19,6 +19,11 @@
     border-color : #FF7A00!important;
 }
 </style>
+<c:if test="${not empty message}">
+    <script>
+        alert("${message}");
+    </script>
+</c:if>
 </head>
 <body>
 
