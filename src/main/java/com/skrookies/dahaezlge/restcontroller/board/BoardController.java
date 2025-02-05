@@ -81,7 +81,7 @@ public class BoardController {
 
             try {
                 // 파일 저장 경로 설정
-                String uploadDir = "src/main/webapp/uploads";
+                String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString();
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -221,7 +221,7 @@ public class BoardController {
 
             try {
                 // 파일 저장 경로 설정
-                String uploadDir = "src/main/webapp/uploads";
+                String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString();
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
                     dir.mkdirs();
