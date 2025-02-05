@@ -30,7 +30,7 @@
                 window.location.href = 'BookiesDRM://run?user_id=<%=user_id%>&book_id='+ book_id;
                 setTimeout(function () {
                     if (!isPopupAppeared) {
-                        window.location.href = '/index';
+                        window.location.href = '/download/drm';
                     }
                 }, 2000);
             }

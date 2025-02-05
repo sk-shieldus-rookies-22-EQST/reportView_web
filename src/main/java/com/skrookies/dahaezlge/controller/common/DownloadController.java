@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.nio.file.Paths;
 
 @Controller
 @Slf4j
@@ -20,7 +21,7 @@ public class DownloadController {
     public String downloadFile(HttpServletResponse response, HttpSession session) {
         try {
             // 고정 파일 경로 설정 (BookiesDRM_Setup.exe 파일만 다운로드)
-            String filePathStr = "src/main/webapp/drm/BookiesDRM_Setup.exe";
+            String filePathStr = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "drm").toString();
             File file = new File(filePathStr);
 
             if (!file.exists()) {
