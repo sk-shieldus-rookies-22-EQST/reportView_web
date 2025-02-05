@@ -65,7 +65,7 @@
 
                 <div class="mb-3">
                   <label for="user_pw" class="form-label fw-bold fs-4">비밀번호</label>
-                  <input type="text" class="form-control" id="user_pw" name="user_pw" >
+                  <input type="password" class="form-control" id="user_pw" name="user_pw" >
                 </div>
 
                 <div class="mb-3">

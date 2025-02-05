@@ -42,25 +42,25 @@
 	%>
 	<div class="container text-center">
         <div class="row  row-cols-5" style="width=100%">
-                <c:forEach var="book" items="${books_info}">
+            <c:forEach var="book" items="${books_info}">
 
 
-                    <div id="BookiesDRM${book['book_id']}" style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%;justify-content: flex-end" onclick="BookiesDRM(${book['book_id']})">
+                <div id="BookiesDRM${book['book_id']}" style="cursor:pointer;display: flex;align-items: center;flex-direction: column;margin-bottom:5%;justify-content: flex-end" onclick="BookiesDRM(${book['book_id']})">
 
-                        <div style="border:1px solid; margin: 0% 10%;width:184px;">
-                            <img class="image_container" src="${book['book_img_path']}" style="position: relative;width: 100%;overflow: hidden;">
+                    <div style="border:1px solid; margin: 0% 10%;width:184px;">
+                        <img class="image_container" src="${book['book_img_path']}" style="position: relative;width: 100%;overflow: hidden;">
 
-                        </div>
-                        <div style="margin-bottom:16px; display:flex;flex-direction: column;">
-                            <div style=" height:100px;display: flex;flex-direction: column;justify-content: flex-start;align-items: center;">
+                    </div>
+                    <div style="margin-bottom:16px; display:flex;flex-direction: column;">
+                        <div style=" height:100px;display: flex;flex-direction: column;justify-content: flex-start;align-items: center;">
 
-                                <p class="fs-5 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
+                            <p class="fs-5 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
-                                <p class="text-secondary fs-6" style="margin:0;">${book['book_auth']}</p>
-                            </div>
+                            <p class="text-secondary fs-6" style="margin:0;">${book['book_auth']}</p>
                         </div>
                     </div>
-                </c:forEach>
+                </div>
+            </c:forEach>
         </div>
     </div>
 </div>

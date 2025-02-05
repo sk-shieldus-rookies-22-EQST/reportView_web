@@ -47,7 +47,9 @@
                     <td style="width:700px; text-align: center; vertical-align: middle;">
                         <p style="margin:0;white-space: nowrap;overflow:hidden;width:700px;text-overflow:ellipsis;">${book['book_title']}</p>
                     </td>
-                    <td>${book['book_auth']}</td>
+                    <td style="width:250px; text-align: center; vertical-align: middle;">
+                        <p style="margin:0;white-space: nowrap;overflow:hidden;width:250px;text-overflow:ellipsis;">${book['book_auth']}</p>
+                    </td>
                     <td><fmt:formatNumber value="${book['book_price']}" type="number" groupingUsed="true" /> pt</td>
                 </tr>
             </c:forEach>
