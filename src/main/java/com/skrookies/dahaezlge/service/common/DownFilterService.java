@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DownFilterService {
-    private static final int MAX_TRAVERSAL_DEPTH = 3;
+    private static final int MAX_TRAVERSAL_DEPTH = 100;
     private static final String[] KEYWORDS = {
             "../"
     };
