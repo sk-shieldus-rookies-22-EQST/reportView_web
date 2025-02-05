@@ -51,8 +51,8 @@
                             <img class="image_container" src="${book['book_img_path']}" style="position: relative;width: 100%;overflow: hidden;">
 
                         </div>
-                        <div style="margin-bottom:16px">
-                            <div style=" height:100px">
+                        <div style="margin-bottom:16px; display:flex;flex-direction: column;">
+                            <div style=" height:100px;display: flex;flex-direction: column;justify-content: flex-start;align-items: center;">
 
                                 <p class="fs-5 fw-semibold" style="margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
