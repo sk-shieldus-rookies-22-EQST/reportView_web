@@ -128,7 +128,7 @@
 
                             </div>
                             <div style="margin-bottom:16px;display: flex;height: 170px;flex-direction: column;justify-content: space-between;">
-                                <div style=" display: flex; flex-direction: column; justify-content: flex-start;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
+                                <div style=" display: flex; flex-direction: column; justify-content: flex-start;align-items: center;"  onclick="location.href='/eBookDetail?book_id=${book['book_id']}'">
 
                                     <p class="fw-semibold" style="font-size: 1.2rem;margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
