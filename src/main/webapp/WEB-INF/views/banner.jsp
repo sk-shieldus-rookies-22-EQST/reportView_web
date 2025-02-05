@@ -93,7 +93,7 @@
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
                 <a class="navbar-brand" href="/index" style="margin-left:15px;">
-                    <img src="/images/bookies_logo3.svg" alt="Bookies logo" width="125" class="d-inline-block align-text-top">
+                    <img src="/images/logo_img/bookies_logo3.svg" alt="Bookies logo" width="125" class="d-inline-block align-text-top">
                 </a>
 
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
