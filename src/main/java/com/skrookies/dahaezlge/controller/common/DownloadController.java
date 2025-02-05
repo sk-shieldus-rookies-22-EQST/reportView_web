@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 @Controller
 @Slf4j
 public class DownloadController {
-    @GetMapping("/download")
+    @GetMapping("/download/drm")
     public String downloadFile(HttpServletResponse response, HttpSession session) {
         try {
             // 고정 파일 경로 설정 (BookiesDRM_Setup.exe 파일만 다운로드)
