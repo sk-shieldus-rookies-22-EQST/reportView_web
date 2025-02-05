@@ -433,7 +433,9 @@ public class QnaController {
 
             // 다운로드 응답 헤더 설정
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"");
+            response.setHeader("Content-Disposition", "attachment; filename=\""
+                    + URLEncoder.encode(fileName, "UTF-8").replace("+", "%20") + "\"");
+
             response.setContentLengthLong(file.length());
 
             // 파일 스트림 전송
