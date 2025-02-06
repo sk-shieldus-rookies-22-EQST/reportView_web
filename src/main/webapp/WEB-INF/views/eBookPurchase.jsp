@@ -134,10 +134,8 @@
             var purchaseUrl = "${purchaseUrl}";
 
             purchaseButton.addEventListener('click', function () {
-                var bookId = 0;
-                // var totalBookPrice = <%= total_price %>; // 총 금액
 
-                var requestBody;
+                // var requestBody;
                 var goToPreviousBtnText = '';  // 버튼 텍스트 변수
                 var goToPreviousBtnHref = '';  // 버튼 href 변수
 
@@ -146,8 +144,6 @@
                     if (bookList != null && !bookList.isEmpty()) {
                         BookDto book = bookList.get(0); // 첫 번째 책을 선택
                 %>
-                        bookId = <%= book.getBook_id() %>;
-                        requestBody = JSON.stringify({ bookId: bookId }); //, totalBookPrice: totalBookPrice });
 
                         goToPreviousBtnText = '이전 페이지로 가기';
                         goToPreviousBtnHref = '/eBookDetail?book_id='+bookId;
@@ -166,7 +162,6 @@
                     }
                 %>
                 } else {
-                    requestBody = JSON.stringify({ totalBookPrice: totalBookPrice });
                     goToPreviousBtnText = '장바구니로 가기';
                     goToPreviousBtnHref = '/eBookCart';
                     goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
@@ -190,7 +185,6 @@
                     headers: {
                         'Content-Type': 'application/json',  // JSON 데이터로 보냄
                     },
-                    body: requestBody  // 선택된 데이터 전송
                 })
                 .then(response => response.json())
                 .then(data => {
