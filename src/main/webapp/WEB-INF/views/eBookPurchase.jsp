@@ -99,7 +99,6 @@
             </tr>
         </table>
     </div>
-
     <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -135,7 +134,6 @@
 
             purchaseButton.addEventListener('click', function () {
 
-                // var requestBody;
                 var goToPreviousBtnText = '';  // 버튼 텍스트 변수
                 var goToPreviousBtnHref = '';  // 버튼 href 변수
 
