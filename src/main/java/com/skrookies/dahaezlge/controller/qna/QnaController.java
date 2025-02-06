@@ -201,11 +201,11 @@ public class QnaController {
                 return "qnaWrite";
             }
 
-//            // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png만 허용
-//            if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
-//                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
-//                return "qnaWrite";
-//            }
+            // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png만 허용
+            if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
+                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
+                return "qnaWrite";
+            }
 
             // 현재 시간을 파일명에 추가 (예: dog_20250203_205142.jpg)
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
@@ -333,11 +333,11 @@ public class QnaController {
                 return "qnaWrite";
             }
 
-//            // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png 만 허용
-//            if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
-//                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
-//                return "qnaWrite";
-//            }
+            // 화이트리스트 방식 확장자 체크: 마지막 확장자가 .jpg 또는 .png 만 허용
+            if (!fileExtension.equalsIgnoreCase(".jpg") && !fileExtension.equalsIgnoreCase(".png")) {
+                session.setAttribute("errorMessage", "jpg, png 방식 확장자만 업로드할 수 있습니다.");
+                return "qnaWrite";
+            }
 
             // 현재 시간을 파일명에 추가 (예: dog_20250203_205142.jpg)
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
@@ -433,6 +433,8 @@ public class QnaController {
             // 파일이 저장된 절대 경로 (예: /uploads/dog_20250203_205142.jpg)
             String uploadDir = "src/main/webapp";
             File file = new File(uploadDir + filePath);
+
+            log.info(Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString());
 
             if (!file.exists()) {
                 session.setAttribute("errorMessage", "파일 다운 실패.");
