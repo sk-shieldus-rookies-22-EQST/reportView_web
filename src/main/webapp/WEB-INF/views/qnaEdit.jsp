@@ -106,7 +106,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><textarea style="resize:none" class="form-control" name="qna_body" maxlength="2048" style="height: 350px;">${qnaDetail.qna_body}</textarea></td>
+                            <td><textarea style="resize:none; width: 100%; height: 400px; border: none;" class="form-control" name="qna_body" maxlength="2048" >${qnaDetail.qna_body}</textarea></td>
                         </tr>
                         <tr>
                             <td><input type="file" name="qna_file" id="qna_file"></td>
