@@ -39,7 +39,7 @@ public class RegistuserController {
         String user_pw = xssFilterService.filter(userDto.getUser_pw());
         user_pw = sqlFilterService.filter(user_pw);
         String user_phone = xssFilterService.filter(userDto.getUser_phone());
-        user_phone = sqlFilterService.filter(user_phone);
+        user_phone = sqlFilterService.filter1(user_phone);
         String user_email = xssFilterService.filter(userDto.getUser_email());
         user_email = sqlFilterService.filter(user_email);
 
