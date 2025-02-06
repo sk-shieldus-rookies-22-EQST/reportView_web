@@ -12,6 +12,9 @@
 
     <title>BOOKIES</title>
     <style>
+        .sticky-top{
+            top: 30px!important;
+        }
         #nav-bar {
             z-index: 1044!important;  /* 높은 값을 설정하여 다른 요소들 위에 위치하도록 */
           }
@@ -64,9 +67,32 @@
     </script>
 </c:if>
 
-    <div class="container">
+    <div class="container" style="margin-top:56px">
 
-    <div class="container sticky-top" style="padding: 80px 20px 40px 20px; background-color:white;">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="/images/common_img/test_ignited.png" class="d-block w-100" alt="Ignited Minds">
+        </div>
+        <div class="carousel-item">
+          <img src="/images/common_img/test_happiness.png" class="d-block w-100" alt="Resisting Happiness">
+        </div>
+        <div class="carousel-item">
+          <img src="/images/common_img/test_think.png" class="d-block w-100" alt="Think Straight">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+
+    <div class="container sticky-top" style="padding:50px 20px 40px 20px; background-color:white;">
         <div class="justify-content-center" style="margin-top: 20px;display:flex;">
             <form class="row justify-content-center" method="get" action="/index" style="align-items: center;width: 80%; display: flex;">
                 <div style="padding: 0; width: 100%; display: flex;gap:10px">
