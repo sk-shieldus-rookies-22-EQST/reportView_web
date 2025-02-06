@@ -123,12 +123,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const purchaseButton = document.getElementById('purchaseProc'); // 단일 버튼
-            const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+            //const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+
+            const purchaseModalElement = document.getElementById('purchaseModal'); // 모달 요소
+            purchaseModalElement.setAttribute("data-bs-backdrop", "static");
+            purchaseModalElement.setAttribute("data-bs-keyboard", "false"); // ESC 키로 닫기 방지
+            const purchaseModal = new bootstrap.Modal(purchaseModalElement); // 모달 인스턴스 생성
+
             const purchaseModalBody = document.getElementById('purchaseModalBody');
             const goToChargeBtn = document.getElementById('goToChargeBtn');
             const goToMainBtn = document.getElementById('goToMainBtn');
             const goToPreviousBtn = document.getElementById('goToPreviousBtn');
             const goToMyPurchaseBtn = document.getElementById('goToMyPurchaseBtn');
+            const closeButton = document.querySelector('.btn-close');
 
             var purchaseUrl = "${purchaseUrl}";
 
@@ -212,7 +219,7 @@
                             goToChargeBtn.style.display = 'none';
                             goToMainBtn.style.display = 'none';
                             goToPreviousBtn.style.display = 'inline-block';
-                            goToMyPurchaseBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
                             break;
                         case 'purchase':
                             purchaseModalBody.textContent = data.message;
@@ -221,6 +228,7 @@
                             goToPreviousBtn.style.display = 'none';
                             goToMyPurchaseBtn.style.display = 'inline-block';
                             goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
+                            closeButton.style.display = 'none';
 
                             // hover 효과를 위한 이벤트 리스너 추가
                             goToMainBtn.addEventListener('mouseenter', function () {
