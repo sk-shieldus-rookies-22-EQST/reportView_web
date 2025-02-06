@@ -129,7 +129,13 @@ public class eBookPurchaseController {
                                    @RequestBody Map<String, Object> requestBody){
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
-        int total_book_price = Integer.parseInt(requestBody.get("totalBookPrice").toString());
+        int total_book_price = 0;// = Integer.parseInt(requestBody.get("totalBookPrice").toString());
+
+        List<BookDto> purchaseList = cartService.setCartList(user_id);
+
+        for(BookDto purchaseBook : purchaseList){
+            total_book_price += (int) purchaseBook.getBook_price();
+        }
 
         Map<String, String> response = new HashMap<>();
 

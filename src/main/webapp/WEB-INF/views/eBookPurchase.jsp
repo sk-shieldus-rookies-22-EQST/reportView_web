@@ -135,7 +135,7 @@
 
             purchaseButton.addEventListener('click', function () {
                 var bookId = 0;
-                var totalBookPrice = <%= total_price %>; // 총 금액
+                // var totalBookPrice = <%= total_price %>; // 총 금액
 
                 var requestBody;
                 var goToPreviousBtnText = '';  // 버튼 텍스트 변수
@@ -147,7 +147,7 @@
                         BookDto book = bookList.get(0); // 첫 번째 책을 선택
                 %>
                         bookId = <%= book.getBook_id() %>;
-                        requestBody = JSON.stringify({ bookId: bookId, totalBookPrice: totalBookPrice });
+                        requestBody = JSON.stringify({ bookId: bookId }); //, totalBookPrice: totalBookPrice });
 
                         goToPreviousBtnText = '이전 페이지로 가기';
                         goToPreviousBtnHref = '/eBookDetail?book_id='+bookId;
