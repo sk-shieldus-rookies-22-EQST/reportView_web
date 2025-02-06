@@ -201,7 +201,7 @@
                     <form action="qnaReplyProcess" method="post">
                         <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
                         <div class="mb-3">
-                            <textarea style="resize:none" name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
+                            <textarea style="resize:none" maxlength="200" name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">답글 달기</button>
                     </form>

@@ -532,6 +532,12 @@ public class QnaController {
             return "redirect:/qnaDetail?qna_id=" + qna_id; // 다시 작성 페이지로 이동
         }
 
+        // 댓글 길이 제한 (500자 이상일 경우 예외 처리)
+        if (qna_re_body.length() > 200) {
+            session.setAttribute("errorMessage", "내용이 너무 많습니다! (최대 200자).");
+            return "qnaWrite";
+        }
+
         // XSS 필터링 적용
         String filteredBody = xssFilterService.filter1(qna_re_body);
         filteredBody = sqlFilterService.filter2(filteredBody);
