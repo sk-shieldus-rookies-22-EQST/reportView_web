@@ -144,6 +144,7 @@
                     if (bookList != null && !bookList.isEmpty()) {
                         BookDto book = bookList.get(0); // 첫 번째 책을 선택
                 %>
+                        bookId = <%= book.getBook_id() %>;
 
                         goToPreviousBtnText = '이전 페이지로 가기';
                         goToPreviousBtnHref = '/eBookDetail?book_id='+bookId;
@@ -200,13 +201,12 @@
                             goToMyPurchaseBtn.style.display = 'none';
 
                             break;
-                            case 'charge':
-                                purchaseModalBody.textContent = data.message;
-                                goToChargeBtn.style.display = 'inline-block';
-                                goToMainBtn.style.display = 'none';
-                                goToPreviousBtn.style.display = 'inline-block';
-                                goToMyPurchaseBtn.style.display = 'none';
-
+                        case 'charge':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'inline-block';
+                            goToMainBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
 
                             break;
                         case 'exists':

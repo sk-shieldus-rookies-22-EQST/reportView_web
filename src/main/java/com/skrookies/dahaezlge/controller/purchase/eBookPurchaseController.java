@@ -54,7 +54,7 @@ public class eBookPurchaseController {
     @PostMapping("/eBookPurchaseItem")
     public String setPurchaseItem(Model model, RedirectAttributes redirectAttributes, HttpSession session){
         String user_id = (String) session.getAttribute("user_id");
-        log.info("eBookPurchaseItem controller");
+        log.info("eBookPurchaseItem item controller");
         if (user_id == null){
             log.info("purchase controller user id null");
             return "redirect:/loginForm";
@@ -137,6 +137,7 @@ public class eBookPurchaseController {
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
         int total_book_price = 0;
+        log.info("purchaseItemProc");
 
         Long book_id = (Long) session.getAttribute("book_id");
 

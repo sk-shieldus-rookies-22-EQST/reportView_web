@@ -148,7 +148,6 @@ public class MainController {
         // LocalDateTime을 String으로 변환
         String formattedDate = localDateTime.format(formatter);
 
-
         session.setAttribute("book_id", book_id);
         model.addAttribute("bookInfo", bookInfo);
         model.addAttribute("formattedDate", formattedDate);  // 포맷된 날짜 추가
