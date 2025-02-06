@@ -99,7 +99,6 @@
             </tr>
         </table>
     </div>
-
     <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -124,20 +123,24 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const purchaseButton = document.getElementById('purchaseProc'); // 단일 버튼
-            const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+            //const purchaseModal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+
+            const purchaseModalElement = document.getElementById('purchaseModal'); // 모달 요소
+            purchaseModalElement.setAttribute("data-bs-backdrop", "static");
+            purchaseModalElement.setAttribute("data-bs-keyboard", "false"); // ESC 키로 닫기 방지
+            const purchaseModal = new bootstrap.Modal(purchaseModalElement); // 모달 인스턴스 생성
+
             const purchaseModalBody = document.getElementById('purchaseModalBody');
             const goToChargeBtn = document.getElementById('goToChargeBtn');
             const goToMainBtn = document.getElementById('goToMainBtn');
             const goToPreviousBtn = document.getElementById('goToPreviousBtn');
             const goToMyPurchaseBtn = document.getElementById('goToMyPurchaseBtn');
+            const closeButton = document.querySelector('.btn-close');
 
             var purchaseUrl = "${purchaseUrl}";
 
             purchaseButton.addEventListener('click', function () {
-                var bookId = 0;
-                var totalBookPrice = <%= total_price %>; // 총 금액
 
-                var requestBody;
                 var goToPreviousBtnText = '';  // 버튼 텍스트 변수
                 var goToPreviousBtnHref = '';  // 버튼 href 변수
 
@@ -147,7 +150,6 @@
                         BookDto book = bookList.get(0); // 첫 번째 책을 선택
                 %>
                         bookId = <%= book.getBook_id() %>;
-                        requestBody = JSON.stringify({ bookId: bookId, totalBookPrice: totalBookPrice });
 
                         goToPreviousBtnText = '이전 페이지로 가기';
                         goToPreviousBtnHref = '/eBookDetail?book_id='+bookId;
@@ -166,7 +168,6 @@
                     }
                 %>
                 } else {
-                    requestBody = JSON.stringify({ totalBookPrice: totalBookPrice });
                     goToPreviousBtnText = '장바구니로 가기';
                     goToPreviousBtnHref = '/eBookCart';
                     goToPreviousBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
@@ -190,7 +191,6 @@
                     headers: {
                         'Content-Type': 'application/json',  // JSON 데이터로 보냄
                     },
-                    body: requestBody  // 선택된 데이터 전송
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -206,13 +206,12 @@
                             goToMyPurchaseBtn.style.display = 'none';
 
                             break;
-                            case 'charge':
-                                purchaseModalBody.textContent = data.message;
-                                goToChargeBtn.style.display = 'inline-block';
-                                goToMainBtn.style.display = 'none';
-                                goToPreviousBtn.style.display = 'inline-block';
-                                goToMyPurchaseBtn.style.display = 'none';
-
+                        case 'charge':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'inline-block';
+                            goToMainBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
 
                             break;
                         case 'exists':
@@ -220,7 +219,7 @@
                             goToChargeBtn.style.display = 'none';
                             goToMainBtn.style.display = 'none';
                             goToPreviousBtn.style.display = 'inline-block';
-                            goToMyPurchaseBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
                             break;
                         case 'purchase':
                             purchaseModalBody.textContent = data.message;
@@ -229,6 +228,7 @@
                             goToPreviousBtn.style.display = 'none';
                             goToMyPurchaseBtn.style.display = 'inline-block';
                             goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
+                            closeButton.style.display = 'none';
 
                             // hover 효과를 위한 이벤트 리스너 추가
                             goToMainBtn.addEventListener('mouseenter', function () {
