@@ -2,6 +2,8 @@ package com.skrookies.dahaezlge.controller.user;
 
 import com.skrookies.dahaezlge.controller.user.Dto.FinduseridDto;
 import com.skrookies.dahaezlge.controller.user.Dto.LoginDto;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class FinduseridController {
 
     private final UserService userService;
+    private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** 아이디, 비밀번호 찾기 페이지 이동*/
     @GetMapping("/findUseridpw")
@@ -33,6 +37,12 @@ public class FinduseridController {
         String user_is_pw = finduseridDto.getUser_id_pw();
         String user_phone_pw = finduseridDto.getUser_phone_pw();
         String user_email_pw = finduseridDto.getUser_email_pw();
+
+        /** SQL, XSS 필터링 */
+        user_phone = xssFilterService.filter(user_phone);
+        user_phone = sqlFilterService.filter(user_phone);
+        user_email = xssFilterService.filter(user_email);
+        user_email = sqlFilterService.filter(user_email);
 
         log.info("FinduseridController - whatfind = " + whatFind);
          if(whatFind == 1){

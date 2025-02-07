@@ -2,6 +2,8 @@ package com.skrookies.dahaezlge.controller.user;
 
 
 import com.skrookies.dahaezlge.security.SecurityController;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -19,7 +21,8 @@ public class LoginController {
 
     private final UserService userService;
     private final AESService aesService;
-
+    private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** 로그인 폼 */
     @GetMapping("/loginForm")
@@ -47,6 +50,14 @@ public class LoginController {
                 String[] LoginInfoParts = decryptedPassword.split("&&&&");
                 String user_id = LoginInfoParts[0];
                 String user_pw = LoginInfoParts[1];
+
+                /** SQL, XSS 필터링*/
+                user_id = xssFilterService.filter(user_id);
+                user_id = sqlFilterService.filter(user_id);
+
+                user_pw = xssFilterService.filter(user_pw);
+                user_pw = sqlFilterService.filter(user_pw);
+
                 log.info("no user_pw, user_id");
                 log.info("ID: " + user_id);
                 log.info("PW: " + user_pw);
