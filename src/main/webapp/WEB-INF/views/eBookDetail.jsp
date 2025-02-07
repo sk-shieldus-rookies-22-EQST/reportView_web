@@ -35,7 +35,7 @@
                 <td> <%= eBook.getBook_title() %>  </td>
             </tr>
             <tr>
-                <td align="center"> 작가 </td>
+                <td align="center" style="width: 400px"> 작가 </td>
                 <td> <%= eBook.getBook_auth() %>  </td>
             </tr>
             <tr>
