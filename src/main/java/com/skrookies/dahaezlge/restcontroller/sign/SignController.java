@@ -43,9 +43,8 @@ public class SignController {
         StatusDto statusDto = new StatusDto();
         statusDto.setStatus(false);
 
-        List<Users> user_info = userService.userInfo(signOutDto.getUser_id());
-        if(user_info != null) {
-
+        Boolean user_check = userService.login(signOutDto.getUser_id(), signOutDto.getUser_pw());
+        if (user_check) {
             Boolean result = userService.deleteUser(signOutDto.getUser_id());
             statusDto.setStatus(result);
         }
