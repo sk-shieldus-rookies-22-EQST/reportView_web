@@ -30,7 +30,7 @@ public class FinduseridController {
     public String findUseridpw_form(HttpSession session, @ModelAttribute FinduseridDto finduseridDto, @RequestParam("whatFind") Integer whatFind){
         String user_phone = finduseridDto.getUser_phone();
         String user_email = finduseridDto.getUser_email();
-        String user_is_pw = finduseridDto.getUser_id_pw();
+            String user_id_pw = finduseridDto.getUser_id_pw();
         String user_phone_pw = finduseridDto.getUser_phone_pw();
         String user_email_pw = finduseridDto.getUser_email_pw();
 
@@ -54,9 +54,11 @@ public class FinduseridController {
              } else if (found_user_id_pw == "error" && found_user_id_pw == "error"){
                  log.info("FinduseridController - error ");
                  return "redirect:/findUseridpw?errorpw=1";
-             } else {
+             } else if (found_user_id_pw.equals(user_id_pw)){
                  session.setAttribute("find_pw_userid", found_user_id_pw);
                  return "redirect:/modifyUserpwForm";
+             } else {
+                 return "redirect:/findUseridpw?warnpw=1";
              }
         } else {
             return "redirect:/findUseridpw";
