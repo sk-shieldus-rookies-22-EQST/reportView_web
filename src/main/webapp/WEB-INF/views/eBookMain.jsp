@@ -158,7 +158,7 @@
 
                                     <p class="fw-semibold" style="font-size: 1.2rem;margin:0;width:184px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">${book['book_title']}</p>
 
-                                    <p class="text-secondary" style="margin:0;font-size: 0.8rem;">${book['book_auth']}</p>
+                                    <p class="text-secondary" style="margin:0;font-size: 0.8rem;width:184px;">${book['book_auth']}</p>
                                     <p class="col" style="padding: 0;margin:0;"><fmt:formatNumber value="${book['book_price']}" type="number" groupingUsed="true" />원</p>
                                    </div>
                                     <form class="col" id="addToCartForm" method="post" action="/addCart" style="display: inline-block; width:100%;align-content: end;">
