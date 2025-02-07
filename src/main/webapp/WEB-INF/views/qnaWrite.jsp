@@ -97,7 +97,7 @@
             <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
                 <thead>
                     <tr>
-                        <th colspan="2" style="background-color: #eeeeee; text-align: center;">게시판 글쓰기 양식</th>
+                        <th colspan="2" style="background-color: #eeeeee; text-align: center;">게시글 작성</th>
                     </tr>
                 </thead>
                 <tbody>

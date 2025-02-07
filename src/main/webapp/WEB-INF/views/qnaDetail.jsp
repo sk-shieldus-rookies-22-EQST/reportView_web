@@ -63,7 +63,7 @@
         <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                 <tr>
-                    <th colspan="3" style="background-color: #eeeeee; text-align: center;">게시판 글 보기 양식</th>
+                    <th colspan="3" style="background-color: #eeeeee; text-align: center;">게시글 상세 내용 확인</th>
                 </tr>
             </thead>
             <tbody>
