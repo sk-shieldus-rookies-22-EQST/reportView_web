@@ -9,7 +9,7 @@ import java.util.List;
 public class XssFilterService {
     // 필터링할 단어 목록
     private static final String[] REPLACE_TOKENS = {
-            "textarea","oncontent", "onweb", "alert", "onerror", "title", "xml", "body", "svg", "lowsrc",
+            "input", "context", "iframe", "textarea", "onweb", "alert", "onerror", "title", "xml", "body", "svg", "lowsrc",
             "dynsrc", "url", "marquee", "cookie", "document", "msgbox", "vbscript", "refresh",
             "escape", "string", "expression", "eval", "void", "bind", "create", "confirm",
             "prompt", "location", "fromCharCode", "append", "onbeforeprint", "ondragleave",
@@ -71,12 +71,16 @@ public class XssFilterService {
 
         // 지정된 토큰 치환 (대소문자 무시)
         List<String> modifiedTokens = new ArrayList<>(Arrays.asList(REPLACE_TOKENS));
-        modifiedTokens.remove("onerror");
+//        modifiedTokens.remove("onerror");
+//        modifiedTokens.remove("alert");
+
         modifiedTokens.remove("alert");
 
         // onerror, r= 을 공백으로 치환 (정규표현식 사용, 대소문자 무시)
-        output = output.replaceAll("(?i)onerror", "");
-        output = output.replaceAll("(?i)r=", "");
+//        output = output.replaceAll("(?i)onerror", "");
+//        output = output.replaceAll("(?i)r=", "");
+
+
 
         for (String token : modifiedTokens) {
             output = output.replaceAll("(?i)" + token, " ");

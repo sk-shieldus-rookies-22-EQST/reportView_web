@@ -63,7 +63,7 @@
         <table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
             <thead>
                 <tr>
-                    <th colspan="3" style="background-color: #eeeeee; text-align: center;">게시판 글 보기 양식</th>
+                    <th colspan="3" style="background-color: #eeeeee; text-align: center;">게시글 상세 내용 확인</th>
                 </tr>
             </thead>
             <tbody>
@@ -201,7 +201,7 @@
                     <form action="qnaReplyProcess" method="post">
                         <input type="hidden" name="qna_id" value="${qnaDetail.qna_id}">
                         <div class="mb-3">
-                            <textarea name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
+                            <textarea style="resize:none" maxlength="200" name="qna_re_body" class="form-control" rows="4" placeholder="답글을 작성하세요." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">답글 달기</button>
                     </form>
