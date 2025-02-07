@@ -34,7 +34,7 @@ public class FinduseridController {
     public String findUseridpw_form(HttpSession session, @ModelAttribute FinduseridDto finduseridDto, @RequestParam("whatFind") Integer whatFind){
         String user_phone = finduseridDto.getUser_phone();
         String user_email = finduseridDto.getUser_email();
-            String user_id_pw = finduseridDto.getUser_id_pw();
+        String user_id_pw = finduseridDto.getUser_id_pw();
         String user_phone_pw = finduseridDto.getUser_phone_pw();
         String user_email_pw = finduseridDto.getUser_email_pw();
 
@@ -43,6 +43,13 @@ public class FinduseridController {
         user_phone = sqlFilterService.filter(user_phone);
         user_email = xssFilterService.filter(user_email);
         user_email = sqlFilterService.filter(user_email);
+
+        user_id_pw = xssFilterService.filter(user_id_pw);
+        user_id_pw = sqlFilterService.filter(user_id_pw);
+        user_phone_pw = xssFilterService.filter(user_phone_pw);
+        user_phone_pw = sqlFilterService.filter(user_phone_pw);
+        user_email_pw = xssFilterService.filter(user_email_pw);
+        user_email_pw = sqlFilterService.filter(user_email_pw);
 
         log.info("FinduseridController - whatfind = " + whatFind);
          if(whatFind == 1){
