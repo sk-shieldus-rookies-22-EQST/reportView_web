@@ -157,6 +157,7 @@ public class eBookPurchaseController {
             log.info("total_book_price > user_point");
             response.put("status", "charge");
             response.put("message", "충전 포인트가 부족합니다.");
+            return response;
         } else {
             log.info("user_point: "+ user_point);
 
