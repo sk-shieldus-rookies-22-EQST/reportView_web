@@ -53,12 +53,6 @@
         </div>
         <div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px; width:700px">
             <div class="grid text-center" style="display:flex;justify-content: space-between;">
-                    <!--<form method="POST" action="/addCart" class="g-col-6"  style="width:49%">
-                        <input type="hidden" name="book_id" value="<%= book_id %>" />
-                        <input type="hidden" name="book_price" value="<%= eBook.getBook_price() %>" />
-                        <button class="btn btn-outline-primary" type="submit" style="width:100%;padding:20px;">장바구니</button>
-                        <button type="button" style="width:100%;padding:20px;" class="btn btn-outline-primary add-to-cart-btn" data-book-id="<%= book_id %>">장바구니</button>
-                    </form>-->
                     <form method="POST" action="/addCart" class="g-col-6" style="width:49%">
                         <button type="button" style="width:100%;padding:20px;" class="btn btn-outline-primary add-to-cart-btn"
                             data-book-id="<%= book_id %>" data-book-price="<%= eBook.getBook_price() %>">장바구니</button>

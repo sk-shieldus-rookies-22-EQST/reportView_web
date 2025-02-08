@@ -125,7 +125,7 @@ public class MainController {
 
         // JSP로 데이터 전달
         model.addAttribute("books", books);
-        log.info(books.toString());
+        //log.info(books.toString());
         model.addAttribute("keyword", keyword);
         model.addAttribute("sdate", sdate);
         model.addAttribute("edate", edate);

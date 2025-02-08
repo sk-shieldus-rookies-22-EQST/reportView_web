@@ -1,9 +1,11 @@
 package com.skrookies.dahaezlge.controller.purchase;
 
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
+import com.skrookies.dahaezlge.security.SecurityController;
 import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.cart.CartService;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
+import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class eBookPurchaseController {
     private final UserService userService;
     private final PurchaseService purchaseService;
     private final BookService bookService;
+    private final AESService aesService;
 
 
     /** 장바구니에 담긴 물품 결제 정보 조회 */
@@ -87,19 +90,19 @@ public class eBookPurchaseController {
     /** 장바구니 물품 결제 프로세스 */
     @PostMapping("/purchaseProc")
     @ResponseBody
-    public Map<String, String> purchaseProc(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+    public Map<String, String> purchaseProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,
+                                            @RequestBody Map<String, Object> requestBody) throws Exception {
         log.info("purchaseProc");
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
-        int total_book_price = 0;
+        String encrypted_data = (String) requestBody.get("encryptedData");
 
-        List<BookDto> purchaseList = cartService.setCartList(user_id);
         log.info("purchaseProc");
+        log.info("Encrypted_Data:" + encrypted_data);
 
-        for(BookDto purchaseBook : purchaseList){
-            total_book_price += (int) purchaseBook.getBook_price();
-            log.info(String.valueOf(total_book_price));
-        }
+        String decryptedPassword = aesService.decrypt(encrypted_data);
+        String[] LoginInfoParts = decryptedPassword.split(":");
+        int total_book_price = Integer.parseInt(LoginInfoParts[1]);
 
         Map<String, String> response = new HashMap<>();
 
@@ -132,18 +135,20 @@ public class eBookPurchaseController {
     /** 결제 정보에서 결제버튼 누를 때 바로 구매하는 물품 결제 프로세스 */
     @PostMapping("/purchaseItemProc")
     @ResponseBody
-    public Map<String, String> purchaseItemProc(Model model, RedirectAttributes redirectAttributes, HttpSession session){//,
-                                   //@RequestBody Map<String, Object> requestBody){
+    public Map<String, String> purchaseItemProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,//){
+                                                @RequestBody Map<String, Object> requestBody) throws Exception {
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
-        int total_book_price = 0;
+        String encrypted_data = (String) requestBody.get("encryptedData");
+
         log.info("purchaseItemProc");
+        log.info("Encrypted_Data:" + encrypted_data);
+
+        String decryptedPassword = aesService.decrypt(encrypted_data);
+        String[] LoginInfoParts = decryptedPassword.split(":");
+        int total_book_price = Integer.parseInt(LoginInfoParts[1]);
 
         Long book_id = (Long) session.getAttribute("book_id");
-
-        BookDto bookInfo = bookService.getBookInfo(book_id);
-
-        total_book_price = bookInfo.getBook_price();
 
         Map<String, String> response = new HashMap<>();
 
