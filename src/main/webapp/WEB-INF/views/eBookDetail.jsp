@@ -32,7 +32,7 @@
                     />
                 </td>
                 <td align="center" style="width: 100px"> 제목 </td>
-                <td> <%= eBook.getBook_title() %>  </td>
+                <td style="width: 400px"> <%= eBook.getBook_title() %>  </td>
             </tr>
             <tr>
                 <td align="center"> 작가 </td>

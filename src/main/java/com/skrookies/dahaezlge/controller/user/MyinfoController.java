@@ -115,6 +115,11 @@ public class MyinfoController {
         String user_id = (String)session.getAttribute("user_id");
         if(user_id != null){
             log.info("탈퇴할 user_id: "+ user_id);
+
+            /** SQL, XSS 필터링 */
+            password = xssFilterService.filter(password);
+            password = sqlFilterService.filter(password);
+
             Boolean user_check = userService.login(user_id,password);
             if (user_check){
                 Boolean deleted_user = userService.deleteUser(user_id);
