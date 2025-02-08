@@ -58,6 +58,9 @@
             </tbody>
         </table>
     </div>
+    <%
+        int userPoint = (int) session.getAttribute("point");
+    %>
 
     <div class="container" style="max-width: 1200px; margin-bottom: 100px; border-radius: 5px; padding: 50px 20px;">
         <table class="table" height="300px" style="text-align: left; vertical-align: middle; border: 1px solid #dddddd;">
