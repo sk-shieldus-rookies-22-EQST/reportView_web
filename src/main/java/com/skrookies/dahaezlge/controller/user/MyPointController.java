@@ -62,14 +62,19 @@ public class MyPointController {
                 session.setAttribute("point", after_charge_point);
                 log.info(referer);
                 try {
+                    String lastElement = referer.substring(referer.lastIndexOf('/') + 1);
+                    log.info(lastElement);
                     if (referer != null && referer.contains("PurchaseItem")) {
+                        log.info("forward:/eBookPurchaseItem");
                         return "forward:/eBookPurchaseItem";
                     } else if (referer != null && referer.contains("Purchase")) {
+                        log.info("forward:/eBookPurchase");
                         return "forward:/eBookPurchase";
+                    } else if (referer != null && referer.contains("pointChargeProc")) {
+                        log.info("redirect:/eBookDetail?book_id=" + session.getAttribute("book_id"));
+                        return "forward:/eBookPurchaseItem";
                     } else {
                         // 마지막 '/' 이후의 부분 추출 (history 기능)
-                        String lastElement = referer.substring(referer.lastIndexOf('/') + 1);
-                        log.info(lastElement);
                         return "redirect:/" + lastElement;
                     }
                 } catch (Exception e) {
