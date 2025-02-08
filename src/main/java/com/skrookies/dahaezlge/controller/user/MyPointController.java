@@ -42,6 +42,9 @@ public class MyPointController {
         if (!input_point.equals("")) {
             charge_point = Integer.parseInt(input_point);
         }
+        if (Integer.parseInt(input_point) < 0){
+            charge_point = 0;
+        }
 
         String referer = (String) session.getAttribute("referer");
         log.info("Previous Page URL: " + referer);
