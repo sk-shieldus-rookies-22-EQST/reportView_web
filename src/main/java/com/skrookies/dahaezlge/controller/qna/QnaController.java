@@ -94,7 +94,7 @@ public class QnaController {
         List<QnaReDto> qnaReplies = QnaService.getRepliesByQnaId((long) qna_id);
 
         if(qnaDetail.getSecret() && (userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
-            session.setAttribute("errorMessage", "관리자 권한이 없는 사용자입니다.");
+            session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
             return "redirect:/qnaList";
         }
 
