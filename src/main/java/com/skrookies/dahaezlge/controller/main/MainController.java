@@ -37,7 +37,7 @@ public class MainController {
 
     /** 기본 페이지 전체 책 조회 */
     @GetMapping("/")
-    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, Model model ) {
+    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction,Model model ) {
 
         int totalBooks = 0;
 
@@ -46,27 +46,27 @@ public class MainController {
             totalBooks = bookService.getTotalBooks(); // 전체 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooks();
+            books = bookService.getBooks(sort, direction);
         }
         else if (sdate.isEmpty() || edate.isEmpty()) {
 
             totalBooks = bookService.findBookListByKeyword(keyword).size(); // 키워드 검색 책 개수
 
-            books = bookService.getBooksWithKeyword(keyword);
+            books = bookService.getBooksWithKeyword(keyword, sort, direction);
         }
         else if (keyword.isEmpty()) {
 
             totalBooks = bookService.findBookListByDate(sdate, edate).size(); // 날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithDate(sdate, edate);
+            books = bookService.getBooksWithDate(sdate, edate, sort, direction);
         }
         else{
 
             totalBooks = bookService.findBookListByBoth(keyword, sdate, edate).size(); // 키워드&날짜 검색 책 개수
 
             // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithBoth(keyword, sdate, edate);
+            books = bookService.getBooksWithBoth(keyword, sdate, edate, sort, direction);
         }
 
         // JSP로 데이터 전달
@@ -74,6 +74,8 @@ public class MainController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("sdate", sdate);
         model.addAttribute("edate", edate);
+        model.addAttribute("sort", sort);
+        model.addAttribute("direction", direction);
 
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
@@ -82,7 +84,7 @@ public class MainController {
     /** 기본 페이지 검색한 책 조회
      * 검색어 기준, 날짜 기준 */
     @GetMapping("/index")
-    public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, Model model ) {
+    public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort,@RequestParam(defaultValue = "") String direction,Model model ) {
 
         // XSS 필터링 적용
         keyword = xssFilterService.filter(keyword); // keyword 필터링
@@ -93,35 +95,8 @@ public class MainController {
         edate = xssFilterService.filter2(edate); // edate 필터링
         edate = sqlFilterService.filter3(edate);
 
-        int totalBooks = 0;
+        List<Map<String, Object>> books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
 
-        List<Map<String, Object>> books;
-        if(keyword.isEmpty() && sdate.isEmpty() && edate.isEmpty()) {
-            totalBooks = bookService.getTotalBooks(); // 전체 책 개수
-
-            // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooks();
-        }
-        else if (sdate.isEmpty() || edate.isEmpty()) {
-
-            totalBooks = bookService.findBookListByKeyword(keyword).size(); // 키워드 검색 책 개수
-
-            books = bookService.getBooksWithKeyword(keyword);
-        }
-        else if (keyword.isEmpty()) {
-
-            totalBooks = bookService.findBookListByDate(sdate, edate).size(); // 날짜 검색 책 개수
-
-            // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithDate(sdate, edate);
-        }
-        else{
-
-            totalBooks = bookService.findBookListByBoth(keyword, (sdate), (edate)).size(); // 키워드&날짜 검색 책 개수
-
-            // 현재 페이지에 해당하는 책 목록 가져오기
-            books = bookService.getBooksWithBoth(keyword, sdate, edate);
-        }
 
         // JSP로 데이터 전달
         model.addAttribute("books", books);
@@ -129,6 +104,8 @@ public class MainController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("sdate", sdate);
         model.addAttribute("edate", edate);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sort", direction);
 
         return "eBookMain"; // eBookMain.jsp 렌더링
     }

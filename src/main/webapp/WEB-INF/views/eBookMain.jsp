@@ -94,9 +94,9 @@
 
     <div class="container sticky-top" style="padding:50px 20px 40px 20px; background-color:white;">
         <div class="justify-content-center" style="margin-top: 20px;display:flex;">
-            <form class="row justify-content-center" method="get" action="/index" style="align-items: center;width: 80%; display: flex;">
-                <div style="padding: 0; width: 100%; display: flex;gap:10px">
-                    <!-- 제목 입력 -->
+            <form class="row justify-content-center" method="get" action="/index" style="align-items: center; width: 80%; display: flex;">
+                <div style="padding: 0; width: 100%; display: flex; gap:10px">
+                    <!-- 기존 검색 관련 입력 필드 -->
                     <input
                         type="text"
                         class="form-control"
@@ -108,7 +108,6 @@
                         onfocus="this.style.backgroundColor='#f9f9f9';"
                         onblur="this.style.backgroundColor='';"
                     >
-                    <!-- 시작 날짜 입력 -->
                     <input
                         type="date"
                         class="form-control"
@@ -118,7 +117,6 @@
                         onfocus="this.style.backgroundColor='#f9f9f9';"
                         onblur="this.style.backgroundColor='';"
                     >
-                    <!-- 종료 날짜 입력 -->
                     <input
                         type="date"
                         class="form-control"
@@ -128,6 +126,9 @@
                         onfocus="this.style.backgroundColor='#f9f9f9';"
                         onblur="this.style.backgroundColor='';"
                     >
+                    <!-- sort와 direction 값 유지 -->
+                    <input type="hidden" name="sort" value="${param.sort}">
+                    <input type="hidden" name="direction" value="${param.direction}">
                     <!-- 검색 버튼 -->
                     <button
                         type="submit"
@@ -141,6 +142,45 @@
             </form>
 
         </div>
+        <form id="sortForm" method="get" action="/index">
+            <!-- 기존 검색, 날짜 값들 -->
+            <input type="hidden" name="keyword" value="${param.keyword}">
+            <input type="hidden" name="sdate" value="${param.sdate}">
+            <input type="hidden" name="edate" value="${param.edate}">
+            <!-- direction은 자바스크립트로 업데이트할 hidden 필드 -->
+            <input type="hidden" id="directionInput" name="direction" value="${param.direction}">
+
+            <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
+            <input type="radio" name="sort" value="book_title" id="sortTitle" data-direction="ASC"
+                   ${param.sort == 'book_title' ? 'checked' : ''}>
+            <label for="sortTitle" class="me-3">제목 순</label>
+
+            <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
+            <input type="radio" name="sort" value="book_price" id="sortPriceAsc" data-direction="ASC"
+                   ${param.sort == 'book_price' && param.direction == 'ASC' ? 'checked' : ''}>
+            <label for="sortPriceAsc" class="me-3">낮은 가격 순</label>
+
+            <!-- 높은 가격 순: sort는 book_price, direction은 DESC -->
+            <input type="radio" name="sort" value="book_price" id="sortPriceDesc" data-direction="DESC"
+                   ${param.sort == 'book_price' && param.direction == 'DESC' ? 'checked' : ''}>
+            <label for="sortPriceDesc" class="me-3">높은 가격 순</label>
+
+            <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
+            <input type="radio" name="sort" value="book_reg_date" id="sortDate" data-direction="ASC"
+                   ${param.sort == 'book_reg_date' ? 'checked' : ''}>
+            <label for="sortDate">등록 날짜 순</label>
+        </form>
+
+        <script>
+            // 라디오 버튼 클릭 시 data-direction 값을 hidden 필드에 설정 후 폼 제출
+            document.querySelectorAll('input[name="sort"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    var direction = this.getAttribute('data-direction');
+                    document.getElementById('directionInput').value = direction;
+                    document.getElementById('sortForm').submit();
+                });
+            });
+        </script>
 </div>
 <div class="container">
         <div class="container text-center">

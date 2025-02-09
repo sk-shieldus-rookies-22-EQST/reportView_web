@@ -25,23 +25,23 @@ public class BookService {
         return bookRepository.getBookInfo(book_id);
     }
 
-    public List<Map<String, Object>> getBooks() {
-        return bookRepository.getBooks();
+    public List<Map<String, Object>> getBooks(String sort, String direction) {
+        return bookRepository.getBooks(sort, direction);
     }
     public List<Map<String, Object>> getMyBooks(Long book_id) {
         return bookRepository.getMyBooks(book_id);
     }
 
-    public List<Map<String, Object>> getBooksWithKeyword(String keyword) {
-        return bookRepository.getBooksWithKeyword(keyword);
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword, String sort, String direction) {
+        return bookRepository.getBooksWithKeyword(keyword, sort, direction);
     }
 
-    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate) {
-        return bookRepository.getBooksWithDate(sdate, edate);
+    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate, String sort, String direction) {
+        return bookRepository.getBooksWithDate(sdate, edate, sort, direction);
     }
 
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate) {
-        return bookRepository.getBooksWithBoth(keyword, sdate, edate);
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate, String sort, String direction) {
+        return bookRepository.getBooksWithBoth(keyword, sdate, edate, sort, direction);
     }
 
     public int getTotalBooks() {
@@ -142,4 +142,15 @@ public class BookService {
         return returnBookList;
     }
 
+    public List<Map<String, Object>> getBooksWithFilters(String keyword, String sdate, String edate, String sort, String direction) {
+        if (keyword.isEmpty() && sdate.isEmpty() && edate.isEmpty()) {
+            return bookRepository.getBooks(sort, direction);
+        } else if (sdate.isEmpty() || edate.isEmpty()) {
+            return bookRepository.getBooksWithKeyword(keyword, sort, direction);
+        } else if (keyword.isEmpty()) {
+            return bookRepository.getBooksWithDate(sdate, edate, sort, direction);
+        } else {
+            return bookRepository.getBooksWithBoth(keyword, sdate, edate, sort, direction);
+        }
+    }
 }

@@ -63,43 +63,64 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> getBooks() {
-        String sql = """
-        SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price
-        FROM book
-        ORDER BY book_reg_date DESC
-    """;
+    public List<Map<String, Object>> getBooks(String sort, String direction) {
+        if (sort == null || sort.isEmpty()) {
+            sort = "book_reg_date";
+        }
+        if(direction == null || direction.isEmpty()){
+            direction = "DESC";
+        }
+        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
+                "book_reg_date, book_img_path, book_price " +
+                "FROM book ORDER BY " + sort + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithKeyword(String keyword) {
-        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
-                "FROM book " +
-                "WHERE book_title like '%" + keyword + "%' " +
-                "ORDER BY book_reg_date DESC";
-
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword, String sort, String direction) {
+        if (sort == null || sort.isEmpty()) {
+            sort = "book_reg_date"; // 기본 정렬 컬럼
+        }
+        if(direction == null || direction.isEmpty()){
+            direction = "DESC";
+        }
+        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
+                "book_reg_date, book_img_path, book_price " +
+                "FROM book WHERE book_title LIKE '%" + keyword + "%' " +
+                "ORDER BY " + sort + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate) {
-        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
-                "FROM book " +
-                "WHERE (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) " +
-                "ORDER BY book_reg_date DESC ";
-
+    public List<Map<String, Object>> getBooksWithDate(String sdate, String edate, String sort, String direction) {
+        if (sort == null || sort.isEmpty()) {
+            sort = "book_reg_date"; // 기본 정렬 컬럼
+        }
+        if(direction == null || direction.isEmpty()){
+            direction = "DESC";
+        }
+        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
+                "book_reg_date, book_img_path, book_price " +
+                "FROM book WHERE book_reg_date BETWEEN TO_DATE('" + sdate + "', 'YYYY-MM-DD') " +
+                "AND TO_DATE('" + edate + "', 'YYYY-MM-DD') " +
+                "ORDER BY " + sort + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate) {
-        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, book_reg_date, book_img_path, book_price " +
-                "FROM book " +
-                "WHERE book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) " +
-                "ORDER BY book_reg_date DESC ";
-
+    public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate, String sort, String direction) {
+        if (sort == null || sort.isEmpty()) {
+            sort = "book_reg_date"; // 기본 정렬 컬럼
+        }
+        if(direction == null || direction.isEmpty()){
+            direction = "DESC";
+        }
+        String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
+                "book_reg_date, book_img_path, book_price " +
+                "FROM book WHERE book_title LIKE '%" + keyword + "%' " +
+                "AND book_reg_date BETWEEN TO_DATE('" + sdate + "', 'YYYY-MM-DD') " +
+                "AND TO_DATE('" + edate + "', 'YYYY-MM-DD') " +
+                "ORDER BY " + sort + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
