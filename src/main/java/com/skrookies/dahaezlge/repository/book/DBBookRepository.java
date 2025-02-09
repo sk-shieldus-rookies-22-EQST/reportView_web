@@ -62,51 +62,45 @@ public class DBBookRepository implements BookRepository {
         return cartBookInfoList; // 결과 반환
     }
 /** order by 버전 prepare statement로 봐도 될듯 */
-//    private String getOrderByClause(String sort) {
-//        if (sort == null || sort.isEmpty()) {
-//            return "book_reg_date"; // 기본값
-//        }
-//        return switch (sort) {
-//            case "title" -> "book_title";
-//            case "price_asc", "price_desc" -> "book_price";
-//            default -> "book_reg_date";
-//        };
-//    }
+    private String getOrderByClause(String sort) {
+        if (sort == null || sort.isEmpty()) {
+            return "book_reg_date"; // 기본값
+        }
+        return switch (sort) {
+            case "title" -> "book_title";
+            case "price_asc", "price_desc" -> "book_price";
+            default -> "book_reg_date";
+        };
+    }
 
     @Override
     public List<Map<String, Object>> getBooks(String sort, String direction) {
-        if (sort == null || sort.isEmpty()) {
-            sort = "book_reg_date";
-        }
+        String orderByClause = getOrderByClause(sort);
         if(direction == null || direction.isEmpty()){
             direction = "DESC";
         }
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
                 "book_reg_date, book_img_path, book_price " +
-                "FROM book ORDER BY " + sort + " " + direction;
+                "FROM book ORDER BY " + orderByClause + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
     public List<Map<String, Object>> getBooksWithKeyword(String keyword, String sort, String direction) {
-        if (sort == null || sort.isEmpty()) {
-            sort = "book_reg_date";
-        }
+        String orderByClause = getOrderByClause(sort);
         if(direction == null || direction.isEmpty()){
             direction = "DESC";
         }
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
                 "book_reg_date, book_img_path, book_price " +
                 "FROM book WHERE book_title LIKE '%" + keyword + "%' " +
-                "ORDER BY " + sort + " " + direction;
+                "ORDER BY " + orderByClause + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
     public List<Map<String, Object>> getBooksWithDate(String sdate, String edate, String sort, String direction) {
-        if (sort == null || sort.isEmpty()) {
-            sort = "book_reg_date";
-        }
+        String orderByClause = getOrderByClause(sort);
         if(direction == null || direction.isEmpty()){
             direction = "DESC";
         }
@@ -114,15 +108,13 @@ public class DBBookRepository implements BookRepository {
                 "book_reg_date, book_img_path, book_price " +
                 "FROM book WHERE book_reg_date BETWEEN TO_DATE('" + sdate + "', 'YYYY-MM-DD') " +
                 "AND TO_DATE('" + edate + "', 'YYYY-MM-DD') " +
-                "ORDER BY " + sort + " " + direction;
+                "ORDER BY " + orderByClause + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
     @Override
     public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate, String sort, String direction) {
-        if (sort == null || sort.isEmpty()) {
-            sort = "book_reg_date";
-        }
+        String orderByClause = getOrderByClause(sort);
         if(direction == null || direction.isEmpty()){
             direction = "DESC";
         }
@@ -131,7 +123,7 @@ public class DBBookRepository implements BookRepository {
                 "FROM book WHERE book_title LIKE '%" + keyword + "%' " +
                 "AND book_reg_date BETWEEN TO_DATE('" + sdate + "', 'YYYY-MM-DD') " +
                 "AND TO_DATE('" + edate + "', 'YYYY-MM-DD') " +
-                "ORDER BY " + sort + " " + direction;
+                "ORDER BY " + orderByClause + " " + direction;
         return jdbcTemplate.queryForList(sql);
     }
 
