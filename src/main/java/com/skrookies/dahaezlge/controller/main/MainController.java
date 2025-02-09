@@ -100,7 +100,7 @@ public class MainController {
 
         // JSP로 데이터 전달
         model.addAttribute("books", books);
-        log.info(books.toString());
+        //log.info(books.toString());
         model.addAttribute("keyword", keyword);
         model.addAttribute("sdate", sdate);
         model.addAttribute("edate", edate);
@@ -119,7 +119,7 @@ public class MainController {
         // Timestamp를 LocalDateTime으로 변환
         LocalDateTime localDateTime = bookInfo.getBook_reg_date().toLocalDateTime();
 
-        // 날짜 및 시간 형식 지정 (나노초는 제거)
+        // 날짜 및 시간 형식 지정
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // LocalDateTime을 String으로 변환
