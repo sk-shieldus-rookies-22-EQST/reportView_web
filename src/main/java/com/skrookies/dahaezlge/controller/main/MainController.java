@@ -5,9 +5,11 @@ import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.user.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,7 +86,7 @@ public class MainController {
     /** 기본 페이지 검색한 책 조회
      * 검색어 기준, 날짜 기준 */
     @GetMapping("/index")
-    public String eBookMain(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort,@RequestParam(defaultValue = "") String direction,Model model ) {
+    public String eBookMain(HttpServletRequest request, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction, Model model ) {
 
         // XSS 필터링 적용
         keyword = xssFilterService.filter(keyword); // keyword 필터링
@@ -95,8 +97,29 @@ public class MainController {
         edate = xssFilterService.filter2(edate); // edate 필터링
         edate = sqlFilterService.filter3(edate);
 
-        List<Map<String, Object>> books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
+//        List<Map<String, Object>> books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
 
+
+        List<Map<String, Object>> books = null;
+
+        try {
+            // 예시: 검색 조건에 따라 다른 메서드를 호출하는 로직
+            if (keyword.isEmpty() && sdate.isEmpty() && edate.isEmpty()) {
+                books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
+            } else if (sdate.isEmpty() || edate.isEmpty()) {
+                books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
+            } else if (keyword.isEmpty()) {
+                books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
+            } else {
+                books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
+            }
+        } catch (BadSqlGrammarException e) {
+            log.error("SQL 구문 오류 발생: {}", e.getMessage());
+            return "redirect:/";
+        } catch (Exception e) {
+            log.error("예상치 못한 오류 발생: {}", e.getMessage());
+            return "redirect:/";
+        }
 
         // JSP로 데이터 전달
         model.addAttribute("books", books);
@@ -105,7 +128,7 @@ public class MainController {
         model.addAttribute("sdate", sdate);
         model.addAttribute("edate", edate);
         model.addAttribute("sort", sort);
-        model.addAttribute("sort", direction);
+        model.addAttribute("direction", direction);
 
         return "eBookMain"; // eBookMain.jsp 렌더링
     }
