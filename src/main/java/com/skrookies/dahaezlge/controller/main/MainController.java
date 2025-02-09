@@ -97,8 +97,8 @@ public class MainController {
         edate = xssFilterService.filter2(edate); // edate 필터링
         edate = sqlFilterService.filter3(edate);
 
+        /** 공격 테스트용 예외처리 제거 */
 //        List<Map<String, Object>> books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
-
 
         List<Map<String, Object>> books = null;
 

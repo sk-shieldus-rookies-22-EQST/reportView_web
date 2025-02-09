@@ -149,23 +149,23 @@
             <input type="hidden" name="edate" value="${param.edate}">
 
             <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
-            <input type="radio" name="sort" value="title" id="sortTitle" data-direction="ASC"
-                   ${param.sort == 'title' ? 'checked' : ''}>
+            <input type="radio" name="sort" value="book_title" id="sortTitle" data-direction="ASC"
+                   ${param.sort == 'book_title' ? 'checked' : ''}>
             <label for="sortTitle" class="me-3">제목 순</label>
 
             <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
-            <input type="radio" name="sort" value="price_asc" id="sortPriceAsc" data-direction="ASC"
-                   ${param.sort == 'price_asc' && param.direction == 'ASC' ? 'checked' : ''}>
+            <input type="radio" name="sort" value="book_price" id="sortPriceAsc" data-direction="ASC"
+                   ${param.sort == 'book_price' && param.direction == 'ASC' ? 'checked' : ''}>
             <label for="sortPriceAsc" class="me-3">낮은 가격 순</label>
 
             <!-- 높은 가격 순: sort는 book_price, direction은 DESC -->
-            <input type="radio" name="sort" value="price_desc" id="sortPriceDesc" data-direction="DESC"
-                   ${param.sort == 'price_desc' && param.direction == 'DESC' ? 'checked' : ''}>
+            <input type="radio" name="sort" value="book_price" id="sortPriceDesc" data-direction="DESC"
+                   ${param.sort == 'book_price' && param.direction == 'DESC' ? 'checked' : ''}>
             <label for="sortPriceDesc" class="me-3">높은 가격 순</label>
 
             <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
-            <input type="radio" name="sort" value="date" id="sortDate" data-direction="ASC"
-                   ${param.sort == 'date' ? 'checked' : ''}>
+            <input type="radio" name="sort" value="book_reg_date" id="sortDate" data-direction="ASC"
+                   ${param.sort == 'book_reg_date' ? 'checked' : ''}>
             <label for="sortDate">등록 날짜 순</label>
 
             <!-- direction은 자바스크립트로 업데이트할 hidden 필드 -->
