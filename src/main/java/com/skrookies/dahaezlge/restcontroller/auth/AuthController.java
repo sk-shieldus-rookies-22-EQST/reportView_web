@@ -1,6 +1,7 @@
 package com.skrookies.dahaezlge.restcontroller.auth;
 
 import com.skrookies.dahaezlge.restcontroller.auth.dto.*;
+import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
@@ -22,6 +23,8 @@ public class AuthController {
     private final UserService userService;
     private final AESService aesService;
 
+    Bcrypt bcrypt = new Bcrypt();
+
     @PostMapping("/login")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid E2EDto e2eDto) {
 
@@ -39,7 +42,7 @@ public class AuthController {
             log.info("Android PW: " + passwordParts[1]);
 
             String user_id = passwordParts[0];
-            String user_pw = passwordParts[1];
+            String user_pw = bcrypt.hashPassword(passwordParts[1]);
 
             Boolean result = userService.login(user_id, user_pw);
             statusDto.setStatus(result);
