@@ -128,9 +128,8 @@
             const closeButton = document.querySelector('.btn-close');
 
             var purchaseUrl = "${purchaseUrl}";
-            var totalBookPrice = <%= total_price %>;
 
-            purchaseButton.addEventListener('click', async function () {
+            purchaseButton.addEventListener('click', function () {
 
                 var goToPreviousBtnText = '';  // 버튼 텍스트 변수
                 var goToPreviousBtnHref = '';  // 버튼 href 변수
@@ -173,93 +172,89 @@
                     });
 
                 }
-                try {
-                    const encryptedData = await getKeyAndEncrypt(totalBookPrice);
 
-                    // 암호화된 데이터를 JSON으로 변환
-                    requestBody = JSON.stringify({ encryptedData: encryptedData });
+                goToPreviousBtn.textContent = goToPreviousBtnText;
+                goToPreviousBtn.href = goToPreviousBtnHref;
 
-                    goToPreviousBtn.textContent = goToPreviousBtnText;
-                    goToPreviousBtn.href = goToPreviousBtnHref;
+                fetch(purchaseUrl, { // 동적으로 URL 변경
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',  // JSON 데이터로 보냄
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response data:', data);
 
-                    fetch(purchaseUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: requestBody
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Response data:', data);
+                    // 상태에 따른 메시지 처리 및 버튼 표시
+                    switch (data.status) {
+                        case 'purchased':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
 
-                        switch (data.status) {
-                            case 'purchased':
-                                purchaseModalBody.textContent = data.message;
-                                goToChargeBtn.style.display = 'none';
-                                goToMainBtn.style.display = 'none';
-                                goToPreviousBtn.style.display = 'inline-block';
-                                goToMyPurchaseBtn.style.display = 'none';
-                                break;
-                            case 'charge':
-                                purchaseModalBody.textContent = data.message;
-                                goToChargeBtn.style.display = 'inline-block';
-                                goToMainBtn.style.display = 'none';
-                                goToPreviousBtn.style.display = 'inline-block';
-                                goToMyPurchaseBtn.style.display = 'none';
-                                break;
-                            case 'exists':
-                                purchaseModalBody.textContent = data.message;
-                                goToChargeBtn.style.display = 'none';
-                                goToMainBtn.style.display = 'none';
-                                goToPreviousBtn.style.display = 'inline-block';
-                                goToMyPurchaseBtn.style.display = 'none';
-                                break;
-                            case 'purchase':
-                                purchaseModalBody.textContent = data.message;
-                                goToChargeBtn.style.display = 'none';
-                                goToMainBtn.style.display = 'inline-block';
-                                goToPreviousBtn.style.display = 'none';
-                                goToMyPurchaseBtn.style.display = 'inline-block';
-                                goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
-                                closeButton.style.display = 'none';
+                            break;
+                        case 'charge':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'inline-block';
+                            goToMainBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
 
-                                goToMainBtn.addEventListener('mouseenter', function () {
-                                    goToMainBtn.setAttribute('style', 'background-color: #5c636a !important;border-color:#5c636a !important; ');
-                                });
+                            break;
+                        case 'exists':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
+                            break;
+                        case 'purchase':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'inline-block';
+                            goToPreviousBtn.style.display = 'none';
+                            goToMyPurchaseBtn.style.display = 'inline-block';
+                            goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
+                            closeButton.style.display = 'none';
 
-                                goToMainBtn.addEventListener('mouseleave', function () {
-                                    goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;');
-                                });
-                                break;
-                            case 'error':
-                                purchaseModalBody.textContent = data.message;
-                                goToChargeBtn.style.display = 'none';
-                                goToMainBtn.style.display = 'none';
-                                goToPreviousBtn.style.display = 'inline-block';
-                                goToMyPurchaseBtn.style.display = 'none';
-                                break;
-                            default:
-                                purchaseModalBody.textContent = '알 수 없는 상태입니다.';
-                                goToChargeBtn.style.display = 'none';
-                                goToMainBtn.style.display = 'none';
-                                goToPreviousBtn.style.display = 'inline-block';
-                                goToMyPurchaseBtn.style.display = 'inline-block';
-                        }
+                            // hover 효과를 위한 이벤트 리스너 추가
+                            goToMainBtn.addEventListener('mouseenter', function () {
+                                goToMainBtn.setAttribute('style', 'background-color: #5c636a !important;border-color:#5c636a !important; ');
+                            });
 
-                        purchaseModal.show();
-                    })
-                    .catch(error => {
-                        console.error('Fetch Error:', error);
-                        purchaseModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-                        goToChargeBtn.style.display = 'none';
-                        goToPreviousBtn.style.display = 'inline-block';
-                        goToMyPurchaseBtn.style.display = 'none';
-                        purchaseModal.show();
-                    });
+                            goToMainBtn.addEventListener('mouseleave', function () {
+                                goToMainBtn.setAttribute('style', 'background-color: #6c757d !important;border-color:#6c757d !important;'); // 기본 배경색으로 돌아가기
+                            });
 
-                } catch (error) {
-                    console.error('Encryption Error:', error);
-                    alert('암호화 중 오류가 발생했습니다.');
-                }
+                            break;
+                        case 'error':
+                            purchaseModalBody.textContent = data.message;
+                            goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'none';
+                            break;
+                        default:
+                            purchaseModalBody.textContent = '알 수 없는 상태입니다.';
+                            goToChargeBtn.style.display = 'none';
+                            goToMainBtn.style.display = 'none';
+                            goToPreviousBtn.style.display = 'inline-block';
+                            goToMyPurchaseBtn.style.display = 'inline-block';
+                    }
+
+                    purchaseModal.show(); // 팝업 표시
+                })
+                .catch(error => {
+                    console.error('Fetch Error:', error);
+                    purchaseModalBody.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
+                    goToChargeBtn.style.display = 'none';
+                    goToPreviousBtn.style.display = 'inline-block';
+                    goToMyPurchaseBtn.style.display = 'none';
+                    purchaseModal.show();
+                });
             });
 
             // 팝업 닫힐 때 버튼 초기화
@@ -269,24 +264,6 @@
                 goToMyPurchaseBtn.style.display = 'none';
             });
         });
-        async function getKeyAndEncrypt(price) {
-            try {
-                const response = await fetch("/security/getKey");
-                const { aesKey, aesIv } = await response.json();
-
-                // 변수명과 변수 값을 ":" 구분자로 연결
-                const combinedData = "totalBookPrice:" + price;
-
-                // AES 암호화 실행 (encryptAES가 Promise를 반환하는 경우)
-                const encryptedData = await encryptAES(aesKey, aesIv, combinedData);
-
-                return encryptedData;
-            } catch (error) {
-                console.error('Encryption Error:', error);
-                alert('암호화 키를 가져오거나 처리하는 중 오류가 발생했습니다.');
-                throw error;  // 상위 함수에서 처리할 수 있도록 오류 던지기
-            }
-        }
     </script>
 </div>
 </body>
