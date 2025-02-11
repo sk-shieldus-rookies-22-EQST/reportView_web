@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.restcontroller.sign;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.restcontroller.sign.dto.SignOutDto;
 import com.skrookies.dahaezlge.restcontroller.sign.dto.SignupDto;
+import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.validation.Valid;
@@ -23,13 +24,14 @@ import java.util.List;
 public class SignController {
 
     private final UserService userService;
-
+    Bcrypt bcrypt = new Bcrypt();
 
     /** 회원가입 api */
     @PostMapping("/signup")
     public ResponseEntity<StatusDto> androidSignup(@RequestBody @Valid SignupDto signupDto) {
 
-        StatusDto statusDto = new StatusDto(userService.registerUser(signupDto.getUser_id(), signupDto.getUser_pw(), signupDto.getUser_phone(), signupDto.getUser_email()));
+
+        StatusDto statusDto = new StatusDto(userService.registerUser(signupDto.getUser_id(), bcrypt.hashPassword(signupDto.getUser_pw()), signupDto.getUser_phone(), signupDto.getUser_email()));
 
         return ResponseEntity.ok()
                 .body(statusDto);
@@ -43,7 +45,7 @@ public class SignController {
         StatusDto statusDto = new StatusDto();
         statusDto.setStatus(false);
 
-        Boolean user_check = userService.login(signOutDto.getUser_id(), signOutDto.getUser_pw());
+        Boolean user_check = userService.login(signOutDto.getUser_id(), bcrypt.hashPassword(signOutDto.getUser_pw()));
         if (user_check) {
             Boolean result = userService.deleteUser(signOutDto.getUser_id());
             statusDto.setStatus(result);
