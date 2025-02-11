@@ -171,17 +171,17 @@
 
                   <input type="radio" class="btn-check" name="sort" value="title" id="sortTitle" data-direction="ASC"
                          ${param.sort == 'title' ? 'checked' : ''}>
-                  <label class="btn btn-outline-primary radio_btn"  for="sortTitle" class="me-3">제목 순</label>
+                  <label class="btn btn-outline-primary radio_btn"  for="sortTitle" class="me-3">제목순</label>
 
                   <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
                   <input type="radio" class="btn-check" name="sort" value="price_asc" id="sortPriceAsc" data-direction="ASC"
                          ${param.sort == 'price_asc' && param.direction == 'ASC' ? 'checked' : ''}>
-                  <label class="btn btn-outline-primary radio_btn" for="sortPriceAsc" class="me-3">낮은 가격 순</label>
+                  <label class="btn btn-outline-primary radio_btn" for="sortPriceAsc" class="me-3">낮은가격순</label>
 
                   <!-- 높은 가격 순: sort는 book_price, direction은 DESC -->
                   <input type="radio" class="btn-check" name="sort" value="price_desc" id="sortPriceDesc" data-direction="DESC"
                          ${param.sort == 'price_desc' && param.direction == 'DESC' ? 'checked' : ''}>
-                  <label class="btn btn-outline-primary radio_btn" for="sortPriceDesc" class="me-3">높은 가격 순</label>
+                  <label class="btn btn-outline-primary radio_btn" for="sortPriceDesc" class="me-3">높은가격순</label>
 
 
 
