@@ -90,19 +90,19 @@ public class eBookPurchaseController {
     /** 장바구니 물품 결제 프로세스 */
     @PostMapping("/purchaseProc")
     @ResponseBody
-    public Map<String, String> purchaseProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,
-                                            @RequestBody Map<String, Object> requestBody) throws Exception {
+    public Map<String, String> purchaseProc(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
         log.info("purchaseProc");
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
-        String encrypted_data = (String) requestBody.get("encryptedData");
+        int total_book_price = 0;
 
+        List<BookDto> purchaseList = cartService.setCartList(user_id);
         log.info("purchaseProc");
-        log.info("Encrypted_Data:" + encrypted_data);
 
-        String decryptedPassword = aesService.decrypt(encrypted_data);
-        String[] LoginInfoParts = decryptedPassword.split(":");
-        int total_book_price = Integer.parseInt(LoginInfoParts[1]);
+        for(BookDto purchaseBook : purchaseList){
+            total_book_price += (int) purchaseBook.getBook_price();
+            log.info(String.valueOf(total_book_price));
+        }
 
         Map<String, String> response = new HashMap<>();
 
@@ -135,20 +135,18 @@ public class eBookPurchaseController {
     /** 결제 정보에서 결제버튼 누를 때 바로 구매하는 물품 결제 프로세스 */
     @PostMapping("/purchaseItemProc")
     @ResponseBody
-    public Map<String, String> purchaseItemProc(Model model, RedirectAttributes redirectAttributes, HttpSession session,//){
-                                                @RequestBody Map<String, Object> requestBody) throws Exception {
+    public Map<String, String> purchaseItemProc(Model model, RedirectAttributes redirectAttributes, HttpSession session){//,
+        //@RequestBody Map<String, Object> requestBody){
         String user_id = (String) session.getAttribute("user_id");
         int user_point = (int) session.getAttribute("point");
-        String encrypted_data = (String) requestBody.get("encryptedData");
-
+        int total_book_price = 0;
         log.info("purchaseItemProc");
-        log.info("Encrypted_Data:" + encrypted_data);
-
-        String decryptedPassword = aesService.decrypt(encrypted_data);
-        String[] LoginInfoParts = decryptedPassword.split(":");
-        int total_book_price = Integer.parseInt(LoginInfoParts[1]);
 
         Long book_id = (Long) session.getAttribute("book_id");
+
+        BookDto bookInfo = bookService.getBookInfo(book_id);
+
+        total_book_price = bookInfo.getBook_price();
 
         Map<String, String> response = new HashMap<>();
 
@@ -157,7 +155,6 @@ public class eBookPurchaseController {
             log.info("total_book_price > user_point");
             response.put("status", "charge");
             response.put("message", "충전 포인트가 부족합니다.");
-            return response;
         } else {
             log.info("user_point: "+ user_point);
 

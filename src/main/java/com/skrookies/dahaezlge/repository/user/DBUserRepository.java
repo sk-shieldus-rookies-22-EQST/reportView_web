@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Slf4j
 @Repository
@@ -24,13 +26,17 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean login(String user_id, String user_pw) {
 
-        String sql = "Select count(*) from users where user_id = ? and user_pw = ?";
+        String sql = "Select user_pw from users where user_id = ?";
         try {
-            Integer count = jdbcTemplate.queryForObject(sql, Integer.class, user_id, user_pw);
-            if ( count != null && count > 0 ){
-                log.info("not_null");
+            String searched_user_pw = jdbcTemplate.queryForObject(sql, String.class, user_id);
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            boolean isMatch = passwordEncoder.matches(user_pw, searched_user_pw);
+            if ( isMatch ){
+                log.info("login success");
                 return true;
             } else {
+                log.info("원본 비밀번호: " + searched_user_pw);
+                log.info("찾은 비밀번호: " + searched_user_pw);
                 log.info("no user");
                 return false;
             }

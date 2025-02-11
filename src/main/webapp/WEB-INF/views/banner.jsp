@@ -90,6 +90,7 @@
 
 		<% request.setCharacterEncoding("utf-8"); %>
 
+
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 			<div class="container-fluid">
                 <a class="navbar-brand" href="/index" style="margin-left:15px;">
@@ -150,7 +151,7 @@
 													마이페이지
 										</button>
 										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="/myInfo">회원정보</a></li>
+											<li><a data-bs-toggle="modal" data-bs-target="#exampleModal" class="dropdown-item" href="/myInfo">회원정보</a></li>
 											<li>
 											    <a class="dropdown-item" href="#" onclick="document.getElementById('myCart').submit();">장바구니</a>
                                                 <form id="myCart" action="/eBookCart" method="POST" style="display: none;"></form>
@@ -169,6 +170,31 @@
 					</div>
 				</div>
 			</nav>
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="exampleModalLabel">비밀번호를 입력하세요.</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="취소"></button>
+                          </div>
+                          <form action="/goToMyInfo" method="POST"> <!-- POST로 전송 -->
+                              <div class="modal-body">
+
+
+                                      <div class="mb-3">
+                                          <label for="password" class="col-form-label">비밀번호</label>
+                                          <input type="password" class="form-control" id="password" name="password" required> <!-- 비밀번호 입력 -->
+                                      </div>
+                                  <!--<p style="color:#EA002C;text-align:center;font-size:0.7rem;margin:0"> 탈퇴를 진행하는 경우 되돌릴 수 없습니다. </p>-->
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.history.back()">취소</button>
+                                  <button type="submit" class="btn btn-primary">확인</button> <!-- 전송 버튼 -->
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
 
 	</body>
 

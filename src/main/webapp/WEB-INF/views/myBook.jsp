@@ -19,23 +19,44 @@
 <div class="container">
 	<div class="container" style="max-width: 1200px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 서재</p>
-
         <script>
-            // 클릭 시 실행될 함수 정의
             function BookiesDRM(book_id) {
-                var isPopupAppeared = false;
-                window.addEventListener("blur", function () {
-                    isPopupAppeared = true;
-                });
-                window.location.href = 'BookiesDRM://run?user_id=<%=user_id%>&book_id='+ book_id;
-                setTimeout(function () {
-                    if (!isPopupAppeared) {
-                        window.location.href = '/download/drm';
+                fetch('/getPreURL', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: 'book_id=' + encodeURIComponent(book_id)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.presigned_url && data.aes_key && data.aes_iv) {
+                        var isPopupAppeared = false;
+                        window.addEventListener("blur", function () {
+                            isPopupAppeared = true;
+                        });
+
+                        // BookiesDRM 실행
+                        window.location.href = 'BookiesDRM://run?presigned_url=' + encodeURIComponent(data.presigned_url) +
+                                               '&aes_key=' + encodeURIComponent(data.aes_key) +
+                                               '&aes_iv=' + encodeURIComponent(data.aes_iv);
+
+                        // 실행되지 않을 경우 대체 페이지로 이동
+                        setTimeout(function () {
+                            if (!isPopupAppeared) {
+                                window.location.href = '/download/drm';
+                            }
+                        }, 2000);
+                    } else {
+                        alert('Failed to retrieve DRM data.');
                     }
-                }, 2000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error fetching DRM data.');
+                });
             }
         </script>
-
 
 	<% Integer books_size = (Integer) request.getAttribute("books_size");
 	    //List<BookDto> books_info = request.getAttribute("books_info");

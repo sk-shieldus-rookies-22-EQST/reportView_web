@@ -12,6 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 @Slf4j
 @Controller
@@ -22,6 +26,23 @@ public class RegistuserController {
     private final XssFilterService xssFilterService;
     private final SqlFilterService sqlFilterService;
 
+    // HTML 엔티티로 치환 ('<', '>')
+    public static String convertToHtmlEntities(String input) {
+        return input.replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    //전화번호 형태 점검
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        String regex = "^\\d{3}-\\d{4}-\\d{4}$";
+        // Pattern 객체 생성
+        Pattern pattern = Pattern.compile(regex);
+        // 입력값을 Matcher로 확인
+        Matcher matcher = pattern.matcher(phoneNumber);
+        // 정규식에 맞는지 확인
+        return matcher.matches();
+    }
+
+
     /** 회원가입 페이지 */
     @GetMapping("/registerForm")
     public String registerForm_form(){
@@ -30,18 +51,25 @@ public class RegistuserController {
         return "registerForm";
     }
 
+
+
     /** 회원가입 프로세스 */
     @PostMapping("/registerProc")
     public String registerProc_form(Model model, @ModelAttribute UserDto userDto, HttpSession session){
-        // SQL, XSS 필터 적용
-        String user_id = xssFilterService.filter(userDto.getUser_id());
-        user_id = sqlFilterService.filter(user_id);
-        String user_pw = xssFilterService.filter(userDto.getUser_pw());
-        user_pw = sqlFilterService.filter(user_pw);
-        String user_phone = xssFilterService.filter(userDto.getUser_phone());
-        user_phone = sqlFilterService.filter(user_phone);
-        String user_email = xssFilterService.filter(userDto.getUser_email());
-        user_email = sqlFilterService.filter(user_email);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // '<', '>' --> '&lt', '&gt'
+        String user_id = userDto.getUser_id();
+        user_id = convertToHtmlEntities(user_id);
+        String user_pw = userDto.getUser_pw();
+        user_pw = convertToHtmlEntities(user_pw);
+        String re_user_pw = userDto.getRe_user_pw();
+        re_user_pw = convertToHtmlEntities(re_user_pw);
+        String user_phone = userDto.getUser_phone();
+        user_phone = convertToHtmlEntities(user_phone);
+        String user_email = userDto.getUser_email();
+        user_phone = convertToHtmlEntities(user_phone);
+
+
 
         String user_agree = userDto.getUser_agree();
         log.info("agree: " + user_agree);
@@ -49,27 +77,37 @@ public class RegistuserController {
             log.info("이미 있는 아이디");
             session.setAttribute("status", "1");
             return "redirect:/registerForm";
+        } else if (!user_pw.equals(re_user_pw)) {
+            log.info("비밀번호 불일치");
+            session.setAttribute("status", "5");
+            return "redirect:/registerForm";
         } else {
-            if (user_agree != null) {
-                if (userService.registerUser(user_id, user_pw, user_phone, user_email)) {
-                    // 회원가입 직후 자동 로그인
-                    int point = userService.userPoint(user_id);
-                    session.setAttribute("user_id", user_id);
-                    session.setAttribute("point", point);
-                    session.removeAttribute("status");
-                    return "redirect:/index";
+                if (user_agree != null) {
+                    if(!isValidPhoneNumber(user_phone)) {
+                        log.info("전화번호 형태가 아닙니다.");
+                        session.setAttribute("status", "4");
+                        return "redirect:/registerForm";
+                    } else if (user_id != null || user_pw != null || user_phone != null || user_email != null) {
+
+                        String encodedPassword = passwordEncoder.encode(user_pw);
+                        userService.registerUser(user_id, encodedPassword, user_phone, user_email);
+                        // 회원가입 직후 자동 로그인
+                        int point = userService.userPoint(user_id);
+                        session.setAttribute("user_id", user_id);
+                        session.setAttribute("point", point);
+                        session.removeAttribute("status");
+                        return "redirect:/index";
+                    } else {
+                        session.setAttribute("status","2");
+                        log.info("모든 input 채우기");
+                        return "redirect:/registerForm";
+                    }
+
                 } else {
-                    session.setAttribute("status","2");
-                    log.info("모든 input 채우기");
+                    session.setAttribute("status","3");
+                    log.info("활용 동의");
                     return "redirect:/registerForm";
                 }
-
-            } else {
-                session.setAttribute("status","3");
-                log.info("활용 동의");
-                return "redirect:/registerForm";
-            }
-
         }
 
 
