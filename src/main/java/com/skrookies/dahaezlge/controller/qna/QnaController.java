@@ -170,8 +170,8 @@ public class QnaController {
         qnaDto.setQna_title(sqlFilterService.filter(qna_title));
 
         /** XSS 공격 허용 */
-        String qna_body = xssFilterService.filter1(qnaDto.getQna_body());
-        qnaDto.setQna_body(sqlFilterService.filter2(qna_body));
+        String qna_body = xssFilterService.filter(qnaDto.getQna_body());
+        qnaDto.setQna_body(sqlFilterService.filter(qna_body));
 
         // 제목과 내용이 비어 있는 경우 예외 처리
         if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
@@ -301,8 +301,8 @@ public class QnaController {
         QnaDto.setQna_title(sqlFilterService.filter(qna_title));
 
         /** XSS 공격 허용 */
-        String qna_body = xssFilterService.filter1(QnaDto.getQna_body());
-        QnaDto.setQna_body(sqlFilterService.filter2(qna_body));
+        String qna_body = xssFilterService.filter(QnaDto.getQna_body());
+        QnaDto.setQna_body(sqlFilterService.filter(qna_body));
 
         // 필터링 되어 제목과 내용이 비어 있는 경우 예외 처리
         if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
@@ -559,8 +559,8 @@ public class QnaController {
         }
 
         // XSS 필터링 적용
-        String filteredBody = xssFilterService.filter1(qna_re_body);
-        filteredBody = sqlFilterService.filter2(filteredBody);
+        String filteredBody = xssFilterService.filter(qna_re_body);
+        filteredBody = sqlFilterService.filter(filteredBody);
 
         // 필터링 후에도 비어 있으면 처리
         if (filteredBody == null || filteredBody.trim().isEmpty()) {
