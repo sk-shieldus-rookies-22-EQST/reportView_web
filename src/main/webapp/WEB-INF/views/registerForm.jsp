@@ -69,6 +69,11 @@
                 </div>
 
                 <div class="mb-3">
+                  <label for="re_user_pw" class="form-label fw-bold fs-4">비밀번호 확인</label>
+                  <input type="password" class="form-control" id="re_user_pw" name="re_user_pw" >
+                </div>
+
+                <div class="mb-3">
                   <label for="user_email" class="form-label fw-bold fs-4">이메일</label>
                   <input type="text" class="form-control" id="user_email" name="user_email" placeholder="someone@example.com" >
                 </div>
@@ -104,6 +109,7 @@
                               tmp += str.substr(7);
                               return tmp;
                           }
+
 
                           return str;
                     }
@@ -152,21 +158,35 @@
                 </div>
                 <%
             }
-            if(status.equals( "2")){
+            else if(status.equals( "2")){
     %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div> 모든 정보를 입력해주세요. </div>
                 </div>
                 <%
             }
-            if (status.equals("3")) {
+            else if (status.equals("3")) {
     %>          <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div> 개인정보 활용 동의가 필요합니다. </div>
                 </div>
 
             <%
-            }}
+            }
+            else if(status.equals( "4")){
+     %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                     <div> 전화번호 형태를 확인하여주십시오. </div>
+                 </div>
+                 <%
+             }
+             else if(status.equals( "5")){
+           %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                           <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                           <div> 비밀번호가 일치하지 않습니다. </div>
+                       </div>
+                       <%
+                   }}
         %>
         </div>
         <% session.removeAttribute("status");%>

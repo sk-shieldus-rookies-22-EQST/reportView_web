@@ -13,8 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Controller
@@ -24,6 +28,42 @@ public class MyinfoController {
     private final UserService userService;
     private final XssFilterService xssFilterService;
     private final SqlFilterService sqlFilterService;
+
+    // HTML 엔티티로 치환 ('<', '>')
+    public static String convertToHtmlEntities(String input) {
+        return input.replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    //전화번호 형태 점검
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        String regex = "^\\d{3}-\\d{4}-\\d{4}$";
+        // Pattern 객체 생성
+        Pattern pattern = Pattern.compile(regex);
+        // 입력값을 Matcher로 확인
+        Matcher matcher = pattern.matcher(phoneNumber);
+        // 정규식에 맞는지 확인
+        return matcher.matches();
+    }
+
+    @PostMapping("/goToMyInfo")
+    public String goToMyInfo_form(@RequestParam("password") String password, HttpSession session){
+        String user_id = (String)session.getAttribute("user_id");
+        if(user_id != null){
+            log.info("goToMyInfo user_id: "+ user_id);
+
+            Boolean user_check = userService.login(user_id,password);
+            if (user_check){
+                return "redirect:/myInfo";
+            } else {
+                log.info("Wrong Password");
+                session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+                return "redirect:/index";
+            }
+        } else {
+            log.info("user_id가 null입니다. 로그인 필요.");
+            return "redirect:/loginForm";
+        }
+    }
 
     /** 회원 정보 페이지 */
     @GetMapping("/myInfo")
@@ -46,9 +86,6 @@ public class MyinfoController {
                 return "redirect:/loginForm";  // 예시로 에러 페이지로 리다이렉트
             } else {
                 Users user = user_info.get(0);
-                log.info(user.getUser_pw());
-                //model.addAttribute("user_id", user.getUser_id());
-                model.addAttribute("user_pw", user.getUser_pw());
                 model.addAttribute("user_phone", user.getUser_phone());
                 model.addAttribute("user_email", user.getUser_email());
                 model.addAttribute("myInfoModifyForm", "0");
@@ -73,8 +110,6 @@ public class MyinfoController {
                 return "redirect:/loginForm";  // 예시로 에러 페이지로 리다이렉트
             } else {
                 Users user = user_info.get(0);
-
-                model.addAttribute("user_pw", user.getUser_pw());
                 model.addAttribute("user_phone", user.getUser_phone());
                 model.addAttribute("user_email", user.getUser_email());
                 model.addAttribute("myInfoModifyForm", "1");
@@ -89,17 +124,34 @@ public class MyinfoController {
         log.info("myInfoSave");
         String user_id = (String)session.getAttribute("user_id");
 
-        String user_pw = xssFilterService.filter(userDto.getUser_pw());
-        user_pw = sqlFilterService.filter(user_pw);
-        String user_phone = xssFilterService.filter(userDto.getUser_phone());
-        user_phone = sqlFilterService.filter2(user_phone);
-        String user_email = xssFilterService.filter(userDto.getUser_email());
-        user_email = sqlFilterService.filter(user_email);
-        if(user_pw != null && user_phone != null && user_email != null){
-            log.info("입력한 모든 값이 not null입니다.");
-            Boolean update_result = userService.updateUserInfo(user_id, user_pw,user_phone,user_email);
-            if (update_result){
-                return "redirect:/myInfo";
+        // '<', '>' --> '&lt', '&gt'
+        String user_pw = userDto.getUser_pw();
+        user_pw = convertToHtmlEntities(user_pw);
+        String re_user_pw = userDto.getRe_user_pw();
+        re_user_pw = convertToHtmlEntities(re_user_pw);
+        String user_phone = userDto.getUser_phone();
+        user_phone = convertToHtmlEntities(user_phone);
+        String user_email = userDto.getUser_email();
+        user_phone = convertToHtmlEntities(user_phone);
+
+        if(user_pw != null && re_user_pw != null && user_phone != null && user_email != null){
+            if (!user_pw.equals(re_user_pw)){
+                log.info("비밀번호 불일치");
+                session.setAttribute("status", "1");
+                return "redirect:/myInfoModify";
+            }
+            if (!isValidPhoneNumber(user_phone)){
+                log.info("전화번호 형태 확인");
+                session.setAttribute("status", "2");
+                return "redirect:/myInfoModify";
+            } else {
+                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                log.info("입력한 모든 값이 not null입니다.");
+                String encodedPassword = passwordEncoder.encode(user_pw);
+                Boolean update_result = userService.updateUserInfo(user_id, encodedPassword,user_phone,user_email);
+                if (update_result) {
+                    return "redirect:/myInfo";
+                }
             }
         } else {
             log.info("입력한 모든 값 중 null이 있습니다.");
@@ -115,10 +167,6 @@ public class MyinfoController {
         String user_id = (String)session.getAttribute("user_id");
         if(user_id != null){
             log.info("탈퇴할 user_id: "+ user_id);
-
-            /** SQL, XSS 필터링 */
-            password = xssFilterService.filter(password);
-            password = sqlFilterService.filter(password);
 
             Boolean user_check = userService.login(user_id,password);
             if (user_check){

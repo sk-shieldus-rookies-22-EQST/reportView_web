@@ -51,12 +51,6 @@ public class LoginController {
                 String user_id = LoginInfoParts[0];
                 String user_pw = LoginInfoParts[1];
 
-                /** SQL, XSS 필터링*/
-                user_id = xssFilterService.filter(user_id);
-                user_id = sqlFilterService.filter(user_id);
-
-                user_pw = xssFilterService.filter(user_pw);
-                user_pw = sqlFilterService.filter(user_pw);
 
                 log.info("no user_pw, user_id");
                 log.info("ID: " + user_id);
