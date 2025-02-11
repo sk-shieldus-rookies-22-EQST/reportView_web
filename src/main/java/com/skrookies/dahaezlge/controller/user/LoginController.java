@@ -6,6 +6,7 @@ import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,10 @@ public class LoginController {
 
     /** 로그인 프로세스 */
     @PostMapping("/loginProc")
-    public String loginProc_form(Model model, @RequestParam String encrypted_data, HttpSession session){
+    public String loginProc_form(Model model, @RequestParam String encrypted_data, HttpSession session, HttpServletRequest request){
+        session.invalidate();
+        session = request.getSession(true);
+
         log.info("loginProc");
         try {
             log.info("login try encrypted: "+ encrypted_data);
@@ -51,12 +55,6 @@ public class LoginController {
                 String user_id = LoginInfoParts[0];
                 String user_pw = LoginInfoParts[1];
 
-                /** SQL, XSS 필터링*/
-                user_id = xssFilterService.filter(user_id);
-                user_id = sqlFilterService.filter(user_id);
-
-                user_pw = xssFilterService.filter(user_pw);
-                user_pw = sqlFilterService.filter(user_pw);
 
                 log.info("no user_pw, user_id");
                 log.info("ID: " + user_id);
@@ -88,6 +86,7 @@ public class LoginController {
                     return "loginForm";
                 }}
         } catch (Exception e) {
+            e.printStackTrace();
             log.info("error");
             return "loginForm";
         }
