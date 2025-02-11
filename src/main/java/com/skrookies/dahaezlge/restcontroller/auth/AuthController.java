@@ -23,7 +23,6 @@ public class AuthController {
     private final UserService userService;
     private final AESService aesService;
 
-    Bcrypt bcrypt = new Bcrypt();
 
     @PostMapping("/login")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid E2EDto e2eDto) {
@@ -42,7 +41,7 @@ public class AuthController {
             log.info("Android PW: " + passwordParts[1]);
 
             String user_id = passwordParts[0];
-            String user_pw = bcrypt.hashPassword(passwordParts[1]);
+            String user_pw = passwordParts[1];
 
             Boolean result = userService.login(user_id, user_pw);
             statusDto.setStatus(result);
