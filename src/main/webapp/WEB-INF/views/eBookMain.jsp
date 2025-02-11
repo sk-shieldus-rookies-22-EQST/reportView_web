@@ -164,8 +164,13 @@
                   <input type="hidden" name="edate" value="${param.edate}">
 
                   <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
+                  <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
+                    <input type="radio" class="btn-check" name="sort" value="date" id="sortDate" data-direction="ASC"
+                           ${param.sort == 'date' ? 'checked' : ''} checked>
+                    <label class="btn btn-outline-primary radio_btn" for="sortDate">최신순</label>
+
                   <input type="radio" class="btn-check" name="sort" value="title" id="sortTitle" data-direction="ASC"
-                         ${param.sort == 'title' ? 'checked' : ''} autocomplete="off" checked>
+                         ${param.sort == 'title' ? 'checked' : ''}>
                   <label class="btn btn-outline-primary radio_btn"  for="sortTitle" class="me-3">제목 순</label>
 
                   <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
@@ -178,10 +183,7 @@
                          ${param.sort == 'price_desc' && param.direction == 'DESC' ? 'checked' : ''}>
                   <label class="btn btn-outline-primary radio_btn" for="sortPriceDesc" class="me-3">높은 가격 순</label>
 
-                  <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
-                  <input type="radio" class="btn-check" name="sort" value="date" id="sortDate" data-direction="ASC"
-                         ${param.sort == 'date' ? 'checked' : ''}>
-                  <label class="btn btn-outline-primary radio_btn" for="sortDate">등록 날짜 순</label>
+
 
                   <!-- direction은 자바스크립트로 업데이트할 hidden 필드 -->
                   <input type="hidden" id="directionInput" name="direction" value="${param.direction}">
