@@ -30,6 +30,20 @@
         .add-to-cart-btn:hover {
             background-image: url('/images/icon_img/cart_icon_white.svg'); /* hover시 다른 이미지 */
         }
+
+        /* 선택된 버튼에 대해 다른 배경색을 적용 */
+        .btn-check:checked + .btn-outline-primary {
+            background-color: #FF7A00!important; /* 원하는 색상으로 설정 */
+            color: white!important;
+        }
+
+        /* 버튼에 hover가 될 때 색상 변경 */
+        label.btn-outline-primary:hover {
+            background-color: #FF7A00!important; /* 원하는 hover 색상 */
+            border-color:#FF7A00!important;
+            color: white!important;
+        }
+
     </style>
 </head>
 <body>
@@ -93,7 +107,8 @@
 
 
     <div class="container sticky-top" style="padding:50px 20px 40px 20px; background-color:white;">
-        <div class="justify-content-center" style="margin-top: 20px;display:flex;">
+        <div class="justify-content-center" style="margin-top: 20px;display:flex;flex-direction: column;align-items: center;">
+
             <form class="row justify-content-center" method="get" action="/index" style="align-items: center; width: 80%; display: flex;">
                 <div style="padding: 0; width: 100%; display: flex; gap:10px">
                     <!-- 기존 검색 관련 입력 필드 -->
@@ -141,37 +156,39 @@
                 </div>
             </form>
 
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 80%;display: flex;justify-content: flex-end;padding-top: 20px;">
+              <form id="sortForm" method="get" action="/index">
+                  <!-- 기존 검색, 날짜 값들 -->
+                  <input type="hidden" name="keyword" value="${param.keyword}">
+                  <input type="hidden" name="sdate" value="${param.sdate}">
+                  <input type="hidden" name="edate" value="${param.edate}">
+
+                  <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
+                  <input type="radio" class="btn-check" name="sort" value="title" id="sortTitle" data-direction="ASC"
+                         ${param.sort == 'title' ? 'checked' : ''} autocomplete="off" checked>
+                  <label class="btn btn-outline-primary radio_btn"  for="sortTitle" class="me-3">제목 순</label>
+
+                  <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
+                  <input type="radio" class="btn-check" name="sort" value="price_asc" id="sortPriceAsc" data-direction="ASC"
+                         ${param.sort == 'price_asc' && param.direction == 'ASC' ? 'checked' : ''}>
+                  <label class="btn btn-outline-primary radio_btn" for="sortPriceAsc" class="me-3">낮은 가격 순</label>
+
+                  <!-- 높은 가격 순: sort는 book_price, direction은 DESC -->
+                  <input type="radio" class="btn-check" name="sort" value="price_desc" id="sortPriceDesc" data-direction="DESC"
+                         ${param.sort == 'price_desc' && param.direction == 'DESC' ? 'checked' : ''}>
+                  <label class="btn btn-outline-primary radio_btn" for="sortPriceDesc" class="me-3">높은 가격 순</label>
+
+                  <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
+                  <input type="radio" class="btn-check" name="sort" value="date" id="sortDate" data-direction="ASC"
+                         ${param.sort == 'date' ? 'checked' : ''}>
+                  <label class="btn btn-outline-primary radio_btn" for="sortDate">등록 날짜 순</label>
+
+                  <!-- direction은 자바스크립트로 업데이트할 hidden 필드 -->
+                  <input type="hidden" id="directionInput" name="direction" value="${param.direction}">
+              </form>
+            </div>
         </div>
-        <form id="sortForm" method="get" action="/index">
-            <!-- 기존 검색, 날짜 값들 -->
-            <input type="hidden" name="keyword" value="${param.keyword}">
-            <input type="hidden" name="sdate" value="${param.sdate}">
-            <input type="hidden" name="edate" value="${param.edate}">
 
-            <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
-            <input type="radio" name="sort" value="title" id="sortTitle" data-direction="ASC"
-                   ${param.sort == 'title' ? 'checked' : ''}>
-            <label for="sortTitle" class="me-3">제목 순</label>
-
-            <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
-            <input type="radio" name="sort" value="price_asc" id="sortPriceAsc" data-direction="ASC"
-                   ${param.sort == 'price_asc' && param.direction == 'ASC' ? 'checked' : ''}>
-            <label for="sortPriceAsc" class="me-3">낮은 가격 순</label>
-
-            <!-- 높은 가격 순: sort는 book_price, direction은 DESC -->
-            <input type="radio" name="sort" value="price_desc" id="sortPriceDesc" data-direction="DESC"
-                   ${param.sort == 'price_desc' && param.direction == 'DESC' ? 'checked' : ''}>
-            <label for="sortPriceDesc" class="me-3">높은 가격 순</label>
-
-            <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
-            <input type="radio" name="sort" value="date" id="sortDate" data-direction="ASC"
-                   ${param.sort == 'date' ? 'checked' : ''}>
-            <label for="sortDate">등록 날짜 순</label>
-
-            <!-- direction은 자바스크립트로 업데이트할 hidden 필드 -->
-            <input type="hidden" id="directionInput" name="direction" value="${param.direction}">
-
-        </form>
 
         <script>
             // 라디오 버튼 클릭 시 data-direction 값을 hidden 필드에 설정 후 폼 제출

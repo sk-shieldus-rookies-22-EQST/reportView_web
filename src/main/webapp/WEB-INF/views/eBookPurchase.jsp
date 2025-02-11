@@ -40,10 +40,10 @@
                     total_price += book.getBook_price();
         %>
             <tr align="center">
-                <td> <img width="200px" src="<%= book.getBook_img_path() %>"</td>
-                <td style="width:500px; text-align: center; vertical-align: middle;"> <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;">
+                <td style="width:350px;"> <img width="200px" src="<%= book.getBook_img_path() %>"</td>
+                <td style="width:550px; text-align: center; vertical-align: middle;"> <p style="margin:0;white-space: nowrap;overflow:hidden;width:500px;text-overflow:ellipsis;">
                 <%= book.getBook_title() %> </p></td>
-                <td style=" text-align: center; vertical-align: middle;"> <%= String.format("%,d pt", book.getBook_price()) %> </td>
+                <td style="width:300px; text-align: center; vertical-align: middle;"> <%= String.format("%,d pt", book.getBook_price()) %> </td>
             </tr>
         <%
                 }
@@ -67,7 +67,7 @@
             <tr>
                 <td align="center" style="width: 200px; background-color: #eeeeee; border-right: 1px solid #dddddd;"> 주문 상품 정보 </td>
                 <td style="padding: 0px 20px"> 총 <%= bookList.size() %>권, <%= String.format("%,d pt", total_price) %>  </td>
-                <td  align="center" width="25%" rowspan="3">
+                <td align="center" width="25%" rowspan="3">
                     <button class="btn btn-primary pull-right add-to-purchase-btn" id="purchaseProc" type="submit" style="width: 100%; height: 100%;">
                         <span style="font-size: 25px; font-weight: bold;">
                             결제하기
@@ -80,11 +80,11 @@
             </tr>
             <tr>
                 <td align="center" style="background-color: #eeeeee; border-right: 1px solid #dddddd;"> 보유 포인트 </td>
-                <td style="padding: 0px 20px"> <%= String.format("%,d", userPoint) %>  </td>
+                <td style="padding: 0px 20px"> <%= String.format("%,d pt", userPoint) %>  </td>
             </tr>
             <tr>
                 <td align="center" style="background-color: #eeeeee; border-right: 1px solid #dddddd;"> 구매 후 잔액 </td>
-                <td style="padding: 0px 20px"> <%= String.format("%,d", userPoint-total_price) %>  </td>
+                <td style="padding: 0px 20px"> <%= String.format("%,d pt", userPoint-total_price) %>  </td>
             </tr>
         </table>
     </div>
