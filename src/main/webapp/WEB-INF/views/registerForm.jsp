@@ -20,7 +20,7 @@
             align-items: center;
             margin-top: 20px;
         }
-        #useragree {
+        #user_agree {
             margin-right: 10px;
         }
         .agree:after {display:block; clear:both; content:"";}
