@@ -165,7 +165,7 @@
 
                   <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
                   <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
-                    <input type="radio" class="btn-check" name="sort" value="date" id="sortDate" data-direction="ASC"
+                    <input type="radio" class="btn-check" name="sort" value="date" id="sortDate" data-direction="DESC"
                            ${param.sort == 'date' ? 'checked' : ''} checked>
                     <label class="btn btn-outline-primary radio_btn" for="sortDate">최신순</label>
 
