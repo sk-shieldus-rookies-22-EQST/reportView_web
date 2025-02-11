@@ -35,7 +35,7 @@ public class XssFilterService {
     // 필터링할 특수문자 목록
     private static final String[][] SPECIAL_CHARACTERS = {
             {"<", "&lt;"}, {">", "&gt;"},
-            {"{", "&#123;"}, {"}", "&#125;"}
+            {"&lt;", " "}, {"&gt;", " "}
     };
 
     /** XSS 필터링 */
@@ -63,7 +63,7 @@ public class XssFilterService {
 
         // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"{", "&#123;"}, {"}", "&#125;"}
+                {"%3C", "<"}, {"%3E", ">"}
         };
         for (String[] special : limitedSpecialCharacters) {
             output = output.replace(special[0], special[1]);
@@ -74,7 +74,7 @@ public class XssFilterService {
 //        modifiedTokens.remove("onerror");
 //        modifiedTokens.remove("alert");
 
-        modifiedTokens.remove("alert");
+//        modifiedTokens.remove("alert");
 
         // onerror, r= 을 공백으로 치환 (정규표현식 사용, 대소문자 무시)
 //        output = output.replaceAll("(?i)onerror", "");
@@ -83,7 +83,7 @@ public class XssFilterService {
 
 
         for (String token : modifiedTokens) {
-            output = output.replaceAll("(?i)" + token, " ");
+            output = output.replaceAll("(?i)" + token, "");
         }
 
         return output;
@@ -96,7 +96,8 @@ public class XssFilterService {
 
         // `< > ' " ( ) ;`를 제외한 특수문자 필터링
         String[][] limitedSpecialCharacters = {
-                {"{", "&#123;"}, {"}", "&#125;"}
+                {"<", "&lt;"}, {">", "&gt;"},
+                {"&lt;", " "}, {"&gt;", " "}
         };
         for (String[] special : limitedSpecialCharacters) {
             output = output.replace(special[0], special[1]);
