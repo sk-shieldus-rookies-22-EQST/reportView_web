@@ -69,7 +69,8 @@ public class DBBookRepository implements BookRepository {
         return switch (sort) {
             case "title" -> "book_title";
             case "price_asc", "price_desc" -> "book_price";
-            default -> "book_reg_date";
+            case "date" -> "book_reg_date";
+            default -> sort ;
         };
     }
 
