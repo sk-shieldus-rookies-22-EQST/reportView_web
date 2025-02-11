@@ -65,7 +65,9 @@
 
                 <div class="mb-3">
                   <label for="user_pw" class="form-label fw-bold fs-4">비밀번호</label>
+
                   <input type="password" class="form-control" id="user_pw" name="user_pw" >
+                  <p style="color:#EA002C;">대문자, 소문자, 숫자, 특수문자 포함 8글자 이상</p>
                 </div>
 
                 <div class="mb-3">
@@ -186,7 +188,43 @@
                            <div> 비밀번호가 일치하지 않습니다. </div>
                        </div>
                        <%
-                   }}
+                   }
+               else if(status.equals( "8자")){
+          %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                          <div> 비밀번호는 8자 이상이어야 합니다. </div>
+                      </div>
+                      <%
+                  }
+                  else if(status.equals( "대문자")){
+        %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div> 비밀번호는 대문자를 포함해야 합니다. </div>
+                    </div>
+                    <%
+                }
+                else if(status.equals( "소문자")){
+          %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                          <div> 비밀번호는 소문자를 포함해야 합니다. </div>
+                      </div>
+                      <%
+                  }
+                  else if(status.equals( "숫자")){
+        %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div> 비밀번호는 숫자를 포함해야 합니다. </div>
+                    </div>
+                    <%
+                }
+                else if(status.equals( "특수문자")){
+      %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                      <div> 비밀번호는 특수문자를 포함해야 합니다. </div>
+                  </div>
+                  <%
+              }
+           }
         %>
         </div>
         <% session.removeAttribute("status");%>
