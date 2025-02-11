@@ -110,6 +110,7 @@ public class QnaController {
     public String qnaEdit_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
 
         String userId = (String) session.getAttribute("user_id");
+        Integer userLevel = (Integer) session.getAttribute("user_level");
 
         if (userId == null || userId.isEmpty()) {
             // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
@@ -117,6 +118,12 @@ public class QnaController {
         }
 
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+
+        if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+            session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
+            return "redirect:/qnaList";
+        }
+
         model.addAttribute("qnaDetail", qnaDetail);
         log.info("page_move: qnaEdit.jsp");
         return "qnaEdit";
@@ -409,6 +416,8 @@ public class QnaController {
     /**qna 게시판 글 삭제 */
     @GetMapping("/qnaDelete")
     public String qnaDelete_form(@RequestParam("qna_id") int qna_id, @ModelAttribute QnaDto QnaDto, HttpSession session) throws IOException {
+        String userId = (String) session.getAttribute("user_id");
+        Integer userLevel = (Integer) session.getAttribute("user_level");
         // 기존 파일 정보 가져오기
         QnaDto existingQna = QnaService.getQnaById(Math.toIntExact(QnaDto.getQna_id()));
         String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
@@ -416,8 +425,19 @@ public class QnaController {
             Path oldFilePath = Paths.get(uploadDir, existingQna.getNew_file_name());
             Files.deleteIfExists(oldFilePath);
         }
+        if (userId == null || userId.isEmpty()) {
+            // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
+            return "redirect:/loginForm";
+        }
+        QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+
+        if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+            session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
+            return "redirect:/qnaList";
+        }
 
         QnaService.deleteQna(qna_id);
+
         session.setAttribute("deleteQns", "글이 삭제되었습니다.");
         return "redirect:/qnaList";
     }
