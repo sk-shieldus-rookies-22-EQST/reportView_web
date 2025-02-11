@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class DownFilterService {
     private static final int MAX_TRAVERSAL_DEPTH = 100;
     private static final String[] KEYWORDS = {
-            "../"
+            ".", "/", "\\", "%"
     };
 
     /** 다운로드 필터링 */
@@ -14,20 +14,25 @@ public class DownFilterService {
         if (input == null || input.trim().isEmpty()) {
             return input;
         }
+        //  ../ 필터링
+        for (String keyword : KEYWORDS) {
+            input = input.replace(keyword, " ");
+        }
+
+        return input;
+    }
+
+    /** 다운로드 필터링 해제 */
+    public String filter1(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return input;
+        }
+        String[] limitedSpecialCharacters = {
+                "../"
+        };
         // 1. ../ 필터링
         for (String keyword : KEYWORDS) {
             input = input.replace(keyword, "");
-        }
-        // 2. 필터링 후 남은 ../ 개수 세기
-        int traversalCount = countOccurrences(input, "../");
-
-        // 3. 최대 제한보다 많으면 자동으로 ../../../../로 조정
-        if (traversalCount > MAX_TRAVERSAL_DEPTH) {
-            StringBuilder safePath = new StringBuilder();
-            for (int i = 0; i < MAX_TRAVERSAL_DEPTH; i++) {
-                safePath.append("../");
-            }
-            return safePath.toString(); // ../../../../로 고정
         }
 
         return input;
