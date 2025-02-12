@@ -199,10 +199,9 @@
 
                                   const password = document.getElementById('password').value;
 
-                                  // AES로 아이디와 비밀번호를 결합하여 암호화
                                   const encryptedData = await encryptAES(aesKey, aesIv, password);
 
-                                  console.log("Encrypted Password: ", encryptedData);
+                                  console.log("Encrypted Data: ", encryptedData);
 
                                   // 암호화된 값을 폼에 설정
                                   document.getElementById('password').value = "";

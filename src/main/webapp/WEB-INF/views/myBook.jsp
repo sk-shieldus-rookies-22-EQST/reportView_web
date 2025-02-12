@@ -36,11 +36,6 @@
                             isPopupAppeared = true;
                         });
 
-                        // BookiesDRM 실행
-                        // window.location.href = 'BookiesDRM://run?presigned_url=' + encodeURIComponent(data.presigned_url) +
-                        //                        '&key=' + encodeURIComponent(data.aes_key) +
-                        //                        '&iv=' + encodeURIComponent(data.aes_iv);
-                        // window.location.href = 'BookiesDRM://run?user_id=<%=user_id%>&book_id='+ book_id;
                         window.location.href = data.drm_url;
 
                         // 실행되지 않을 경우 대체 페이지로 이동
