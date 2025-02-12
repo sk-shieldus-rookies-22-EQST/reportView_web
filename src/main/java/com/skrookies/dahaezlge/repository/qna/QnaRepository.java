@@ -212,7 +212,7 @@ public class QnaRepository {
 
 
     public Integer countQnaByUserIdAndDate(String user_id, String sdate, String edate) {
-        String sql = "select Count(*) from qna where (qna_user_id = ?) and (qna_created_at between ? and ?)";
+        String sql = "select Count(*) from qna where (qna_user_id = ?) and (qna_created_at between TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS') and To_Date(?, 'YYYY-MM-DD HH24:MI:SS'))";
 
         return  jdbcTemplate.queryForObject(sql, Integer.class, user_id, sdate, edate);
     }
