@@ -35,7 +35,7 @@ public class DBUserRepository implements UserRepository{
                 log.info("login success");
                 return true;
             } else {
-                log.info("원본 비밀번호: " + searched_user_pw);
+                log.info("원본 비밀번호: " + user_pw);
                 log.info("찾은 비밀번호: " + searched_user_pw);
                 log.info("no user");
                 return false;

@@ -23,23 +23,22 @@ public class DBBookRepository implements BookRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public BookDto getBookInfo(Long book_id){
-        String sql = "Select * from book where book_id = "+ book_id +" FETCH FIRST 1 ROWS ONLY";
+    public BookDto getBookInfo(Long book_id) {
+        String sql = "SELECT * FROM book WHERE book_id = ? FETCH FIRST 1 ROWS ONLY";
 
         return jdbcTemplate.queryForObject(
                 sql,
-                (rs, rowNum) -> {
-                    BookDto book = new BookDto(
-                            rs.getLong("book_id"),
-                            rs.getString("book_title"),
-                            rs.getString("book_auth"),
-                            rs.getString("book_path"),
-                            rs.getString("book_summary"),
-                            rs.getTimestamp("book_reg_date"),
-                            rs.getString("book_img_path"),
-                            rs.getInt("book_price"));
-                    return book;
-                }
+                new Object[]{book_id},
+                (rs, rowNum) -> new BookDto(
+                        rs.getLong("book_id"),
+                        rs.getString("book_title"),
+                        rs.getString("book_auth"),
+                        rs.getString("book_path"),
+                        rs.getString("book_summary"),
+                        rs.getTimestamp("book_reg_date"),
+                        rs.getString("book_img_path"),
+                        rs.getInt("book_price")
+                )
         );
     }
     @Override
