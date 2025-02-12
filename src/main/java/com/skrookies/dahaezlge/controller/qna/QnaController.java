@@ -448,6 +448,18 @@ public class QnaController {
                                @RequestParam("file_path") String filePath,
                                HttpServletResponse response, HttpSession session) {
         try {
+            String userId = (String) session.getAttribute("user_id");
+            Integer userLevel = (Integer) session.getAttribute("user_level");
+
+            if (userId == null || userId.isEmpty()) {
+                // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
+                return "redirect:/loginForm";
+            }
+            if(userLevel != 123) {
+                session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
+                return "redirect:/qnaList";
+            }
+
             // 파일 경로 필터링
             filePath = downFilterService.filter(filePath);
             // 파일이 저장된 절대 경로 (예: /uploads/dog_20250203_205142.jpg)
