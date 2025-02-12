@@ -66,7 +66,7 @@ public class DBBookRepository implements BookRepository {
             return "book_reg_date"; // 기본값
         }
         return switch (sort) {
-            case "title" -> "book_title";
+            case "bt" -> "book_title";
             case "price_asc", "price_desc" -> "book_price";
             case "date" -> "book_reg_date";
             default -> sort ;

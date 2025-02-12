@@ -49,6 +49,7 @@
                         }, 2000);
                     } else {
                         alert('Failed to retrieve DRM data.');
+                        alert(book_id);
                     }
                 })
                 .catch(error => {
