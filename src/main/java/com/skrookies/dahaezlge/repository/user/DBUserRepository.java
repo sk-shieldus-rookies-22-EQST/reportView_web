@@ -67,6 +67,7 @@ public class DBUserRepository implements UserRepository{
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Error during login: " + e.getMessage());
             return false;
         }
