@@ -22,7 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class QnaRepository {
+
     private final JdbcTemplate jdbcTemplate;
+
+
     public int qna(QnaDto QnaDto) {
         // 파일 관련 정보를 추가한 SQL 구문
         String sql = "INSERT INTO qna (qna_title, qna_body, qna_user_id, qna_created_at, file_name, file_path, file_size, new_file_name, secret) " +
@@ -42,6 +45,7 @@ public class QnaRepository {
                 QnaDto.getSecret()      //비밀글 표시
         );
     }
+
 
     /** Qna 전체 List 반환
      * @return List<QnaDto> </> */
@@ -64,6 +68,7 @@ public class QnaRepository {
             return qna;
         });
     }
+
 
     /** qna_id 기반 게시글 상세정보 모두 반환 */
     public QnaDto QnaById(int qna_id) {
@@ -93,10 +98,12 @@ public class QnaRepository {
         });
     }
 
+
     public int deleteQna(int qna_id) {
         String sql = "DELETE FROM qna WHERE qna_id= ?";
         return jdbcTemplate.update(sql, qna_id);
     }
+
 
     public int qnaUpdate(QnaDto QnaDto) {
         String sql = "UPDATE qna SET qna_title = ?, qna_body = ?, file_name = ?, file_path = ?, file_size = ?, new_file_name = ?, secret = ? WHERE qna_id = ?";
@@ -104,15 +111,18 @@ public class QnaRepository {
                 QnaDto.getFile_name(), QnaDto.getFile_path(), QnaDto.getFile_size(), QnaDto.getNew_file_name(), QnaDto.getSecret(),QnaDto.getQna_id());
     }
 
+
     public int qnaUpdate2(QnaDto QnaDto) {
         String sql = "UPDATE qna SET qna_title = ?, qna_body = ?, secret = ? WHERE qna_id = ?";
         return jdbcTemplate.update(sql, QnaDto.getQna_title(), QnaDto.getQna_body(), QnaDto.getSecret(),QnaDto.getQna_id());
     }
 
+
     public int countTotalQnas() {
         String sql = "SELECT COUNT(*) FROM qna";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
+
 
     public List<QnaDto> findQnasByPage(int offset, int pageSize) {
         log.info("findQnaAllList data {offset, pageSize}: {" + offset + ", " + pageSize + "}");
@@ -134,6 +144,7 @@ public class QnaRepository {
             return qna;
         });
     }
+
 
     public List<QnaDto> findByKeyword(String keyword, int offset, int pageSize) {
         String sql = "SELECT qna_id, qna_title, qna_user_id, qna_created_at, secret FROM qna WHERE qna_title LIKE ? ORDER BY qna_id DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -157,20 +168,24 @@ public class QnaRepository {
         });
     }
 
+
     public int qnaReply(QnaReDto qnaReDto) {
         String sql = "INSERT INTO qna_re (qna_re_user_id, qna_re_body, qna_re_created_at, qna_id) VALUES (?, ?, ?, ?)";
         return jdbcTemplate.update(sql, qnaReDto.getQna_re_user_id(), qnaReDto.getQna_re_body(), qnaReDto.getQna_re_created_at(), qnaReDto.getQna_id());
     }
+
 
     public List<QnaRe> findRepliesByQnaId(Long qna_id) {
         String sql = "SELECT * FROM qna_re WHERE qna_id = ?";
         return jdbcTemplate.query(sql, new Object[]{qna_id}, new BeanPropertyRowMapper<>(QnaRe.class));
     }
 
+
     public void deleteByQnaID(Long qna_re_id) {
         String sql = "DELETE FROM qna_re WHERE qna_re_id= ?";
         jdbcTemplate.update(sql, qna_re_id);
     }
+
 
     public QnaDto findByFileName(String fileName) {
         String sql = "SELECT file_name, new_file_name FROM qna WHERE new_file_name = ?";
@@ -188,9 +203,17 @@ public class QnaRepository {
             return null; // 해당 파일이 없을 경우 null 반환
         }
     }
+
+
     public int countTotalQnasByKeyword(String keyword) {
         String sql = "SELECT COUNT(*) FROM qna WHERE qna_title LIKE ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{"%" + keyword + "%"}, Integer.class);
     }
 
+
+    public Integer countQnaByUserIdAndDate(Long user_id, String sdate, String edate) {
+        String sql = "select Count(*) from qna where qna_user_id = ? and between ? and ?";
+
+        return  jdbcTemplate.queryForObject(sql, Integer.class, user_id, sdate, edate);
+    }
 }
