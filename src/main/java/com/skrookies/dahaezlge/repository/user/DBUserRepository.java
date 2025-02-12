@@ -23,17 +23,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class DBUserRepository implements UserRepository{
 
     private final JdbcTemplate jdbcTemplate;
-    // 로그인 실패 시도와 관련된 최대 횟수 및 시간 설정
-    private static final int MAX_FAILED_ATTEMPTS = 5;  // 최대 실패 횟수
-    private static final int LOCK_TIME_MINUTES = 15;   // 계정 잠금 시간 (15분)
 
     @Override
-    public Boolean login(String user_id, String user_pw) {
+    public String login(String user_id, String user_pw) {
 
         String sql = "SELECT user_pw FROM users WHERE user_id = ?";
         try {
             // 사용자 정보 조회 (비밀번호)
             String searched_user_pw = jdbcTemplate.queryForObject(sql, String.class, user_id);
+            if (searched_user_pw.equals("") || searched_user_pw == null){
+                return "no_user";
+            }
 
             // 로그인 시도 횟수와 마지막 로그인 실패 시간 조회
             String trySql = "SELECT try_count, try_time FROM login_try WHERE user_id = ?";
@@ -45,10 +45,18 @@ public class DBUserRepository implements UserRepository{
             }, user_id);
 
             // 계정 잠금 여부 확인
-            if (isAccountLocked(loginTry)) {
+            if (isAccountLocked(loginTry, user_id)) {
                 log.info("계정이 잠겼습니다. 잠금 해제 시간까지 기다려주세요.");
-                return false;
+                return "locked";
             }
+
+            // 로그인 시도 횟수와 마지막 로그인 실패 시간 조회
+            LoginTry loginTry2 = jdbcTemplate.queryForObject(trySql, (rs, rowNum) -> {
+                LoginTry lt = new LoginTry();
+                lt.setTry_count(rs.getInt("try_count"));
+                lt.setTry_time(rs.getTimestamp("try_time"));
+                return lt;
+            }, user_id);
 
             // 비밀번호 비교
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -58,33 +66,43 @@ public class DBUserRepository implements UserRepository{
                 // 로그인 성공 시, 실패 횟수 초기화 및 시도 시간 초기화
                 resetFailedAttempts(user_id);
                 log.info("login success");
-                return true;
+                return "true";
             } else {
                 // 로그인 실패 시, 실패 횟수 증가 및 시도 시간 갱신
-                incrementFailedAttempts(user_id, loginTry);
+                incrementFailedAttempts(user_id, loginTry2);
                 log.info("login failed");
-                return false;
+                return "false";
             }
 
         } catch (Exception e) {
             log.error("Error during login: " + e.getMessage());
-            return false;
+            return "false";
         }
     }
 
     // 계정 잠금 여부 확인
-    private boolean isAccountLocked(LoginTry loginTry) {
+    private boolean isAccountLocked(LoginTry loginTry, String user_id) {
         // 실패 횟수가 일정 이상인 경우 계정을 잠금
-        final int MAX_FAILED_ATTEMPTS = 5;  // 최대 실패 횟수
-        final int LOCK_TIME_MINUTES = 10;   // 잠금 시간 (10분)
+        final int MAX_FAILED_ATTEMPTS = 4;  // 최대 실패 횟수
+        final int LOCK_TIME_MINUTES = 1;   // 잠금 시간 (10분)
 
         if (loginTry.getTry_count() >= MAX_FAILED_ATTEMPTS) {
             if (loginTry.getTry_time() != null) {
+                log.info(String.valueOf(loginTry.getTry_time()));
                 LocalDateTime lockTime = loginTry.getTry_time().toLocalDateTime().plusMinutes(LOCK_TIME_MINUTES);
-                return LocalDateTime.now().isBefore(lockTime);  // 잠금 시간이 지나지 않았으면 잠금 상태
+                if(LocalDateTime.now().isBefore(lockTime)){
+                    log.info(String.valueOf(lockTime));
+                    return true; // 잠금 시간이 지나지 않았으면 잠금 상태
+                } else {
+                    String sql = "UPDATE login_try SET try_count = 0, try_time = NULL WHERE user_id = ?";
+                    jdbcTemplate.update(sql, user_id);
+                    log.info("잠금시간 해제");
+                    log.info(String.valueOf(loginTry.getTry_count()));
+                    return false; //잠금 시간이 지났으면 계정 잠금이 아님
+                }
             }
         }
-        return false;  // 실패 횟수가 부족하거나 잠금 시간이 지났으면 계정 잠금이 아님
+        return false;  // 실패 횟수가 부족하면 계정 잠금이 아님
     }
 
     // 로그인 실패 시, 실패 횟수 증가 및 시도 시간 갱신

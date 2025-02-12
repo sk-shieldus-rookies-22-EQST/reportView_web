@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout") // 로그아웃 URL 지정
                         .logoutSuccessUrl("/index") // 로그아웃 후 이동할 경로
-                        .invalidateHttpSession(true) // 세션 무효화
+                        .invalidateHttpSession(false) // 세션 무효화
                         .deleteCookies("JSESSIONID") // 쿠키 삭제
                 )
         ;

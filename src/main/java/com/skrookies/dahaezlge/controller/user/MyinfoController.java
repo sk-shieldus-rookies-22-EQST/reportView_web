@@ -88,13 +88,17 @@ public class MyinfoController {
         if(user_id != null){
             log.info("goToMyInfo user_id: "+ user_id);
 
-            Boolean user_check = userService.login(user_id,password);
-            if (user_check){
+            String user_check = userService.login(user_id,password);
+            if (user_check.equals("true")){
                 session.setAttribute("CanGoMyInfo", "true");
                 return "redirect:/myInfo";
+            } else if (user_check.equals("locked")) {
+                log.info("locked!!!");
+                session.setAttribute("errorMessage", "1");
+                log.info((String) session.getAttribute("errorMessage"));
+                return "redirect:/logoutForm";
             } else {
                 log.info("Wrong Password");
-                log.info("여긴 goToMyInfo");
                 session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
                 return "redirect:/index";
             }
@@ -217,16 +221,20 @@ public class MyinfoController {
         if(user_id != null){
             log.info("탈퇴할 user_id: "+ user_id);
 
-            Boolean user_check = userService.login(user_id,del_password);
-            if (user_check){
+            String user_check = userService.login(user_id,del_password);
+            if (user_check.equals("true")){
                 Boolean deleted_user = userService.deleteUser(user_id);
                 if (deleted_user){
                     log.info("deluser: user_delete");
                     session.invalidate();
                     HttpSession newSession = request.getSession(true); // 새로운 세션을 생성
-                    newSession.setAttribute("deletedMessage", "탈퇴가 완료되었습니다.");
+                    newSession.setAttribute("errorMessage", "탈퇴가 완료되었습니다.");
                     return "redirect:/index";
                 }
+            } else if (user_check.equals("locked")){
+                log.info("locked!!!");
+                session.setAttribute("errorMessage", "1");
+                return "redirect:/logoutForm";
             } else {
                 log.info("Wrong Password");
                 session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");

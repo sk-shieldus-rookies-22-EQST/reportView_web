@@ -43,8 +43,8 @@ public class AuthController {
             String user_id = passwordParts[0];
             String user_pw = passwordParts[1];
 
-            Boolean result = userService.login(user_id, user_pw);
-            statusDto.setStatus(result);
+            String result = userService.login(user_id, user_pw);
+            statusDto.setStatus(Boolean.valueOf(result));
 
         } catch (Exception e) {
 
