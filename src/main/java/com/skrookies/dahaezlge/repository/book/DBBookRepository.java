@@ -87,7 +87,8 @@ public class DBBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Map<String, Object>> getBooksWithKeyword(String keyword, String sort, String direction) {
+    public List<Map<String, Object>> getBooksWithKeyword(String keyword,
+                                                         String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
         if (direction == null || direction.isEmpty()) {
             direction = "DESC";
