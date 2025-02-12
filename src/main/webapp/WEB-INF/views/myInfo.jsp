@@ -190,28 +190,28 @@
                         <%
                     } else if(status.equals("대문자")) {
              %>
-                       <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                       <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                            <div> 비밀번호는 대문자를 포함해야 합니다. </div>
                        </div>
                        <%
                    } else if(status.equals("소문자")) {
             %>
-                      <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                      <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                           <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                           <div> 비밀번호는 소문자를 포함해야 합니다. </div>
                       </div>
                       <%
                   } else if(status.equals("숫자")) {
            %>
-                     <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                     <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                          <div> 비밀번호는 숫자를 포함해야 합니다. </div>
                      </div>
                      <%
                  } else if(status.equals("특수문자")) {
           %>
-                    <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                    <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         <div> 비밀번호는 특수문자를 포함해야 합니다. </div>
                     </div>
