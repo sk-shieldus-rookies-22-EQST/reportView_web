@@ -19,7 +19,7 @@ public class UserService {
     private final UserPointRepository userPointRepository;
 
 
-    public Boolean login(String user_id, String user_pw){
+    public String login(String user_id, String user_pw){
         return userRepository.login(user_id, user_pw);
     }
 

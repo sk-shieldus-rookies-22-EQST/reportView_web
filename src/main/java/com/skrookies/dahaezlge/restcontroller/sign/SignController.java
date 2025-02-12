@@ -45,8 +45,8 @@ public class SignController {
         StatusDto statusDto = new StatusDto();
         statusDto.setStatus(false);
 
-        Boolean user_check = userService.login(signOutDto.getUser_id(), bcrypt.hashPassword(signOutDto.getUser_pw()));
-        if (user_check) {
+        String user_check = userService.login(signOutDto.getUser_id(), bcrypt.hashPassword(signOutDto.getUser_pw()));
+        if (user_check.equals("true")) {
             Boolean result = userService.deleteUser(signOutDto.getUser_id());
             statusDto.setStatus(result);
         }

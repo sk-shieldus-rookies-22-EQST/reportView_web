@@ -281,6 +281,7 @@
                               <label for="del_password" class="col-form-label">비밀번호</label>
                               <input type="password" class="form-control" id="del_password" name="del_password" required> <!-- 비밀번호 입력 -->
                           </div>
+                      <p style="color:#EA002C;text-align:center;font-size:0.7rem;margin:0"> 비밀번호 5회 오류 시 10분 간 계정 잠금 </p>
                       <p style="color:#EA002C;text-align:center;font-size:0.7rem;margin:0"> 탈퇴를 진행하는 경우 되돌릴 수 없습니다. </p>
                   </div>
                   <div class="modal-footer">

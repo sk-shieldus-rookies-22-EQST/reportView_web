@@ -75,15 +75,18 @@
                   <input type="password" class="form-control" id="re_user_pw" name="re_user_pw" >
                 </div>
 
-                <div class="mb-3">
-                  <label for="user_email" class="form-label fw-bold fs-4">이메일</label>
-                  <input type="text" class="form-control" id="user_email" name="user_email" placeholder="someone@example.com" >
-                </div>
+
 
                 <div class="mb-3">
                   <label for="user_phone" class="form-label fw-bold fs-4">전화번호</label>
                   <input type="text" class="form-control" maxlength="13" id="user_phone" name="user_phone" placeholder="숫자만 입력하세요." >
                 </div>
+
+                <div class="mb-3">
+                  <label for="user_email" class="form-label fw-bold fs-4">이메일</label>
+                  <input type="text" class="form-control" id="user_email" name="user_email" placeholder="someone@example.com" >
+                </div>
+
                 <script type="text/javascript">
                     let autoTel = function(str){
                           str = str.replace(/[^0-9]/g, '');

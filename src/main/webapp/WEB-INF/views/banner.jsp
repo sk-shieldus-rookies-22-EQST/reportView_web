@@ -163,7 +163,7 @@
 								</li>
 							</ul>
 							<input class="btn btn-outline-light" type="button" value="로그아웃"
-										onclick="location.href='/logout'" style="margin-left: 20px;">
+										onclick="location.href='/logoutForm'" style="margin-left: 20px;">
 						</div>
 
 								<% } %>
@@ -182,6 +182,7 @@
                                       <div class="mb-3">
                                           <label for="password" class="col-form-label">비밀번호</label>
                                           <input type="password" class="form-control" id="password" name="password" required> <!-- 비밀번호 입력 -->
+                                          <p style="color:#EA002C;text-align:center;font-size:0.7rem;margin:0;margin-top:10px"> 비밀번호 5회 오류 시 10분 간 계정 잠금 </p>
                                           <input type="hidden" class="form-control" id="encrypted_password" name="encrypted_password">
                                       </div>
                               </div>

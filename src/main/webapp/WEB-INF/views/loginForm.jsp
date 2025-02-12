@@ -93,6 +93,16 @@
 		 <%
                  // JSP Scriptlet: EL 표현식 값을 Java 변수에 할당
                  String warn = (String) request.getAttribute("warn");
+                 if (session.getAttribute("login_locked") != null){
+                    String login_locked = (String) session.getAttribute("login_locked");
+                    if (login_locked.equals("1")) {
+        %>
+                            <div class="alert alert-danger d-flex align-it ems-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                                <div> 5회 이상 로그인 실패로 계정이 잠겼습니다. 10분 후에 다시 시도해주세요. </div>
+                            </div>
+                <%
+                    }} else {
                  if(warn == "1") {
          %>
                     <div class="alert alert-danger d-flex align-it ems-center" role="alert" style="max-width: 600px; margin-top: 30px;">
@@ -107,7 +117,7 @@
                           <div> 아이디 또는 비밀번호를 입력해주세요. </div>
                       </div>
         <%
-                }
+                }}
         %>
 
 
