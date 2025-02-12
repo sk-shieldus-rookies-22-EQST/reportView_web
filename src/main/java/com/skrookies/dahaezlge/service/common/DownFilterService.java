@@ -17,7 +17,7 @@ public class DownFilterService {
         //  ../ 필터링
         for (String keyword : KEYWORDS) {
             /** 되는지 테스트 */
-            input = input.replace(keyword, "112");
+            input = input.replace(keyword, " ");
         }
 
         return input;
