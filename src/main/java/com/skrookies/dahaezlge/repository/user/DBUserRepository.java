@@ -22,6 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class DBUserRepository implements UserRepository{
 
     private final JdbcTemplate jdbcTemplate;
+    // 로그인 실패 시도와 관련된 최대 횟수 및 시간 설정
+    private static final int MAX_FAILED_ATTEMPTS = 5;  // 최대 실패 횟수
+    private static final int LOCK_TIME_MINUTES = 15;   // 계정 잠금 시간 (15분)
 
     @Override
     public Boolean login(String user_id, String user_pw) {
@@ -91,9 +94,9 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email) {
 
-
         String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, 1, ?)";
         String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 0)";
+        String sql_login_try = "INSERT INTO login_try (user_id, try_time, try_count) VALUES (?,null,0)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
         log.info("user_phone: "+ user_phone);
@@ -110,12 +113,12 @@ public class DBUserRepository implements UserRepository{
             log.info(formatedNow.toString());
             int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, formatedNow);
             log.info("sql success");
-
-
             int result2 = jdbcTemplate.update(sql2_point, user_id);
             log.info("sql2 success");
+            int result_login_try = jdbcTemplate.update(sql_login_try, user_id);
+            log.info("result_login_try success");
             // result 값이 1이면 성공
-            if (result > 0 && result2 > 0) {
+            if (result > 0 && result2 > 0 && result_login_try > 0) {
                 log.info("user_id: "+ user_id);
                 log.info("user_pw: "+ user_pw);
                 log.info("user_phone: "+ user_phone);
