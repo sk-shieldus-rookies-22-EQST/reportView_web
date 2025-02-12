@@ -248,13 +248,15 @@ public class MyinfoController {
     }
 
     @PostMapping("/delUser")
-    public String delUser_form(@RequestParam("del_password") String del_password, Model model, UserDto userDto, HttpSession session, HttpServletRequest request){
+    public String delUser_form(@RequestParam("encrypted_del") String del_password, Model model, UserDto userDto, HttpSession session, HttpServletRequest request) throws Exception {
         log.info("delUser");
         String user_id = (String)session.getAttribute("user_id");
         if(user_id != null){
             log.info("탈퇴할 user_id: "+ user_id);
+            log.info("goToMyInfo password: "+ del_password);
+            String decryptedPassword = aesService.decrypt(del_password);
 
-            String user_check = userService.login(user_id,del_password);
+            String user_check = userService.login(user_id,decryptedPassword);
             if (user_check.equals("true")){
                 Boolean deleted_user = userService.deleteUser(user_id);
                 if (deleted_user){
