@@ -74,7 +74,7 @@ public class QnaController {
             return "redirect:/loginForm";
         }
         // 10분동안 게시글 5개 미만 작성 시 게시글 작성 가능
-        else if(!qnaService.qnaCount(userId)){
+        else if(!qnaService.qnaWriteTry(userId)){
 
             return "redirect:/qnaList";
         }

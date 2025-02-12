@@ -4,6 +4,8 @@ import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.restcontroller.board.dto.*;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,8 @@ import java.util.Map;
 public class BoardController {
 
     private final QnaService qnaService;
+    private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** qna 게시글 전체 반환 */
     @PostMapping("/qna")
@@ -101,8 +105,8 @@ public class BoardController {
                 QnaDto qnaDto = new QnaDto();
 
                 qnaDto.setQna_id(qnaModifyDto.getQna_id());
-                qnaDto.setQna_title(qnaModifyDto.getTitle());
-                qnaDto.setQna_body(qnaModifyDto.getContent());
+                qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getTitle())));
+                qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getContent())));
                 qnaDto.setSecret(qnaModifyDto.getSecret());
                 qnaDto.setQna_user_id(existingQna.getQna_user_id());
                 qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
@@ -135,8 +139,8 @@ public class BoardController {
             QnaDto qnaDto = new QnaDto();
 
             qnaDto.setQna_id(qnaModifyDto.getQna_id());
-            qnaDto.setQna_title(qnaModifyDto.getTitle());
-            qnaDto.setQna_body(qnaModifyDto.getContent());
+            qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getTitle())));
+            qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getContent())));
             qnaDto.setSecret(qnaModifyDto.getSecret());
             qnaDto.setQna_user_id(existingQna.getQna_user_id());
             qnaDto.setQna_created_at(LocalDateTime.now());
@@ -239,8 +243,8 @@ public class BoardController {
                     // Qna 게시글 수정 정보 설정
                     QnaDto qnaDto = new QnaDto();
 
-                    qnaDto.setQna_title(qnaWriteDto.getTitle());
-                    qnaDto.setQna_body(qnaWriteDto.getContent());
+                    qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getTitle())));
+                    qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getContent())));
                     qnaDto.setQna_user_id(qnaWriteDto.getWriter());
                     qnaDto.setSecret(qnaWriteDto.getSecret());
                     qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
@@ -272,8 +276,8 @@ public class BoardController {
                 // Qna 게시글 수정 정보 설정
                 QnaDto qnaDto = new QnaDto();
 
-                qnaDto.setQna_title(qnaWriteDto.getTitle());
-                qnaDto.setQna_body(qnaWriteDto.getContent());
+                qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getTitle())));
+                qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getContent())));
                 qnaDto.setQna_user_id(qnaWriteDto.getWriter());
                 qnaDto.setSecret(qnaWriteDto.getSecret());
                 qnaDto.setQna_created_at(LocalDateTime.now());
