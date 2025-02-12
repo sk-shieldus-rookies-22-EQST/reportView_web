@@ -87,6 +87,8 @@
           </symbol>
         </svg>
 		<%
+		String warn_phone_id = request.getParameter("warn_phone_id");
+		String warn_phone_pw = request.getParameter("warn_phone_pw");
 		String warnid = request.getParameter("warnid");
 		String errorid = request.getParameter("errorid");
 		String warnpw = request.getParameter("warnpw");
@@ -119,6 +121,14 @@
 
     <%
     }
+        if (warn_phone_id != null) {
+     %>          <div class="alert alert-success  d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                  <div> 전화번호를 확인해주세요. </div>
+              </div>
+
+         <%
+     }
     %>
 	</div>
 	<div class="container" style="max-width: 500px;margin-bottom:100px;border-radius: 5px;padding: 50px 20px;">
@@ -205,11 +215,20 @@
 
 <%
         }
+        if (warn_phone_pw != null) {
+     %>          <div class="alert alert-success  d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                  <div> 전화번호를 확인해주세요. </div>
+              </div>
+
+         <%
+     }
 %>
     </div>
 
 </div>
 </div>
+<% session.removeAttribute("input_error");%>
 
 </body>
 </html>

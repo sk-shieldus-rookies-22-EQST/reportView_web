@@ -75,6 +75,7 @@
 		    <td width="40%" style="border-right:1px solid #212529"> 새로운 비밀번호 </td>
             <td width="100%" id="user_pw">
                 <input type="password" class="form-control" style="width:50%;" name="user_pw" id="user_pw" value="" required>
+                <p style="color:#EA002C;">대문자, 소문자, 숫자, 특수문자 포함 8글자 이상</p>
             </td>
         </tr>
         <tr height="60" align="center">
