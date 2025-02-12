@@ -4,6 +4,8 @@ import com.skrookies.dahaezlge.controller.qna.Dto.QnaDto;
 import com.skrookies.dahaezlge.controller.qna.Dto.QnaReDto;
 import com.skrookies.dahaezlge.restcontroller.board.dto.*;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
+import com.skrookies.dahaezlge.service.common.SqlFilterService;
+import com.skrookies.dahaezlge.service.common.XssFilterService;
 import com.skrookies.dahaezlge.service.qna.QnaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,8 @@ import java.util.Map;
 public class BoardController {
 
     private final QnaService qnaService;
+    private final XssFilterService xssFilterService;
+    private final SqlFilterService sqlFilterService;
 
     /** qna 게시글 전체 반환 */
     @PostMapping("/qna")
@@ -101,8 +105,8 @@ public class BoardController {
                 QnaDto qnaDto = new QnaDto();
 
                 qnaDto.setQna_id(qnaModifyDto.getQna_id());
-                qnaDto.setQna_title(qnaModifyDto.getTitle());
-                qnaDto.setQna_body(qnaModifyDto.getContent());
+                qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getTitle())));
+                qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getContent())));
                 qnaDto.setSecret(qnaModifyDto.getSecret());
                 qnaDto.setQna_user_id(existingQna.getQna_user_id());
                 qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
@@ -135,8 +139,8 @@ public class BoardController {
             QnaDto qnaDto = new QnaDto();
 
             qnaDto.setQna_id(qnaModifyDto.getQna_id());
-            qnaDto.setQna_title(qnaModifyDto.getTitle());
-            qnaDto.setQna_body(qnaModifyDto.getContent());
+            qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getTitle())));
+            qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaModifyDto.getContent())));
             qnaDto.setSecret(qnaModifyDto.getSecret());
             qnaDto.setQna_user_id(existingQna.getQna_user_id());
             qnaDto.setQna_created_at(LocalDateTime.now());
@@ -200,92 +204,106 @@ public class BoardController {
     public ResponseEntity<StatusDto> writeQna(@RequestBody QnaWriteDto qnaWriteDto) {
         log.info("Android Qna Write 실행");
 
-        log.info("업로드 파일 수령 현황: {}", qnaWriteDto.getQna_file());
+        boolean write_result = qnaService.qnaWriteTry(qnaWriteDto.getWriter());
 
-        /** 파일 변경 시 작동 */
-        if(qnaWriteDto.getQna_file() != null) {
-            String fileName = StringUtils.cleanPath(qnaWriteDto.getQna_file().getOriginalFilename());
-            String fileExtension = ""; // 파일 확장자 (예: .pdf)
-            String fileBaseName = fileName; // 확장자 없는 파일명
+        log.info("게시글 작성 제한 여부: {}", write_result);
 
-            // 확장자 분리
-            int dotIndex = fileName.lastIndexOf(".");
-            if (dotIndex > 0) {
-                fileBaseName = fileName.substring(0, dotIndex);
-                fileExtension = fileName.substring(dotIndex);
-            }
+        if(write_result) {
+            log.info("업로드 파일 수령 현황: {}", qnaWriteDto.getQna_file());
 
-            // 현재 시간을 파일명에 추가
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-            String newFileName = fileBaseName + "_" + timestamp + fileExtension;
+            /** 파일 변경 시 작동 */
+            if (qnaWriteDto.getQna_file() != null) {
+                String fileName = StringUtils.cleanPath(qnaWriteDto.getQna_file().getOriginalFilename());
+                String fileExtension = ""; // 파일 확장자 (예: .pdf)
+                String fileBaseName = fileName; // 확장자 없는 파일명
 
-            try {
-                // 파일 저장 경로 설정
-                String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString();
-                File dir = new File(uploadDir);
-                if (!dir.exists()) {
-                    dir.mkdirs();
+                // 확장자 분리
+                int dotIndex = fileName.lastIndexOf(".");
+                if (dotIndex > 0) {
+                    fileBaseName = fileName.substring(0, dotIndex);
+                    fileExtension = fileName.substring(dotIndex);
                 }
 
-                // 새 파일 저장
-                Path filePath = Paths.get(uploadDir, newFileName);
-                qnaWriteDto.getQna_file().transferTo(filePath.toFile());
+                // 현재 시간을 파일명에 추가
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+                String newFileName = fileBaseName + "_" + timestamp + fileExtension;
 
+                try {
+                    // 파일 저장 경로 설정
+                    String uploadDir = Paths.get(System.getProperty("user.dir"), "src", "main", "webapp", "uploads").toString();
+                    File dir = new File(uploadDir);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+
+                    // 새 파일 저장
+                    Path filePath = Paths.get(uploadDir, newFileName);
+                    qnaWriteDto.getQna_file().transferTo(filePath.toFile());
+
+                    // Qna 게시글 수정 정보 설정
+                    QnaDto qnaDto = new QnaDto();
+
+                    qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getTitle())));
+                    qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getContent())));
+                    qnaDto.setQna_user_id(qnaWriteDto.getWriter());
+                    qnaDto.setSecret(qnaWriteDto.getSecret());
+                    qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
+                    qnaDto.setQna_file(qnaWriteDto.getQna_file());
+
+                    qnaDto.setFile_name(fileName);
+                    qnaDto.setNew_file_name(newFileName);
+                    qnaDto.setFile_path(filePath.toString());
+                    qnaDto.setFile_size(qnaDto.getQna_file().getSize());
+
+                    StatusDto statusDto = new StatusDto();
+                    statusDto.setStatus(qnaService.qna(qnaDto) > 0);
+
+                    return ResponseEntity.ok()
+                            .body(statusDto);
+
+                } catch (IOException e) {
+                    log.error("파일 업로드 실패", e);
+
+                    StatusDto statusDto = new StatusDto();
+                    statusDto.setStatus(false);
+
+                    return ResponseEntity.ok()
+                            .body(statusDto);
+                }
+            }
+            /** 업로드할 파일이 없을 시 */
+            else {
                 // Qna 게시글 수정 정보 설정
                 QnaDto qnaDto = new QnaDto();
 
-                qnaDto.setQna_title(qnaWriteDto.getTitle());
-                qnaDto.setQna_body(qnaWriteDto.getContent());
+                qnaDto.setQna_title(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getTitle())));
+                qnaDto.setQna_body(sqlFilterService.filter(xssFilterService.filter(qnaWriteDto.getContent())));
                 qnaDto.setQna_user_id(qnaWriteDto.getWriter());
                 qnaDto.setSecret(qnaWriteDto.getSecret());
-                qnaDto.setQna_created_at(LocalDateTime.parse(timestamp));
+                qnaDto.setQna_created_at(LocalDateTime.now());
                 qnaDto.setQna_file(qnaWriteDto.getQna_file());
 
-                qnaDto.setFile_name(fileName);
-                qnaDto.setNew_file_name(newFileName);
-                qnaDto.setFile_path(filePath.toString());
-                qnaDto.setFile_size(qnaDto.getQna_file().getSize());
+                // 파일 정보가 없는 경우 기본값 설정
+                qnaDto.setFile_name(null);
+                qnaDto.setFile_path(null);
+                qnaDto.setFile_size(0L);
+                qnaDto.setNew_file_name(null);
 
                 StatusDto statusDto = new StatusDto();
                 statusDto.setStatus(qnaService.qna(qnaDto) > 0);
 
                 return ResponseEntity.ok()
                         .body(statusDto);
-
-            } catch (IOException e) {
-                log.error("파일 업로드 실패", e);
-
-                StatusDto statusDto = new StatusDto();
-                statusDto.setStatus(false);
-
-                return ResponseEntity.ok()
-                        .body(statusDto);
             }
         }
-        /** 업로드할 파일이 없을 시 */
         else{
-            // Qna 게시글 수정 정보 설정
-            QnaDto qnaDto = new QnaDto();
-
-            qnaDto.setQna_title(qnaWriteDto.getTitle());
-            qnaDto.setQna_body(qnaWriteDto.getContent());
-            qnaDto.setQna_user_id(qnaWriteDto.getWriter());
-            qnaDto.setSecret(qnaWriteDto.getSecret());
-            qnaDto.setQna_created_at(LocalDateTime.now());
-            qnaDto.setQna_file(qnaWriteDto.getQna_file());
-
-            // 파일 정보가 없는 경우 기본값 설정
-            qnaDto.setFile_name(null);
-            qnaDto.setFile_path(null);
-            qnaDto.setFile_size(0L);
-            qnaDto.setNew_file_name(null);
-
             StatusDto statusDto = new StatusDto();
-            statusDto.setStatus(qnaService.qna(qnaDto) > 0);
+            statusDto.setStatus(false);
 
             return ResponseEntity.ok()
                     .body(statusDto);
         }
+
     }
 
 

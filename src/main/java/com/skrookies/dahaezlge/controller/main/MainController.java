@@ -39,8 +39,8 @@ public class MainController {
 
     /** 기본 페이지 전체 책 조회 */
     @GetMapping("/")
-    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction,Model model ) {
-
+    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction, Model model, HttpSession session) {
+        session.removeAttribute("CanGoMyInfo");
         int totalBooks = 0;
 
         List<Map<String, Object>> books;
@@ -86,23 +86,23 @@ public class MainController {
     /** 기본 페이지 검색한 책 조회
      * 검색어 기준, 날짜 기준 */
     @GetMapping("/index")
-    public String eBookMain(HttpServletRequest request, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction, Model model ) {
-
+    public String eBookMain(HttpServletRequest request, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction, Model model, HttpSession session) {
+        session.removeAttribute("CanGoMyInfo");
         // XSS 필터링 적용
         keyword = xssFilterService.filter(keyword); // keyword 필터링
         keyword = sqlFilterService.filter(keyword);
 
         sdate = xssFilterService.filter(sdate); // sdate 필터링 (sql 공격 허용)
-        sdate = sqlFilterService.filter(sdate); //
+        sdate = sqlFilterService.filter1(sdate); //
         edate = xssFilterService.filter(edate); // edate 필터링
-        edate = sqlFilterService.filter(edate);
+        edate = sqlFilterService.filter1(edate);
 
         sort = xssFilterService.filter(sort);   //정렬 필터링
         sort = sqlFilterService.filter(sort);
         direction = xssFilterService.filter(direction); //방향 필터링
         direction = sqlFilterService.filter(direction);
 
-        /** 공격 테스트용 예외처리 제거 */
+//        /** 공격 테스트용 예외처리 제거 */
 //        List<Map<String, Object>> books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);
 
         List<Map<String, Object>> books = null;

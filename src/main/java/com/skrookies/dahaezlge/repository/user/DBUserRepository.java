@@ -1,5 +1,6 @@
 package com.skrookies.dahaezlge.repository.user;
 
+import com.skrookies.dahaezlge.entity.loginTry.LoginTry;
 import com.skrookies.dahaezlge.entity.user.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,30 +23,88 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class DBUserRepository implements UserRepository{
 
     private final JdbcTemplate jdbcTemplate;
+    // 로그인 실패 시도와 관련된 최대 횟수 및 시간 설정
+    private static final int MAX_FAILED_ATTEMPTS = 5;  // 최대 실패 횟수
+    private static final int LOCK_TIME_MINUTES = 15;   // 계정 잠금 시간 (15분)
 
     @Override
     public Boolean login(String user_id, String user_pw) {
 
-        String sql = "Select user_pw from users where user_id = ?";
+        String sql = "SELECT user_pw FROM users WHERE user_id = ?";
         try {
+            // 사용자 정보 조회 (비밀번호)
             String searched_user_pw = jdbcTemplate.queryForObject(sql, String.class, user_id);
+
+            // 로그인 시도 횟수와 마지막 로그인 실패 시간 조회
+            String trySql = "SELECT try_count, try_time FROM login_try WHERE user_id = ?";
+            LoginTry loginTry = jdbcTemplate.queryForObject(trySql, (rs, rowNum) -> {
+                LoginTry lt = new LoginTry();
+                lt.setTry_count(rs.getInt("try_count"));
+                lt.setTry_time(rs.getTimestamp("try_time"));
+                return lt;
+            }, user_id);
+
+            // 계정 잠금 여부 확인
+            if (isAccountLocked(loginTry)) {
+                log.info("계정이 잠겼습니다. 잠금 해제 시간까지 기다려주세요.");
+                return false;
+            }
+
+            // 비밀번호 비교
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             boolean isMatch = passwordEncoder.matches(user_pw, searched_user_pw);
-            if ( isMatch ){
+
+            if (isMatch) {
+                // 로그인 성공 시, 실패 횟수 초기화 및 시도 시간 초기화
+                resetFailedAttempts(user_id);
                 log.info("login success");
                 return true;
             } else {
-                log.info("원본 비밀번호: " + user_pw);
-                log.info("찾은 비밀번호: " + searched_user_pw);
-                log.info("no user");
+                // 로그인 실패 시, 실패 횟수 증가 및 시도 시간 갱신
+                incrementFailedAttempts(user_id, loginTry);
+                log.info("login failed");
                 return false;
             }
 
         } catch (Exception e) {
-            log.info("error");
+            log.error("Error during login: " + e.getMessage());
             return false;
         }
     }
+
+    // 계정 잠금 여부 확인
+    private boolean isAccountLocked(LoginTry loginTry) {
+        // 실패 횟수가 일정 이상인 경우 계정을 잠금
+        final int MAX_FAILED_ATTEMPTS = 5;  // 최대 실패 횟수
+        final int LOCK_TIME_MINUTES = 10;   // 잠금 시간 (10분)
+
+        if (loginTry.getTry_count() >= MAX_FAILED_ATTEMPTS) {
+            if (loginTry.getTry_time() != null) {
+                LocalDateTime lockTime = loginTry.getTry_time().toLocalDateTime().plusMinutes(LOCK_TIME_MINUTES);
+                return LocalDateTime.now().isBefore(lockTime);  // 잠금 시간이 지나지 않았으면 잠금 상태
+            }
+        }
+        return false;  // 실패 횟수가 부족하거나 잠금 시간이 지났으면 계정 잠금이 아님
+    }
+
+    // 로그인 실패 시, 실패 횟수 증가 및 시도 시간 갱신
+    private void incrementFailedAttempts(String user_id, LoginTry loginTry) {
+        loginTry.setTry_count(loginTry.getTry_count() + 1);
+        loginTry.setTry_time(Timestamp.valueOf(LocalDateTime.now()));  // 실패 시도 시간 갱신
+
+        // DB에 업데이트
+        String updateSql = "UPDATE login_try SET try_count = ?, try_time = ? WHERE user_id = ?";
+        jdbcTemplate.update(updateSql, loginTry.getTry_count(), loginTry.getTry_time(), user_id);
+        log.info(String.valueOf(loginTry.getTry_count()));
+        log.info(String.valueOf(loginTry.getTry_time()));
+    }
+
+    // 로그인 성공 시, 실패 횟수와 시도 시간 초기화
+    private void resetFailedAttempts(String user_id) {
+        String updateSql = "UPDATE login_try SET try_count = 0, try_time = NULL WHERE user_id = ?";
+        jdbcTemplate.update(updateSql, user_id);
+    }
+
 
     @Override
     public String findUserid(String user_phone, String user_email) {
@@ -91,9 +150,9 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean registerUser(String user_id, String user_pw, String user_phone, String user_email) {
 
-
         String sql = "INSERT INTO users (user_id, user_pw, user_phone, user_email, user_level, user_created_at) VALUES (?, ?, ?, ?, 1, ?)";
         String sql2_point = "INSERT INTO user_point (point_user_id, point) VALUES (?, 0)";
+        String sql_login_try = "INSERT INTO login_try (user_id, try_time, try_count) VALUES (?,null,0)";
         log.info("user_id: "+ user_id);
         log.info("user_pw: "+ user_pw);
         log.info("user_phone: "+ user_phone);
@@ -110,12 +169,12 @@ public class DBUserRepository implements UserRepository{
             log.info(formatedNow.toString());
             int result = jdbcTemplate.update(sql, user_id, user_pw, user_phone, user_email, formatedNow);
             log.info("sql success");
-
-
             int result2 = jdbcTemplate.update(sql2_point, user_id);
             log.info("sql2 success");
+            int result_login_try = jdbcTemplate.update(sql_login_try, user_id);
+            log.info("result_login_try success");
             // result 값이 1이면 성공
-            if (result > 0 && result2 > 0) {
+            if (result > 0 && result2 > 0 && result_login_try > 0) {
                 log.info("user_id: "+ user_id);
                 log.info("user_pw: "+ user_pw);
                 log.info("user_phone: "+ user_phone);

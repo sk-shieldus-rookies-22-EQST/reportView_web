@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -66,7 +67,7 @@ public class DBBookRepository implements BookRepository {
             return "book_reg_date"; // 기본값
         }
         return switch (sort) {
-            case "title" -> "book_title";
+            case "bt" -> "book_title";
             case "price_asc", "price_desc" -> "book_price";
             case "date" -> "book_reg_date";
             default -> sort ;
@@ -88,43 +89,53 @@ public class DBBookRepository implements BookRepository {
     @Override
     public List<Map<String, Object>> getBooksWithKeyword(String keyword, String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
-        if(direction == null || direction.isEmpty()){
+        if (direction == null || direction.isEmpty()) {
             direction = "DESC";
         }
+
+        // SQL Query (keyword를 PreparedStatement로 바인딩)
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
                 "book_reg_date, book_img_path, book_price " +
-                "FROM book WHERE book_title LIKE '%" + keyword + "%' " +
+                "FROM book WHERE book_title LIKE ? " +
                 "ORDER BY " + orderByClause + " " + direction;
-        return jdbcTemplate.queryForList(sql);
+
+        // '%'를 포함한 검색어를 바인딩
+        return jdbcTemplate.queryForList(sql, "%" + keyword + "%");
     }
 
     @Override
     public List<Map<String, Object>> getBooksWithDate(String sdate, String edate, String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
-        if(direction == null || direction.isEmpty()){
+        if (direction == null || direction.isEmpty()) {
             direction = "DESC";
         }
+
+        // SQL Query (sdate, edate를 PreparedStatement로 바인딩)
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
                 "book_reg_date, book_img_path, book_price " +
-                "FROM book WHERE book_reg_date BETWEEN TO_DATE('" + sdate + "', 'YYYY-MM-DD') " +
-                "AND TO_DATE('" + edate + "', 'YYYY-MM-DD') " +
+                "FROM book WHERE book_reg_date BETWEEN TO_DATE(?, 'YYYY-MM-DD') " +
+                "AND TO_DATE(?, 'YYYY-MM-DD') " +
                 "ORDER BY " + orderByClause + " " + direction;
-        return jdbcTemplate.queryForList(sql);
+
+        return jdbcTemplate.queryForList(sql, sdate, edate);
     }
 
     @Override
     public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate, String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
-        if(direction == null || direction.isEmpty()){
+        if (direction == null || direction.isEmpty()) {
             direction = "DESC";
         }
+
+        // SQL Query (keyword, sdate, edate를 PreparedStatement로 바인딩)
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
                 "book_reg_date, book_img_path, book_price " +
-                "FROM book WHERE book_title LIKE '%" + keyword + "%' " +
-                "AND book_reg_date BETWEEN TO_DATE('" + sdate + "', 'YYYY-MM-DD') " +
-                "AND TO_DATE('" + edate + "', 'YYYY-MM-DD') " +
+                "FROM book WHERE book_title LIKE ? " +
+                "AND book_reg_date BETWEEN TO_DATE(?, 'YYYY-MM-DD') " +
+                "AND TO_DATE(?, 'YYYY-MM-DD') " +
                 "ORDER BY " + orderByClause + " " + direction;
-        return jdbcTemplate.queryForList(sql);
+
+        return jdbcTemplate.queryForList(sql, "%" + keyword + "%", sdate, edate);
     }
 
     @Override
@@ -149,14 +160,12 @@ public class DBBookRepository implements BookRepository {
 
     @Override
     public List<Map<String, Object>> findByKeyword(String keyword) {
-
-        String sql = "select * from book where book_title like '%" + keyword + "%'";
+        String sql = "SELECT * FROM book WHERE book_title LIKE ?";
 
         try {
             log.info("findByKeyword try");
-            return jdbcTemplate.queryForList(sql);
-        }
-        catch (Exception e){
+            return jdbcTemplate.queryForList(sql, "%" + keyword + "%");
+        } catch (Exception e) {
             log.info("findByKeyword fail");
             e.printStackTrace();
             return null;
@@ -165,14 +174,12 @@ public class DBBookRepository implements BookRepository {
 
     @Override
     public List<Map<String, Object>> findByDate(String sdate, String edate) {
-
-        String sql = "select * from book where (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD')) ";
+        String sql = "SELECT * FROM book WHERE book_reg_date BETWEEN TO_DATE(?, 'YYYY-MM-DD') AND TO_DATE(?, 'YYYY-MM-DD')";
 
         try {
             log.info("findByDate try");
-            return jdbcTemplate.queryForList(sql);
-        }
-        catch (Exception e){
+            return jdbcTemplate.queryForList(sql, sdate, edate);
+        } catch (Exception e) {
             log.info("findByDate fail");
             e.printStackTrace();
             return null;
@@ -181,20 +188,17 @@ public class DBBookRepository implements BookRepository {
 
     @Override
     public List<Map<String, Object>> findByBoth(String keyword, String sdate, String edate) {
-
-        String sql = "select * from book where book_title like '%" + keyword + "%' " +
-                "and (book_reg_date between TO_DATE('" + sdate + "', 'YYYY-MM-DD') and TO_DATE('" + edate + "', 'YYYY-MM-DD'))";
+        String sql = "SELECT * FROM book WHERE book_title LIKE ? " +
+                "AND book_reg_date BETWEEN TO_DATE(?, 'YYYY-MM-DD') AND TO_DATE(?, 'YYYY-MM-DD')";
 
         try {
             log.info("findByBoth try");
-            return jdbcTemplate.queryForList(sql);
-        }
-        catch (Exception e){
+            return jdbcTemplate.queryForList(sql, "%" + keyword + "%", sdate, edate);
+        } catch (Exception e) {
             log.info("findByBoth fail");
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override
