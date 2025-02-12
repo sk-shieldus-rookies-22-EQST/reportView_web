@@ -153,10 +153,10 @@
                     };
 
                     // 객체를 &&&& 구분자로 결합
-                    const loginDataString = Object.values(loginData).join("&&&&");
+                    const registerDataString = Object.values(loginData).join("&&&&");
 
                     // AES로 아이디와 비밀번호를 결합하여 암호화
-                    const encryptedData = await encryptAES(aesKey, aesIv, loginDataString);
+                    const encryptedData = await encryptAES(aesKey, aesIv, registerDataString);
 
                     console.log("Encrypted Data: ", encryptedData);
 

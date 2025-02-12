@@ -170,51 +170,80 @@ public class MyinfoController {
 
     /** 수정된 회원 정보 저장 */
     @PostMapping("/myInfoSave")
-    public String myInfoSave_form(Model model, UserDto userDto, HttpSession session){
+    public String myInfoSave_form(Model model, UserDto userDto, HttpSession session) throws Exception {
         log.info("myInfoSave");
         String user_id = (String)session.getAttribute("user_id");
 
-        // '<', '>' --> '&lt', '&gt'
-        String user_pw = userDto.getUser_pw();
-        if (!isPasswordStrong(user_pw).equals("true")){
-            String status = isPasswordStrong(user_pw);
-            log.info("status: " + status);
-            session.setAttribute("status",status);
-            return "redirect:/myInfoModify";
-        }
-        user_pw = convertToHtmlEntities(user_pw);
-        String re_user_pw = userDto.getRe_user_pw();
-        re_user_pw = convertToHtmlEntities(re_user_pw);
-        String user_phone = userDto.getUser_phone();
-        user_phone = convertToHtmlEntities(user_phone);
-        String user_email = userDto.getUser_email();
-        user_phone = convertToHtmlEntities(user_phone);
+        String info_Encrypted = userDto.getUser_encrypted();
+        log.info("info_Encrypted: " + info_Encrypted);
 
-        if(user_pw != null && re_user_pw != null && user_phone != null && user_email != null){
-            if (!user_pw.equals(re_user_pw)){
-                log.info("비밀번호 불일치");
-                session.setAttribute("status", "1");
-                return "redirect:/myInfoModify";
-            }
-            if (!isValidPhoneNumber(user_phone)){
-                log.info("전화번호 형태 확인");
-                session.setAttribute("status", "2");
-                return "redirect:/myInfoModify";
-            } else {
-                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-                log.info("입력한 모든 값이 not null입니다.");
-                String encodedPassword = passwordEncoder.encode(user_pw);
-                Boolean update_result = userService.updateUserInfo(user_id, encodedPassword,user_phone,user_email);
-                if (update_result) {
-                    return "redirect:/myInfo";
-                }
-            }
+        String info_Decrypted = aesService.decrypt(info_Encrypted);
+        if (info_Decrypted == null || info_Decrypted.isEmpty()) {
+            log.info("No data received");
+            model.addAttribute("warn", "1"); // 데이터가 비었을 때 경고
+            return "myInfo";
         } else {
-            log.info("입력한 모든 값 중 null이 있습니다.");
+            // &&&& 구분자로 분리된 값을 배열로 나누기
+            String[] RegisterInfoParts = info_Decrypted.split("&&&&");
+
+            // 필요한 최소 필드 개수 체크
+            int requiredFields = 4;  // 최소 필요한 필드 개수 (필요에 따라 조정)
+            if (RegisterInfoParts.length < requiredFields) {
+                log.info("Invalid data, missing required fields");
+                model.addAttribute("warn", "3"); // 필드가 부족한 경우 경고
+                return "myInfo";
+            }
+
+            // 각각의 값을 변수에 할당
+            String user_pw = RegisterInfoParts[0];
+            String re_user_pw = RegisterInfoParts[1];
+            String user_phone = RegisterInfoParts[2];
+            String user_email = RegisterInfoParts[3];
+
+            // 데이터가 모두 올바르게 전달되었는지 확인
+            log.info("user_pw: {}", user_pw);
+            log.info("re_user_pw: {}", re_user_pw);
+            log.info("user_email: {}", user_email);
+            log.info("user_phone: {}", user_phone);
+
+            // '<', '>' --> '&lt', '&gt'
+            if (!isPasswordStrong(user_pw).equals("true")) {
+                String status = isPasswordStrong(user_pw);
+                log.info("status: " + status);
+                session.setAttribute("status", status);
+                return "redirect:/myInfoModify";
+            }
+            user_pw = convertToHtmlEntities(user_pw);
+            re_user_pw = convertToHtmlEntities(re_user_pw);
+            user_phone = convertToHtmlEntities(user_phone);
+            user_email = convertToHtmlEntities(user_email);
+
+            if (user_pw != null && re_user_pw != null && user_phone != null && user_email != null) {
+                if (!user_pw.equals(re_user_pw)) {
+                    log.info("비밀번호 불일치");
+                    session.setAttribute("status", "1");
+                    return "redirect:/myInfoModify";
+                }
+                if (!isValidPhoneNumber(user_phone)) {
+                    log.info("전화번호 형태 확인");
+                    session.setAttribute("status", "2");
+                    return "redirect:/myInfoModify";
+                } else {
+                    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                    log.info("입력한 모든 값이 not null입니다.");
+                    String encodedPassword = passwordEncoder.encode(user_pw);
+                    Boolean update_result = userService.updateUserInfo(user_id, encodedPassword, user_phone, user_email);
+                    if (update_result) {
+                        return "redirect:/myInfo";
+                    }
+                }
+            } else {
+                log.info("입력한 모든 값 중 null이 있습니다.");
+                return "myInfo";
+            }
+
             return "myInfo";
         }
-
-        return "myInfo";
     }
 
     @PostMapping("/delUser")
