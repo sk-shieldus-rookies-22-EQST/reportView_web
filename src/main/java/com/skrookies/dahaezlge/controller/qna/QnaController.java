@@ -34,6 +34,7 @@ public class QnaController {
     private final XssFilterService xssFilterService;
     private final SqlFilterService sqlFilterService;
     private final DownFilterService downFilterService;
+    private final QnaService qnaService;
 
     /**qna 게시판 글 목록 */
     @GetMapping("/qnaList")
@@ -67,9 +68,15 @@ public class QnaController {
         // 세션에서 user_id 확인
         String userId = (String) session.getAttribute("user_id");
 
+        // 세션에 user_id가 없으면 loginForm으로 리다이렉트
         if (userId == null || userId.isEmpty()) {
-            // 세션에 user_id가 없으면 loginForm으로 리다이렉트
+
             return "redirect:/loginForm";
+        }
+        // 10분동안 게시글 5개 미만 작성 시 게시글 작성 가능
+        else if(!qnaService.qnaCount(userId)){
+
+            return "redirect:/qnaList";
         }
 
         log.info("page_move: qnaWrite.jsp");
