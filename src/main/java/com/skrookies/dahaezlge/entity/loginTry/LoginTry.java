@@ -25,5 +25,5 @@ public class LoginTry {
     private Timestamp try_time;
 
     @Column(name = "TRY_COUNT")
-    private Long try_count;
+    private int try_count;
 }
