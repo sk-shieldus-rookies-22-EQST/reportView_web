@@ -73,8 +73,6 @@ public class DRMController {
                 Map<String, String> requestBody = new HashMap<>();
                 requestBody.put("user_id", userId);
                 requestBody.put("book_id", bookId);
-//                requestBody.put("user_id", "333");
-//                requestBody.put("book_id", "266");
 
                 // HTTP 요청 객체 생성
                 HttpEntity<Map<String, String>> entity = new HttpEntity<>(requestBody, headers);
@@ -89,10 +87,6 @@ public class DRMController {
                 String presignedUrl = fileResponse.getBody().get("presigned_url");
                 log.info("presignedUrl: " + presignedUrl);
 
-                // 응답 구성
-//                Map<String, String> response = new HashMap<>();
-//                response.put("message", "Presigned URL generated successfully.");
-//                response.put("presigned_url", presignedUrl);
 
                 // KMS에서 AES 키 및 IV 가져오기
                 ResponseEntity<Map<String, String>> kmsResponse = restTemplate.exchange(
@@ -110,7 +104,11 @@ public class DRMController {
                 log.info("AES IV: " + aesIv);
 
 
-                String drmUrl = "BookiesDRM://run?presigned_url='" + presignedUrl + "'&key='" + aesKey + "'&iv='" + aesIv +"'";
+                String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl +
+                        "&key=" + aesKey +
+                        "&iv=" + aesIv;
+
+
                 log.info("drmUrl: " + drmUrl);
 
                 Map<String, String> response = new HashMap<>();
