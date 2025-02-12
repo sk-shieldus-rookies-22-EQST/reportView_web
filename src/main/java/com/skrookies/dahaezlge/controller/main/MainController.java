@@ -39,8 +39,8 @@ public class MainController {
 
     /** 기본 페이지 전체 책 조회 */
     @GetMapping("/")
-    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction,Model model ) {
-
+    public String main(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction, Model model, HttpSession session) {
+        session.removeAttribute("CanGoMyInfo");
         int totalBooks = 0;
 
         List<Map<String, Object>> books;
@@ -86,8 +86,8 @@ public class MainController {
     /** 기본 페이지 검색한 책 조회
      * 검색어 기준, 날짜 기준 */
     @GetMapping("/index")
-    public String eBookMain(HttpServletRequest request, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction, Model model ) {
-
+    public String eBookMain(HttpServletRequest request, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "") String sdate, @RequestParam(defaultValue = "") String edate, @RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "") String direction, Model model, HttpSession session) {
+        session.removeAttribute("CanGoMyInfo");
         // XSS 필터링 적용
         keyword = xssFilterService.filter(keyword); // keyword 필터링
         keyword = sqlFilterService.filter(keyword);

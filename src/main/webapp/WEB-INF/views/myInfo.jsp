@@ -180,7 +180,44 @@
                             <div> 전화번호 형태를 확인해주세요. </div>
                         </div>
                         <%
-                    }}%>
+                    }
+                    else if(status.equals( "8자")){
+            %>
+                        <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                            <div> 비밀번호는 8자 이상이어야 합니다. </div>
+                        </div>
+                        <%
+                    } else if(status.equals("대문자")) {
+             %>
+                       <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                           <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                           <div> 비밀번호는 대문자를 포함해야 합니다. </div>
+                       </div>
+                       <%
+                   } else if(status.equals("소문자")) {
+            %>
+                      <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                          <div> 비밀번호는 소문자를 포함해야 합니다. </div>
+                      </div>
+                      <%
+                  } else if(status.equals("숫자")) {
+           %>
+                     <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                         <div> 비밀번호는 숫자를 포함해야 합니다. </div>
+                     </div>
+                     <%
+                 } else if(status.equals("특수문자")) {
+          %>
+                    <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div> 비밀번호는 특수문자를 포함해야 합니다. </div>
+                    </div>
+                    <%
+                }
+            }%>
 		<div class="d-grid gap-2 col-6 mx-auto" style="margin-top:30px">
 		    <%if (myInfoModifyForm == "0") {%>
                 <button class="btn btn-primary" type="button" onclick="location.href='/myInfoModify'">수정하기</button>
@@ -202,11 +239,9 @@
               </div>
               <form action="/delUser" method="POST"> <!-- POST로 전송 -->
                   <div class="modal-body">
-
-
                           <div class="mb-3">
-                              <label for="password" class="col-form-label">비밀번호</label>
-                              <input type="password" class="form-control" id="password" name="password" required> <!-- 비밀번호 입력 -->
+                              <label for="del_password" class="col-form-label">비밀번호</label>
+                              <input type="password" class="form-control" id="del_password" name="del_password" required> <!-- 비밀번호 입력 -->
                           </div>
                       <p style="color:#EA002C;text-align:center;font-size:0.7rem;margin:0"> 탈퇴를 진행하는 경우 되돌릴 수 없습니다. </p>
                   </div>
