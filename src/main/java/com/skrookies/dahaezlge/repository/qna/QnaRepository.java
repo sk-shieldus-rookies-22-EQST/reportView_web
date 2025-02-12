@@ -211,8 +211,8 @@ public class QnaRepository {
     }
 
 
-    public Integer countQnaByUserIdAndDate(Long user_id, String sdate, String edate) {
-        String sql = "select Count(*) from qna where qna_user_id = ? and between ? and ?";
+    public Integer countQnaByUserIdAndDate(String user_id, String sdate, String edate) {
+        String sql = "select Count(*) from qna where (qna_user_id = ?) and (qna_created_at between ? and ?)";
 
         return  jdbcTemplate.queryForObject(sql, Integer.class, user_id, sdate, edate);
     }

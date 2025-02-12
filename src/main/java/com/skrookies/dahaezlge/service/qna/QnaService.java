@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -168,10 +169,10 @@ public class QnaService {
 
 
     /** QnA 게시글 작성 가능 여부 */
-    public boolean qnaCount(Long user_id) {
+    public boolean qnaCount(String user_id) {
 
-        String sdate = LocalDateTime.now().minusMinutes(10).toString();
-        String edate = LocalDateTime.now().toString();
+        String sdate = Timestamp.valueOf(LocalDateTime.now().minusMinutes(10)).toString();
+        String edate = Timestamp.valueOf(LocalDateTime.now()).toString();
 
         log.info("QnA 게시 날짜 범위");
         log.info("sdate: " + sdate);
@@ -181,11 +182,11 @@ public class QnaService {
 
         log.info("count repository result: " + count);
 
-        if(count == 0 || count == null){
-            return false;
+        if(count < 5 || count == null){
+            return true;
         }
         else{
-            return true;
+            return false;
         }
 
     }
