@@ -90,9 +90,11 @@ public class MyinfoController {
 
             Boolean user_check = userService.login(user_id,password);
             if (user_check){
+                session.setAttribute("CanGoMyInfo", "true");
                 return "redirect:/myInfo";
             } else {
                 log.info("Wrong Password");
+                log.info("여긴 goToMyInfo");
                 session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
                 return "redirect:/index";
             }
@@ -105,7 +107,9 @@ public class MyinfoController {
     /** 회원 정보 페이지 */
     @GetMapping("/myInfo")
     public String myInfo_form(Model model, HttpSession session){
-
+        if (session.getAttribute("CanGoMyInfo") == null) {
+            return "redirect:/index";
+        }
         log.info("page_move: myInfo.jsp");
 
         String user_id = (String) session.getAttribute("user_id");
@@ -133,7 +137,9 @@ public class MyinfoController {
     /** 회원 정보 수정 페이지 */
     @GetMapping("/myInfoModify")
     public String myInfoModify_form(Model model, UserDto userDto, HttpSession session){
-
+        if (session.getAttribute("CanGoMyInfo") == null) {
+            return "redirect:/index";
+        }
         String user_id = (String) session.getAttribute("user_id");
         if (user_id == null) {
             log.info("User not logged in");
@@ -165,6 +171,7 @@ public class MyinfoController {
         String user_pw = userDto.getUser_pw();
         if (!isPasswordStrong(user_pw).equals("true")){
             String status = isPasswordStrong(user_pw);
+            log.info("status: " + status);
             session.setAttribute("status",status);
             return "redirect:/myInfoModify";
         }
@@ -204,13 +211,13 @@ public class MyinfoController {
     }
 
     @PostMapping("/delUser")
-    public String delUser_form(@RequestParam("password") String password, Model model, UserDto userDto, HttpSession session, HttpServletRequest request){
+    public String delUser_form(@RequestParam("del_password") String del_password, Model model, UserDto userDto, HttpSession session, HttpServletRequest request){
         log.info("delUser");
         String user_id = (String)session.getAttribute("user_id");
         if(user_id != null){
             log.info("탈퇴할 user_id: "+ user_id);
 
-            Boolean user_check = userService.login(user_id,password);
+            Boolean user_check = userService.login(user_id,del_password);
             if (user_check){
                 Boolean deleted_user = userService.deleteUser(user_id);
                 if (deleted_user){
@@ -223,6 +230,7 @@ public class MyinfoController {
             } else {
                 log.info("Wrong Password");
                 session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+                log.info("index로 가지 마라 제발");
                 return "redirect:/myInfo";
             }
         } else {

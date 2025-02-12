@@ -178,7 +178,7 @@
             else if(status.equals( "4")){
      %>			<div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                     <div> 전화번호 형태를 확인하여주십시오. </div>
+                     <div> 전화번호 형태를 확인하여 주십시오. </div>
                  </div>
                  <%
              }
