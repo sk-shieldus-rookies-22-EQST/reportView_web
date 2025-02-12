@@ -5,6 +5,7 @@ import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.service.common.SqlFilterService;
 import com.skrookies.dahaezlge.service.common.XssFilterService;
+import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
 
 public class MyinfoController {
     private final UserService userService;
+    private final AESService aesService;
     private final XssFilterService xssFilterService;
     private final SqlFilterService sqlFilterService;
 
@@ -83,12 +85,17 @@ public class MyinfoController {
     }
 
     @PostMapping("/goToMyInfo")
-    public String goToMyInfo_form(@RequestParam("password") String password, HttpSession session){
+    public String goToMyInfo_form(@RequestParam("encrypted_password") String password, HttpSession session) throws Exception {
         String user_id = (String)session.getAttribute("user_id");
+
         if(user_id != null){
             log.info("goToMyInfo user_id: "+ user_id);
+            log.info("goToMyInfo password: "+ password);
 
-            Boolean user_check = userService.login(user_id,password);
+            String decryptedPassword = aesService.decrypt(password);
+            log.info("goToMyInfo decrypted: "+ decryptedPassword);
+
+            Boolean user_check = userService.login(user_id,decryptedPassword);
             if (user_check){
                 session.setAttribute("CanGoMyInfo", "true");
                 return "redirect:/myInfo";

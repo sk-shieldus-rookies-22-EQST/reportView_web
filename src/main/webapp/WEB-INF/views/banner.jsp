@@ -177,13 +177,12 @@
                               <h1 class="modal-title fs-5" id="goToMyInfoLabel">비밀번호를 입력하세요.</h1>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="취소"></button>
                           </div>
-                          <form action="/goToMyInfo" method="POST"> <!-- POST로 전송 -->
+                          <form id="gotoInfo" action="/goToMyInfo" method="POST"> <!-- POST로 전송 -->
                               <div class="modal-body">
-
-
                                       <div class="mb-3">
                                           <label for="password" class="col-form-label">비밀번호</label>
                                           <input type="password" class="form-control" id="password" name="password" required> <!-- 비밀번호 입력 -->
+                                          <input type="hidden" class="form-control" id="encrypted_password" name="encrypted_password">
                                       </div>
                               </div>
                               <div class="modal-footer">
@@ -191,6 +190,34 @@
                                   <button type="submit" class="btn btn-primary">확인</button> <!-- 전송 버튼 -->
                               </div>
                           </form>
+                          <script src="/js/encrypt.js"></script>
+                          <script>
+                              async function getKeyAndEncrypt() {
+                                  const response = await fetch("/security/getKey");
+                                  const { aesKey, aesIv } = await response.json(); // aesKey와 aesIv를 객체로 받아옴
+
+                                  const password = document.getElementById('password').value;
+
+                                  // AES로 아이디와 비밀번호를 결합하여 암호화
+                                  const encryptedData = await encryptAES(aesKey, aesIv, password);
+
+                                  console.log("Encrypted Password: ", encryptedData);
+
+                                  // 암호화된 값을 폼에 설정
+                                  document.getElementById('password').value = "";
+                                  document.getElementById('encrypted_password').value = encryptedData;
+
+                                  document.getElementById('gotoInfo').submit();
+                              }
+                              document.getElementById('gotoInfo').addEventListener('submit', async function (event) {
+                                  event.preventDefault(); // 기본 제출 동작 방지
+                                  await getKeyAndEncrypt(); // 암호화 후 폼 제출
+                              });
+
+                          </script>
+
+
+
                       </div>
                   </div>
               </div>
