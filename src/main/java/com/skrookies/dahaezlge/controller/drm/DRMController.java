@@ -71,10 +71,10 @@ public class DRMController {
 
                 // 요청 본문 생성
                 Map<String, String> requestBody = new HashMap<>();
-//                requestBody.put("user_id", userId);
-//                requestBody.put("book_id", bookId);
-                requestBody.put("user_id", "333");
-                requestBody.put("book_id", "266");
+                requestBody.put("user_id", userId);
+                requestBody.put("book_id", bookId);
+//                requestBody.put("user_id", "333");
+//                requestBody.put("book_id", "266");
 
                 // HTTP 요청 객체 생성
                 HttpEntity<Map<String, String>> entity = new HttpEntity<>(requestBody, headers);
@@ -110,7 +110,7 @@ public class DRMController {
                 log.info("AES IV: " + aesIv);
 
 
-                String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl + "&key=" + aesKey + "&iv=" + aesIv;
+                String drmUrl = "BookiesDRM://run?presigned_url='" + presignedUrl + "'&key='" + aesKey + "'&iv='" + aesIv +"'";
                 log.info("drmUrl: " + drmUrl);
 
                 Map<String, String> response = new HashMap<>();
