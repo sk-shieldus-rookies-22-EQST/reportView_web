@@ -57,7 +57,7 @@
         <div class="container" style="max-width: 500px; margin-bottom : 100px; border-radius: 5px;padding: 50px 20px;">
             <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; mrgin-bottom:0;margin-top:16px;">회원가입</p>
 
-            <form action="/registerProc" method="post" style="display: flex;height: 80%;flex-direction: column; justify-content: space-evenly;">
+            <form id="registerForm" action="/registerProc" method="post" style="display: flex; height: 80%;flex-direction: column; justify-content: space-evenly;">
                 <div class="mb-3">
                   <label for="user_id" class="form-label fw-bold fs-4">아이디</label>
                   <input type="text" class="form-control" id="user_id" name="user_id" >
@@ -131,14 +131,51 @@
                         <input type="checkbox" id="user_agree" name="user_agree" value="1"> <label for="user_agree">
                         <span>개인정보 활용 동의</span></label>
                     </div>
-
-
+                <input type="hidden" class="form-control" id="user_encrypted" name="user_encrypted" >
                 <div class="d-grid gap-2 col-6 mx-auto">
 
                   <button class="btn btn-primary" type="submit">회원가입</button>
                   <button class="btn btn-outline-primary" type="button" onclick="location.href='/index'">취소</button>
                 </div>
             </form>
+
+            <script src="/js/encrypt.js"></script>
+            <script>
+                async function getKeyAndEncrypt() {
+                    const response = await fetch("/security/getKey");
+                    const { aesKey, aesIv } = await response.json(); // aesKey와 aesIv를 객체로 받아옴
+
+                    // 데이터 객체 생성
+                    const loginData = {
+                        user_id: document.getElementById('user_id').value,
+                        user_pw: document.getElementById('user_pw').value,
+                        re_user_pw: document.getElementById('re_user_pw').value,
+                        user_email: document.getElementById('user_email').value,
+                        user_phone: document.getElementById('user_phone').value,
+                        user_agree: document.getElementById('user_agree').value
+                    };
+
+                    // 객체를 &&&& 구분자로 결합
+                    const registerDataString = Object.values(loginData).join("&&&&");
+
+                    // AES로 아이디와 비밀번호를 결합하여 암호화
+                    const encryptedData = await encryptAES(aesKey, aesIv, registerDataString);
+
+                    console.log("Encrypted Data: ", encryptedData);
+
+                    // 암호화된 값을 폼에 설정
+                    document.getElementById('registerForm').reset();
+
+                    document.getElementById('user_encrypted').value = encryptedData;
+
+                    document.getElementById('registerForm').submit();
+                }
+                document.getElementById('registerForm').addEventListener('submit', async function (event) {
+                    event.preventDefault(); // 기본 제출 동작 방지
+                    await getKeyAndEncrypt(); // 암호화 후 폼 제출
+                });
+
+            </script>
             <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
               <symbol id="check-circle-fill" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>

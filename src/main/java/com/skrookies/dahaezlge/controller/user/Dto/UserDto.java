@@ -15,4 +15,5 @@ public class UserDto {
     private String user_level;
     private String user_created_at;
     private String user_agree;
+    private String user_encrypted;
 }

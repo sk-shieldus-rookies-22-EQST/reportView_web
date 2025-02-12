@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 public class DownFilterService {
     private static final int MAX_TRAVERSAL_DEPTH = 100;
     private static final String[] KEYWORDS = {
-            "./", "\\", "%"
+            "./", ".\\", "%", ".."
     };
 
     /** 다운로드 필터링 */
@@ -17,7 +17,7 @@ public class DownFilterService {
         //  ../ 필터링
         for (String keyword : KEYWORDS) {
             /** 되는지 테스트 */
-            input = input.replace(keyword, "112");
+            input = input.replace(keyword, " ");
         }
 
         return input;

@@ -169,7 +169,7 @@ public class QnaService {
 
 
     /** QnA 게시글 작성 가능 여부 */
-    public boolean qnaCount(String user_id) {
+    public boolean qnaWriteTry(String user_id) {
 
         String sdate = Timestamp.valueOf(LocalDateTime.now().minusMinutes(10)).toString();
         String edate = Timestamp.valueOf(LocalDateTime.now()).toString();
