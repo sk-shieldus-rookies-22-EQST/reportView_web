@@ -45,6 +45,43 @@ public class MyinfoController {
         return matcher.matches();
     }
 
+    // 비밀번호 복잡도 검사 함수
+    public static String isPasswordStrong(String password) {
+        // 최소 8자 이상, 대문자, 소문자, 숫자, 특수문자가 포함되어야 함
+        String lengthPattern = "^.{8,}$";  // 최소 8자 이상
+        String upperCasePattern = ".*[A-Z].*"; // 대문자
+        String lowerCasePattern = ".*[a-z].*"; // 소문자
+        String digitPattern = ".*[0-9].*";     // 숫자
+        String specialCharPattern = ".*[!@#$%^&*(),.?\":{}|<>].*"; // 특수문자
+
+        if (!Pattern.matches(lengthPattern, password)) {
+            System.out.println("비밀번호는 최소 8자 이상이어야 합니다.");
+            return "8자";
+        }
+
+        if (!Pattern.matches(upperCasePattern, password)) {
+            System.out.println("비밀번호는 대문자를 포함해야 합니다.");
+            return "대문자";
+        }
+
+        if (!Pattern.matches(lowerCasePattern, password)) {
+            System.out.println("비밀번호는 소문자를 포함해야 합니다.");
+            return "소문자";
+        }
+
+        if (!Pattern.matches(digitPattern, password)) {
+            System.out.println("비밀번호는 숫자를 포함해야 합니다.");
+            return "숫자";
+        }
+
+        if (!Pattern.matches(specialCharPattern, password)) {
+            System.out.println("비밀번호는 특수문자를 포함해야 합니다.");
+            return "특수문자";
+        }
+
+        return "true";  // 모든 조건을 만족하면 true 반환
+    }
+
     @PostMapping("/goToMyInfo")
     public String goToMyInfo_form(@RequestParam("password") String password, HttpSession session){
         String user_id = (String)session.getAttribute("user_id");
@@ -126,6 +163,11 @@ public class MyinfoController {
 
         // '<', '>' --> '&lt', '&gt'
         String user_pw = userDto.getUser_pw();
+        if (!isPasswordStrong(user_pw).equals("true")){
+            String status = isPasswordStrong(user_pw);
+            session.setAttribute("status",status);
+            return "redirect:/myInfoModify";
+        }
         user_pw = convertToHtmlEntities(user_pw);
         String re_user_pw = userDto.getRe_user_pw();
         re_user_pw = convertToHtmlEntities(re_user_pw);

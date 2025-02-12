@@ -92,10 +92,15 @@ public class MainController {
         keyword = xssFilterService.filter(keyword); // keyword 필터링
         keyword = sqlFilterService.filter(keyword);
 
-        sdate = xssFilterService.filter2(sdate); // sdate 필터링 (sql 공격 허용)
-        sdate = sqlFilterService.filter3(sdate); //
-        edate = xssFilterService.filter2(edate); // edate 필터링
-        edate = sqlFilterService.filter3(edate);
+        sdate = xssFilterService.filter(sdate); // sdate 필터링 (sql 공격 허용)
+        sdate = sqlFilterService.filter(sdate); //
+        edate = xssFilterService.filter(edate); // edate 필터링
+        edate = sqlFilterService.filter(edate);
+
+        sort = xssFilterService.filter(sort);   //정렬 필터링
+        sort = sqlFilterService.filter(sort);
+        direction = xssFilterService.filter(direction); //방향 필터링
+        direction = sqlFilterService.filter(direction);
 
         /** 공격 테스트용 예외처리 제거 */
 //        List<Map<String, Object>> books = bookService.getBooksWithFilters(keyword, sdate, edate, sort, direction);

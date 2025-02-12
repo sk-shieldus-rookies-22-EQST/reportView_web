@@ -110,6 +110,7 @@ public class QnaController {
     public String qnaEdit_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
 
         String userId = (String) session.getAttribute("user_id");
+        Integer userLevel = (Integer) session.getAttribute("user_level");
 
         if (userId == null || userId.isEmpty()) {
             // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
@@ -117,6 +118,12 @@ public class QnaController {
         }
 
         QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+
+        if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+            session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
+            return "redirect:/qnaList";
+        }
+
         model.addAttribute("qnaDetail", qnaDetail);
         log.info("page_move: qnaEdit.jsp");
         return "qnaEdit";
@@ -163,8 +170,8 @@ public class QnaController {
         qnaDto.setQna_title(sqlFilterService.filter(qna_title));
 
         /** XSS 공격 허용 */
-        String qna_body = xssFilterService.filter1(qnaDto.getQna_body());
-        qnaDto.setQna_body(sqlFilterService.filter2(qna_body));
+        String qna_body = xssFilterService.filter(qnaDto.getQna_body());
+        qnaDto.setQna_body(sqlFilterService.filter(qna_body));
 
         // 제목과 내용이 비어 있는 경우 예외 처리
         if (qnaDto.getQna_title() == null || qnaDto.getQna_title().trim().isEmpty()) {
@@ -294,8 +301,8 @@ public class QnaController {
         QnaDto.setQna_title(sqlFilterService.filter(qna_title));
 
         /** XSS 공격 허용 */
-        String qna_body = xssFilterService.filter1(QnaDto.getQna_body());
-        QnaDto.setQna_body(sqlFilterService.filter2(qna_body));
+        String qna_body = xssFilterService.filter(QnaDto.getQna_body());
+        QnaDto.setQna_body(sqlFilterService.filter(qna_body));
 
         // 필터링 되어 제목과 내용이 비어 있는 경우 예외 처리
         if (QnaDto.getQna_title() == null || QnaDto.getQna_title().trim().isEmpty()) {
@@ -409,6 +416,8 @@ public class QnaController {
     /**qna 게시판 글 삭제 */
     @GetMapping("/qnaDelete")
     public String qnaDelete_form(@RequestParam("qna_id") int qna_id, @ModelAttribute QnaDto QnaDto, HttpSession session) throws IOException {
+        String userId = (String) session.getAttribute("user_id");
+        Integer userLevel = (Integer) session.getAttribute("user_level");
         // 기존 파일 정보 가져오기
         QnaDto existingQna = QnaService.getQnaById(Math.toIntExact(QnaDto.getQna_id()));
         String uploadDir = session.getServletContext().getRealPath("/") + "uploads";
@@ -416,8 +425,19 @@ public class QnaController {
             Path oldFilePath = Paths.get(uploadDir, existingQna.getNew_file_name());
             Files.deleteIfExists(oldFilePath);
         }
+        if (userId == null || userId.isEmpty()) {
+            // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
+            return "redirect:/loginForm";
+        }
+        QnaDto qnaDetail = QnaService.getQnaById(qna_id);
+
+        if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+            session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
+            return "redirect:/qnaList";
+        }
 
         QnaService.deleteQna(qna_id);
+
         session.setAttribute("deleteQns", "글이 삭제되었습니다.");
         return "redirect:/qnaList";
     }
@@ -503,6 +523,19 @@ public class QnaController {
     @RequestMapping("/qnaReplyDelete")
     public String qnaReplyDelete(@RequestParam("qna_re_id") Long qna_re_id, @RequestParam("qna_id") Long qna_id, HttpSession session) {
         try {
+            String userId = (String) session.getAttribute("user_id");
+            Integer userLevel = (Integer) session.getAttribute("user_level");
+            QnaDto qnaDetail = QnaService.getQnaById(Math.toIntExact(qna_id));
+
+            if (userId == null || userId.isEmpty()) {
+                // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
+                return "redirect:/loginForm";
+            }
+            if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+                session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
+                return "redirect:/qnaList";
+            }
+
             // 해당 답글을 삭제
             QnaService.deleteById(qna_re_id);
             session.setAttribute("messagedeleteReply", "댓글이 삭제되었습니다.");
@@ -520,10 +553,17 @@ public class QnaController {
     public String qnaReplyProcess(Model model,HttpSession session, @RequestParam("qna_id") int qna_id, @RequestParam("qna_re_body") String qna_re_body) {
         // 세션에서 user_id 확인
         String userId = (String) session.getAttribute("user_id");
+        Integer userLevel = (Integer) session.getAttribute("user_level");
+        QnaDto qnaDetail = QnaService.getQnaById(qna_id);
 
         if (userId == null || userId.isEmpty()) {
             // 세션에 user_id가 없으면 로그인 페이지로 리다이렉트
             return "redirect:/loginForm";
+        }
+
+        if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+            session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
+            return "redirect:/qnaList";
         }
 
         // 댓글 내용이 비어 있는지 먼저 확인
@@ -539,8 +579,8 @@ public class QnaController {
         }
 
         // XSS 필터링 적용
-        String filteredBody = xssFilterService.filter1(qna_re_body);
-        filteredBody = sqlFilterService.filter2(filteredBody);
+        String filteredBody = xssFilterService.filter(qna_re_body);
+        filteredBody = sqlFilterService.filter(filteredBody);
 
         // 필터링 후에도 비어 있으면 처리
         if (filteredBody == null || filteredBody.trim().isEmpty()) {

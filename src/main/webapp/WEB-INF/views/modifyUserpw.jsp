@@ -25,12 +25,13 @@
 		<input type="hidden" name="whatFind" id="whatFind" value='pw'>
 			<div class="mb-3" style="margin-bottom : 50px!important;">
 			  <label for="user_phone" class="form-label fw-bold fs-4">새로운 비밀번호</label>
-			  <input type="text" class="form-control" id="user_phone" aria-describedby="emailHelp" name="new_user_pw" required>
+			  <input type="password" class="form-control" id="user_phone" aria-describedby="emailHelp" name="new_user_pw" required>
+			  <p style="color:#EA002C;">대문자, 소문자, 숫자, 특수문자 포함 8글자 이상</p>
 			</div>
 
 			<div class="mb-3" style="margin-bottom : 50px!important;">
               <label for="user_phone_re" class="form-label fw-bold fs-4">새로운 비밀번호 확인</label>
-              <input type="text" class="form-control" id="user_phone_re" aria-describedby="emailHelp" name="re_new_user_pw" required>
+              <input type="password" class="form-control" id="user_phone_re" aria-describedby="emailHelp" name="re_new_user_pw" required>
             </div>
 
 			<div class="d-grid gap-2 col-6 mx-auto">
@@ -60,11 +61,49 @@
         			</div>
         			<%
         		}
+        		if (session.getAttribute("status") != null){
+                String status = (String) session.getAttribute("status");
+        		if(status.equals("8자")) {
+          %>
+                    <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                        <div> 비밀번호는 8자 이상이어야합니다. </div>
+                    </div>
+                    <%
+                } else if(status.equals("대문자")) {
+        %>
+                  <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                      <div> 비밀번호는 대문자를 포함해야합니다. </div>
+                  </div>
+                  <%
+              } else if(status.equals("소문자")) {
+       %>
+                 <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                     <div> 비밀번호는 소문자를 포함해야합니다. </div>
+                 </div>
+                 <%
+             } else if(status.equals("숫자")) {
+      %>
+                <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div> 비밀번호는 숫자를 포함해야합니다. </div>
+                </div>
+                <%
+            } else if(status.equals("특수문자")) {
+     %>
+               <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                   <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                   <div> 비밀번호는 특수문자를 포함해야합니다. </div>
+               </div>
+               <%
+           }}
         	%>
 
 	</div>
 
 </div></div>
-
+<% session.removeAttribute("status");%>
 </body>
 </html>
