@@ -9,11 +9,12 @@ import java.util.List;
 public class XssFilterService {
     // 필터링할 단어 목록
     private static final String[] REPLACE_TOKENS = {
-            "input", "context", "iframe", "textarea", "onweb", "alert", "onerror", "title", "xml", "body", "svg", "lowsrc",
+            "input", "context", "iframe", "textarea", "onweb", "alert", "onkeyup",
+            "onerror", "title", "xml", "body", "svg", "lowsrc", "onbeforeuload",
             "dynsrc", "url", "marquee", "cookie", "document", "msgbox", "vbscript", "refresh",
             "escape", "string", "expression", "eval", "void", "bind", "create", "confirm",
             "prompt", "location", "fromCharCode", "append", "onbeforeprint", "ondragleave",
-            "onmouseenter", "onbeforeeditfocus", "ondatasetchanged", "onbeforepaste", "onbeforeuload",
+            "onmouseenter", "onbeforeeditfocus", "ondatasetchanged", "onbeforepaste",
             "ondragover", "onmouseleave", "onbeforepaste", "ondatasetcomplete", "onbeforeprint",
             "onbeforeunload", "ondragstart", "onmousemove", "onstart", "ondbclick", "embed",
             "onbeforeupdate", "ondrop", "onmouseout", "onstop", "ondblclick", "script",
@@ -28,7 +29,7 @@ public class XssFilterService {
             "onrowsinserted", "onbeforeactivate", "oncopy", "onhelp", "onreadystatechange",
             "onmouseend", "onscroll", "onbeforecopy", "oncut", "onkeydown", "onreset",
             "ondragenter", "onselect", "onbeforecut", "ondataavailable", "onkeypress", "onresize",
-            "onselectstart", "onselectionchange", "onbeforedeactivate", "ondatasetchaged", "onkeyup",
+            "onselectstart", "onselectionchange", "onbeforedeactivate", "ondatasetchaged",
             "onresizeend", "onURLFlip", "seekSegmentTime", "onTimeError", "onTrackChange"
     };
 
