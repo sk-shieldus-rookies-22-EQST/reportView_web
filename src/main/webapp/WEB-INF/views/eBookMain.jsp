@@ -198,8 +198,8 @@
                            ${param.sort == 'date' ? 'checked' : ''} checked>
                     <label class="btn btn-outline-primary radio_btn" for="sortDate">최신순</label>
 
-                  <input type="radio" class="btn-check" name="sort" value="title" id="sortTitle" data-direction="ASC"
-                         ${param.sort == 'title' ? 'checked' : ''}>
+                  <input type="radio" class="btn-check" name="sort" value="bt" id="sortTitle" data-direction="ASC"
+                         ${param.sort == 'bt' ? 'checked' : ''}>
                   <label class="btn btn-outline-primary radio_btn"  for="sortTitle" class="me-3">제목순</label>
 
                   <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
