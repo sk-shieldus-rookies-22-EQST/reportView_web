@@ -532,13 +532,12 @@ public class QnaController {
         try {
             String userId = (String) session.getAttribute("user_id");
             Integer userLevel = (Integer) session.getAttribute("user_level");
-            QnaDto qnaDetail = QnaService.getQnaById(Math.toIntExact(qna_id));
 
             if (userId == null || userId.isEmpty()) {
                 // 사용자 인증 실패 시 로그인 페이지로 리다이렉트
                 return "redirect:/loginForm";
             }
-            if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+            if(userLevel != 123) {
                 session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
                 return "redirect:/qnaList";
             }
@@ -561,14 +560,13 @@ public class QnaController {
         // 세션에서 user_id 확인
         String userId = (String) session.getAttribute("user_id");
         Integer userLevel = (Integer) session.getAttribute("user_level");
-        QnaDto qnaDetail = QnaService.getQnaById(qna_id);
 
         if (userId == null || userId.isEmpty()) {
             // 세션에 user_id가 없으면 로그인 페이지로 리다이렉트
             return "redirect:/loginForm";
         }
 
-        if((userLevel != 123 && !Objects.equals(qnaDetail.getQna_user_id(), userId))) {
+        if(userLevel != 123) {
             session.setAttribute("errorMessage", "권한이 없는 사용자입니다.");
             return "redirect:/qnaList";
         }

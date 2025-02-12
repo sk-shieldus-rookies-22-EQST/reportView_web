@@ -45,6 +45,43 @@ public class MyinfoController {
         return matcher.matches();
     }
 
+    // 비밀번호 복잡도 검사 함수
+    public static String isPasswordStrong(String password) {
+        // 최소 8자 이상, 대문자, 소문자, 숫자, 특수문자가 포함되어야 함
+        String lengthPattern = "^.{8,}$";  // 최소 8자 이상
+        String upperCasePattern = ".*[A-Z].*"; // 대문자
+        String lowerCasePattern = ".*[a-z].*"; // 소문자
+        String digitPattern = ".*[0-9].*";     // 숫자
+        String specialCharPattern = ".*[!@#$%^&*(),.?\":{}|<>].*"; // 특수문자
+
+        if (!Pattern.matches(lengthPattern, password)) {
+            System.out.println("비밀번호는 최소 8자 이상이어야 합니다.");
+            return "8자";
+        }
+
+        if (!Pattern.matches(upperCasePattern, password)) {
+            System.out.println("비밀번호는 대문자를 포함해야 합니다.");
+            return "대문자";
+        }
+
+        if (!Pattern.matches(lowerCasePattern, password)) {
+            System.out.println("비밀번호는 소문자를 포함해야 합니다.");
+            return "소문자";
+        }
+
+        if (!Pattern.matches(digitPattern, password)) {
+            System.out.println("비밀번호는 숫자를 포함해야 합니다.");
+            return "숫자";
+        }
+
+        if (!Pattern.matches(specialCharPattern, password)) {
+            System.out.println("비밀번호는 특수문자를 포함해야 합니다.");
+            return "특수문자";
+        }
+
+        return "true";  // 모든 조건을 만족하면 true 반환
+    }
+
     @PostMapping("/goToMyInfo")
     public String goToMyInfo_form(@RequestParam("password") String password, HttpSession session){
         String user_id = (String)session.getAttribute("user_id");
@@ -53,9 +90,11 @@ public class MyinfoController {
 
             Boolean user_check = userService.login(user_id,password);
             if (user_check){
+                session.setAttribute("CanGoMyInfo", "true");
                 return "redirect:/myInfo";
             } else {
                 log.info("Wrong Password");
+                log.info("여긴 goToMyInfo");
                 session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
                 return "redirect:/index";
             }
@@ -68,7 +107,9 @@ public class MyinfoController {
     /** 회원 정보 페이지 */
     @GetMapping("/myInfo")
     public String myInfo_form(Model model, HttpSession session){
-
+        if (session.getAttribute("CanGoMyInfo") == null) {
+            return "redirect:/index";
+        }
         log.info("page_move: myInfo.jsp");
 
         String user_id = (String) session.getAttribute("user_id");
@@ -96,7 +137,9 @@ public class MyinfoController {
     /** 회원 정보 수정 페이지 */
     @GetMapping("/myInfoModify")
     public String myInfoModify_form(Model model, UserDto userDto, HttpSession session){
-
+        if (session.getAttribute("CanGoMyInfo") == null) {
+            return "redirect:/index";
+        }
         String user_id = (String) session.getAttribute("user_id");
         if (user_id == null) {
             log.info("User not logged in");
@@ -126,6 +169,12 @@ public class MyinfoController {
 
         // '<', '>' --> '&lt', '&gt'
         String user_pw = userDto.getUser_pw();
+        if (!isPasswordStrong(user_pw).equals("true")){
+            String status = isPasswordStrong(user_pw);
+            log.info("status: " + status);
+            session.setAttribute("status",status);
+            return "redirect:/myInfoModify";
+        }
         user_pw = convertToHtmlEntities(user_pw);
         String re_user_pw = userDto.getRe_user_pw();
         re_user_pw = convertToHtmlEntities(re_user_pw);
@@ -162,13 +211,13 @@ public class MyinfoController {
     }
 
     @PostMapping("/delUser")
-    public String delUser_form(@RequestParam("password") String password, Model model, UserDto userDto, HttpSession session, HttpServletRequest request){
+    public String delUser_form(@RequestParam("del_password") String del_password, Model model, UserDto userDto, HttpSession session, HttpServletRequest request){
         log.info("delUser");
         String user_id = (String)session.getAttribute("user_id");
         if(user_id != null){
             log.info("탈퇴할 user_id: "+ user_id);
 
-            Boolean user_check = userService.login(user_id,password);
+            Boolean user_check = userService.login(user_id,del_password);
             if (user_check){
                 Boolean deleted_user = userService.deleteUser(user_id);
                 if (deleted_user){
@@ -181,6 +230,7 @@ public class MyinfoController {
             } else {
                 log.info("Wrong Password");
                 session.setAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+                log.info("index로 가지 마라 제발");
                 return "redirect:/myInfo";
             }
         } else {
