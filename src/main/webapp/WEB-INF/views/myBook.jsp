@@ -30,16 +30,17 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.presigned_url && data.aes_key && data.aes_iv) {
+                    if (data.drm_url) {
                         var isPopupAppeared = false;
                         window.addEventListener("blur", function () {
                             isPopupAppeared = true;
                         });
 
                         // BookiesDRM 실행
-                        window.location.href = 'BookiesDRM://run?presigned_url=' + encodeURIComponent(data.presigned_url) +
-                                               '&aes_key=' + encodeURIComponent(data.aes_key) +
-                                               '&aes_iv=' + encodeURIComponent(data.aes_iv);
+                        // window.location.href = 'BookiesDRM://run?presigned_url=' + encodeURIComponent(data.presigned_url) +
+                        //                        '&key=' + encodeURIComponent(data.aes_key) +
+                        //                        '&iv=' + encodeURIComponent(data.aes_iv);
+                        window.location.href = data.drm_url;
 
                         // 실행되지 않을 경우 대체 페이지로 이동
                         setTimeout(function () {

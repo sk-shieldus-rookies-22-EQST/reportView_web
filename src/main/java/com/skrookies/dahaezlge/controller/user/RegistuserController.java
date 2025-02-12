@@ -92,6 +92,8 @@ public class RegistuserController {
     /** 회원가입 프로세스 */
     @PostMapping("/registerProc")
     public String registerProc_form(Model model, @ModelAttribute UserDto userDto, HttpSession session){
+        String user_Encrypted = userDto.getUser_encrypted();
+
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // '<', '>' --> '&lt', '&gt'
         String user_id = userDto.getUser_id();
@@ -119,8 +121,6 @@ public class RegistuserController {
         user_phone = convertToHtmlEntities(user_phone);
         String user_email = userDto.getUser_email();
         user_phone = convertToHtmlEntities(user_phone);
-
-
 
         String user_agree = userDto.getUser_agree();
         log.info("agree: " + user_agree);

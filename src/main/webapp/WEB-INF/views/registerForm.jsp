@@ -57,7 +57,7 @@
         <div class="container" style="max-width: 500px; margin-bottom : 100px; border-radius: 5px;padding: 50px 20px;">
             <p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; mrgin-bottom:0;margin-top:16px;">회원가입</p>
 
-            <form action="/registerProc" method="post" style="display: flex;height: 80%;flex-direction: column; justify-content: space-evenly;">
+            <form action="/registerProc" method="post" style="display: flex; height: 80%;flex-direction: column; justify-content: space-evenly;">
                 <div class="mb-3">
                   <label for="user_id" class="form-label fw-bold fs-4">아이디</label>
                   <input type="text" class="form-control" id="user_id" name="user_id" >
@@ -137,6 +137,38 @@
                   <button class="btn btn-outline-primary" type="button" onclick="location.href='/index'">취소</button>
                 </div>
             </form>
+
+            <script src="/js/encrypt.js"></script>
+            <script>
+                async function getKeyAndEncrypt() {
+                    const response = await fetch("/security/getKey");
+                    const { aesKey, aesIv } = await response.json(); // aesKey와 aesIv를 객체로 받아옴
+
+                    const user_id = document.getElementById('user_id').value;
+                    const user_pw = document.getElementById('user_pw').value;
+
+                    // 아이디와 비밀번호를 "&&&&" 구분자로 연결
+                    const combinedData = user_id + "&&&&" + user_pw;
+                    console.log("combineData Password: ", combinedData);
+
+                    // AES로 아이디와 비밀번호를 결합하여 암호화
+                    const encryptedData = await encryptAES(aesKey, aesIv, combinedData);
+
+                    console.log("Encrypted Password: ", encryptedData);
+
+                    // 암호화된 값을 폼에 설정
+                    document.getElementById('user_id').value = "";
+                    document.getElementById('user_pw').value = ""; // 비밀번호 필드는 빈 값으로 설정
+                    document.getElementById('encrypted_data').value = encryptedData;
+
+                    document.getElementById('loginForm').submit();
+                }
+                document.getElementById('loginForm').addEventListener('submit', async function (event) {
+                    event.preventDefault(); // 기본 제출 동작 방지
+                    await getKeyAndEncrypt(); // 암호화 후 폼 제출
+                });
+
+            </script>
             <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
               <symbol id="check-circle-fill" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>

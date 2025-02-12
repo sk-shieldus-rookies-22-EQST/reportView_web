@@ -15,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +33,21 @@ public class DRMController {
     public DRMController(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
     }
+
+    private String padTo16Bytes(String input) {
+        if (input == null) {
+            return "0000000000000000"; // 기본값 설정
+        }
+
+        byte[] inputBytes = input.getBytes(StandardCharsets.UTF_8);
+        byte[] paddedBytes = new byte[16];
+
+        // 기존 값 복사 (초과 부분 잘림, 부족하면 0으로 채움)
+        System.arraycopy(inputBytes, 0, paddedBytes, 0, Math.min(inputBytes.length, 16));
+
+        return new String(paddedBytes, StandardCharsets.UTF_8);
+    }
+
 
     private final String KEY_GET_URL = "http://3.35.84.46:8080/get-key";
     private final String FILE_GET_URL = "http://3.35.84.46:8080/generate-presigned-url";
@@ -53,8 +71,10 @@ public class DRMController {
 
                 // 요청 본문 생성
                 Map<String, String> requestBody = new HashMap<>();
-                requestBody.put("user_id", userId);
-                requestBody.put("book_id", bookId);
+//                requestBody.put("user_id", userId);
+//                requestBody.put("book_id", bookId);
+                requestBody.put("user_id", "333");
+                requestBody.put("book_id", "266");
 
                 // HTTP 요청 객체 생성
                 HttpEntity<Map<String, String>> entity = new HttpEntity<>(requestBody, headers);
@@ -66,35 +86,46 @@ public class DRMController {
                 log.info("fileResponse: " + fileResponse);
 
                 // Presigned URL 추출
-                String presignedUrl = (String) fileResponse.getBody().get("presigned_url");
+                String presignedUrl = fileResponse.getBody().get("presigned_url");
                 log.info("presignedUrl: " + presignedUrl);
 
                 // 응답 구성
-                Map<String, String> response = new HashMap<>();
-                response.put("message", "Presigned URL generated successfully.");
-                response.put("presigned_url", presignedUrl);
+//                Map<String, String> response = new HashMap<>();
+//                response.put("message", "Presigned URL generated successfully.");
+//                response.put("presigned_url", presignedUrl);
 
                 // KMS에서 AES 키 및 IV 가져오기
-                ResponseEntity<Map> kmsResponse = restTemplate.getForEntity(KEY_GET_URL, Map.class);
-                String aesKey = (String) kmsResponse.getBody().get("aes_key");
-                String aesIv = (String) kmsResponse.getBody().get("aes_iv");
+                ResponseEntity<Map<String, String>> kmsResponse = restTemplate.exchange(
+                        KEY_GET_URL, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, String>>() {});
 
-                // Base64 인코딩
-                String base64AesKey = Base64.getEncoder().encodeToString(aesKey.getBytes());
-                String base64AesIv = Base64.getEncoder().encodeToString(aesIv.getBytes());
+                String aesKey = kmsResponse.getBody().get("aes_key");
+                String aesIv = kmsResponse.getBody().get("aes_iv");
 
-                // JSON 형태로 반환
-                response.put("presigned_url", presignedUrl);
-                response.put("aes_key", base64AesKey);
-                response.put("aes_iv", base64AesIv);
+                if (aesKey == null || aesIv == null) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(Collections.singletonMap("error", "AES 키와 IV를 가져오는 데 실패했습니다."));
+                }
+
+                log.info("AES Key: " + aesKey);
+                log.info("AES IV: " + aesIv);
+
+
+                String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl + "&key=" + aesKey + "&iv=" + aesIv;
+                log.info("drmUrl: " + drmUrl);
+
+                Map<String, String> response = new HashMap<>();
+                response.put("drm_url", drmUrl);
 
                 return ResponseEntity.ok(response);
+
             } catch (Exception e) {
+                log.error("Error occurred during processing: ", e);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Collections.singletonMap("error", "요청 정보가 올바르지 않습니다."));
             }
 
         } catch (Exception e) {
+            log.error("Unexpected error: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
         }
     }
