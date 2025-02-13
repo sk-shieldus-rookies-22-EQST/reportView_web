@@ -75,7 +75,7 @@ public class QnaController {
         }
         // 10분동안 게시글 5개 미만 작성 시 게시글 작성 가능
         else if(!qnaService.qnaWriteTry(userId)){
-            session.setAttribute("errorMessage", "짧은 시간 동안 너무 많은 글을 게시하셨습니다. \n잠시후 다시 작성해 주세요.");
+            session.setAttribute("errorMessage", "잠시후 다시 작성해 주세요.");
             return "redirect:/qnaList";
         }
 
