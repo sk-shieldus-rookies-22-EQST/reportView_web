@@ -35,7 +35,7 @@ public class UserController {
     public ResponseEntity<UserInfoDto> getUserInfo(@RequestBody UserIdDto userIdDto) {
         List<Users> userInfo = userService.userInfo(userIdDto.getUser_id());
 
-        Users user = userInfo.getFirst();
+        Users user = userInfo.get(0);
         UserInfoDto userInfoDto = new UserInfoDto();
 
         userInfoDto.setUser_id(user.getUser_id());
