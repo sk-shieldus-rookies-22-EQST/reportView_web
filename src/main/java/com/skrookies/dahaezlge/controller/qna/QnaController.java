@@ -37,7 +37,7 @@ public class QnaController {
     private final QnaService qnaService;
 
     /**qna 게시판 글 목록 */
-    @GetMapping("/qnaList")
+    @GetMapping("/qna")
     public String qnaList_form(@RequestParam(defaultValue = "1") int page, Model model) {
         int pageSize = 10; // 한 페이지에 표시할 게시글 수
         int totalQnas = QnaService.getTotalQnas(); // 전체 게시글 수
@@ -63,7 +63,7 @@ public class QnaController {
     }
 
     /**qna 게시판 글 작성 */
-    @GetMapping("/qnaWrite")
+    @GetMapping("/qna/Write")
     public String qnaWrite_form(HttpSession session) {
         // 세션에서 user_id 확인
         String userId = (String) session.getAttribute("user_id");
@@ -113,7 +113,7 @@ public class QnaController {
     }
 
     /**qna 게시판 글 수정 */
-    @GetMapping("/qnaEdit")
+    @GetMapping("/qna/Edit")
     public String qnaEdit_form(HttpSession session, @RequestParam("qna_id") int qna_id, Model model) {
 
         String userId = (String) session.getAttribute("user_id");

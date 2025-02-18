@@ -1,48 +1,62 @@
 package com.skrookies.dahaezlge.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 
 @Configuration
-public class SecurityConfig {
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.httpFirewall(defaultHttpFirewall());
+    }
+
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public HttpFirewall defaultHttpFirewall() {
+        return new DefaultHttpFirewall();
+    }
 
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .requiresChannel(channel -> channel
-                        .anyRequest().requiresSecure())
-                .authorizeRequests(auth -> auth  // authorizeHttpRequests → authorizeRequests
-                        .mvcMatchers("/admin/**")
-                        .access("hasRole('ROLE_ADMIN')")
-                        .anyRequest().permitAll() // 모든 요청 허용
-                )
-                .formLogin(login -> login
-                        .loginPage("/loginForm") // 로그인 페이지 지정
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout") // 로그아웃 URL 지정
-                        .logoutSuccessUrl("/index") // 로그아웃 후 이동할 경로
-                        .invalidateHttpSession(false) // 세션 무효화
-                        .deleteCookies("JSESSIONID") // 쿠키 삭제
-                );
-
-        return http.build();
+                .csrf().disable()
+                .requiresChannel(channel -> channel.anyRequest().requiresSecure())
+                .authorizeRequests()
+                .mvcMatchers("/qna/**").access("hasRole('ROLE_ADMIN')")
+                .anyRequest().permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/loginForm").permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/index")
+                .invalidateHttpSession(false)
+                .deleteCookies("JSESSIONID");
     }
 
 
     @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
         SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
-        successHandler.setRedirectStrategy(new CustomRedirectStrategy()); // 커스텀 RedirectStrategy 적용
+        successHandler.setRedirectStrategy(new CustomRedirectStrategy());
         return successHandler;
     }
 }
