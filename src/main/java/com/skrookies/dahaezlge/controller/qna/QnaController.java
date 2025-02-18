@@ -412,8 +412,8 @@ public class QnaController {
             if (qnaResult2 > 0) {
                 log.info("qnaUpdateProcess");
                 log.info(QnaDto.getQna_id().toString());
-                String qnd_id = QnaDto.getQna_id().toString();
-                return "redirect:/qnaDetail?qna_id=" + qnd_id;
+                String qna_id = QnaDto.getQna_id().toString();
+                return "redirect:/qnaDetail?qna_id=" + qna_id;
             } else {
                 return "qnaEdit";
             }
