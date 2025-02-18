@@ -2,8 +2,8 @@ plugins {
     id 'java'
 //    id 'org.springframework.boot' version '3.4.1'
 //    id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.springframework.boot' version '2.7.8'
-    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.springframework.boot' version '2.6.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'war'
 }
 
@@ -36,34 +36,43 @@ ext {
 
 dependencies {
 
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.7.8'
-    implementation 'org.springframework.security:spring-security-config:5.7.7'
-    implementation 'org.springframework.security:spring-security-web:5.7.7'
-//    implementation 'org.springframework.security:spring-security-config:5.7.8'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.session:spring-session-core'
-    compileOnly 'org.projectlombok:lombok'
-//    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Spring Boot Core 모듈
+    implementation 'org.springframework.boot:spring-boot-starter-web' // Spring MVC와 임베디드 Tomcat 지원
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA 데이터 액세스 지원
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc' // JDBC 지원
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // Spring의 검증 기능 지원
 
-    implementation 'com.mysql:mysql-connector-j'
-    implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
+    // Spring Security 모듈 (필요 시 보안 기능 포함)
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.5' // Spring Boot 2.6.5와 호환되는 Security 모듈
+    implementation 'org.springframework.security:spring-security-config:5.6.1' // Security 설정 관리
+    implementation 'org.springframework.security:spring-security-web:5.6.1' // Spring Security 웹 지원
 
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // 세션 관리
+    implementation 'org.springframework.session:spring-session-core' // HTTP 세션 관리
 
-    implementation 'jakarta.servlet:jakarta.servlet-api:4.0.4'
-    implementation 'javax.servlet.jsp.jstl:jstl-api:1.2'
-    implementation 'javax.servlet:jstl:1.2'
+    // Lombok (개발 편의 라이브러리)
+    compileOnly 'org.projectlombok:lombok' // Lombok 라이브러리 (컴파일 시만 필요)
+    annotationProcessor 'org.projectlombok:lombok' // Lombok 애노테이션 처리기
 
+    // 데이터베이스 연결
+    implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0' // Oracle 데이터베이스 드라이버
 
-    implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.73'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.73'
+    // JSP와 JSTL 지원
+    implementation 'jakarta.servlet:jakarta.servlet-api:4.0.4' // Jakarta Servlet API
+    implementation 'javax.servlet.jsp.jstl:jstl-api:1.2' // JSTL API
+    implementation 'javax.servlet:jstl:1.2' // JSTL 구현체
+
+    // Tomcat (임베디드 서블릿 컨테이너 및 JSP 컴파일러)
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.58' // CVE-2022-22965 취약점이 존재하는 Tomcat 버전
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.58' // JSP 컴파일을 위한 Jasper 라이브러리
+
+    // 개발 도구 (선택 사항)
+    // developmentOnly 'org.springframework.boot:spring-boot-devtools' // 개발 시 코드 변경 자동 반영
+
+    // 테스트 의존성
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // Spring Boot 테스트 지원
+    testImplementation 'org.springframework.security:spring-security-test' // Spring Security 테스트 지원
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher' // JUnit 플랫폼 런처
 
 
 //    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
