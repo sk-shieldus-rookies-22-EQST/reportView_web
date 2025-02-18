@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .requiresChannel(channel -> channel.anyRequest().requiresSecure())
                 .authorizeRequests()
-                .mvcMatchers("/qna/**").access("hasRole('ROLE_ADMIN')")
+                .mvcMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
