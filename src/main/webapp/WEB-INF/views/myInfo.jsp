@@ -190,28 +190,28 @@
                         <%
                     } else if(status.equals("대문자")) {
              %>
-                       <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                       <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                            <div> 비밀번호는 대문자를 포함해야 합니다. </div>
                        </div>
                        <%
                    } else if(status.equals("소문자")) {
             %>
-                      <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                      <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                           <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                           <div> 비밀번호는 소문자를 포함해야 합니다. </div>
                       </div>
                       <%
                   } else if(status.equals("숫자")) {
            %>
-                     <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                     <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                          <div> 비밀번호는 숫자를 포함해야 합니다. </div>
                      </div>
                      <%
                  } else if(status.equals("특수문자")) {
           %>
-                    <div class="alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
+                    <div class="d-grid gap-2 col-6 mx-auto alert alert-danger d-flex align-items-center" role="alert" style="max-width: 600px; margin-top: 30px;">
                         <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                         <div> 비밀번호는 특수문자를 포함해야 합니다. </div>
                     </div>
@@ -275,7 +275,7 @@
                   <h1 class="modal-title fs-5" id="exampleModalLabel">정말 탈퇴 하시겠습니까?</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="취소"></button>
               </div>
-              <form action="/delUser" method="POST"> <!-- POST로 전송 -->
+              <form id="delUser" action="/delUser" method="POST"> <!-- POST로 전송 -->
                   <div class="modal-body">
                           <div class="mb-3">
                               <label for="del_password" class="col-form-label">비밀번호</label>
@@ -288,7 +288,32 @@
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="location.href='/myInfo'">취소</button>
                       <button type="submit" class="btn btn-primary">탈퇴하기</button> <!-- 전송 버튼 -->
                   </div>
+                  <input type="hidden" class="form-control" id="encrypted_del" name="encrypted_del">
               </form>
+              <script src="/js/encrypt.js"></script>
+              <script>
+                  async function getKeyAndEncryptPW() {
+                      const response = await fetch("/security/getKey");
+                      const { aesKey, aesIv } = await response.json(); // aesKey와 aesIv를 객체로 받아옴
+
+                      const password = document.getElementById('del_password').value;
+
+                      const encryptedData = await encryptAES(aesKey, aesIv, password);
+
+                      console.log("Encrypted Data: ", encryptedData);
+
+                      // 암호화된 값을 폼에 설정
+                      document.getElementById('del_password').value = "";
+                      document.getElementById('encrypted_del').value = encryptedData;
+
+                      document.getElementById('delUser').submit();
+                  }
+                  document.getElementById('delUser').addEventListener('submit', async function (event) {
+                      event.preventDefault(); // 기본 제출 동작 방지
+                      await getKeyAndEncryptPW(); // 암호화 후 폼 제출
+                  });
+
+              </script>
           </div>
       </div>
   </div>
