@@ -9,7 +9,7 @@ import com.skrookies.dahaezlge.repository.cart.CartRepository;
 import com.skrookies.dahaezlge.repository.cartBook.CartBookRepository;
 import com.skrookies.dahaezlge.repository.purchase.PurchaseRepository;
 import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

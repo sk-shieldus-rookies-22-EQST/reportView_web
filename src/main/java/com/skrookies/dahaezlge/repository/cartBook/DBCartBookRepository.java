@@ -13,7 +13,6 @@ import java.util.List;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-
 public class DBCartBookRepository implements CartBookRepository {
     private final JdbcTemplate jdbcTemplate;
 

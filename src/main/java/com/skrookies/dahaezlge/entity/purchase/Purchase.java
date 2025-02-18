@@ -2,7 +2,7 @@ package com.skrookies.dahaezlge.entity.purchase;
 
 import com.skrookies.dahaezlge.entity.book.Book;
 import com.skrookies.dahaezlge.entity.user.Users;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

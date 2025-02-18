@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
@@ -18,7 +19,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .requiresChannel(channel -> channel
                         .anyRequest().requiresSecure())
-                .authorizeHttpRequests(auth -> auth
+                .authorizeRequests(auth -> auth  // authorizeHttpRequests → authorizeRequests
+                        .mvcMatchers("/admin/**")
+                        .access("hasRole('ROLE_ADMIN')")
                         .anyRequest().permitAll() // 모든 요청 허용
                 )
                 .formLogin(login -> login
@@ -30,8 +33,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/index") // 로그아웃 후 이동할 경로
                         .invalidateHttpSession(false) // 세션 무효화
                         .deleteCookies("JSESSIONID") // 쿠키 삭제
-                )
-        ;
+                );
 
         return http.build();
     }

@@ -3,7 +3,7 @@ package com.skrookies.dahaezlge.service.book;
 import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.repository.book.BookRepository;
 import com.skrookies.dahaezlge.restcontroller.view.dto.BookListDto;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.skrookies.dahaezlge.entity.qna;
 
 import com.skrookies.dahaezlge.entity.user.Users;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package com.skrookies.dahaezlge.controller.drm;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;

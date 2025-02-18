@@ -2,18 +2,20 @@ package com.skrookies.dahaezlge.entity.cartBook;
 
 import com.skrookies.dahaezlge.entity.book.Book;
 import com.skrookies.dahaezlge.entity.cart.Cart;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "cart_book")
-public class CartBook {
+public class CartBook implements Serializable {
 
     @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
