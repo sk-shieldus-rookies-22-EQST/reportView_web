@@ -70,7 +70,7 @@ public class DBBookRepository implements BookRepository {
             case "bt" -> "book_title";
             case "price_asc", "price_desc" -> "book_price";
             case "date" -> "book_reg_date";
-            default -> sort ;
+            default -> "book_reg_date";
         };
     }
 

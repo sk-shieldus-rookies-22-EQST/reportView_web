@@ -109,15 +109,19 @@
                              if(user_id == null) {
                      %>
 					<div class=" collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item">
-								<input class="btn btn-outline-light" type="button" value="QnA" onclick="location.href='/qnaList'">
-							</li>
-						</ul>
-						<input class="btn btn-outline-light" type="button" value="로그인"
-								onclick="location.href='/loginForm'" style="margin-left: 20px;">
-						<input class="btn btn-outline-light" type="button" value="회원가입"
-								onclick="location.href='/registerForm'" style="margin-left: 20px;">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <input class="btn btn-outline-light" type="button" value="공지사항" onclick="location.href='/noticeList'" style="margin-right: 20px;">
+                        </li>
+                        <li class="nav-item">
+                            <input class="btn btn-outline-light" type="button" value="QnA" onclick="location.href='/qnaList'">
+                        </li>
+                    </ul>
+                    <input class="btn btn-outline-light" type="button" value="로그인"
+                           onclick="location.href='/loginForm'" style="margin-left: 20px;">
+                    <input class="btn btn-outline-light" type="button" value="회원가입"
+                           onclick="location.href='/registerForm'" style="margin-left: 20px;">
+
 
 							<% } else {
 							    Integer point = (Integer) session.getAttribute("point");
@@ -125,10 +129,13 @@
 							%>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-								<li class="nav-item">
-									<input class="btn btn-outline-light" type="button" value="QnA" onclick="location.href='/qnaList'">
-								</li>
-							</ul>
+                                <li class="nav-item">
+                                    <input class="btn btn-outline-light" type="button" value="공지사항" onclick="location.href='/noticeList'" style="margin-right: 20px;">
+                                </li>
+                                <li class="nav-item">
+                                    <input class="btn btn-outline-light" type="button" value="QnA" onclick="location.href='/qnaList'">
+                                </li>
+                            </ul>
 							<ul class="nav justify-content-end">
 							    <li style="color:white;display: flex;align-items: center;margin-right:20px">
 							        <a class="link-offset-3 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" style="text-align:center;color:white;text-decoration:none;" href="/pointCharger">
