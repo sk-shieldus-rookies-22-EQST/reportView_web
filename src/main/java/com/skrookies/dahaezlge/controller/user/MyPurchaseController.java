@@ -47,7 +47,7 @@ public class MyPurchaseController {
                     log.info(String.valueOf("date" + books_list.get(i).get(1)));
                     List<Map<String, Object>> book_info = bookService.getMyBooks(Long.parseLong(books_list.get(i).get(0).toString()));
                     log.info (String.valueOf(book_info));
-                    books_info.add(book_info.getFirst());
+                    books_info.add(book_info.get(0));
                 }
                 log.info (String.valueOf(books_info));
                 model.addAttribute("books", books_info);

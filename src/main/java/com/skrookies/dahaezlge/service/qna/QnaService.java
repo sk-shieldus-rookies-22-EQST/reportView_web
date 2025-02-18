@@ -178,7 +178,9 @@ public class QnaService {
         log.info("sdate: " + sdate.substring(0, 19));
         log.info("edate: " + edate.substring(0, 19));
 
+        // 10분 내 몇개의 게시글을 작성했는지 확인
         Integer count = qnaRepository.countQnaByUserIdAndDate(user_id, sdate.substring(0, 19), edate.substring(0, 19));
+
 
         log.info("count repository result: " + count);
 
