@@ -74,6 +74,9 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test' // Spring Security 테스트 지원
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher' // JUnit 플랫폼 런처
 
+    // 내장 톰캣 미사용
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
 
 //    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -117,7 +120,7 @@ dependencyManagement {
     }
 }
 
-tasks.named('test') {
+tasks.named('war') {
     from('src/main/webapp') {
         into('META-INF/resources') // JSP 파일을 포함
     }
