@@ -48,8 +48,6 @@ public class DRMController {
         return new String(paddedBytes, StandardCharsets.UTF_8);
     }
 
-
-    private final String KEY_GET_URL = "http://3.35.84.46:8080/get-key";
     private final String FILE_GET_URL = "http://3.35.84.46:8080/generate-presigned-url";
 
     @PostMapping("/getPreURL")
@@ -88,25 +86,7 @@ public class DRMController {
                 log.info("presignedUrl: " + presignedUrl);
 
 
-                // KMS에서 AES 키 및 IV 가져오기
-                ResponseEntity<Map<String, String>> kmsResponse = restTemplate.exchange(
-                        KEY_GET_URL, HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, String>>() {});
-
-                String aesKey = kmsResponse.getBody().get("aes_key");
-                String aesIv = kmsResponse.getBody().get("aes_iv");
-
-                if (aesKey == null || aesIv == null) {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body(Collections.singletonMap("error", "AES 키와 IV를 가져오는 데 실패했습니다."));
-                }
-
-                log.info("AES Key: " + aesKey);
-                log.info("AES IV: " + aesIv);
-
-
-                String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl +
-                        "&key=" + aesKey +
-                        "&iv=" + aesIv;
+                String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl;
 
 
                 log.info("drmUrl: " + drmUrl);

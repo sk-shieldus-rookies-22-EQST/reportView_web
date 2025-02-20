@@ -118,7 +118,7 @@
                         </li>
                     </ul>
                     <input class="btn btn-outline-light" type="button" value="로그인"
-                           onclick="location.href='/loginForm'" style="margin-left: 20px;">
+                           onclick="location.href='/login'" style="margin-left: 20px;">
                     <input class="btn btn-outline-light" type="button" value="회원가입"
                            onclick="location.href='/registerForm'" style="margin-left: 20px;">
 
