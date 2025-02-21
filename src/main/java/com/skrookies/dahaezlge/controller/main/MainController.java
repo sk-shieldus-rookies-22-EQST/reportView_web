@@ -135,6 +135,8 @@ public class MainController {
             return "redirect:/";
         }
 
+        books = del_webtoon_data(books);
+
         // JSP로 데이터 전달
         model.addAttribute("books", books);
         //log.info(books.toString());
@@ -196,6 +198,7 @@ public class MainController {
             for(String webtoon_title : webtoon_titles){
                 if(books.get(i).get("book_title").equals(webtoon_title)){
                     books.remove(i--);
+                    log.info("del webtoon {}", webtoon_title);
                     break;
                 }
             }
