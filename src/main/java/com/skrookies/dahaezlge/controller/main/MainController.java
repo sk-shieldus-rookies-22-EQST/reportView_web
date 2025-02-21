@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +71,8 @@ public class MainController {
             // 현재 페이지에 해당하는 책 목록 가져오기
             books = bookService.getBooksWithBoth(keyword, sdate, edate, sort, direction);
         }
+
+        books = del_webtoon_data(books);
 
         // JSP로 데이터 전달
         model.addAttribute("books", books);
@@ -180,6 +183,25 @@ public class MainController {
 
         // LocalDate를 Timestamp로 변환 (시간은 00:00:00으로 설정됨)
         return Timestamp.valueOf(localDate.atStartOfDay());  // 시간은 00:00:00으로 설정
+    }
+
+    private List<Map<String, Object>> del_webtoon_data(List<Map<String, Object>> books){
+
+        List<String> webtoon_titles = List.of(
+                "지극히 평범한 생활", "불같은 청춘", "고스트 피처", "자작 보드게임 동아리",
+                "로로의 일본생활 다이어리", "170km", "루저들의 세계여행", "의미불명 개그만화",
+                "좀비신드롬", "킥오프");
+
+        for(int i = 0; i < books.size(); i++){
+            for(String webtoon_title : webtoon_titles){
+                if(books.get(i).get("book_title").equals(webtoon_title)){
+                    books.remove(i--);
+                    break;
+                }
+            }
+        }
+
+        return books;
     }
 
 
