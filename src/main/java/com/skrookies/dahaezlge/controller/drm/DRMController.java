@@ -85,9 +85,13 @@ public class DRMController {
                 String presignedUrl = fileResponse.getBody().get("presigned_url");
                 log.info("presignedUrl: " + presignedUrl);
 
+<<<<<<< HEAD
 
                 String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl;
 
+=======
+                String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl;
+>>>>>>> main
 
                 log.info("drmUrl: " + drmUrl);
 

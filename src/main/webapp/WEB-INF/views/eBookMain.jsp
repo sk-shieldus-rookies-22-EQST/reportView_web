@@ -165,13 +165,15 @@
 
                   <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
                   <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
-                    <input type="radio" class="btn-check" name="sort" value="date" id="sortDate" data-direction="DESC"
-                           ${param.sort == 'date' ? 'checked' : ''} checked>
-                    <label class="btn btn-outline-primary radio_btn" for="sortDate">최신순</label>
 
                   <input type="radio" class="btn-check" name="sort" value="bt" id="sortTitle" data-direction="ASC"
-                         ${param.sort == 'bt' ? 'checked' : ''}>
-                  <label class="btn btn-outline-primary radio_btn"  for="sortTitle" class="me-3">제목순</label>
+                       ${param.sort == 'bt' ? 'checked' : ''} checked>
+                <label class="btn btn-outline-primary radio_btn"  for="sortTitle" class="me-3">제목순</label>
+                    <input type="radio" class="btn-check" name="sort" value="date" id="sortDate" data-direction="DESC"
+                           ${param.sort == 'date' ? 'checked' : ''} >
+                    <label class="btn btn-outline-primary radio_btn" for="sortDate">최신순</label>
+
+
 
                   <!-- 낮은 가격 순: sort는 book_price, direction은 ASC -->
                   <input type="radio" class="btn-check" name="sort" value="price_asc" id="sortPriceAsc" data-direction="ASC"

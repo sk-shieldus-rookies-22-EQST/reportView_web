@@ -64,13 +64,13 @@ public class DBBookRepository implements BookRepository {
 /** order by 버전 prepare statement로 봐도 될듯 */
     private String getOrderByClause(String sort) {
         if (sort == null || sort.isEmpty()) {
-            return "book_reg_date"; // 기본값
+            return "book_title"; // 기본값
         }
         return switch (sort) {
             case "bt" -> "book_title";
             case "price_asc", "price_desc" -> "book_price";
             case "date" -> "book_reg_date";
-            default -> "book_reg_date";
+            default -> "book_title";
         };
     }
 
@@ -78,7 +78,7 @@ public class DBBookRepository implements BookRepository {
     public List<Map<String, Object>> getBooks(String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
         if(direction == null || direction.isEmpty()){
-            direction = "DESC";
+            direction = "ASC";
         }
         String sql = "SELECT book_id, book_title, book_auth, book_path, book_summary, " +
                 "book_reg_date, book_img_path, book_price " +
@@ -91,7 +91,7 @@ public class DBBookRepository implements BookRepository {
                                                          String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
         if (direction == null || direction.isEmpty()) {
-            direction = "DESC";
+            direction = "ASC";
         }
 
         // SQL Query (keyword를 PreparedStatement로 바인딩)
@@ -108,7 +108,7 @@ public class DBBookRepository implements BookRepository {
     public List<Map<String, Object>> getBooksWithDate(String sdate, String edate, String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
         if (direction == null || direction.isEmpty()) {
-            direction = "DESC";
+            direction = "ASC";
         }
 
         // SQL Query (sdate, edate를 PreparedStatement로 바인딩)
@@ -125,7 +125,7 @@ public class DBBookRepository implements BookRepository {
     public List<Map<String, Object>> getBooksWithBoth(String keyword, String sdate, String edate, String sort, String direction) {
         String orderByClause = getOrderByClause(sort);
         if (direction == null || direction.isEmpty()) {
-            direction = "DESC";
+            direction = "ASC";
         }
 
         // SQL Query (keyword, sdate, edate를 PreparedStatement로 바인딩)

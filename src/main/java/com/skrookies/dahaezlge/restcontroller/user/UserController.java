@@ -4,6 +4,7 @@ import com.skrookies.dahaezlge.controller.user.Dto.UserDto;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.restcontroller.auth.dto.UserIdDto;
 import com.skrookies.dahaezlge.restcontroller.user.dto.*;
+import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
@@ -29,6 +30,7 @@ public class UserController {
     private final PurchaseService purchaseService;
     private final BookService bookService;
 
+    Bcrypt bcrypt = new Bcrypt();
 
     /** UserId 기반 회원 정보 반환 */
     @PostMapping("/info")
@@ -52,7 +54,7 @@ public class UserController {
     @PostMapping("/update")
     public ResponseEntity<StatusDto> userInfoUpdate(@RequestBody UserInfoDto userInfoDto) {
 
-        Boolean result = userService.updateUserInfo(userInfoDto.getUser_id(), userInfoDto.getUser_pw(), userInfoDto.getUser_phone(), userInfoDto.getUser_email());
+        Boolean result = userService.updateUserInfo(userInfoDto.getUser_id(), bcrypt.hashPassword(userInfoDto.getUser_pw()), userInfoDto.getUser_phone(), userInfoDto.getUser_email());
 
         StatusDto statusDto = new StatusDto();
         statusDto.setStatus(result);

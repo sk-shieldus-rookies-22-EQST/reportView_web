@@ -2,6 +2,7 @@ package com.skrookies.dahaezlge.repository.user;
 
 import com.skrookies.dahaezlge.entity.loginTry.LoginTry;
 import com.skrookies.dahaezlge.entity.user.Users;
+import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -141,7 +142,7 @@ public class DBUserRepository implements UserRepository{
             }else { return "no_users"; }
         } catch (Exception e) {
             log.info("findUserId - phone: "+ user_phone);
-            log.info("findUserId - email: "+user_email);
+            log.info("findUserId - email: "+ user_email);
             return "no_users";
         }
     }
@@ -150,9 +151,11 @@ public class DBUserRepository implements UserRepository{
     public Boolean updateUserpw(String user_id, String user_pw) {
         log.info("updateUserpw user_id: " + user_id);
         log.info("updateUserpw user_pw: " + user_pw);
+
         String sql = "UPDATE users SET user_pw = ? WHERE user_id = ?";
         try {
-            int count = jdbcTemplate.update(sql, user_pw,user_id);
+            Bcrypt bcrypt = new Bcrypt();
+            int count = jdbcTemplate.update(sql, bcrypt.hashPassword(user_pw), user_id);
             if ( count > 0 ){
                 log.info("changed pw");
                 return true;
