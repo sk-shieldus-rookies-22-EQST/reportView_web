@@ -6,10 +6,16 @@ import com.skrookies.dahaezlge.repository.user.UserRepository;
 import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -23,6 +29,24 @@ public class UserService {
         return userRepository.login(user_id, user_pw);
     }
 
+
+    /** 마지막 자동 로그인날 확인 */
+    public Boolean auto_login(String user_id, String token){
+
+        List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token);
+
+        log.info("auto login data:{}", autoLoginData);
+        if(autoLoginData != null){
+            LocalDate lastLogintDate = ((Timestamp) autoLoginData.get(0).get("token_gen_date")).toLocalDateTime().toLocalDate();
+
+            log.info("last login date:{}", lastLogintDate);
+            if(lastLogintDate.isAfter(LocalDate.now().minusDays(30))){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     public List<Users> userInfo(String user_id) {
 
