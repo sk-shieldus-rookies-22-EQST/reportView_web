@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 public class AutoLogin {
 
     @Id
-    @Column(name = "user_id", length = 255)
-    private String userId;
+    @Column(name = "auto_login_user_id", length = 255)
+    private String autoLoginUserId;
 
     @Column(name = "token", length = 255)
     private String token;

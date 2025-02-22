@@ -33,4 +33,6 @@ public interface UserRepository {
     Boolean updateAutoLoginDate(String user_id, Timestamp login_data);
 
     Boolean deleteAutoLoginDate(String user_id);
+
+    Boolean selectAutoLoginDate(String user_id);
 }

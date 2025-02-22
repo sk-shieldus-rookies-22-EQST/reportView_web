@@ -88,7 +88,7 @@ public class DBUserRepository implements UserRepository{
 
         log.info("auto login data 조회");
 
-        String sql = "select * from auto_login where user_id = ? and token = ?";
+        String sql = "select * from auto_login where auto_login_user_id = ? and token = ?";
 
         try {
             List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, user_id, token);
@@ -333,16 +333,20 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean insertAutoLoginToken(String user_id, String token, Timestamp login_date) {
 
-        String sql = "insert into auto_login (user_id, token, token_gen_date) " +
+        String sql = "insert into auto_login (auto_login_user_id, token, token_gen_date) " +
                 "Values(?, ?, ?)";
 
         try {
             int result = jdbcTemplate.update(sql, user_id, token, login_date);
 
-            if(result > 0)
+            if(result > 0) {
+                log.info("auto_login success");
+                log.info("result: " + result);
                 return true;
+            }
             else{
                 log.info("auto login fail");
+                log.info("result: " + result);
                 return false;
             }
         }
@@ -356,7 +360,7 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean updateAutoLoginDate(String user_id, Timestamp login_date) {
 
-        String sql = "update auto_login set token_gen_date = ? where user_id = ?";
+        String sql = "update auto_login set token_gen_date = ? where auto_login_user_id = ?";
 
         int result = jdbcTemplate.update(sql, login_date, user_id);
 
@@ -366,11 +370,22 @@ public class DBUserRepository implements UserRepository{
     @Override
     public Boolean deleteAutoLoginDate(String user_id) {
 
-        String sql = "delete from auto_login where user_id = ?";
+        String sql = "delete from auto_login where auto_login_user_id = ?";
 
         int result = jdbcTemplate.update(sql, user_id);
 
         return result > 0;
     }
+
+    @Override
+    public Boolean selectAutoLoginDate(String user_id) {
+
+        String sql = "select * from auto_login where auto_login_user_id = ?";
+
+        List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, user_id);
+
+        return results != null && results.size() > 0;
+    }
+
 
 }

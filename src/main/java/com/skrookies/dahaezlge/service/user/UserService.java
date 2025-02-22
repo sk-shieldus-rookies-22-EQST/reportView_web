@@ -40,8 +40,11 @@ public class UserService {
 
             log.info("auto login date:{}", login_date);
 
-            if(!userRepository.insertAutoLoginToken(user_id, token, login_date)){
-                result = "false";
+            if(userRepository.selectAutoLoginDate(user_id)){
+                userRepository.updateAutoLoginDate(user_id, login_date);
+            }
+            else{
+                userRepository.insertAutoLoginToken(user_id, token, login_date);
             }
         }
 
@@ -72,7 +75,7 @@ public class UserService {
             }
             else{
                 log.info("last login date over 30 days");
-                if(userRepository.deleteUser(user_id)){
+                if(userRepository.deleteAutoLoginDate(user_id)){
                     log.info("delete auto login date");
                 }
             }
