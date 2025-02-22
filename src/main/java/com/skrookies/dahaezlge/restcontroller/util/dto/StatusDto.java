@@ -9,5 +9,6 @@ import lombok.*;
 public class StatusDto {
 
     private Boolean status;
+    private String token;
 
 }

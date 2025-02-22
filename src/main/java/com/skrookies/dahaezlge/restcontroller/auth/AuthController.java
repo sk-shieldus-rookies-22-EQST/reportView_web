@@ -23,6 +23,7 @@ public class AuthController {
     private final UserService userService;
     private final AESService aesService;
 
+    Bcrypt bcrypt = new Bcrypt();
 
     @PostMapping("/login")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid E2EDto e2eDto) {
@@ -45,6 +46,7 @@ public class AuthController {
 
             String result = userService.login(user_id, user_pw);
             statusDto.setStatus(Boolean.valueOf(result));
+            statusDto.setToken(bcrypt.hashPassword(user_id));
 
         } catch (Exception e) {
 
@@ -100,7 +102,8 @@ public class AuthController {
     @PostMapping("/modify/pw")
     public ResponseEntity<StatusDto> androidModifyPW(@RequestBody @Valid ModifyPwDto modifyPwDto){
 
-        StatusDto statusDto = new StatusDto(userService.updateUserpw(modifyPwDto.getUser_id(), modifyPwDto.getNew_user_pw()));
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(userService.updateUserpw(modifyPwDto.getUser_id(), modifyPwDto.getNew_user_pw()));
 
         return ResponseEntity.ok()
                 .body(statusDto);
