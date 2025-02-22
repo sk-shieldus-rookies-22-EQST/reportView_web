@@ -82,6 +82,20 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
+    @Override
+    public List<Map<String, Object>> autoLogin(String user_id, String token) {
+
+        String sql = "select * from auto_login where user_id = ? and token = ?";
+
+        try {
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, user_id, token);
+            return result;
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
     // 계정 잠금 여부 확인
     private boolean isAccountLocked(LoginTry loginTry, String user_id) {
         // 실패 횟수가 일정 이상인 경우 계정을 잠금

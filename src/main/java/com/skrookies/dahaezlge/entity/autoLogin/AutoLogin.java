@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 
 @Entity
@@ -25,7 +25,7 @@ public class AutoLogin {
     private String token;
 
     @Column(name = "token_gen_date")
-    private LocalDateTime tokenGenDate;
+    private Timestamp tokenGenDate;
 
 
 }
