@@ -49,7 +49,7 @@ public class UserService {
     }
 
 
-    /** 마지막 자동 로그인날 확인 */
+    /** 자동 로그인 */
     public Boolean auto_login(String user_id, String token){
 
         List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token);
@@ -62,7 +62,19 @@ public class UserService {
             log.info("now data:{}", LocalDate.now().minusDays(30));
 
             if(lastLogintDate.isAfter(LocalDate.now().minusDays(30))){
+
+                log.info("last login date update try");
+                if(userRepository.updateAutoLoginDate(user_id, Timestamp.valueOf(LocalDate.now().atStartOfDay()))){
+                    log.info("success");
+                }
+
                 return true;
+            }
+            else{
+                log.info("last login date over 30 days");
+                if(userRepository.deleteUser(user_id)){
+                    log.info("delete auto login date");
+                }
             }
         }
 

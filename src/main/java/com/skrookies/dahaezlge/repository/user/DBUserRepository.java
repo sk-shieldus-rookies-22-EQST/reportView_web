@@ -352,4 +352,24 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
+    @Override
+    public Boolean updateAutoLoginDate(String user_id, Timestamp login_date) {
+
+        String sql = "update auto_login set token_gen_date = ? where user_id = ?";
+
+        int result = jdbcTemplate.update(sql, login_date, user_id);
+
+        return result > 0;
+    }
+
+    @Override
+    public Boolean deleteAutoLoginDate(String user_id) {
+
+        String sql = "delete from auto_login where user_id = ?";
+
+        int result = jdbcTemplate.update(sql, user_id);
+
+        return result > 0;
+    }
+
 }
