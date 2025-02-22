@@ -46,6 +46,8 @@ public class ViewController {
             bookListDtoList.add(bookListDto);
         }
 
+        bookListDtoList = del_bookies_data(bookListDtoList);
+
         log.info("Android api 반환값으로 변환된 bookList size: {}", bookListDtoList.size());
 
         BookListCapDto bookListCapDto = new BookListCapDto();
@@ -97,6 +99,8 @@ public class ViewController {
             bookList = bookService.findBookListByBoth(bookSearchRequestDto.getKeyword(), bookSearchRequestDto.getSdate().toString(), bookSearchRequestDto.getEdate().toString());
         }
 
+        bookList = del_bookies_data(bookList);
+
         BookListCapDto bookListCapDto = new BookListCapDto();
         bookListCapDto.setBook_list(bookList);
 
@@ -136,4 +140,30 @@ public class ViewController {
                 .body(statusDto);
 
     }
+
+    private List<BookListDto> del_bookies_data(List<BookListDto> books){
+
+        List<String> webtoon_titles = List.of(
+                "지극히 평범한 생활", "불같은 청춘", "고스트 피처", "자작 보드게임 동아리",
+                "로로의 일본생활 다이어리", "170km", "루저들의 세계여행", "의미불명 개그만화",
+                "좀비신드롬", "킥오프");
+
+        List<BookListDto> webtoon_datas = new ArrayList<>();
+        for(int i = 0; i < books.size(); i++){
+            for(String webtoon_title : webtoon_titles){
+                if(books.get(i).getTitle().equals(webtoon_title)){
+                    log.info("find webtoon {}", webtoon_title);
+
+                    BookListDto webtoon_data = books.get(i);
+                    webtoon_datas.add(webtoon_data);
+
+                    break;
+                }
+            }
+        }
+
+        return webtoon_datas;
+    }
+
+
 }
