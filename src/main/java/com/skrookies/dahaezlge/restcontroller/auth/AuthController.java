@@ -58,6 +58,16 @@ public class AuthController {
 
     }
 
+
+    /** 자동 로그인 */
+    @PostMapping("/autologin")
+    public StatusDto autoLogin(AutoLoginDto autoLoginDto){
+
+
+
+    }
+
+
     @PostMapping("/user/level")
     public ResponseEntity<UserLevelDto> androidUserLevel(@RequestBody @Valid UserIdDto userIdDto) {
 
