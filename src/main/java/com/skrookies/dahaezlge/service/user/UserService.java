@@ -40,6 +40,8 @@ public class UserService {
             LocalDate lastLogintDate = ((Timestamp) autoLoginData.get(0).get("token_gen_date")).toLocalDateTime().toLocalDate();
 
             log.info("last login date:{}", lastLogintDate);
+            log.info("now data:{}", LocalDate.now().minusDays(30));
+
             if(lastLogintDate.isAfter(LocalDate.now().minusDays(30))){
                 return true;
             }

@@ -61,10 +61,15 @@ public class AuthController {
 
     /** 자동 로그인 */
     @PostMapping("/autologin")
-    public StatusDto autoLogin(@RequestBody @Valid AutoLoginDto autoLoginDto){
+    public ResponseEntity<StatusDto> autoLogin(@RequestBody @Valid AutoLoginDto autoLoginDto){
 
+        Boolean result = userService.auto_login(autoLoginDto.getUser_id(), autoLoginDto.getToken());
 
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(result);
 
+        return ResponseEntity.ok()
+                .body(statusDto);
     }
 
 
