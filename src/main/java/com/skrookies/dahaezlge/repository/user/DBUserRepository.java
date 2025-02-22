@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -325,6 +326,32 @@ public class DBUserRepository implements UserRepository{
 
         } catch (Exception e) {
             log.info("del - catch");
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean insertAutoLoginToken(String user_id, String token) {
+
+        String sql = "insert into auto_login (user_id, token, token_gen_date) " +
+                "Values(?, ?, ?)";
+
+        try {
+            Timestamp login_date = Timestamp.valueOf(LocalDate.now().atStartOfDay());
+
+            log.info("auto login date:{}", login_date);
+
+            int result = jdbcTemplate.update(sql, user_id, token, login_date);
+
+            if(result > 0)
+                return true;
+            else{
+                log.info("auto login fail");
+                return false;
+            }
+        }
+        catch (Exception e) {
+            log.info("auto login fail");
             return false;
         }
     }

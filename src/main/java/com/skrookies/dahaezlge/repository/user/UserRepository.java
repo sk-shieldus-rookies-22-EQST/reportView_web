@@ -26,4 +26,6 @@ public interface UserRepository {
     Integer getUserLevel(String userId);
 
     Boolean deleteUser(String userId);
+
+    Boolean insertAutoLoginToken(String user_id, String Token);
 }
