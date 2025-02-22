@@ -347,6 +347,7 @@ public class DBUserRepository implements UserRepository{
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             log.info("auto login fail");
             return false;
         }
