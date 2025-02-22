@@ -61,7 +61,7 @@ public class AuthController {
 
     /** 자동 로그인 */
     @PostMapping("/autologin")
-    public StatusDto autoLogin(AutoLoginDto autoLoginDto){
+    public StatusDto autoLogin(@RequestBody @Valid AutoLoginDto autoLoginDto){
 
 
 
