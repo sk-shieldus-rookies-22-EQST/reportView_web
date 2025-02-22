@@ -7,6 +7,7 @@ import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -26,7 +27,25 @@ public class UserService {
 
 
     public String login(String user_id, String user_pw){
-        return userRepository.login(user_id, user_pw);
+
+        String result = userRepository.login(user_id, user_pw);
+
+        if(result.equals("true")) {
+            /** Token 생성 */
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String token = bCryptPasswordEncoder.encode(user_id);
+
+            /** 로그인 시간 기록 */
+            Timestamp login_date = Timestamp.valueOf(LocalDate.now().atStartOfDay());
+
+            log.info("auto login date:{}", login_date);
+
+            if(!userRepository.insertAutoLoginToken(user_id, token, login_date)){
+                result = "false";
+            }
+        }
+
+        return result;
     }
 
 

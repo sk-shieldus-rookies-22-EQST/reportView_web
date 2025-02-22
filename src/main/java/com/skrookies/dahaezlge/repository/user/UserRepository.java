@@ -3,6 +3,7 @@ package com.skrookies.dahaezlge.repository.user;
 
 import com.skrookies.dahaezlge.entity.user.Users;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -27,5 +28,5 @@ public interface UserRepository {
 
     Boolean deleteUser(String userId);
 
-    Boolean insertAutoLoginToken(String user_id, String Token);
+    Boolean insertAutoLoginToken(String user_id, String token, Timestamp login_date);
 }

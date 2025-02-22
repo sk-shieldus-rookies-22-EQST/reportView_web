@@ -331,16 +331,12 @@ public class DBUserRepository implements UserRepository{
     }
 
     @Override
-    public Boolean insertAutoLoginToken(String user_id, String token) {
+    public Boolean insertAutoLoginToken(String user_id, String token, Timestamp login_date) {
 
         String sql = "insert into auto_login (user_id, token, token_gen_date) " +
                 "Values(?, ?, ?)";
 
         try {
-            Timestamp login_date = Timestamp.valueOf(LocalDate.now().atStartOfDay());
-
-            log.info("auto login date:{}", login_date);
-
             int result = jdbcTemplate.update(sql, user_id, token, login_date);
 
             if(result > 0)
