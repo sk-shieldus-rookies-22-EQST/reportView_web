@@ -50,7 +50,7 @@ public class UserService {
             if(lastLogintDate.isAfter(LocalDate.now().minusDays(30))){
 
                 log.info("last login date update try");
-                if(userRepository.updateAutoLoginDate(user_id, Timestamp.valueOf(LocalDate.now().atStartOfDay()))){
+                if(userRepository.updateAutoLoginDate(user_id, token, Timestamp.valueOf(LocalDate.now().atStartOfDay()))){
                     log.info("success");
                 }
 
@@ -84,7 +84,7 @@ public class UserService {
 
         /** 로그인 시간 생성 및 업데이트 */
         if(userRepository.selectAutoLoginDate(user_id)){
-            userRepository.updateAutoLoginDate(user_id, login_date);
+            userRepository.updateAutoLoginDate(user_id, token, login_date);
         }
         else{
             userRepository.insertAutoLoginToken(user_id, token, login_date);

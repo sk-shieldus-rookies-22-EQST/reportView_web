@@ -30,7 +30,7 @@ public interface UserRepository {
 
     Boolean insertAutoLoginToken(String user_id, String token, Timestamp login_date);
 
-    Boolean updateAutoLoginDate(String user_id, Timestamp login_data);
+    Boolean updateAutoLoginDate(String user_id, String token, Timestamp login_data);
 
     Boolean deleteAutoLoginDate(String user_id);
 

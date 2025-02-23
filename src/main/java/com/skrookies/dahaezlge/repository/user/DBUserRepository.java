@@ -358,11 +358,11 @@ public class DBUserRepository implements UserRepository{
     }
 
     @Override
-    public Boolean updateAutoLoginDate(String user_id, Timestamp login_date) {
+    public Boolean updateAutoLoginDate(String user_id, String token, Timestamp login_date) {
 
-        String sql = "update auto_login set token_gen_date = ? where auto_login_user_id = ?";
+        String sql = "update auto_login set token = ?, token_gen_date = ? where auto_login_user_id = ?";
 
-        int result = jdbcTemplate.update(sql, login_date, user_id);
+        int result = jdbcTemplate.update(sql, token, login_date, user_id);
 
         return result > 0;
     }
