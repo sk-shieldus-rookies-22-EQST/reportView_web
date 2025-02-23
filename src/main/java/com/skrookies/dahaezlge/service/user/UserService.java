@@ -5,8 +5,11 @@ import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.repository.user.UserRepository;
 import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
 import javax.transaction.Transactional;
+
+import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,27 +31,7 @@ public class UserService {
 
     public String login(String user_id, String user_pw){
 
-        String result = userRepository.login(user_id, user_pw);
-
-        if(result.equals("true")) {
-            /** Token 생성 */
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            String token = bCryptPasswordEncoder.encode(user_id);
-
-            /** 로그인 시간 기록 */
-            Timestamp login_date = Timestamp.valueOf(LocalDate.now().atStartOfDay());
-
-            log.info("auto login date:{}", login_date);
-
-            if(userRepository.selectAutoLoginDate(user_id)){
-                userRepository.updateAutoLoginDate(user_id, login_date);
-            }
-            else{
-                userRepository.insertAutoLoginToken(user_id, token, login_date);
-            }
-        }
-
-        return result;
+        return userRepository.login(user_id, user_pw);
     }
 
 
@@ -83,6 +66,33 @@ public class UserService {
 
         return false;
     }
+
+
+    /** 자동 로그인 토큰 저장 */
+    public String autoLoginTokenGen(String user_id){
+
+        /** 토큰 생성 */
+        Bcrypt bcrypt = new Bcrypt();
+        String token = bcrypt.hashPassword(user_id);
+
+        log.info("gen auto login token:{}", token);
+
+        /** 로그인 시간 생성 */
+        Timestamp login_date = Timestamp.valueOf(LocalDate.now().atStartOfDay());
+
+        log.info("gen auto login date:{}", login_date);
+
+        /** 로그인 시간 생성 및 업데이트 */
+        if(userRepository.selectAutoLoginDate(user_id)){
+            userRepository.updateAutoLoginDate(user_id, login_date);
+        }
+        else{
+            userRepository.insertAutoLoginToken(user_id, token, login_date);
+        }
+
+        return token;
+    }
+
 
     public List<Users> userInfo(String user_id) {
 

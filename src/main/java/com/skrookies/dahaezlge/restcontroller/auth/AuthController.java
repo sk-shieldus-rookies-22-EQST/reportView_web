@@ -23,7 +23,6 @@ public class AuthController {
     private final UserService userService;
     private final AESService aesService;
 
-    Bcrypt bcrypt = new Bcrypt();
 
     @PostMapping("/login")
     public ResponseEntity<StatusDto> androidLogin(@RequestBody @Valid E2EDto e2eDto) {
@@ -45,11 +44,15 @@ public class AuthController {
             String user_pw = passwordParts[1];
 
             String result = userService.login(user_id, user_pw);
+            String token = userService.autoLoginTokenGen(user_id);
+
+            log.info("Android token: " + token);
+
             statusDto.setStatus(Boolean.valueOf(result));
-            statusDto.setToken(bcrypt.hashPassword(user_id));
+            statusDto.setToken(token);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             statusDto.setStatus(false);
         }
 
