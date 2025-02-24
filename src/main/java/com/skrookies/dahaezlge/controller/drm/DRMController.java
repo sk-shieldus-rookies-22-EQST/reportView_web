@@ -48,13 +48,13 @@ public class DRMController {
         return new String(paddedBytes, StandardCharsets.UTF_8);
     }
 
-    private final String FILE_GET_URL = "http://3.35.84.46:8080/generate-presigned-url";
+    private final String FILE_GET_URL = "http://3.35.84.46:8080/generate-signed-url";
 
-    @PostMapping("/getPreURL")
+    @PostMapping("/getDRMURL")
     @ResponseBody
     public ResponseEntity<Map<String, String>> getPresignedUrl(@RequestParam("book_id") String bookId, HttpSession session) {
         try {
-            log.info("getPresignedUrl Process");
+            log.info("getsignedUrl Process");
             // 세션에서 user_id 가져오기
             String userId = (String) session.getAttribute("user_id");
             if (userId == null) {
@@ -81,11 +81,11 @@ public class DRMController {
                         FILE_GET_URL, HttpMethod.POST, entity, new ParameterizedTypeReference<Map<String, String>>() {});
                 log.info("fileResponse: " + fileResponse);
 
-                // Presigned URL 추출
-                String presignedUrl = fileResponse.getBody().get("presigned_url");
-                log.info("presignedUrl: " + presignedUrl);
+                // signed URL 추출
+                String signedUrl = fileResponse.getBody().get("signed_url");
+                log.info("signedUrl: " + signedUrl);
 
-                String drmUrl = "BookiesDRM://run?presigned_url=" + presignedUrl;
+                String drmUrl = "BookiesDRM://run?signed_url=" + signedUrl;
 
                 log.info("drmUrl: " + drmUrl);
 
