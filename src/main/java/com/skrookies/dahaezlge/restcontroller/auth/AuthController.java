@@ -32,6 +32,7 @@ public class AuthController {
         log.info("Android login 시도");
 
         try {
+            log.info("Android login e2e data:", e2eDto.getE2e_data());
             String decrypted_data = aesService.decrypt(e2eDto.getE2e_data());
 
             String[] passwordParts = decrypted_data.split("&&&&");
