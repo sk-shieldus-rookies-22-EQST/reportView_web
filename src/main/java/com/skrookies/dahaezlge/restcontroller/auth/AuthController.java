@@ -32,6 +32,7 @@ public class AuthController {
         log.info("Android login 시도");
 
         try {
+            log.info("Android login e2e data:", e2eDto.getE2e_data());
             String decrypted_data = aesService.decrypt(e2eDto.getE2e_data());
 
             String[] passwordParts = decrypted_data.split("&&&&");
@@ -44,10 +45,15 @@ public class AuthController {
             String user_pw = passwordParts[1];
 
             String result = userService.login(user_id, user_pw);
+            String token = userService.autoLoginTokenGen(user_id);
+
+            log.info("Android token: " + token);
+
             statusDto.setStatus(Boolean.valueOf(result));
+            statusDto.setToken(token);
 
         } catch (Exception e) {
-
+            e.printStackTrace();
             statusDto.setStatus(false);
         }
 
@@ -57,6 +63,21 @@ public class AuthController {
                 .body(statusDto);
 
     }
+
+
+    /** 자동 로그인 */
+    @PostMapping("/autologin")
+    public ResponseEntity<StatusDto> autoLogin(@RequestBody @Valid AutoLoginDto autoLoginDto){
+
+        Boolean result = userService.auto_login(autoLoginDto.getUser_id(), autoLoginDto.getToken());
+
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(result);
+
+        return ResponseEntity.ok()
+                .body(statusDto);
+    }
+
 
     @PostMapping("/user/level")
     public ResponseEntity<UserLevelDto> androidUserLevel(@RequestBody @Valid UserIdDto userIdDto) {
@@ -85,7 +106,8 @@ public class AuthController {
     @PostMapping("/modify/pw")
     public ResponseEntity<StatusDto> androidModifyPW(@RequestBody @Valid ModifyPwDto modifyPwDto){
 
-        StatusDto statusDto = new StatusDto(userService.updateUserpw(modifyPwDto.getUser_id(), modifyPwDto.getNew_user_pw()));
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(userService.updateUserpw(modifyPwDto.getUser_id(), modifyPwDto.getNew_user_pw()));
 
         return ResponseEntity.ok()
                 .body(statusDto);

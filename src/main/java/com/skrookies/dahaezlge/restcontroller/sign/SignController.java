@@ -31,7 +31,8 @@ public class SignController {
     public ResponseEntity<StatusDto> androidSignup(@RequestBody @Valid SignupDto signupDto) {
 
 
-        StatusDto statusDto = new StatusDto(userService.registerUser(signupDto.getUser_id(), bcrypt.hashPassword(signupDto.getUser_pw()), signupDto.getUser_phone(), signupDto.getUser_email()));
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(userService.registerUser(signupDto.getUser_id(), bcrypt.hashPassword(signupDto.getUser_pw()), signupDto.getUser_phone(), signupDto.getUser_email()));
 
         return ResponseEntity.ok()
                 .body(statusDto);

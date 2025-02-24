@@ -135,7 +135,9 @@ public class ViewController {
     public ResponseEntity<StatusDto> viewer(@RequestBody @Valid ViewerDto viewerDto){
 
 //        StatusDto statusDto = new StatusDto(bookService.viewer(viewerDto.getBook_id()));
-        StatusDto statusDto = new StatusDto(true);
+        StatusDto statusDto = new StatusDto();
+        statusDto.setStatus(true);
+
         return ResponseEntity.ok()
                 .body(statusDto);
 

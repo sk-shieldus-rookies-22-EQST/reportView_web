@@ -5,11 +5,21 @@ import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.repository.user.UserRepository;
 import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
 import javax.transaction.Transactional;
+
+import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -20,7 +30,67 @@ public class UserService {
 
 
     public String login(String user_id, String user_pw){
+
         return userRepository.login(user_id, user_pw);
+    }
+
+
+    /** 자동 로그인 */
+    public Boolean auto_login(String user_id, String token){
+
+        List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token);
+
+        log.info("auto login data:{}", autoLoginData);
+        if(autoLoginData != null){
+            LocalDate lastLogintDate = ((Timestamp) autoLoginData.get(0).get("token_gen_date")).toLocalDateTime().toLocalDate();
+
+            log.info("last login date:{}", lastLogintDate);
+            log.info("now data:{}", LocalDate.now().minusDays(30));
+
+            if(lastLogintDate.isAfter(LocalDate.now().minusDays(30))){
+
+                log.info("last login date update try");
+                if(userRepository.updateAutoLoginDate(user_id, token, Timestamp.valueOf(LocalDate.now().atStartOfDay()))){
+                    log.info("success");
+                }
+
+                return true;
+            }
+            else{
+                log.info("last login date over 30 days");
+                if(userRepository.deleteAutoLoginDate(user_id)){
+                    log.info("delete auto login date");
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /** 자동 로그인 토큰 저장 */
+    public String autoLoginTokenGen(String user_id){
+
+        /** 토큰 생성 */
+        Bcrypt bcrypt = new Bcrypt();
+        String token = bcrypt.hashPassword(user_id);
+
+        log.info("gen auto login token:{}", token);
+
+        /** 로그인 시간 생성 */
+        Timestamp login_date = Timestamp.valueOf(LocalDate.now().atStartOfDay());
+
+        log.info("gen auto login date:{}", login_date);
+
+        /** 로그인 시간 생성 및 업데이트 */
+        if(userRepository.selectAutoLoginDate(user_id)){
+            userRepository.updateAutoLoginDate(user_id, token, login_date);
+        }
+        else{
+            userRepository.insertAutoLoginToken(user_id, token, login_date);
+        }
+
+        return token;
     }
 
 

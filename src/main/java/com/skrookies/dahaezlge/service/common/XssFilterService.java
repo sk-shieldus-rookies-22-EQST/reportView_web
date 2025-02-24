@@ -36,7 +36,11 @@ public class XssFilterService {
     // 필터링할 특수문자 목록
     private static final String[][] SPECIAL_CHARACTERS = {
             {"<", "&lt;"}, {">", "&gt;"},
-            {"&lt;", " "}, {"&gt;", " "}
+            {"&lt;", " "}, {"&gt;", " "},
+            {"%3C", " "}, {"%3E", " "},
+            {"\\u003C", " "}, {"\\u003E", " "},
+            {"&#x3C;", " "}, {"&#x3E;", " "},
+            {"&#60;", " "}, {"&#62;", " "}
     };
 
     /** XSS 필터링 */

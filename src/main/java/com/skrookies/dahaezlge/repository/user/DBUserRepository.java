@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -79,6 +80,24 @@ public class DBUserRepository implements UserRepository{
             e.printStackTrace();
             log.error("Error during login: " + e.getMessage());
             return "false";
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> autoLogin(String user_id, String token) {
+
+        log.info("auto login data 조회");
+
+        String sql = "select * from auto_login where auto_login_user_id = ? and token = ?";
+
+        try {
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, user_id, token);
+            log.info("auto login data 조회 성공");
+            return result;
+        }
+        catch (Exception e){
+            log.info("auto login data 조회 실패");
+            return null;
         }
     }
 
@@ -310,5 +329,63 @@ public class DBUserRepository implements UserRepository{
             return false;
         }
     }
+
+    @Override
+    public Boolean insertAutoLoginToken(String user_id, String token, Timestamp login_date) {
+
+        String sql = "insert into auto_login (auto_login_user_id, token, token_gen_date) " +
+                "Values(?, ?, ?)";
+
+        try {
+            int result = jdbcTemplate.update(sql, user_id, token, login_date);
+
+            if(result > 0) {
+                log.info("auto_login success");
+                log.info("result: " + result);
+                return true;
+            }
+            else{
+                log.info("auto login fail");
+                log.info("result: " + result);
+                return false;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            log.info("auto login fail");
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean updateAutoLoginDate(String user_id, String token, Timestamp login_date) {
+
+        String sql = "update auto_login set token = ?, token_gen_date = ? where auto_login_user_id = ?";
+
+        int result = jdbcTemplate.update(sql, token, login_date, user_id);
+
+        return result > 0;
+    }
+
+    @Override
+    public Boolean deleteAutoLoginDate(String user_id) {
+
+        String sql = "delete from auto_login where auto_login_user_id = ?";
+
+        int result = jdbcTemplate.update(sql, user_id);
+
+        return result > 0;
+    }
+
+    @Override
+    public Boolean selectAutoLoginDate(String user_id) {
+
+        String sql = "select * from auto_login where auto_login_user_id = ?";
+
+        List<Map<String, Object>> results = jdbcTemplate.queryForList(sql, user_id);
+
+        return results != null && results.size() > 0;
+    }
+
 
 }
