@@ -21,7 +21,7 @@
 		<p class="text-start fs-1 fw-bold" style="display: flex;justify-content: center; margin-bottom:30px;margin-top:16px">내 서재</p>
         <script>
             function BookiesDRM(book_id) {
-                fetch('/getPreURL', {
+                fetch('/getDRMURL', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
