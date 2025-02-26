@@ -174,7 +174,8 @@
 
                 }
                 try {
-                    userId = <%= (String) session.getAttribute("user_id"); %>;
+                    <% String user_id = (String) session.getAttribute("user_id"); %>
+                    var userId = "<%= user_id %>";
 
                     const encryptedData = await getKeyAndEncrypt(userId, bookId, totalBookPrice);
 
