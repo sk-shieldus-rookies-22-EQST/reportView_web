@@ -24,8 +24,9 @@ public class AutoLogin {
     @Column(name = "token", length = 255)
     private String token;
 
+    @Column(name = "uuid", length = 255)
+    private String uuid;
+
     @Column(name = "token_gen_date")
     private Timestamp tokenGenDate;
-
-
 }
