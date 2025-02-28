@@ -4,7 +4,7 @@ package com.skrookies.dahaezlge.service.user;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.repository.user.UserRepository;
 import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import lombok.RequiredArgsConstructor;

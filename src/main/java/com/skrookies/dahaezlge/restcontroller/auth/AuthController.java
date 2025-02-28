@@ -5,7 +5,7 @@ import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +68,8 @@ public class AuthController {
     /** 자동 로그인 */
     @PostMapping("/autologin")
     public ResponseEntity<StatusDto> autoLogin(@RequestBody @Valid AutoLoginDto autoLoginDto){
+
+        log.info("Request data autoLogin: {}", autoLoginDto);
 
         Boolean result = userService.auto_login(autoLoginDto.getUser_id(), autoLoginDto.getToken(), autoLoginDto.getUuid());
 

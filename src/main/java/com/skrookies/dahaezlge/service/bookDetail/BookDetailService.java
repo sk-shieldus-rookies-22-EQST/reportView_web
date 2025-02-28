@@ -4,7 +4,7 @@ import com.skrookies.dahaezlge.controller.book.Dto.BookDto;
 import com.skrookies.dahaezlge.repository.book.BookRepository;
 import com.skrookies.dahaezlge.repository.cart.CartRepository;
 import com.skrookies.dahaezlge.repository.cartBook.CartBookRepository;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

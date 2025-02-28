@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
@@ -18,31 +17,36 @@ import org.springframework.security.web.firewall.HttpFirewall;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure())
-                .authorizeRequests()
-                .anyRequest().permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/loginForm").permitAll()
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/index")
-                .invalidateHttpSession(false)
-                .deleteCookies("JSESSIONID");
+                .csrf(AbstractHttpConfigurer::disable)
+                .requiresChannel(channel -> channel
+                        .anyRequest().requiresSecure())
+                .authorizeHttpRequests(auth -> auth  // authorizeHttpRequests → authorizeRequests
+                        .anyRequest().permitAll() // 모든 요청 허용
+                )
+                .formLogin(login -> login
+                        .loginPage("/loginForm") // 로그인 페이지 지정
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout") // 로그아웃 URL 지정
+                        .logoutSuccessUrl("/index") // 로그아웃 후 이동할 경로
+                        .invalidateHttpSession(false) // 세션 무효화
+                        .deleteCookies("JSESSIONID") // 쿠키 삭제
+                );
+
+        return http.build();
     }
 
 
     @Bean
     public AuthenticationSuccessHandler customSuccessHandler() {
         SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler();
-        successHandler.setRedirectStrategy(new CustomRedirectStrategy());
+        successHandler.setRedirectStrategy(new CustomRedirectStrategy()); // 커스텀 RedirectStrategy 적용
         return successHandler;
     }
 }

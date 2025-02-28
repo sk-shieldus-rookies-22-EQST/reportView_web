@@ -2,7 +2,7 @@ package com.skrookies.dahaezlge.controller.user;
 
 import com.skrookies.dahaezlge.service.book.BookService;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
