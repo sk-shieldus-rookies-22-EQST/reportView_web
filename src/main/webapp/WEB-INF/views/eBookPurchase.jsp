@@ -134,6 +134,7 @@
 
                 var goToPreviousBtnText = '';  // 버튼 텍스트 변수
                 var goToPreviousBtnHref = '';  // 버튼 href 변수
+                var bookId = 0;
 
                 if (purchaseUrl === "/purchaseItemProc") {
                 <%

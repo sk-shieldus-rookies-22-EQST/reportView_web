@@ -97,12 +97,12 @@ public class eBookPurchaseController {
         int user_point = (int) session.getAttribute("point");
         String encrypted_data = (String) requestBody.get("encryptedData");
 
-        log.info("purchaseProc");
+        log.info("purchaseItemProc");
         log.info("Encrypted_Data:" + encrypted_data);
 
         String decryptedPassword = aesService.decrypt(encrypted_data);
-        String[] LoginInfoParts = decryptedPassword.split(":");
-        int total_book_price = Integer.parseInt(LoginInfoParts[1]);
+        String[] PurchaseInfoParts = decryptedPassword.split(":|&&&");
+        int total_book_price = Integer.parseInt(PurchaseInfoParts[5]);
 
         Map<String, String> response = new HashMap<>();
 
