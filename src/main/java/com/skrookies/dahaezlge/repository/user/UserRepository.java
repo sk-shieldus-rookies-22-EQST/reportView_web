@@ -14,7 +14,7 @@ public interface UserRepository {
      * @return Boolean */
     String login(String user_id, String user_pw);
 
-    List<Map<String, Object>> autoLogin(String user_id, String token);
+    List<Map<String, Object>> autoLogin(String user_id, String token, String uuid);
 
     String findUserid(String user_phone, String user_email);
     List<Users> userinfo_list(String user_id);

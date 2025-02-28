@@ -9,4 +9,5 @@ public class AutoLoginDto {
 
     private String user_id;
     private String token;
+    private String uuid;
 }

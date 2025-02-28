@@ -36,9 +36,9 @@ public class UserService {
 
 
     /** 자동 로그인 */
-    public Boolean auto_login(String user_id, String token){
+    public Boolean auto_login(String user_id, String token, String uuid){
 
-        List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token);
+        List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token, uuid);
 
         log.info("auto login data:{}", autoLoginData);
         if(autoLoginData != null){

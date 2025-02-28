@@ -84,14 +84,14 @@ public class DBUserRepository implements UserRepository{
     }
 
     @Override
-    public List<Map<String, Object>> autoLogin(String user_id, String token) {
+    public List<Map<String, Object>> autoLogin(String user_id, String token, String uuid) {
 
         log.info("auto login data 조회");
 
-        String sql = "select * from auto_login where auto_login_user_id = ? and token = ?";
+        String sql = "select * from auto_login where auto_login_user_id = ? and token = ? and uuid = ?";
 
         try {
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, user_id, token);
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, user_id, token, uuid);
             log.info("auto login data 조회 성공");
             return result;
         }
