@@ -4,7 +4,7 @@ package com.skrookies.dahaezlge.service.user;
 import com.skrookies.dahaezlge.entity.user.Users;
 import com.skrookies.dahaezlge.repository.user.UserRepository;
 import com.skrookies.dahaezlge.repository.userPoint.UserPointRepository;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +36,9 @@ public class UserService {
 
 
     /** 자동 로그인 */
-    public Boolean auto_login(String user_id, String token){
+    public Boolean auto_login(String user_id, String token, String uuid){
 
-        List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token);
+        List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token, uuid);
 
         log.info("auto login data:{}", autoLoginData);
         if(autoLoginData != null){
@@ -50,16 +50,24 @@ public class UserService {
             if(lastLogintDate.isAfter(LocalDate.now().minusDays(30))){
 
                 log.info("last login date update try");
-                if(userRepository.updateAutoLoginDate(user_id, token, Timestamp.valueOf(LocalDate.now().atStartOfDay()))){
+                if(userRepository.updateAutoLoginDate(user_id, token, Timestamp.valueOf(LocalDate.now().atStartOfDay()), uuid)){
                     log.info("success");
+                    return true;
                 }
-
-                return true;
+                else{
+                    log.info("fail");
+                    return false;
+                }
             }
             else{
                 log.info("last login date over 30 days");
                 if(userRepository.deleteAutoLoginDate(user_id)){
                     log.info("delete auto login date");
+                    return true;
+                }
+                else{
+                    log.info("fail");
+                    return false;
                 }
             }
         }
@@ -69,7 +77,7 @@ public class UserService {
 
 
     /** 자동 로그인 토큰 저장 */
-    public String autoLoginTokenGen(String user_id){
+    public String autoLoginTokenGen(String user_id, String uuid){
 
         /** 토큰 생성 */
         Bcrypt bcrypt = new Bcrypt();
@@ -84,10 +92,10 @@ public class UserService {
 
         /** 로그인 시간 생성 및 업데이트 */
         if(userRepository.selectAutoLoginDate(user_id)){
-            userRepository.updateAutoLoginDate(user_id, token, login_date);
+            userRepository.updateAutoLoginDate(user_id, token, login_date, uuid);
         }
         else{
-            userRepository.insertAutoLoginToken(user_id, token, login_date);
+            userRepository.insertAutoLoginToken(user_id, token, login_date, uuid);
         }
 
         return token;

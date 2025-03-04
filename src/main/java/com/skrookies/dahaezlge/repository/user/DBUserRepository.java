@@ -84,14 +84,14 @@ public class DBUserRepository implements UserRepository{
     }
 
     @Override
-    public List<Map<String, Object>> autoLogin(String user_id, String token) {
+    public List<Map<String, Object>> autoLogin(String user_id, String token, String uuid) {
 
         log.info("auto login data 조회");
 
-        String sql = "select * from auto_login where auto_login_user_id = ? and token = ?";
+        String sql = "select * from auto_login where auto_login_user_id = ? and token = ? and uuid = ?";
 
         try {
-            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, user_id, token);
+            List<Map<String, Object>> result = jdbcTemplate.queryForList(sql, user_id, token, uuid);
             log.info("auto login data 조회 성공");
             return result;
         }
@@ -331,13 +331,13 @@ public class DBUserRepository implements UserRepository{
     }
 
     @Override
-    public Boolean insertAutoLoginToken(String user_id, String token, Timestamp login_date) {
+    public Boolean insertAutoLoginToken(String user_id, String token, Timestamp login_date, String uuid) {
 
-        String sql = "insert into auto_login (auto_login_user_id, token, token_gen_date) " +
-                "Values(?, ?, ?)";
+        String sql = "insert into auto_login (auto_login_user_id, token, token_gen_date, uuid) " +
+                "Values(?, ?, ?, ?)";
 
         try {
-            int result = jdbcTemplate.update(sql, user_id, token, login_date);
+            int result = jdbcTemplate.update(sql, user_id, token, login_date, uuid);
 
             if(result > 0) {
                 log.info("auto_login success");
@@ -358,11 +358,11 @@ public class DBUserRepository implements UserRepository{
     }
 
     @Override
-    public Boolean updateAutoLoginDate(String user_id, String token, Timestamp login_date) {
+    public Boolean updateAutoLoginDate(String user_id, String token, Timestamp login_date, String uuid) {
 
-        String sql = "update auto_login set token = ?, token_gen_date = ? where auto_login_user_id = ?";
+        String sql = "update auto_login set token = ?, token_gen_date = ? where auto_login_user_id = ? and uuid = ?";
 
-        int result = jdbcTemplate.update(sql, token, login_date, user_id);
+        int result = jdbcTemplate.update(sql, token, login_date, user_id, uuid);
 
         return result > 0;
     }

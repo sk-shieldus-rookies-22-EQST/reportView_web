@@ -1,7 +1,7 @@
 package com.skrookies.dahaezlge.entity.userPoint;
 
 import com.skrookies.dahaezlge.entity.user.Users;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

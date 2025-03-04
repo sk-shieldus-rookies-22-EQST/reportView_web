@@ -6,7 +6,7 @@ import com.skrookies.dahaezlge.restcontroller.sign.dto.SignupDto;
 import com.skrookies.dahaezlge.restcontroller.util.Bcrypt;
 import com.skrookies.dahaezlge.restcontroller.util.dto.StatusDto;
 import com.skrookies.dahaezlge.service.user.UserService;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

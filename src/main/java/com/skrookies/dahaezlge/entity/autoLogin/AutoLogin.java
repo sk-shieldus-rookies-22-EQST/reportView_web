@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 
@@ -24,8 +24,9 @@ public class AutoLogin {
     @Column(name = "token", length = 255)
     private String token;
 
+    @Column(name = "uuid", length = 255)
+    private String uuid;
+
     @Column(name = "token_gen_date")
     private Timestamp tokenGenDate;
-
-
 }

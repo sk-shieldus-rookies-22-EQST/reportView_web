@@ -1,8 +1,8 @@
 package com.skrookies.dahaezlge.entity.loginTry;
 
 import com.skrookies.dahaezlge.entity.user.Users;
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;

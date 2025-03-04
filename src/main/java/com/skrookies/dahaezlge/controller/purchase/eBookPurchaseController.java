@@ -7,13 +7,13 @@ import com.skrookies.dahaezlge.service.cart.CartService;
 import com.skrookies.dahaezlge.service.purchase.PurchaseService;
 import com.skrookies.dahaezlge.service.security.AESService;
 import com.skrookies.dahaezlge.service.user.UserService;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
