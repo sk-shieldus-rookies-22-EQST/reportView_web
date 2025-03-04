@@ -32,8 +32,9 @@ public class AuthController {
         log.info("Android login 시도");
 
         try {
-            log.info("Android login e2e data:", e2eDto.getE2e_data());
-            String decrypted_data = aesService.decrypt(e2eDto.getE2e_data());
+            String e2e_data = e2eDto.getE2e_data();
+            log.info("Android login e2e data:", e2e_data);
+            String decrypted_data = aesService.decrypt(e2e_data);
 
             String[] passwordParts = decrypted_data.split("&&&&");
 
@@ -71,7 +72,9 @@ public class AuthController {
     @PostMapping("/autologin")
     public ResponseEntity<StatusDto> autoLogin(@RequestBody @Valid AutoLoginDto autoLoginDto){
 
-        log.info("Request data autoLogin: {}", autoLoginDto);
+        log.info("Requset data user_id: {}", autoLoginDto.getUser_id());
+        log.info("Request data token: {}", autoLoginDto.getToken());
+        log.info("Request data uuid: {}", autoLoginDto.getUuid());
 
         Boolean result = userService.auto_login(autoLoginDto.getUser_id(), autoLoginDto.getToken(), autoLoginDto.getUuid());
 

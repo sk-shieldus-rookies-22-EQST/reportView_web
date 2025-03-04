@@ -41,7 +41,7 @@ public class UserService {
         List<Map<String, Object>> autoLoginData = userRepository.autoLogin(user_id, token, uuid);
 
         log.info("auto login data:{}", autoLoginData);
-        if(autoLoginData != null){
+        if(autoLoginData != null && !autoLoginData.isEmpty()){
             LocalDate lastLogintDate = ((Timestamp) autoLoginData.get(0).get("token_gen_date")).toLocalDateTime().toLocalDate();
 
             log.info("last login date:{}", lastLogintDate);

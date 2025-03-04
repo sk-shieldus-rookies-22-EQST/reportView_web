@@ -101,7 +101,7 @@ public class DBUserRepository implements UserRepository{
         }
     }
 
-    // 계정 잠금 여부 확인
+    /** 계정 잠금 여부 확인 */
     private boolean isAccountLocked(LoginTry loginTry, String user_id) {
         // 실패 횟수가 일정 이상인 경우 계정을 잠금
         final int MAX_FAILED_ATTEMPTS = 4;  // 최대 실패 횟수
@@ -126,7 +126,7 @@ public class DBUserRepository implements UserRepository{
         return false;  // 실패 횟수가 부족하면 계정 잠금이 아님
     }
 
-    // 로그인 실패 시, 실패 횟수 증가 및 시도 시간 갱신
+    /** 로그인 실패 시, 실패 횟수 증가 및 시도 시간 갱신 */
     private void incrementFailedAttempts(String user_id, LoginTry loginTry) {
         loginTry.setTry_count(loginTry.getTry_count() + 1);
         loginTry.setTry_time(Timestamp.valueOf(LocalDateTime.now()));  // 실패 시도 시간 갱신
