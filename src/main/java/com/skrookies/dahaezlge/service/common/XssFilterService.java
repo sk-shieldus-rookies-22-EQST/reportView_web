@@ -46,14 +46,15 @@ public class XssFilterService {
     /** XSS 필터링 */
     public String filter(String input) {
         if (input == null) return null;
-        String output = input;
+        // 1. 모든 영어를 소문자로 변환
+        String output = input.toLowerCase();
 
-        // 1. 특수문자 변환
+        // 2. 특수문자 변환
         for (String[] special : SPECIAL_CHARACTERS) {
             output = output.replace(special[0], special[1]);
         }
 
-        // 2. 지정된 토큰 치환 (대소문자 무시)
+        // 3. 지정된 토큰 치환
         for (String token : REPLACE_TOKENS) {
             output = output.replaceAll("(?i)" + token, " ");
         }

@@ -142,8 +142,8 @@
                         onblur="this.style.backgroundColor='';"
                     >
                     <!-- sort와 direction 값 유지 -->
-                    <input type="hidden" name="sort" value="${param.sort}">
-                    <input type="hidden" name="direction" value="${param.direction}">
+                    <input type="hidden" name="sort" value="${sort}">
+                    <input type="hidden" name="direction" value="${direction}">
                     <!-- 검색 버튼 -->
                     <button
                         type="submit"
@@ -159,9 +159,9 @@
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 80%;display: flex;justify-content: flex-end;padding-top: 20px;">
               <form id="sortForm" method="get" action="/index">
                   <!-- 기존 검색, 날짜 값들 -->
-                  <input type="hidden" name="keyword" value="${param.keyword}">
-                  <input type="hidden" name="sdate" value="${param.sdate}">
-                  <input type="hidden" name="edate" value="${param.edate}">
+                  <input type="hidden" name="keyword" value="${keyword}">
+                  <input type="hidden" name="sdate" value="${sdate}">
+                  <input type="hidden" name="edate" value="${edate}">
 
                   <!-- 각 라디오 버튼에 data-direction 속성을 추가 -->
                   <!-- 등록 날짜 순: sort는 book_reg_date, direction은 ASC -->
@@ -188,7 +188,7 @@
 
 
                   <!-- direction은 자바스크립트로 업데이트할 hidden 필드 -->
-                  <input type="hidden" id="directionInput" name="direction" value="${param.direction}">
+                  <input type="hidden" id="directionInput" name="direction" value="${direction}">
               </form>
             </div>
         </div>
