@@ -111,9 +111,6 @@
 					<div class=" collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <input class="btn btn-outline-light" type="button" value="공지사항" onclick="location.href='/noticeList'" style="margin-right: 20px;">
-                        </li>
-                        <li class="nav-item">
                             <input class="btn btn-outline-light" type="button" value="QnA" onclick="location.href='/qnaList'">
                         </li>
                     </ul>
